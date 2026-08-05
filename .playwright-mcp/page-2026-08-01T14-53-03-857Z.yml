@@ -1,0 +1,92 @@
+- generic [ref=f8e5]:
+  - banner:
+    - generic [ref=f8e8]:
+      - generic [ref=f8e10]:
+        - generic:
+          - button [disabled]
+        - button "Facebook" [ref=f8e12] [cursor=pointer]:
+          - img "Facebook" [ref=f8e13]
+      - generic [ref=f8e16]:
+        - button "Iniciar sesión con código QR" [ref=f8e19] [cursor=pointer]
+        - link "Iniciar sesión" [ref=f8e24] [cursor=pointer]:
+          - /url: https://www.facebook.com/login/device-based/regular/login/?login_attempt=1&next=https%3A%2F%2Fwww.facebook.com%2Fphoto.php%3Ffbid%3D1577237214091089%26set%3Dpb.100054144776426.-2207520000%26type%3D3
+  - generic [ref=f8e34]:
+    - main [ref=f8e35]:
+      - generic [ref=f8e36]:
+        - generic [ref=f8e39]:
+          - button [ref=f8e42] [cursor=pointer]
+          - button [ref=f8e49] [cursor=pointer]
+        - link [ref=f8e63] [cursor=pointer]:
+          - /url: /?__tn__=*F
+        - generic [ref=f8e67]:
+          - button [ref=f8e69] [cursor=pointer]
+          - button [disabled] [ref=f8e74]
+          - button [ref=f8e80] [cursor=pointer]
+    - complementary [ref=f8e83]:
+      - generic [ref=f8e87]:
+        - generic [ref=f8e90]:
+          - link [ref=f8e94] [cursor=pointer]:
+            - /url: /stories/113263980488427/UzpfSVNDOjk4Njc4MTA0NDM3NDU1Ng==/?view_single=false&__tn__=%3C%3C*F
+          - generic [ref=f8e102]:
+            - heading [level=2] [ref=f8e106]:
+              - link [ref=f8e110] [cursor=pointer]:
+                - /url: https://www.facebook.com/ahoramdd?__tn__=-UC*F
+                - text: Ahora Nacion Madre de dios
+            - generic [ref=f8e113]:
+              - link [ref=f8e117] [cursor=pointer]:
+                - /url: https://www.facebook.com/photo/?fbid=1577237214091089&set=a.559092985905522&__tn__=%2CO*F
+                - text: 3 d
+              - generic [ref=f8e118]: ·
+          - button [ref=f8e132] [cursor=pointer]
+        - generic [ref=f8e138]:
+          - generic [ref=f8e140]:
+            - generic [ref=f8e141]:
+              - toolbar [ref=f8e142]:
+                - generic [ref=f8e143]:
+                  - button [ref=f8e147] [cursor=pointer]
+                  - button [ref=f8e151] [cursor=pointer]
+              - generic [ref=f8e152]: "Todas las reacciones:"
+              - generic [ref=f8e153]: "5"
+            - button [ref=f8e158] [cursor=pointer]:
+              - generic [ref=f8e159]: "1"
+          - generic [ref=f8e165]:
+            - button [ref=f8e167] [cursor=pointer]:
+              - generic [ref=f8e168]: Me gusta
+            - button [ref=f8e174] [cursor=pointer]:
+              - generic [ref=f8e175]: Comentar
+        - generic [ref=f8e181]:
+          - button [ref=f8e184] [cursor=pointer]:
+            - generic [ref=f8e185]: Más pertinentes
+          - heading [level=2] [ref=f8e190]: Comentarios
+          - article [ref=f8e195]:
+            - link [ref=f8e199] [cursor=pointer]:
+              - /url: https://www.facebook.com/people/Ada-Rengifo/pfbid0AVgg7x7in2gWNyEDkEb5pshgWaZ9rT4v8uSqM3VS81iCN1mPvuAJeQiYoMNuL6Usl/?comment_id=Y29tbWVudDoxNTc3MjM3MjE0MDkxMDg5XzE1MTgxNDY4MDk1MTI4MTI%3D&__tn__=R*F
+            - generic [ref=f8e205]:
+              - generic [ref=f8e209]:
+                - link [ref=f8e212] [cursor=pointer]:
+                  - /url: https://www.facebook.com/people/Ada-Rengifo/pfbid0AVgg7x7in2gWNyEDkEb5pshgWaZ9rT4v8uSqM3VS81iCN1mPvuAJeQiYoMNuL6Usl/?comment_id=Y29tbWVudDoxNTc3MjM3MjE0MDkxMDg5XzE1MTgxNDY4MDk1MTI4MTI%3D&__tn__=R*F
+                  - generic [ref=f8e213]: Ada Rengifo
+                - generic [ref=f8e215]: hola señor Simón felicitaciones y bendiciones en tu carrera política y a trabajar por el bien de Madre de Dios
+              - list [ref=f8e220]:
+                - listitem [ref=f8e221]:
+                  - generic [ref=f8e222]: 2 d
+  - dialog [ref=f8e235]:
+    - button "Cerrar" [ref=f8e237] [cursor=pointer]
+    - generic [ref=f8e243]:
+      - generic [ref=f8e244]:
+        - generic [ref=f8e245]: Ver más en Facebook
+        - generic [ref=f8e252]:
+          - generic: Correo electrónico o número de teléfono
+          - textbox "Correo electrónico o número de teléfono" [active] [ref=f8e253]
+        - generic [ref=f8e258]:
+          - generic: Contraseña
+          - textbox "Contraseña" [ref=f8e259]
+        - button "Iniciar sesión en Facebook" [ref=f8e261] [cursor=pointer]:
+          - generic [ref=f8e262]: Iniciar sesión
+        - link "¿Has olvidado la contraseña?" [ref=f8e266] [cursor=pointer]:
+          - /url: https://www.facebook.com/recover/initiate?ars=royal_blue_bar
+        - generic [ref=f8e268]: o
+        - button "Crear una cuenta" [ref=f8e277] [cursor=pointer]
+      - generic [ref=f8e287]:
+        - generic [ref=f8e288]: Escanea el código QR y confirma que los códigos coinciden para iniciar sesión.
+        - generic [ref=f8e289]: BAW-TJW-VBFC

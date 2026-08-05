@@ -1,0 +1,281 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e27] [cursor=pointer]:
+    - img [ref=e28]
+  - alert [ref=e31]: Usuarios · UNAMAD Admin
+  - generic [ref=e32]:
+    - banner [ref=e33]:
+      - generic [ref=e34]:
+        - button "Menú" [ref=e35] [cursor=pointer]:
+          - img [ref=e36]
+        - generic [ref=e38]:
+          - img [ref=e39]
+          - generic [ref=e43]: Admin
+      - generic [ref=e45]:
+        - img [ref=e46]
+        - textbox "Buscar usuarios, roles o incidentes" [ref=e49]
+      - generic [ref=e50]:
+        - button "Cambiar tema" [ref=e52] [cursor=pointer]:
+          - img [ref=e53]
+        - button "Notificaciones" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+          - generic [ref=e61]: "7"
+        - button "Cuenta" [ref=e63] [cursor=pointer]: EA
+    - generic [ref=e64]:
+      - complementary [ref=e65]:
+        - navigation [ref=e66]:
+          - link "Inicio" [ref=e68] [cursor=pointer]:
+            - /url: /inicio
+            - img [ref=e70]
+            - generic [ref=e72]: Inicio
+          - link "Usuarios" [ref=e74] [cursor=pointer]:
+            - /url: /usuarios
+            - img [ref=e76]
+            - generic [ref=e81]: Usuarios
+          - link "Roles" [ref=e83] [cursor=pointer]:
+            - /url: /roles
+            - img [ref=e85]
+            - generic [ref=e87]: Roles
+          - link "Incidentes" [ref=e89] [cursor=pointer]:
+            - /url: /incidentes
+            - img [ref=e91]
+            - generic [ref=e93]: Incidentes
+      - main [ref=e94]:
+        - generic [ref=e95]:
+          - button "Usuarios" [ref=e97] [cursor=pointer]
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - heading "Usuarios" [level=1] [ref=e100]
+              - generic [ref=e101]: 10 total · 8 activos · 2 suspendidos
+            - generic [ref=e102]:
+              - button "Crear usuario" [ref=e103] [cursor=pointer]:
+                - img [ref=e104]
+                - generic [ref=e106]: Crear usuario
+              - button "Importar CSV" [disabled] [ref=e107]
+          - generic [ref=e108]:
+            - button "Todos · 10" [ref=e109] [cursor=pointer]
+            - button "Activos · 8" [ref=e110] [cursor=pointer]
+            - button "Suspendidos · 2" [ref=e111] [cursor=pointer]
+            - button "Cualquier rol" [ref=e114] [cursor=pointer]:
+              - img [ref=e115]
+              - generic [ref=e120]: Cualquier rol
+              - img [ref=e121]
+          - generic [ref=e123]:
+            - table [ref=e125]:
+              - rowgroup [ref=e126]:
+                - row "Nombre Roles Estado Último acceso Creado Ajustes" [ref=e127]:
+                  - columnheader [ref=e128]
+                  - columnheader "Nombre" [ref=e131]:
+                    - button "Nombre" [ref=e132] [cursor=pointer]:
+                      - generic [ref=e133]: Nombre
+                      - img [ref=e135]
+                  - columnheader "Roles" [ref=e137]
+                  - columnheader "Estado" [ref=e138]
+                  - columnheader "Último acceso" [ref=e139]:
+                    - button "Último acceso" [ref=e140] [cursor=pointer]:
+                      - generic [ref=e141]: Último acceso
+                      - img [ref=e143]
+                  - columnheader "Creado" [ref=e145]:
+                    - button "Creado" [ref=e146] [cursor=pointer]:
+                      - generic [ref=e147]: Creado
+                      - img [ref=e149]
+                  - columnheader "Ajustes" [ref=e151]:
+                    - button "Ajustes" [ref=e152] [cursor=pointer]:
+                      - img [ref=e153]
+              - rowgroup [ref=e156]:
+                - row "SM Sofía Mendoza s.mendoza@unamad.edu.pe Consulta Activo hace 11 h hace 11 h Acciones" [ref=e157]:
+                  - cell [ref=e158]
+                  - cell "SM Sofía Mendoza s.mendoza@unamad.edu.pe" [ref=e161]:
+                    - generic [ref=e162]:
+                      - generic "Sofía Mendoza" [ref=e163]: SM
+                      - generic [ref=e164]:
+                        - button "Sofía Mendoza" [ref=e165] [cursor=pointer]:
+                          - generic [ref=e166]: Sofía Mendoza
+                        - generic "s.mendoza@unamad.edu.pe" [ref=e167]
+                  - cell "Consulta" [ref=e168]:
+                    - generic [ref=e170]: Consulta
+                  - cell "Activo" [ref=e171]:
+                    - generic [ref=e172]: Activo
+                  - cell "hace 11 h" [ref=e173]
+                  - cell "hace 11 h" [ref=e174]
+                  - cell "Acciones" [ref=e175]:
+                    - button "Acciones" [ref=e177] [cursor=pointer]:
+                      - img [ref=e178]
+                - row "RV Ronaldo Vega r.vega@unamad.edu.pe Gestor de incidentes Suspendido 29 ene. 2026 hace 11 h Acciones" [ref=e182]:
+                  - cell [ref=e183]
+                  - cell "RV Ronaldo Vega r.vega@unamad.edu.pe" [ref=e186]:
+                    - generic [ref=e187]:
+                      - generic "Ronaldo Vega" [ref=e188]: RV
+                      - generic [ref=e189]:
+                        - button "Ronaldo Vega" [ref=e190] [cursor=pointer]:
+                          - generic [ref=e191]: Ronaldo Vega
+                        - generic "r.vega@unamad.edu.pe" [ref=e192]
+                  - cell "Gestor de incidentes" [ref=e193]:
+                    - generic [ref=e195]: Gestor de incidentes
+                  - cell "Suspendido" [ref=e196]:
+                    - generic [ref=e197]: Suspendido
+                  - cell "29 ene. 2026" [ref=e198]
+                  - cell "hace 11 h" [ref=e199]
+                  - cell "Acciones" [ref=e200]:
+                    - button "Acciones" [ref=e202] [cursor=pointer]:
+                      - img [ref=e203]
+                - row "JC José Tarazona Quiroz Mancilla del Castillo jose.tarazona.quiroz.mancilla@unamad.edu.pe Sin rol Activo Nunca hace 11 h Acciones" [ref=e207]:
+                  - cell [ref=e208]
+                  - cell "JC José Tarazona Quiroz Mancilla del Castillo jose.tarazona.quiroz.mancilla@unamad.edu.pe" [ref=e211]:
+                    - generic [ref=e212]:
+                      - generic "José Tarazona Quiroz Mancilla del Castillo" [ref=e213]: JC
+                      - generic [ref=e214]:
+                        - button "José Tarazona Quiroz Mancilla del Castillo" [ref=e215] [cursor=pointer]:
+                          - generic [ref=e216]: José Tarazona Quiroz Mancilla del Castillo
+                        - generic "jose.tarazona.quiroz.mancilla@unamad.edu.pe" [ref=e217]
+                  - cell "Sin rol" [ref=e218]:
+                    - generic [ref=e220]: Sin rol
+                  - cell "Activo" [ref=e221]:
+                    - generic [ref=e222]: Activo
+                  - cell "Nunca" [ref=e223]
+                  - cell "hace 11 h" [ref=e224]
+                  - cell "Acciones" [ref=e225]:
+                    - button "Acciones" [ref=e227] [cursor=pointer]:
+                      - img [ref=e228]
+                - row "AL Ana Choque Layme a.choque.layme@unamad.edu.pe Consulta Activo 28 feb. 2026 hace 11 h Acciones" [ref=e232]:
+                  - cell [ref=e233]
+                  - cell "AL Ana Choque Layme a.choque.layme@unamad.edu.pe" [ref=e236]:
+                    - generic [ref=e237]:
+                      - generic "Ana Choque Layme" [ref=e238]: AL
+                      - generic [ref=e239]:
+                        - button "Ana Choque Layme" [ref=e240] [cursor=pointer]:
+                          - generic [ref=e241]: Ana Choque Layme
+                        - generic "a.choque.layme@unamad.edu.pe" [ref=e242]
+                  - cell "Consulta" [ref=e243]:
+                    - generic [ref=e245]: Consulta
+                  - cell "Activo" [ref=e246]:
+                    - generic [ref=e247]: Activo
+                  - cell "28 feb. 2026" [ref=e248]
+                  - cell "hace 11 h" [ref=e249]
+                  - cell "Acciones" [ref=e250]:
+                    - button "Acciones" [ref=e252] [cursor=pointer]:
+                      - img [ref=e253]
+                - row "PR Pedro Huamán Ríos p.huaman@unamad.edu.pe Consulta Activo 22 may. 2026 hace 11 h Acciones" [ref=e257]:
+                  - cell [ref=e258]
+                  - cell "PR Pedro Huamán Ríos p.huaman@unamad.edu.pe" [ref=e261]:
+                    - generic [ref=e262]:
+                      - generic "Pedro Huamán Ríos" [ref=e263]: PR
+                      - generic [ref=e264]:
+                        - button "Pedro Huamán Ríos" [ref=e265] [cursor=pointer]:
+                          - generic [ref=e266]: Pedro Huamán Ríos
+                        - generic "p.huaman@unamad.edu.pe" [ref=e267]
+                  - cell "Consulta" [ref=e268]:
+                    - generic [ref=e270]: Consulta
+                  - cell "Activo" [ref=e271]:
+                    - generic [ref=e272]: Activo
+                  - cell "22 may. 2026" [ref=e273]
+                  - cell "hace 11 h" [ref=e274]
+                  - cell "Acciones" [ref=e275]:
+                    - button "Acciones" [ref=e277] [cursor=pointer]:
+                      - img [ref=e278]
+                - row "LV Lucía Romero Vásquez l.romero@unamad.edu.pe Administrador Suspendido 19 abr. 2026 hace 11 h Acciones" [ref=e282]:
+                  - cell [ref=e283]
+                  - cell "LV Lucía Romero Vásquez l.romero@unamad.edu.pe" [ref=e286]:
+                    - generic [ref=e287]:
+                      - generic "Lucía Romero Vásquez" [ref=e288]: LV
+                      - generic [ref=e289]:
+                        - button "Lucía Romero Vásquez" [ref=e290] [cursor=pointer]:
+                          - generic [ref=e291]: Lucía Romero Vásquez
+                        - generic "l.romero@unamad.edu.pe" [ref=e292]
+                  - cell "Administrador" [ref=e293]:
+                    - generic [ref=e295]: Administrador
+                  - cell "Suspendido" [ref=e296]:
+                    - generic [ref=e297]: Suspendido
+                  - cell "19 abr. 2026" [ref=e298]
+                  - cell "hace 11 h" [ref=e299]
+                  - cell "Acciones" [ref=e300]:
+                    - button "Acciones" [ref=e302] [cursor=pointer]:
+                      - img [ref=e303]
+                - row "CA Carlos Mamani Apaza c.mamani@unamad.edu.pe Consulta Activo 17 may. 2026 hace 11 h Acciones" [ref=e307]:
+                  - cell [ref=e308]
+                  - cell "CA Carlos Mamani Apaza c.mamani@unamad.edu.pe" [ref=e311]:
+                    - generic [ref=e312]:
+                      - generic "Carlos Mamani Apaza" [ref=e313]: CA
+                      - generic [ref=e314]:
+                        - button "Carlos Mamani Apaza" [ref=e315] [cursor=pointer]:
+                          - generic [ref=e316]: Carlos Mamani Apaza
+                        - generic "c.mamani@unamad.edu.pe" [ref=e317]
+                  - cell "Consulta" [ref=e318]:
+                    - generic [ref=e320]: Consulta
+                  - cell "Activo" [ref=e321]:
+                    - generic [ref=e322]: Activo
+                  - cell "17 may. 2026" [ref=e323]
+                  - cell "hace 11 h" [ref=e324]
+                  - cell "Acciones" [ref=e325]:
+                    - button "Acciones" [ref=e327] [cursor=pointer]:
+                      - img [ref=e328]
+                - row "MY María Salas Yáñez m.salas@unamad.edu.pe Gestor de incidentes Activo hace 3 días hace 11 h Acciones" [ref=e332]:
+                  - cell [ref=e333]
+                  - cell "MY María Salas Yáñez m.salas@unamad.edu.pe" [ref=e336]:
+                    - generic [ref=e337]:
+                      - generic "María Salas Yáñez" [ref=e338]: MY
+                      - generic [ref=e339]:
+                        - button "María Salas Yáñez" [ref=e340] [cursor=pointer]:
+                          - generic [ref=e341]: María Salas Yáñez
+                        - generic "m.salas@unamad.edu.pe" [ref=e342]
+                  - cell "Gestor de incidentes" [ref=e343]:
+                    - generic [ref=e345]: Gestor de incidentes
+                  - cell "Activo" [ref=e346]:
+                    - generic [ref=e347]: Activo
+                  - cell "hace 3 días" [ref=e348]
+                  - cell "hace 11 h" [ref=e349]
+                  - cell "Acciones" [ref=e350]:
+                    - button "Acciones" [ref=e352] [cursor=pointer]:
+                      - img [ref=e353]
+                - row "JM Juan Quispe Mamani j.quispe@unamad.edu.pe Gestor de incidentes Activo Ayer 07:46 a. m. hace 11 h Acciones" [ref=e357]:
+                  - cell [ref=e358]
+                  - cell "JM Juan Quispe Mamani j.quispe@unamad.edu.pe" [ref=e361]:
+                    - generic [ref=e362]:
+                      - generic "Juan Quispe Mamani" [ref=e363]: JM
+                      - generic [ref=e364]:
+                        - button "Juan Quispe Mamani" [ref=e365] [cursor=pointer]:
+                          - generic [ref=e366]: Juan Quispe Mamani
+                        - generic "j.quispe@unamad.edu.pe" [ref=e367]
+                  - cell "Gestor de incidentes" [ref=e368]:
+                    - generic [ref=e370]: Gestor de incidentes
+                  - cell "Activo" [ref=e371]:
+                    - generic [ref=e372]: Activo
+                  - cell "Ayer 07:46 a. m." [ref=e373]
+                  - cell "hace 11 h" [ref=e374]
+                  - cell "Acciones" [ref=e375]:
+                    - button "Acciones" [ref=e377] [cursor=pointer]:
+                      - img [ref=e378]
+                - row "EA Erika Cusi Arangoitia Tú erika.cusi@unamad.edu.pe Administrador Activo Justo ahora hace 11 h Acciones" [ref=e382]:
+                  - cell [ref=e383]:
+                    - generic "No puedes seleccionarte a ti mismo" [ref=e384]
+                  - cell "EA Erika Cusi Arangoitia Tú erika.cusi@unamad.edu.pe" [ref=e386]:
+                    - generic [ref=e387]:
+                      - generic "Erika Cusi Arangoitia" [ref=e388]: EA
+                      - generic [ref=e389]:
+                        - button "Erika Cusi Arangoitia Tú" [ref=e390] [cursor=pointer]:
+                          - generic [ref=e391]: Erika Cusi Arangoitia
+                          - generic [ref=e392]: Tú
+                        - generic "erika.cusi@unamad.edu.pe" [ref=e393]
+                  - cell "Administrador" [ref=e394]:
+                    - generic [ref=e396]: Administrador
+                  - cell "Activo" [ref=e397]:
+                    - generic [ref=e398]: Activo
+                  - cell "Justo ahora" [ref=e399]
+                  - cell "hace 11 h" [ref=e400]
+                  - cell "Acciones" [ref=e401]:
+                    - button "Acciones" [ref=e403] [cursor=pointer]:
+                      - img [ref=e404]
+            - generic [ref=e408]:
+              - generic [ref=e409]: 10 de 10 usuarios
+              - generic [ref=e410]:
+                - generic [ref=e411]: "Filas por página: 50"
+                - generic [ref=e412]: 1–10 de 10
+    - contentinfo [ref=e413]:
+      - generic [ref=e414]: © 2026 UNAMAD · Oficina de Tecnologías de la Información
+      - link "Términos del Servicio" [ref=e415] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e416]: ·
+      - link "Política de Privacidad" [ref=e417] [cursor=pointer]:
+        - /url: "#"
+      - button "Enviar comentarios" [ref=e418] [cursor=pointer]:
+        - img [ref=e419]
+        - text: Enviar comentarios

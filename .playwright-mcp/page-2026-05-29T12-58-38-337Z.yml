@@ -1,0 +1,28 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: U
+        - generic [ref=e6]:
+          - generic [ref=e7]: UNAMAD
+          - generic [ref=e8]: Consola de administración
+      - generic [ref=e9]:
+        - heading "Bienvenido" [level=1] [ref=e10]
+        - paragraph [ref=e11]: Inicia sesión con tu cuenta institucional para continuar.
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - generic [ref=e14]: Correo institucional
+          - textbox "Correo institucional" [active] [ref=e15]:
+            - /placeholder: usuario@unamad.edu.pe
+        - generic [ref=e16]:
+          - generic [ref=e17]: Contraseña
+          - textbox "Contraseña" [ref=e18]:
+            - /placeholder: ••••••••
+        - button "Iniciar sesión" [disabled] [ref=e19]
+      - generic [ref=e20]:
+        - text: ¿Problemas para acceder? Contacta a
+        - link "oti@unamad.edu.pe" [ref=e21] [cursor=pointer]:
+          - /url: mailto:oti@unamad.edu.pe
+  - button "Open Next.js Dev Tools" [ref=e27] [cursor=pointer]:
+    - img [ref=e28]
+  - alert [ref=e31]

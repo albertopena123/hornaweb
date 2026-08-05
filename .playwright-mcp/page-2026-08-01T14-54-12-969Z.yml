@@ -1,0 +1,92 @@
+- generic [ref=f18e5]:
+  - banner:
+    - generic [ref=f18e8]:
+      - generic [ref=f18e10]:
+        - generic:
+          - button [disabled]
+        - button "Facebook" [ref=f18e12] [cursor=pointer]:
+          - img "Facebook" [ref=f18e13]
+      - generic [ref=f18e16]:
+        - button "Iniciar sesión con código QR" [ref=f18e19] [cursor=pointer]
+        - link "Iniciar sesión" [ref=f18e24] [cursor=pointer]:
+          - /url: https://www.facebook.com/login/device-based/regular/login/?login_attempt=1&next=https%3A%2F%2Fwww.facebook.com%2Fphoto.php%3Ffbid%3D1577237197424424%26set%3Dpb.100054144776426.-2207520000%26type%3D3
+  - generic [ref=f18e34]:
+    - main [ref=f18e35]:
+      - generic [ref=f18e36]:
+        - generic [ref=f18e39]:
+          - button [ref=f18e42] [cursor=pointer]
+          - button [ref=f18e49] [cursor=pointer]
+        - link [ref=f18e63] [cursor=pointer]:
+          - /url: /?__tn__=*F
+        - generic [ref=f18e67]:
+          - button [ref=f18e69] [cursor=pointer]
+          - button [disabled] [ref=f18e74]
+          - button [ref=f18e80] [cursor=pointer]
+    - complementary [ref=f18e83]:
+      - generic [ref=f18e87]:
+        - generic [ref=f18e90]:
+          - link [ref=f18e94] [cursor=pointer]:
+            - /url: /stories/113263980488427/UzpfSVNDOjk4Njc4MTA0NDM3NDU1Ng==/?view_single=false&__tn__=%3C%3C*F
+          - generic [ref=f18e102]:
+            - heading [level=2] [ref=f18e106]:
+              - link [ref=f18e110] [cursor=pointer]:
+                - /url: https://www.facebook.com/ahoramdd?__tn__=-UC*F
+                - text: Ahora Nacion Madre de dios
+            - generic [ref=f18e113]:
+              - link [ref=f18e117] [cursor=pointer]:
+                - /url: https://www.facebook.com/photo/?fbid=1577237197424424&set=a.559092985905522&__tn__=%2CO*F
+                - text: 3 d
+              - generic [ref=f18e118]: ·
+          - button [ref=f18e132] [cursor=pointer]
+        - generic [ref=f18e138]:
+          - generic [ref=f18e140]:
+            - generic [ref=f18e141]:
+              - toolbar [ref=f18e142]:
+                - generic [ref=f18e143]:
+                  - button [ref=f18e147] [cursor=pointer]
+                  - button [ref=f18e151] [cursor=pointer]
+              - generic [ref=f18e152]: "Todas las reacciones:"
+              - generic [ref=f18e153]: "12"
+            - button [ref=f18e158] [cursor=pointer]:
+              - generic [ref=f18e159]: "1"
+          - generic [ref=f18e165]:
+            - button [ref=f18e167] [cursor=pointer]:
+              - generic [ref=f18e168]: Me gusta
+            - button [ref=f18e174] [cursor=pointer]:
+              - generic [ref=f18e175]: Comentar
+        - generic [ref=f18e181]:
+          - button [ref=f18e184] [cursor=pointer]:
+            - generic [ref=f18e185]: Más pertinentes
+          - heading [level=2] [ref=f18e190]: Comentarios
+          - article [ref=f18e195]:
+            - link [ref=f18e199] [cursor=pointer]:
+              - /url: https://www.facebook.com/people/Juan-Antonio-Valdez-Salas/pfbid02Aop6CNW9TLT8AihPBoFssiyaTHdMcxBcN3ZNum8Lb8yqNVbdbH66camT6FV6dcM9l/?comment_id=Y29tbWVudDoxNTc3MjM3MTk3NDI0NDI0XzE5Njk1ODIyNTM3Mjk1Nzc%3D&__tn__=R*F
+            - generic [ref=f18e205]:
+              - generic [ref=f18e209]:
+                - link [ref=f18e212] [cursor=pointer]:
+                  - /url: https://www.facebook.com/people/Juan-Antonio-Valdez-Salas/pfbid02Aop6CNW9TLT8AihPBoFssiyaTHdMcxBcN3ZNum8Lb8yqNVbdbH66camT6FV6dcM9l/?comment_id=Y29tbWVudDoxNTc3MjM3MTk3NDI0NDI0XzE5Njk1ODIyNTM3Mjk1Nzc%3D&__tn__=R*F
+                  - generic [ref=f18e213]: Juan Antonio Valdez Salas
+                - generic [ref=f18e215]: Simón siempre recibiendo el saludo de la gente que trabaja en la feria
+              - list [ref=f18e220]:
+                - listitem [ref=f18e221]:
+                  - generic [ref=f18e222]: 3 d
+  - dialog [ref=f18e235]:
+    - button "Cerrar" [ref=f18e237] [cursor=pointer]
+    - generic [ref=f18e243]:
+      - generic [ref=f18e244]:
+        - generic [ref=f18e245]: Ver más en Facebook
+        - generic [ref=f18e252]:
+          - generic: Correo electrónico o número de teléfono
+          - textbox "Correo electrónico o número de teléfono" [active] [ref=f18e253]
+        - generic [ref=f18e258]:
+          - generic: Contraseña
+          - textbox "Contraseña" [ref=f18e259]
+        - button "Iniciar sesión en Facebook" [ref=f18e261] [cursor=pointer]:
+          - generic [ref=f18e262]: Iniciar sesión
+        - link "¿Has olvidado la contraseña?" [ref=f18e266] [cursor=pointer]:
+          - /url: https://www.facebook.com/recover/initiate?ars=royal_blue_bar
+        - generic [ref=f18e268]: o
+        - button "Crear una cuenta" [ref=f18e277] [cursor=pointer]
+      - generic [ref=f18e287]:
+        - generic [ref=f18e288]: Escanea el código QR y confirma que los códigos coinciden para iniciar sesión.
+        - generic [ref=f18e289]: BAW-TJW-VBFC

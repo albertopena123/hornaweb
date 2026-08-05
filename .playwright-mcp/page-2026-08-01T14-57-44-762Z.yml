@@ -1,0 +1,636 @@
+- generic [active] [ref=f22e1]:
+  - generic [ref=f22e6]:
+    - button [ref=f22e7] [cursor=pointer]
+    - generic [ref=f22e8]:
+      - link "Ahora Nación Simón Horna Ahora Nación" [ref=f22e9] [cursor=pointer]:
+        - /url: "#inicio"
+        - img "Ahora Nación" [ref=f22e10]
+        - generic [ref=f22e11]:
+          - generic [ref=f22e12]: Simón Horna
+          - generic [ref=f22e13]: Ahora Nación
+      - list [ref=f22e15]:
+        - listitem [ref=f22e16]:
+          - link "Inicio" [ref=f22e17] [cursor=pointer]:
+            - /url: "#inicio"
+        - listitem [ref=f22e18]:
+          - link "Sobre Simón" [ref=f22e19] [cursor=pointer]:
+            - /url: "#nosotros"
+        - listitem [ref=f22e20]:
+          - link "Plan de Gobierno" [ref=f22e21] [cursor=pointer]:
+            - /url: "#plan"
+        - listitem [ref=f22e22]:
+          - link "Propuestas" [ref=f22e23] [cursor=pointer]:
+            - /url: "#propuestas"
+        - listitem [ref=f22e24]:
+          - link "Eventos" [ref=f22e25] [cursor=pointer]:
+            - /url: "#eventos"
+        - listitem [ref=f22e26]:
+          - link "Contacto" [ref=f22e27] [cursor=pointer]:
+            - /url: "#contacto"
+  - banner [ref=f22e28]:
+    - navigation [ref=f22e30]:
+      - link "Ahora Nación Simón Horna Alpaca Ahora Nación · Madre de Dios" [ref=f22e32] [cursor=pointer]:
+        - /url: "#inicio"
+        - img "Ahora Nación" [ref=f22e33]
+        - generic [ref=f22e34]:
+          - generic [ref=f22e35]: Simón Horna Alpaca
+          - generic [ref=f22e36]: Ahora Nación · Madre de Dios
+      - generic [ref=f22e37]:
+        - link "Apoya la Campaña" [ref=f22e39] [cursor=pointer]:
+          - /url: "#contacto"
+        - button
+  - generic [ref=f22e41]:
+    - generic [ref=f22e42]:
+      - generic:
+        - img "Bandera del Perú"
+      - generic [ref=f22e44]:
+        - generic [ref=f22e46]:
+          - generic [ref=f22e47]:
+            - generic [ref=f22e48]:
+              - img "Ahora Nación" [ref=f22e49]
+              - generic [ref=f22e50]: Candidato al Gobierno Regional 2027–2030
+            - heading "Simón Horna Alpaca" [level=1] [ref=f22e51]
+            - paragraph [ref=f22e52]: "\"Todo el poder a las regiones para conquistar los mercados del mundo\""
+            - paragraph [ref=f22e53]: "Un plan de gobierno para hacer de Madre de Dios la región líder de la Amazonía peruana: sostenible, competitiva e integrada al mundo."
+            - generic [ref=f22e54]:
+              - generic [ref=f22e55]:
+                - generic [ref=f22e56]: "4"
+                - generic [ref=f22e57]: Dimensiones Estratégicas
+              - generic [ref=f22e58]:
+                - generic [ref=f22e59]: "17"
+                - generic [ref=f22e60]: Propuestas Concretas
+              - generic [ref=f22e61]:
+                - generic [ref=f22e62]: "3"
+                - generic [ref=f22e63]: Provincias Beneficiadas
+          - generic [ref=f22e64]:
+            - link "Ver Plan de Gobierno" [ref=f22e66] [cursor=pointer]:
+              - /url: "#plan"
+            - link "Únete a la Campaña" [ref=f22e68] [cursor=pointer]:
+              - /url: "#contacto"
+        - generic [ref=f22e70]:
+          - img "Simón Horna Alpaca - Candidato Madre de Dios" [ref=f22e72]
+          - generic [ref=f22e73]:
+            - generic [ref=f22e74]:
+              - generic [ref=f22e75]: 🇵🇪
+              - generic [ref=f22e76]: Madre de Dios
+            - generic [ref=f22e77]: Tambopata · Manu · Tahuamanu
+    - generic [ref=f22e80]:
+      - img "thumb" [ref=f22e83]
+      - generic [ref=f22e86]:
+        - generic [ref=f22e88]:
+          - img "Nuestra Campaña" [ref=f22e91]
+          - generic [ref=f22e92]:
+            - heading "Nuestra Campaña" [level=2] [ref=f22e93]
+            - paragraph [ref=f22e94]: Un plan concreto para el desarrollo integral de Madre de Dios 2027–2030
+        - generic [ref=f22e96]:
+          - img "Únete como Voluntario" [ref=f22e99]
+          - generic [ref=f22e100]:
+            - heading "Únete como Voluntario" [level=2] [ref=f22e101]
+            - paragraph [ref=f22e102]: Sé parte del cambio real. Tu participación transforma la región
+        - generic [ref=f22e104]:
+          - img "Bioeconomía Amazónica" [ref=f22e107]
+          - generic [ref=f22e108]:
+            - heading "Bioeconomía Amazónica" [level=2] [ref=f22e109]
+            - paragraph [ref=f22e110]: Turismo sostenible, castaña, cacao y agroforestería con valor agregado
+    - generic [ref=f22e113]:
+      - generic [ref=f22e115]:
+        - generic [ref=f22e116]:
+          - img "Simón Horna Alpaca" [ref=f22e117]
+          - generic [ref=f22e118]:
+            - img "AN" [ref=f22e119]
+            - generic [ref=f22e120]:
+              - generic [ref=f22e121]: Ahora Nación
+              - generic [ref=f22e122]: Madre de Dios
+        - generic [ref=f22e124]:
+          - generic [ref=f22e125]: "2022"
+          - generic [ref=f22e126]: Experiencia Política
+          - generic [ref=f22e127]: Amor por Madre de Dios
+      - generic [ref=f22e129]:
+        - generic [ref=f22e130]:
+          - generic [ref=f22e131]: Conoce al Candidato
+          - heading "Simón Horna Alpaca — Comprometido con Madre de Dios" [level=2] [ref=f22e134]
+          - paragraph [ref=f22e135]:
+            - text: "Simón Horna Alpaca es un líder regional con arraigo en las tres provincias de Madre de Dios: Tambopata, Manu y Tahuamanu. Con experiencia política forjada en la candidatura de 2022 con el movimiento \"Amor por Madre de Dios\", hoy postula con"
+            - strong [ref=f22e136]: Ahora Nación
+            - text: con un plan de gobierno sólido, articulado y transformador para el período 2027–2030.
+          - paragraph [ref=f22e137]:
+            - text: Su propuesta busca convertir a Madre de Dios en una
+            - strong [ref=f22e138]: plataforma estratégica de integración
+            - text: con Brasil y Bolivia, aprovechando la Carretera Interoceánica Sur para el comercio, el turismo y el desarrollo sostenible de la Amazonía.
+        - list [ref=f22e140]:
+          - listitem [ref=f22e141]:
+            - generic [ref=f22e143]: Desarrollo sostenible con bioeconomía amazónica
+          - listitem [ref=f22e144]:
+            - generic [ref=f22e146]: Formalización minera e integración fronteriza
+          - listitem [ref=f22e147]:
+            - generic [ref=f22e149]: Educación intercultural y salud universal
+          - listitem [ref=f22e150]:
+            - generic [ref=f22e152]: Infraestructura vial y conectividad digital
+          - listitem [ref=f22e153]:
+            - generic [ref=f22e155]: Gobierno transparente, moderno y cercano
+          - listitem [ref=f22e156]:
+            - generic [ref=f22e158]: Protección de la biodiversidad y pueblos indígenas
+        - generic [ref=f22e159]:
+          - link "Ver Plan de Gobierno" [ref=f22e160] [cursor=pointer]:
+            - /url: "#plan"
+          - link "Contáctanos" [ref=f22e161] [cursor=pointer]:
+            - /url: "#contacto"
+    - generic [ref=f22e163]:
+      - generic [ref=f22e166]:
+        - generic [ref=f22e167]: Visión al 2030
+        - 'heading "Madre de Dios: Región Líder de la Amazonía Peruana" [level=2] [ref=f22e170]'
+        - paragraph [ref=f22e171]: Al 2030, Madre de Dios será reconocida por su desarrollo sostenible, competitividad económica, integración fronteriza e innovación productiva, consolidada como plataforma estratégica del eje Perú–Brasil–Bolivia.
+      - generic [ref=f22e172]:
+        - generic [ref=f22e174]:
+          - generic [ref=f22e177]:
+            - heading [level=3] [ref=f22e178]:
+              - link "Amazonía Sostenible" [ref=f22e179] [cursor=pointer]:
+                - /url: "#plan"
+            - paragraph [ref=f22e180]: Proteger la biodiversidad amazónica de Madre de Dios como patrimonio estratégico del Perú y el mundo.
+          - link [ref=f22e182] [cursor=pointer]:
+            - /url: "#plan"
+        - generic [ref=f22e184]:
+          - generic [ref=f22e187]:
+            - heading [level=3] [ref=f22e188]:
+              - link "Integración Fronteriza" [ref=f22e189] [cursor=pointer]:
+                - /url: "#plan"
+            - paragraph [ref=f22e190]: Aprovechar la Carretera Interoceánica Sur para la integración comercial con Brasil y Bolivia.
+          - link [ref=f22e192] [cursor=pointer]:
+            - /url: "#plan"
+        - generic [ref=f22e194]:
+          - generic [ref=f22e197]:
+            - heading [level=3] [ref=f22e198]:
+              - link "Empleo Digno y Formal" [ref=f22e199] [cursor=pointer]:
+                - /url: "#plan"
+            - paragraph [ref=f22e200]: Formalización económica, MYPES fortalecidas y generación de empleos dignos para toda la región.
+          - link [ref=f22e202] [cursor=pointer]:
+            - /url: "#plan"
+        - generic [ref=f22e204]:
+          - generic [ref=f22e207]:
+            - heading [level=3] [ref=f22e208]:
+              - link "Gobierno Transparente" [ref=f22e209] [cursor=pointer]:
+                - /url: "#plan"
+            - paragraph [ref=f22e210]: Gestión pública moderna, descentralizada, honesta y articulada con la ciudadanía.
+          - link [ref=f22e212] [cursor=pointer]:
+            - /url: "#plan"
+    - generic [ref=f22e214]:
+      - generic [ref=f22e217]:
+        - generic [ref=f22e218]: Plan de Gobierno 2027–2030
+        - heading "\"Todo el poder a las regiones para conquistar los mercados del mundo\"" [level=2] [ref=f22e221]
+        - paragraph [ref=f22e222]: Cuatro dimensiones estratégicas que orientarán la gestión del Gobierno Regional de Madre de Dios para el período 2027–2030.
+      - generic [ref=f22e225]:
+        - button "🏥 Dimensión Social" [ref=f22e226] [cursor=pointer]:
+          - generic [ref=f22e227]: 🏥
+          - generic [ref=f22e228]: Dimensión Social
+        - button "🌿 Dimensión Económica" [ref=f22e229] [cursor=pointer]:
+          - generic [ref=f22e230]: 🌿
+          - generic [ref=f22e231]: Dimensión Económica
+        - button "🌎 Dimensión Ambiental" [ref=f22e232] [cursor=pointer]:
+          - generic [ref=f22e233]: 🌎
+          - generic [ref=f22e234]: Dimensión Ambiental
+        - button "🏛️ Dimensión Institucional" [ref=f22e235] [cursor=pointer]:
+          - generic [ref=f22e236]: 🏛️
+          - generic [ref=f22e237]: Dimensión Institucional
+      - generic [ref=f22e238]:
+        - generic [ref=f22e240]:
+          - generic [ref=f22e241]: 🏥
+          - heading "Educación, Salud y Bienestar para Todos" [level=3] [ref=f22e242]
+          - paragraph [ref=f22e243]: Reducir brechas históricas en servicios de salud, educación, vivienda y saneamiento para las familias de Tambopata, Manu y Tahuamanu, especialmente en comunidades indígenas y zonas rurales.
+          - generic [ref=f22e245]:
+            - generic [ref=f22e246]: Prioridad en el Plan
+            - generic [ref=f22e247]: 85%
+          - generic [ref=f22e250]:
+            - paragraph [ref=f22e251]: Ejes de Acción
+            - button "📚 Educación de Calidad" [ref=f22e252] [cursor=pointer]
+            - button "🏥 Salud Universal" [ref=f22e253] [cursor=pointer]
+            - button "🏠 Vivienda y Saneamiento" [ref=f22e254] [cursor=pointer]
+        - generic [ref=f22e256]:
+          - heading "📚 Educación de Calidad" [level=4] [ref=f22e257]
+          - generic [ref=f22e258]: "🎯 Meta: 80% de II.EE. priorizadas con infraestructura mejorada al 2030"
+          - generic [ref=f22e259]:
+            - generic [ref=f22e260]:
+              - generic [ref=f22e261]: "1"
+              - paragraph [ref=f22e262]: Mejorar infraestructura educativa priorizando zonas rurales y comunidades nativas
+            - generic [ref=f22e263]:
+              - generic [ref=f22e264]: "2"
+              - paragraph [ref=f22e265]: Implementar aulas inteligentes y conectividad digital en el 70% de instituciones
+            - generic [ref=f22e266]:
+              - generic [ref=f22e267]: "3"
+              - paragraph [ref=f22e268]: Capacitar al 85% de docentes en competencias digitales e innovación pedagógica
+            - generic [ref=f22e269]:
+              - generic [ref=f22e270]: "4"
+              - paragraph [ref=f22e271]: Fortalecer la Educación Intercultural Bilingüe (EIB) con materiales contextualizados
+            - generic [ref=f22e272]:
+              - generic [ref=f22e273]: "5"
+              - paragraph [ref=f22e274]: Articular formación técnica con castaña, cacao, turismo y bioeconomía amazónica
+          - generic [ref=f22e276]:
+            - img "AN" [ref=f22e277]
+            - paragraph [ref=f22e278]: Plan de Gobierno Regional Ahora Nación · Madre de Dios 2027–2030
+            - link "Apoya esta propuesta →" [ref=f22e279] [cursor=pointer]:
+              - /url: "#contacto"
+    - generic [ref=f22e282]:
+      - generic [ref=f22e284]:
+        - generic [ref=f22e285]:
+          - generic [ref=f22e286]: Propuestas Concretas
+          - heading "Soluciones Reales para Madre de Dios" [level=2] [ref=f22e289]
+          - paragraph [ref=f22e290]: Propuestas concretas y viables para transformar nuestra región amazónica en un territorio próspero, seguro y sostenible.
+        - generic [ref=f22e291] [cursor=pointer]:
+          - heading [level=3] [ref=f22e293]:
+            - link "Formalización Minera Inteligente" [ref=f22e294]:
+              - /url: "#plan"
+          - link [ref=f22e296]:
+            - /url: "#plan"
+        - generic [ref=f22e297] [cursor=pointer]:
+          - heading [level=3] [ref=f22e299]:
+            - link "Salud Universal y Accesible" [ref=f22e300]:
+              - /url: "#plan"
+          - link [ref=f22e302]:
+            - /url: "#plan"
+        - generic [ref=f22e303] [cursor=pointer]:
+          - heading [level=3] [ref=f22e305]:
+            - link "Infraestructura y Conectividad Vial" [ref=f22e306]:
+              - /url: "#plan"
+          - link [ref=f22e308]:
+            - /url: "#plan"
+        - generic [ref=f22e309] [cursor=pointer]:
+          - heading [level=3] [ref=f22e311]:
+            - link "Turismo Ecológico Sostenible" [ref=f22e312]:
+              - /url: "#plan"
+          - link [ref=f22e314]:
+            - /url: "#plan"
+      - img "thumb" [ref=f22e317]
+    - generic [ref=f22e322]:
+      - generic [ref=f22e323]:
+        - heading "k" [level=2] [ref=f22e324]
+        - paragraph [ref=f22e325]: Habitantes en Madre de Dios
+      - generic [ref=f22e326]:
+        - heading "k" [level=2] [ref=f22e327]
+        - paragraph [ref=f22e328]: km² de Selva Amazónica
+      - generic [ref=f22e329]:
+        - heading "+" [level=2] [ref=f22e330]
+        - paragraph [ref=f22e331]: Propuestas de Gobierno
+      - generic [ref=f22e332]:
+        - heading [level=2] [ref=f22e333]
+        - paragraph [ref=f22e334]: Provincias Beneficiadas
+    - generic [ref=f22e341]:
+      - generic [ref=f22e342]:
+        - link [ref=f22e344] [cursor=pointer]:
+          - /url: "#"
+          - img "Sirviendo a una Causa Mayor" [ref=f22e345]
+        - generic [ref=f22e346]:
+          - heading [level=2] [ref=f22e348]:
+            - link "Sirviendo a una Causa Mayor" [ref=f22e349] [cursor=pointer]:
+              - /url: "#"
+          - link [ref=f22e351] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f22e352]:
+        - link [ref=f22e354] [cursor=pointer]:
+          - /url: "#"
+          - img "Sinceridad y Convicción" [ref=f22e355]
+        - generic [ref=f22e356]:
+          - heading [level=2] [ref=f22e358]:
+            - link "Sinceridad y Convicción" [ref=f22e359] [cursor=pointer]:
+              - /url: "#"
+          - link [ref=f22e361] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f22e362]:
+        - link [ref=f22e364] [cursor=pointer]:
+          - /url: "#"
+          - img "Razones para Votarnos" [ref=f22e365]
+        - generic [ref=f22e366]:
+          - heading [level=2] [ref=f22e368]:
+            - link "Razones para Votarnos" [ref=f22e369] [cursor=pointer]:
+              - /url: "#"
+          - link [ref=f22e371] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f22e372]:
+        - link [ref=f22e374] [cursor=pointer]:
+          - /url: "#"
+          - img "Nuestro Compromiso Contigo" [ref=f22e375]
+        - generic [ref=f22e376]:
+          - heading [level=2] [ref=f22e378]:
+            - link "Nuestro Compromiso Contigo" [ref=f22e379] [cursor=pointer]:
+              - /url: "#"
+          - link [ref=f22e381] [cursor=pointer]:
+            - /url: "#"
+    - generic [ref=f22e382]:
+      - generic [ref=f22e383]:
+        - generic [ref=f22e386]:
+          - generic [ref=f22e387]: Únete como Voluntario
+          - heading "Simón Horna y su Equipo por Madre de Dios" [level=2] [ref=f22e390]
+        - generic [ref=f22e391]:
+          - link [ref=f22e395] [cursor=pointer]:
+            - /url: "#"
+            - img "Simón Horna Alpaca" [ref=f22e396]
+          - link [ref=f22e400] [cursor=pointer]:
+            - /url: "#"
+            - img "Equipo de Campaña" [ref=f22e401]
+          - link [ref=f22e405] [cursor=pointer]:
+            - /url: "#"
+            - img "Voluntarios Ahora Nación" [ref=f22e406]
+          - link [ref=f22e410] [cursor=pointer]:
+            - /url: "#"
+            - img "Consejo Técnico" [ref=f22e411]
+      - img "shape" [ref=f22e412]
+    - generic [ref=f22e413]:
+      - generic [ref=f22e417]:
+        - generic [ref=f22e418]:
+          - generic [ref=f22e419]: Tu voz. Tu impacto.
+          - heading "Únete al Cambio Real para Madre de Dios" [level=2] [ref=f22e422]
+        - generic [ref=f22e423]:
+          - generic [ref=f22e427]:
+            - heading "Un Plan Concreto y Viable para Nuestra Región" [level=3] [ref=f22e428]
+            - paragraph [ref=f22e429]: El Plan de Gobierno de Simón Horna Alpaca y Ahora Nación propone acciones con metas medibles, presupuesto responsable y rendición de cuentas permanente. Tambopata, Manu y Tahuamanu merece un gobierno que cumpla sus promesas.
+          - generic [ref=f22e433]:
+            - heading "Amazonia, Identidad y Futuro Sostenible" [level=3] [ref=f22e434]
+            - paragraph [ref=f22e435]: Nuestra riqueza natural es nuestra mayor fortaleza. Construimos alianzas con comunidades indígenas, organizaciones civiles, sector privado y cooperación internacional para proteger la biodiversidad y generar desarrollo con identidad amazónica.
+      - img "Con Simón, avanza la región — Ahora Nación Madre de Dios" [ref=f22e437]
+    - generic [ref=f22e439]:
+      - generic [ref=f22e440]:
+        - generic [ref=f22e442]:
+          - generic [ref=f22e443]: Próximos Eventos
+          - heading "Únete a Estos Momentos Clave de la Campaña" [level=2] [ref=f22e446]
+        - link "Ver Todos" [ref=f22e450] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f22e454]:
+        - generic [ref=f22e456]:
+          - generic [ref=f22e457]:
+            - link [ref=f22e458] [cursor=pointer]:
+              - /url: "#"
+              - img "thumb" [ref=f22e459]
+            - heading "13 Jul, 2025" [level=3] [ref=f22e461]
+          - generic [ref=f22e462]:
+            - generic [ref=f22e463]:
+              - heading "Foro de Acción Comunitaria" [level=4] [ref=f22e464]
+              - list [ref=f22e466]:
+                - listitem [ref=f22e467]: Puerto Maldonado
+                - listitem [ref=f22e468]: 20 Jul 2025 10:30 - 24 Jul 2025 17:00
+              - paragraph [ref=f22e469]: Espacio de diálogo ciudadano para discutir las propuestas de nuestra campaña y escuchar las necesidades de la comunidad.
+              - generic [ref=f22e470]:
+                - img "img" [ref=f22e472]
+                - generic [ref=f22e473]:
+                  - heading "Carlos Mamani" [level=5] [ref=f22e474]
+                  - paragraph [ref=f22e475]: Candidato
+            - link "Ver detalles" [ref=f22e477] [cursor=pointer]:
+              - /url: "#"
+        - generic [ref=f22e479]:
+          - generic [ref=f22e480]:
+            - link [ref=f22e481] [cursor=pointer]:
+              - /url: "#"
+              - img "thumb" [ref=f22e482]
+            - heading "14 Jul, 2025" [level=3] [ref=f22e484]
+          - generic [ref=f22e485]:
+            - generic [ref=f22e486]:
+              - heading "Taller de Capacitación para Voluntarios" [level=4] [ref=f22e487]
+              - list [ref=f22e489]:
+                - listitem [ref=f22e490]: Puerto Maldonado
+                - listitem [ref=f22e491]: 20 Jul 2025 10:30 - 24 Jul 2025 17:00
+              - paragraph [ref=f22e492]: Capacitación para nuestros voluntarios sobre estrategias de campaña, comunicación y movilización ciudadana.
+              - generic [ref=f22e493]:
+                - img "img" [ref=f22e495]
+                - generic [ref=f22e496]:
+                  - heading "María Quispe" [level=5] [ref=f22e497]
+                  - paragraph [ref=f22e498]: Coordinadora
+            - link "Ver detalles" [ref=f22e500] [cursor=pointer]:
+              - /url: "#"
+        - generic [ref=f22e502]:
+          - generic [ref=f22e503]:
+            - link [ref=f22e504] [cursor=pointer]:
+              - /url: "#"
+              - img "thumb" [ref=f22e505]
+            - heading "15 Jul, 2025" [level=3] [ref=f22e507]
+          - generic [ref=f22e508]:
+            - generic [ref=f22e509]:
+              - heading "Campaña de Registro Electoral" [level=4] [ref=f22e510]
+              - list [ref=f22e512]:
+                - listitem [ref=f22e513]: Puerto Maldonado
+                - listitem [ref=f22e514]: 20 Jul 2025 10:30 - 24 Jul 2025 17:00
+              - paragraph [ref=f22e515]: Jornada para facilitar el registro electoral de los ciudadanos de Madre de Dios y promover la participación democrática.
+              - generic [ref=f22e516]:
+                - img "img" [ref=f22e518]
+                - generic [ref=f22e519]:
+                  - heading "José Flores" [level=5] [ref=f22e520]
+                  - paragraph [ref=f22e521]: Asesor Político
+            - link "Ver detalles" [ref=f22e523] [cursor=pointer]:
+              - /url: "#"
+        - generic [ref=f22e525]:
+          - generic [ref=f22e526]:
+            - link [ref=f22e527] [cursor=pointer]:
+              - /url: "#"
+              - img "thumb" [ref=f22e528]
+            - heading "16 Jul, 2025" [level=3] [ref=f22e530]
+          - generic [ref=f22e531]:
+            - generic [ref=f22e532]:
+              - heading "Campaña de Registro - Zona Rural" [level=4] [ref=f22e533]
+              - list [ref=f22e535]:
+                - listitem [ref=f22e536]: Iberia, Madre de Dios
+                - listitem [ref=f22e537]: 20 Jul 2025 10:30 - 24 Jul 2025 17:00
+              - paragraph [ref=f22e538]: Llegamos a las zonas rurales para garantizar que todos los ciudadanos tengan voz en las próximas elecciones.
+              - generic [ref=f22e539]:
+                - img "img" [ref=f22e541]
+                - generic [ref=f22e542]:
+                  - heading "Ana Torres" [level=5] [ref=f22e543]
+                  - paragraph [ref=f22e544]: Comunicaciones
+            - link "Ver detalles" [ref=f22e546] [cursor=pointer]:
+              - /url: "#"
+    - generic [ref=f22e549]:
+      - generic [ref=f22e551]:
+        - generic [ref=f22e552]:
+          - heading "+" [level=4] [ref=f22e553]
+          - paragraph [ref=f22e554]: Hemos trabajado con más de 30 organizaciones de la región con resultados enormemente positivos.
+        - heading "5.9K Reseñas" [level=4] [ref=f22e556]
+      - generic [ref=f22e559]:
+        - generic [ref=f22e560]:
+          - generic [ref=f22e562]:
+            - generic [ref=f22e563]: Lo que dice la gente
+            - heading "Voces de Confianza, Apoyo Poderoso" [level=2] [ref=f22e566]
+          - generic [ref=f22e568]:
+            - button [ref=f22e569] [cursor=pointer]
+            - button [ref=f22e570] [cursor=pointer]
+        - generic [ref=f22e574]:
+          - paragraph [ref=f22e575]: "\"El nivel de compromiso y colaboración que experimentamos al trabajar con esta campaña fue excepcional. Siempre atentos y proactivos en mantener informada a nuestra comunidad.\""
+          - generic [ref=f22e576]:
+            - generic [ref=f22e577]:
+              - img "img" [ref=f22e579]
+              - generic [ref=f22e580]:
+                - heading "Rosa Mamani" [level=3] [ref=f22e581]
+                - paragraph [ref=f22e582]: Dirigente Comunal
+            - heading "4.9" [level=4] [ref=f22e584]
+    - generic [ref=f22e587]:
+      - img "thumb" [ref=f22e590]
+      - generic [ref=f22e592]:
+        - generic [ref=f22e593]:
+          - generic [ref=f22e594]: Apoya la Campaña
+          - heading "Tu Apoyo Impulsa el Progreso que Fortalece Cada Comunidad." [level=2] [ref=f22e597]
+          - paragraph [ref=f22e598]: Cada contribución fortalece nuestro movimiento de base, ayudándonos a conectar con los votantes, amplificar nuestro mensaje y generar un cambio duradero en Madre de Dios. Ya sea S/5 o S/50, tu donación impulsa el progreso.
+        - link "Hacer una Donación" [ref=f22e600] [cursor=pointer]:
+          - /url: "#"
+    - generic [ref=f22e602]:
+      - generic [ref=f22e603]:
+        - generic [ref=f22e605]:
+          - generic [ref=f22e606]: Últimas Noticias
+          - heading "Explora Nuestras Últimas Noticias y Artículos de Campaña" [level=2] [ref=f22e609]
+        - link "Ver Todo" [ref=f22e613] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f22e617]:
+        - generic [ref=f22e619]:
+          - generic [ref=f22e620]:
+            - img "blog" [ref=f22e621]
+            - img "blog" [ref=f22e622]
+            - link [ref=f22e623] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=f22e624]:
+            - list [ref=f22e626]:
+              - listitem [ref=f22e627]: Por Admin
+              - listitem [ref=f22e628]: 10 Sep, 2025
+            - generic [ref=f22e629]:
+              - heading [level=3] [ref=f22e631]:
+                - link "La comunidad nos ha dado su confianza" [ref=f22e632] [cursor=pointer]:
+                  - /url: "#"
+              - link [ref=f22e634] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=f22e636]:
+          - generic [ref=f22e637]:
+            - img "blog" [ref=f22e638]
+            - img "blog" [ref=f22e639]
+            - link [ref=f22e640] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=f22e641]:
+            - list [ref=f22e643]:
+              - listitem [ref=f22e644]: Por Admin
+              - listitem [ref=f22e645]: 10 Sep, 2025
+            - generic [ref=f22e646]:
+              - heading [level=3] [ref=f22e648]:
+                - link "Desarrollo sostenible en la Amazonía" [ref=f22e649] [cursor=pointer]:
+                  - /url: "#"
+              - link [ref=f22e651] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=f22e653]:
+          - generic [ref=f22e654]:
+            - img "blog" [ref=f22e655]
+            - img "blog" [ref=f22e656]
+            - link [ref=f22e657] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=f22e658]:
+            - list [ref=f22e660]:
+              - listitem [ref=f22e661]: Por Admin
+              - listitem [ref=f22e662]: 10 Sep, 2025
+            - generic [ref=f22e663]:
+              - heading [level=3] [ref=f22e665]:
+                - link "Nuestro plan de acción para Madre de Dios" [ref=f22e666] [cursor=pointer]:
+                  - /url: "#"
+              - link [ref=f22e668] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=f22e670]:
+          - generic [ref=f22e671]:
+            - img "blog" [ref=f22e672]
+            - img "blog" [ref=f22e673]
+            - link [ref=f22e674] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=f22e675]:
+            - list [ref=f22e677]:
+              - listitem [ref=f22e678]: Por Admin
+              - listitem [ref=f22e679]: 10 Sep, 2025
+            - generic [ref=f22e680]:
+              - heading [level=3] [ref=f22e682]:
+                - link "Construyendo el futuro de nuestra región" [ref=f22e683] [cursor=pointer]:
+                  - /url: "#"
+              - link [ref=f22e685] [cursor=pointer]:
+                - /url: "#"
+    - contentinfo [ref=f22e686]:
+      - generic [ref=f22e687]:
+        - generic [ref=f22e689]:
+          - heading "Trabajemos Juntos por Madre de Dios" [level=2] [ref=f22e692]
+          - generic [ref=f22e694]:
+            - img "mail" [ref=f22e696]
+            - link "simon.horna@ahoranacion.pe" [ref=f22e698] [cursor=pointer]:
+              - /url: mailto:simon.horna@ahoranacion.pe
+        - generic [ref=f22e700]:
+          - generic [ref=f22e702]:
+            - heading "Boletín de Campaña" [level=3] [ref=f22e703]
+            - paragraph [ref=f22e704]: Suscríbete para recibir las últimas noticias y avances del plan de gobierno de Simón Horna Alpaca.
+            - generic [ref=f22e705]:
+              - textbox "Tu Email" [ref=f22e706]
+              - button [ref=f22e707] [cursor=pointer]:
+                - img "paper" [ref=f22e709]
+            - generic [ref=f22e712]:
+              - checkbox "Acepto la Política de Privacidad." [ref=f22e713]
+              - generic [ref=f22e714]: Acepto la Política de Privacidad.
+            - generic [ref=f22e715]:
+              - img "Ahora Nación" [ref=f22e716]
+              - generic [ref=f22e717]:
+                - generic [ref=f22e718]: Ahora Nación
+                - generic [ref=f22e719]: Madre de Dios · Perú
+          - generic [ref=f22e721]:
+            - heading "Secciones" [level=3] [ref=f22e722]
+            - list [ref=f22e723]:
+              - listitem [ref=f22e724]:
+                - link "Inicio" [ref=f22e725] [cursor=pointer]:
+                  - /url: "#inicio"
+              - listitem [ref=f22e726]:
+                - link "Sobre Simón" [ref=f22e727] [cursor=pointer]:
+                  - /url: "#nosotros"
+              - listitem [ref=f22e728]:
+                - link "Plan de Gobierno" [ref=f22e729] [cursor=pointer]:
+                  - /url: "#plan"
+              - listitem [ref=f22e730]:
+                - link "Propuestas" [ref=f22e731] [cursor=pointer]:
+                  - /url: "#propuestas"
+              - listitem [ref=f22e732]:
+                - link "Eventos" [ref=f22e733] [cursor=pointer]:
+                  - /url: "#eventos"
+          - generic [ref=f22e735]:
+            - heading "Dimensiones del Plan" [level=3] [ref=f22e736]
+            - list [ref=f22e737]:
+              - listitem [ref=f22e738]:
+                - link "🏥 Dimensión Social" [ref=f22e739] [cursor=pointer]:
+                  - /url: "#plan"
+              - listitem [ref=f22e740]:
+                - link "🌿 Dimensión Económica" [ref=f22e741] [cursor=pointer]:
+                  - /url: "#plan"
+              - listitem [ref=f22e742]:
+                - link "🌎 Dimensión Ambiental" [ref=f22e743] [cursor=pointer]:
+                  - /url: "#plan"
+              - listitem [ref=f22e744]:
+                - link "🏛️ Dimensión Institucional" [ref=f22e745] [cursor=pointer]:
+                  - /url: "#plan"
+              - listitem [ref=f22e746]:
+                - link "📄 Plan Completo 2027–2030" [ref=f22e747] [cursor=pointer]:
+                  - /url: "#plan"
+          - generic [ref=f22e749]:
+            - heading "Información de Contacto" [level=3] [ref=f22e750]
+            - generic [ref=f22e751]:
+              - link "simon.horna@ahoranacion.pe" [ref=f22e752] [cursor=pointer]:
+                - /url: mailto:simon.horna@ahoranacion.pe
+              - link "+51 999 999 999" [ref=f22e753] [cursor=pointer]:
+                - /url: tel:+51999999999
+              - generic [ref=f22e754]: Puerto Maldonado, Madre de Dios, Perú
+              - generic [ref=f22e755]: Tambopata · Manu · Tahuamanu
+            - heading "Síguenos" [level=3] [ref=f22e756]
+            - list [ref=f22e757]:
+              - listitem [ref=f22e758]:
+                - link [ref=f22e759] [cursor=pointer]:
+                  - /url: https://www.facebook.com/
+              - listitem [ref=f22e760]:
+                - link [ref=f22e761] [cursor=pointer]:
+                  - /url: https://www.twitter.com/
+              - listitem [ref=f22e762]:
+                - link [ref=f22e763] [cursor=pointer]:
+                  - /url: https://www.instagram.com/
+              - listitem [ref=f22e764]:
+                - link [ref=f22e765] [cursor=pointer]:
+                  - /url: https://www.youtube.com/
+      - generic [ref=f22e769]:
+        - paragraph [ref=f22e770]:
+          - text: Copyright © 2026
+          - link "Simón Horna Alpaca — Ahora Nación" [ref=f22e771] [cursor=pointer]:
+            - /url: "#inicio"
+          - text: · Todos los derechos reservados.
+        - list [ref=f22e773]:
+          - listitem [ref=f22e774]:
+            - link "Política de Privacidad," [ref=f22e775] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f22e776]:
+            - link "Términos y Condiciones" [ref=f22e777] [cursor=pointer]:
+              - /url: "#"
+  - button "Open Next.js Dev Tools" [ref=f22e783] [cursor=pointer]

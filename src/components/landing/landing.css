@@ -1,0 +1,157 @@
+/* ===================================================
+   Ahora Nación — Branding Global
+   Candidato: Simón Horna Alpaca | Madre de Dios
+   =================================================== */
+
+/* --- Fuentes premium --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Staatliches&display=swap');
+
+/* --- Variables de marca Ahora Nación --- */
+:root {
+  --an-red:       #E90305;   /* Rojo Ahora Nación  */
+  --an-red-dark:  #B50204;   /* Rojo oscuro        */
+  --an-red-light: #FF2426;   /* Rojo claro/hover   */
+  --an-navy:      #0D1B2A;   /* Azul noche         */
+  --an-navy-mid:  #1a2a3a;   /* Azul medio         */
+  --an-green:     #27AE60;   /* Verde amazónico    */
+  --an-gold:      #F39C12;   /* Dorado acento      */
+  --an-white:     #FFFFFF;
+  --an-light:     #F5F5F5;
+}
+
+/* --- Scrollbar con colores AN --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--an-navy); }
+::-webkit-scrollbar-thumb { background: var(--an-red); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--an-red-light); }
+
+/* --- Selección de texto con colores AN --- */
+::selection {
+  background: var(--an-red);
+  color: #fff;
+}
+
+/* --- Preloader con color AN --- */
+.preloader {
+  background: var(--an-navy) !important;
+}
+.preloader .loader,
+.preloader .spinner {
+  border-color: var(--an-red) !important;
+}
+
+/* --- Banner / Hero background mejorado --- */
+.banner-area {
+  background: linear-gradient(135deg, var(--an-navy) 0%, #1a2a3a 50%, #0a1520 100%) !important;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.banner-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(192, 57, 43, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(39, 174, 96, 0.07) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- Feature area background --- */
+.feature-area .feature-bg {
+  background: linear-gradient(135deg, var(--an-navy) 0%, var(--an-red-dark) 100%) !important;
+}
+.feature-area .feature-left {
+  background-color: var(--an-red) !important;
+}
+
+/* --- Solution area background --- */
+.solution-area {
+  background: linear-gradient(135deg, var(--an-navy) 0%, #1a2a3a 100%) !important;
+}
+
+/* --- Counter area background --- */
+.counter-area .counter-wrapper {
+  background: linear-gradient(135deg, var(--an-red) 0%, var(--an-red-dark) 100%) !important;
+  padding: 40px 48px !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(192, 57, 43, 0.3) !important;
+}
+
+/* --- Header sticky shadow --- */
+.header {
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.header.shadow-sm {
+  border-bottom-color: rgba(192, 57, 43, 0.15) !important;
+}
+
+/* --- Nav link hover con color AN --- */
+.nav-menu__link:hover,
+.nav-menu__link.active {
+  color: var(--an-red) !important;
+}
+
+/* --- Footer background --- */
+.footer-area {
+  background: var(--an-navy) !important;
+}
+
+/* --- Hover btn con estilo AN --- */
+.tw-hover-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Vision cards hover border AN --- */
+.vision-wrapper:hover,
+.vision-wrapper.active {
+  border-top: 3px solid var(--an-red) !important;
+}
+
+/* --- About section: card border AN --- */
+.about-area {
+  position: relative;
+}
+.about-area::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--an-red), var(--an-green));
+  border-radius: 2px;
+}
+
+/* --- Community section overlay color --- */
+.community-wrapper {
+  background: rgba(255, 255, 255, 0.97) !important;
+  border-left: 4px solid var(--an-red) !important;
+}
+
+/* --- Scroll to top button color --- */
+.scroll-top,
+#scroll-top {
+  background: var(--an-red) !important;
+}
+
+/* --- Blog & Events cards hover --- */
+.blog-item:hover,
+.event-item:hover {
+  border-color: var(--an-red) !important;
+}
+
+/* --- Team wrapper border on hover --- */
+.team-wrapper:hover .team-thumb img {
+  transform: scale(1.05);
+}
+
+/* --- Fotos reales de campaña: encuadre hacia los rostros --- */
+img[src*="/assets/images/campaign/"] {
+  object-fit: cover;
+  object-position: center 22%;
+}

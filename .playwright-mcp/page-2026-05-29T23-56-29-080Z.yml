@@ -1,0 +1,151 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - button "Menú" [ref=e5] [cursor=pointer]:
+          - img [ref=e6]
+        - generic [ref=e8]:
+          - img [ref=e9]
+          - generic [ref=e13]: Admin
+      - generic [ref=e15]:
+        - img [ref=e16]
+        - textbox "Buscar usuarios, roles o incidentes" [ref=e19]
+      - generic [ref=e20]:
+        - button "Cambiar tema" [ref=e22] [cursor=pointer]:
+          - img [ref=e23]
+        - button "Notificaciones" [ref=e27] [cursor=pointer]:
+          - img [ref=e28]
+          - generic [ref=e31]: "7"
+        - button "Cuenta" [ref=e33] [cursor=pointer]: EA
+    - generic [ref=e34]:
+      - complementary [ref=e35]:
+        - navigation [ref=e36]:
+          - link "Inicio" [ref=e38] [cursor=pointer]:
+            - /url: /inicio
+            - img [ref=e40]
+            - generic [ref=e42]: Inicio
+          - link "Usuarios" [ref=e44] [cursor=pointer]:
+            - /url: /usuarios
+            - img [ref=e46]
+            - generic [ref=e51]: Usuarios
+          - link "Roles" [ref=e53] [cursor=pointer]:
+            - /url: /roles
+            - img [ref=e55]
+            - generic [ref=e57]: Roles
+          - link "Incidentes" [ref=e59] [cursor=pointer]:
+            - /url: /incidentes
+            - img [ref=e61]
+            - generic [ref=e63]: Incidentes
+      - main [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e67]:
+            - heading "Incidentes" [level=1] [ref=e68]
+            - generic [ref=e69]: 5 reportes
+          - generic [ref=e70]:
+            - button "Todos5" [ref=e71] [cursor=pointer]
+            - button "Abierto2" [ref=e72] [cursor=pointer]
+            - button "Clasificado1" [ref=e73] [cursor=pointer]
+            - button "En progreso1" [ref=e74] [cursor=pointer]
+            - button "Resuelto1" [ref=e75] [cursor=pointer]
+            - button "Rechazado0" [ref=e76] [cursor=pointer]
+            - button "Cerrado0" [ref=e77] [cursor=pointer]
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - img [ref=e80]
+              - textbox "Buscar por código, título o persona" [ref=e83]
+            - combobox "Filtrar por severidad" [ref=e84] [cursor=pointer]:
+              - option "Toda severidad" [selected]
+              - option "Baja"
+              - option "Media"
+              - option "Alta"
+              - option "Crítica"
+            - combobox "Filtrar por categoría" [ref=e85] [cursor=pointer]:
+              - option "Toda categoría" [selected]
+              - option "Rampas y accesos"
+              - option "Servicios higiénicos accesibles"
+              - option "Señalización"
+              - option "Audio y comunicación"
+              - option "Transporte y estacionamiento"
+              - option "Servicios digitales"
+              - option "Trato discriminatorio"
+              - option "Otros"
+          - generic [ref=e86]:
+            - table [ref=e88]:
+              - rowgroup [ref=e89]:
+                - row "Código Título Categoría Severidad Estado Asignado Creado" [ref=e90]:
+                  - columnheader "Código" [ref=e91]
+                  - columnheader "Título" [ref=e92]
+                  - columnheader "Categoría" [ref=e93]
+                  - columnheader "Severidad" [ref=e94]
+                  - columnheader "Estado" [ref=e95]
+                  - columnheader "Asignado" [ref=e96]
+                  - columnheader "Creado" [ref=e97]
+              - rowgroup [ref=e98]:
+                - row "INC-2026-00005 Pendiente excesiva en rampa de estacionamiento Rampas y accesos Media Abierto Sin asignar hace 11 h" [ref=e99] [cursor=pointer]:
+                  - cell "INC-2026-00005" [ref=e100]
+                  - cell "Pendiente excesiva en rampa de estacionamiento" [ref=e101]:
+                    - button "Pendiente excesiva en rampa de estacionamiento" [ref=e102]
+                  - cell "Rampas y accesos" [ref=e103]
+                  - cell "Media" [ref=e104]:
+                    - generic [ref=e105]: Media
+                  - cell "Abierto" [ref=e107]:
+                    - generic [ref=e108]: Abierto
+                  - cell "Sin asignar" [ref=e109]
+                  - cell "hace 11 h" [ref=e110]
+                - row "INC-2026-00004 Bucle magnético sin funcionar en auditorio Audio y comunicación Baja Resuelto Sin asignar hace 11 h" [ref=e111] [cursor=pointer]:
+                  - cell "INC-2026-00004" [ref=e112]
+                  - cell "Bucle magnético sin funcionar en auditorio" [ref=e113]:
+                    - button "Bucle magnético sin funcionar en auditorio" [ref=e114]
+                  - cell "Audio y comunicación" [ref=e115]
+                  - cell "Baja" [ref=e116]:
+                    - generic [ref=e117]: Baja
+                  - cell "Resuelto" [ref=e119]:
+                    - generic [ref=e120]: Resuelto
+                  - cell "Sin asignar" [ref=e121]
+                  - cell "hace 11 h" [ref=e122]
+                - row "INC-2026-00003 Falta señalización Braille en ascensor Señalización Media En progreso Sin asignar hace 11 h" [ref=e123] [cursor=pointer]:
+                  - cell "INC-2026-00003" [ref=e124]
+                  - cell "Falta señalización Braille en ascensor" [ref=e125]:
+                    - button "Falta señalización Braille en ascensor" [ref=e126]
+                  - cell "Señalización" [ref=e127]
+                  - cell "Media" [ref=e128]:
+                    - generic [ref=e129]: Media
+                  - cell "En progreso" [ref=e131]:
+                    - generic [ref=e132]: En progreso
+                  - cell "Sin asignar" [ref=e133]
+                  - cell "hace 11 h" [ref=e134]
+                - row "INC-2026-00002 Baño accesible sin barras de apoyo Servicios higiénicos accesibles Crítica Clasificado Sin asignar hace 11 h" [ref=e135] [cursor=pointer]:
+                  - cell "INC-2026-00002" [ref=e136]
+                  - cell "Baño accesible sin barras de apoyo" [ref=e137]:
+                    - button "Baño accesible sin barras de apoyo" [ref=e138]
+                  - cell "Servicios higiénicos accesibles" [ref=e139]
+                  - cell "Crítica" [ref=e140]:
+                    - generic [ref=e141]: Crítica
+                  - cell "Clasificado" [ref=e143]:
+                    - generic [ref=e144]: Clasificado
+                  - cell "Sin asignar" [ref=e145]
+                  - cell "hace 11 h" [ref=e146]
+                - row "INC-2026-00001 Rampa de acceso bloqueada en Pabellón A Rampas y accesos Alta Abierto Sin asignar hace 11 h" [ref=e147] [cursor=pointer]:
+                  - cell "INC-2026-00001" [ref=e148]
+                  - cell "Rampa de acceso bloqueada en Pabellón A" [ref=e149]:
+                    - button "Rampa de acceso bloqueada en Pabellón A" [ref=e150]
+                  - cell "Rampas y accesos" [ref=e151]
+                  - cell "Alta" [ref=e152]:
+                    - generic [ref=e153]: Alta
+                  - cell "Abierto" [ref=e155]:
+                    - generic [ref=e156]: Abierto
+                  - cell "Sin asignar" [ref=e157]
+                  - cell "hace 11 h" [ref=e158]
+            - generic [ref=e160]: 5 de 5 incidentes
+    - contentinfo [ref=e161]:
+      - generic [ref=e162]: © 2026 UNAMAD · Oficina de Tecnologías de la Información
+      - link "Términos del Servicio" [ref=e163] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e164]: ·
+      - link "Política de Privacidad" [ref=e165] [cursor=pointer]:
+        - /url: "#"
+      - button "Enviar comentarios" [ref=e166] [cursor=pointer]:
+        - img [ref=e167]
+        - text: Enviar comentarios
+  - button "Open Next.js Dev Tools" [ref=e174] [cursor=pointer]:
+    - img [ref=e175]

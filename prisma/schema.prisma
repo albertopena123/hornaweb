@@ -1,0 +1,264 @@
+// Conadis admin · Prisma schema
+// Postgres + RBAC (User ↔ Role ↔ Permission) + sessions
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  active       Boolean    @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  roles    UserRole[]
+  sessions Session[]
+
+  reportedIncidents Incident[]         @relation("IncidentReporter")
+  assignedIncidents Incident[]         @relation("IncidentAssignee")
+  comments          IncidentComment[]
+  attachments       IncidentAttachment[]
+  statusChanges     IncidentStatusLog[]
+
+  createdSupporters  Supporter[] @relation("SupporterCreator")
+  reviewedSupporters Supporter[] @relation("SupporterReviewer")
+
+  @@index([active])
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  name        String
+  description String?
+  system      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       UserRole[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  name        String
+  description String?
+  category    String
+
+  roles RolePermission[]
+
+  @@index([category])
+}
+
+model UserRole {
+  userId     String
+  roleId     String
+  assignedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@index([roleId])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@index([permissionId])
+}
+
+model Session {
+  id         String      @id @default(cuid())
+  userId     String
+  token      String      @unique
+  expiresAt  DateTime
+  createdAt  DateTime    @default(now())
+  userAgent  String?
+  ip         String?
+  clientType ClientType  @default(web)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+enum ClientType {
+  web
+  mobile
+}
+
+// ─────────────────────────── Incident reporting ───────────────────────────
+
+enum IncidentStatus {
+  open
+  triaged
+  in_progress
+  resolved
+  rejected
+  closed
+}
+
+enum IncidentSeverity {
+  low
+  medium
+  high
+  critical
+}
+
+model IncidentCategory {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  name        String
+  description String?
+  icon        String?
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  incidents Incident[]
+}
+
+model Incident {
+  id            String           @id @default(cuid())
+  code          String           @unique // public tracking code, e.g. INC-2026-000123
+  title         String
+  description   String
+  status        IncidentStatus   @default(open)
+  severity      IncidentSeverity @default(medium)
+  categoryId    String
+
+  // Optional geo. If supplied, both must be present (validated app-side).
+  lat           Float?
+  lng           Float?
+  locationText  String?
+
+  reporterId    String?  // nullable to allow soft-deletion of reporter
+  assignedToId  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  resolvedAt    DateTime?
+
+  category    IncidentCategory     @relation(fields: [categoryId], references: [id])
+  reporter    User?                @relation("IncidentReporter", fields: [reporterId], references: [id], onDelete: SetNull)
+  assignedTo  User?                @relation("IncidentAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  attachments IncidentAttachment[]
+  comments    IncidentComment[]
+  statusLog   IncidentStatusLog[]
+
+  @@index([reporterId])
+  @@index([assignedToId])
+  @@index([status])
+  @@index([categoryId])
+  @@index([createdAt])
+}
+
+model IncidentAttachment {
+  id          String   @id @default(cuid())
+  incidentId  String
+  url         String
+  mimeType    String
+  sizeBytes   Int?
+  uploadedById String?
+  createdAt   DateTime @default(now())
+
+  incident   Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  uploadedBy User?    @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  @@index([incidentId])
+}
+
+model IncidentComment {
+  id         String   @id @default(cuid())
+  incidentId String
+  authorId   String?
+  body       String
+  internal   Boolean  @default(false) // true = visible only to admins
+  createdAt  DateTime @default(now())
+
+  incident Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  author   User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([incidentId])
+}
+
+model IncidentStatusLog {
+  id         String         @id @default(cuid())
+  incidentId String
+  fromStatus IncidentStatus
+  toStatus   IncidentStatus
+  byUserId   String?
+  note       String?
+  createdAt  DateTime       @default(now())
+
+  incident Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  byUser   User?    @relation(fields: [byUserId], references: [id], onDelete: SetNull)
+
+  @@index([incidentId])
+}
+
+// ─────────────────────────── Simpatizantes (mapa de apoyos) ───────────────────────────
+
+enum SupporterStatus {
+  pending
+  approved
+  rejected
+}
+
+enum SupporterSource {
+  admin
+  public
+}
+
+enum District {
+  tambopata
+  inambari
+  las_piedras
+  laberinto
+  manu
+  fitzcarrald
+  madre_de_dios
+  huepetuhe
+  inapari
+  iberia
+  tahuamanu
+}
+
+model Supporter {
+  id           String          @id @default(cuid())
+  name         String
+  phone        String?
+  district     District
+  source       SupporterSource
+  status       SupporterStatus @default(pending)
+  notes        String?
+  ip           String?
+  createdById  String?
+  reviewedById String?
+  reviewedAt   DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  createdBy  User? @relation("SupporterCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  reviewedBy User? @relation("SupporterReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([district])
+  @@index([createdAt])
+}

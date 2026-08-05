@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - generic [ref=e11]:
+    - banner [ref=e12]:
+      - generic [ref=e13]:
+        - button "Menú" [ref=e14] [cursor=pointer]:
+          - img [ref=e15]
+        - generic [ref=e17]:
+          - img [ref=e18]
+          - generic [ref=e22]: Admin
+      - generic [ref=e24]:
+        - img [ref=e25]
+        - textbox "Buscar usuarios, roles o incidentes" [ref=e28]
+      - generic [ref=e29]:
+        - button "Cambiar tema" [ref=e31] [cursor=pointer]:
+          - img [ref=e32]
+        - button "Notificaciones" [ref=e36] [cursor=pointer]:
+          - img [ref=e37]
+          - generic [ref=e40]: "7"
+        - button "Cuenta" [ref=e42] [cursor=pointer]: EA
+    - generic [ref=e43]:
+      - complementary [ref=e44]:
+        - navigation [ref=e45]:
+          - link "Inicio" [ref=e47] [cursor=pointer]:
+            - /url: /inicio
+            - img [ref=e49]
+            - generic [ref=e51]: Inicio
+          - link "Usuarios" [ref=e53] [cursor=pointer]:
+            - /url: /usuarios
+            - img [ref=e55]
+            - generic [ref=e60]: Usuarios
+          - link "Roles" [ref=e62] [cursor=pointer]:
+            - /url: /roles
+            - img [ref=e64]
+            - generic [ref=e66]: Roles
+          - link "Incidentes" [ref=e68] [cursor=pointer]:
+            - /url: /incidentes
+            - img [ref=e70]
+            - generic [ref=e72]: Incidentes
+      - main [ref=e73]:
+        - generic [ref=e74]:
+          - heading "Mi cuenta" [level=1] [ref=e77]
+          - generic [ref=e78]:
+            - generic [ref=e79]: EA
+            - generic [ref=e80]:
+              - generic [ref=e81]: Erika Cusi Arangoitia
+              - generic [ref=e82]:
+                - img [ref=e83]
+                - text: erika.cusi@unamad.edu.pe
+              - generic [ref=e87]: Administrador
+          - generic [ref=e88]:
+            - generic [ref=e89]:
+              - heading "Información" [level=2] [ref=e91]
+              - generic [ref=e92]:
+                - generic [ref=e93]:
+                  - img [ref=e95]
+                  - generic [ref=e98]: Miembro desde
+                  - generic [ref=e99]: vie, 29 de mayo de 2026, 07:46 a. m.
+                - generic [ref=e100]:
+                  - img [ref=e102]
+                  - generic [ref=e105]: Último acceso
+                  - generic [ref=e106]: hace 2 h
+                - generic [ref=e107]:
+                  - img [ref=e109]
+                  - generic [ref=e111]: Roles
+                  - generic [ref=e112]: "1"
+            - generic [ref=e113]:
+              - heading "Cambiar contraseña" [level=2] [ref=e115]
+              - generic [ref=e116]:
+                - generic [ref=e117]:
+                  - generic [ref=e118]: Contraseña actual*
+                  - textbox "Contraseña actual*" [ref=e119]
+                - generic [ref=e120]:
+                  - generic [ref=e121]: Nueva contraseña*
+                  - textbox "Nueva contraseña*" [ref=e122]
+                - generic [ref=e123]:
+                  - generic [ref=e124]: Confirmar nueva contraseña*
+                  - textbox "Confirmar nueva contraseña*" [ref=e125]
+                - paragraph [ref=e126]: Al cambiar tu contraseña se cerrarán todas tus otras sesiones.
+                - button "Actualizar contraseña" [disabled] [ref=e127]
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - heading "Sesiones activas" [level=2] [ref=e130]
+              - button "Cerrar las demás" [ref=e131] [cursor=pointer]
+            - list [ref=e132]:
+              - listitem [ref=e133]:
+                - img [ref=e135]
+                - generic [ref=e137]:
+                  - generic [ref=e138]:
+                    - text: Chrome · Windows
+                    - generic [ref=e139]: Esta sesión
+                  - generic [ref=e140]: ::1 · Iniciada hace 2 h
+              - listitem [ref=e141]:
+                - img [ref=e143]
+                - generic [ref=e145]:
+                  - generic [ref=e146]: Chrome · Windows
+                  - generic [ref=e147]: ::1 · Iniciada hace 2 h
+                - button "Cerrar" [ref=e148] [cursor=pointer]
+              - listitem [ref=e149]:
+                - img [ref=e151]
+                - generic [ref=e153]:
+                  - generic [ref=e154]: Chrome · Windows
+                  - generic [ref=e155]: ::1 · Iniciada hace 2 h
+                - button "Cerrar" [ref=e156] [cursor=pointer]
+              - listitem [ref=e157]:
+                - img [ref=e159]
+                - generic [ref=e161]:
+                  - generic [ref=e162]: Chrome · Windows
+                  - generic [ref=e163]: ::1 · Iniciada Hoy 07:56 a. m.
+                - button "Cerrar" [ref=e164] [cursor=pointer]
+              - listitem [ref=e165]:
+                - img [ref=e167]
+                - generic [ref=e169]:
+                  - generic [ref=e170]: Chrome · Windows
+                  - generic [ref=e171]: ::1 · Iniciada Hoy 07:55 a. m.
+                - button "Cerrar" [ref=e172] [cursor=pointer]
+    - contentinfo [ref=e173]:
+      - generic [ref=e174]: © 2026 UNAMAD · Oficina de Tecnologías de la Información
+      - link "Términos del Servicio" [ref=e175] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e176]: ·
+      - link "Política de Privacidad" [ref=e177] [cursor=pointer]:
+        - /url: "#"
+      - button "Enviar comentarios" [ref=e178] [cursor=pointer]:
+        - img [ref=e179]
+        - text: Enviar comentarios
