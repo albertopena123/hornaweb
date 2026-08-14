@@ -75,28 +75,28 @@ export async function GET(request: Request) {
       });
   }
 
-  if (me.permissions.has("incidents.read")) {
-    const incidents = await prisma.incident.findMany({
+  if (me.permissions.has("supporters.read")) {
+    const supporters = await prisma.supporter.findMany({
       where: {
         OR: [
-          { code: { contains: q, mode: "insensitive" } },
-          { title: { contains: q, mode: "insensitive" } },
+          { name: { contains: q, mode: "insensitive" } },
+          { docNumber: { contains: q, mode: "insensitive" } },
         ],
       },
       take: 5,
       orderBy: { createdAt: "desc" },
-      select: { id: true, code: true, title: true },
+      select: { id: true, name: true, docNumber: true },
     });
-    if (incidents.length)
+    if (supporters.length)
       groups.push({
-        key: "incidents",
-        label: "Incidentes",
-        items: incidents.map((i) => ({
-          id: i.id,
-          title: i.title,
-          sub: i.code,
-          href: `/incidentes`,
-          icon: "alert",
+        key: "supporters",
+        label: "Simpatizantes",
+        items: supporters.map((s) => ({
+          id: s.id,
+          title: s.name,
+          sub: s.docNumber ?? "Sin documento",
+          href: `/simpatizantes`,
+          icon: "heart",
         })),
       });
   }

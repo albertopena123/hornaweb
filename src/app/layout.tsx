@@ -3,9 +3,14 @@ import { THEME_INIT_SCRIPT } from "@/lib/ui/theme";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Admin · UNAMAD",
+  title: "Simón Horna Alpaca | Candidato Gobierno Regional Madre de Dios — Ahora Nación",
   description:
-    "Consola de administración de la Universidad Nacional Amazónica de Madre de Dios",
+    "Simón Horna Alpaca — Candidato al Gobierno Regional de Madre de Dios 2027-2030. Ahora Nación: Todo el poder a las regiones para conquistar los mercados del mundo.",
+  icons: {
+    icon: "/assets/images/logo/logo-an.webp",
+    shortcut: "/assets/images/logo/logo-an.webp",
+    apple: "/assets/images/logo/logo-an.webp",
+  },
 };
 
 export default function RootLayout({
@@ -16,6 +21,9 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
+        <link rel="icon" type="image/webp" href="/assets/images/logo/logo-an.webp" />
+        <link rel="shortcut icon" href="/assets/images/logo/logo-an.webp" />
+        <link rel="apple-touch-icon" href="/assets/images/logo/logo-an.webp" />
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -28,7 +36,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

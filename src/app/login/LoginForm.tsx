@@ -1,8 +1,13 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@/components/admin/Icon";
+
+// Clave de localStorage para "Recordarme": guarda solo el correo. La
+// contraseña nunca se persiste — de eso se encarga el gestor del navegador
+// (autoComplete="current-password").
+const REMEMBER_KEY = "login.email";
 
 export function LoginForm() {
   const router = useRouter();
@@ -11,8 +16,22 @@ export function LoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
+  const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(REMEMBER_KEY);
+      if (saved) {
+        setEmail(saved);
+        setRemember(true);
+      }
+    } catch {
+      // localStorage bloqueado (modo privado estricto): se ignora.
+    }
+  }, []);
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,6 +52,12 @@ export function LoginForm() {
         setLoading(false);
         return;
       }
+      try {
+        if (remember) localStorage.setItem(REMEMBER_KEY, email.trim());
+        else localStorage.removeItem(REMEMBER_KEY);
+      } catch {
+        // localStorage bloqueado: se ignora.
+      }
       router.replace(next);
       router.refresh();
     } catch {
@@ -51,7 +76,7 @@ export function LoginForm() {
       )}
 
       <label className="field">
-        <span className="field__label">Correo institucional</span>
+        <span className="field__label">Correo electrónico</span>
         <input
           type="email"
           inputMode="email"
@@ -59,21 +84,41 @@ export function LoginForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="usuario@unamad.edu.pe"
+          placeholder="correo@ejemplo.com"
           autoFocus
         />
       </label>
 
       <label className="field">
         <span className="field__label">Contraseña</span>
+        <span className="field__pass">
+          <input
+            type={showPass ? "text" : "password"}
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+          />
+          <button
+            type="button"
+            className="field__eye"
+            onClick={() => setShowPass((v) => !v)}
+            aria-label={showPass ? "Ocultar contraseña" : "Ver contraseña"}
+            title={showPass ? "Ocultar contraseña" : "Ver contraseña"}
+          >
+            <Icon name={showPass ? "eye-off" : "eye"} size={18} />
+          </button>
+        </span>
+      </label>
+
+      <label className="login__remember">
         <input
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
+          type="checkbox"
+          checked={remember}
+          onChange={(e) => setRemember(e.target.checked)}
         />
+        <span>Recordarme en este dispositivo</span>
       </label>
 
       <button

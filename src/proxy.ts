@@ -10,6 +10,7 @@ export async function proxy(request: NextRequest) {
     PUBLIC_PATHS.has(pathname) ||
     pathname.startsWith("/api/auth/") ||
     pathname.startsWith("/api/apoyos") ||
+    pathname.startsWith("/api/dni/") ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/assets/") ||
     pathname === "/favicon.ico";

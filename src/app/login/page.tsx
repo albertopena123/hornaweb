@@ -5,7 +5,7 @@ import { LoginForm } from "./LoginForm";
 import "./login.css";
 
 export const metadata = {
-  title: "Iniciar sesión · UNAMAD Admin",
+  title: "Iniciar sesión · Simón Horna | Ahora Nación",
 };
 
 export default async function LoginPage() {
@@ -16,16 +16,21 @@ export default async function LoginPage() {
     <main className="login">
       <div className="login__card">
         <div className="login__brand">
-          <div className="login__brand-mark">U</div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="login__brand-logo"
+            src="/assets/images/logo/logo-an.webp"
+            alt="Ahora Nación"
+          />
           <div>
-            <div className="login__brand-name">UNAMAD</div>
-            <div className="login__brand-sub">Consola de administración</div>
+            <div className="login__brand-name">Ahora Nación</div>
+            <div className="login__brand-sub">Simón Horna · Consola de campaña</div>
           </div>
         </div>
 
         <div className="login__head">
           <h1>Bienvenido</h1>
-          <p>Inicia sesión con tu cuenta institucional para continuar.</p>
+          <p>Inicia sesión con tu cuenta del equipo para continuar.</p>
         </div>
 
         <Suspense fallback={null}>
@@ -33,8 +38,7 @@ export default async function LoginPage() {
         </Suspense>
 
         <div className="login__foot">
-          ¿Problemas para acceder? Contacta a{" "}
-          <a href="mailto:oti@unamad.edu.pe">oti@unamad.edu.pe</a>
+          Acceso exclusivo del equipo de campaña de Simón Horna.
         </div>
       </div>
     </main>

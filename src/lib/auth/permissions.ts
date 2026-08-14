@@ -4,7 +4,6 @@
 // Cada categoría DEBE corresponder a un módulo real (UI o API).
 // - "Usuarios"       → /usuarios
 // - "Roles"          → /roles
-// - "Incidentes"     → API /api/v1/incidents (admin UI pendiente)
 // - "Simpatizantes"  → /simpatizantes (mapa de apoyos)
 
 export type PermissionDef = {
@@ -46,36 +45,6 @@ export const PERMISSIONS: PermissionDef[] = [
     category: "Roles",
   },
   {
-    key: "incidents.create",
-    name: "Reportar incidentes",
-    description: "Crear un nuevo reporte de incidente",
-    category: "Incidentes",
-  },
-  {
-    key: "incidents.read",
-    name: "Ver todos los incidentes",
-    description: "Consultar la bandeja de incidentes (admin)",
-    category: "Incidentes",
-  },
-  {
-    key: "incidents.read:own",
-    name: "Ver mis incidentes",
-    description: "Consultar solo los incidentes que el usuario reportó",
-    category: "Incidentes",
-  },
-  {
-    key: "incidents.write",
-    name: "Gestionar incidentes",
-    description: "Asignar, comentar y cambiar estado de incidentes",
-    category: "Incidentes",
-  },
-  {
-    key: "incidents.delete",
-    name: "Eliminar incidentes",
-    description: "Eliminar incidentes (solo casos excepcionales)",
-    category: "Incidentes",
-  },
-  {
     key: "supporters.read",
     name: "Ver simpatizantes",
     description: "Ver el listado de simpatizantes y sus estados",
@@ -86,6 +55,18 @@ export const PERMISSIONS: PermissionDef[] = [
     name: "Gestionar simpatizantes",
     description: "Registrar, editar, aprobar/rechazar y eliminar simpatizantes",
     category: "Simpatizantes",
+  },
+  {
+    key: "personeros.read",
+    name: "Ver personeros",
+    description: "Consultar el listado de personeros y sus asignaciones de mesa",
+    category: "Personeros",
+  },
+  {
+    key: "personeros.write",
+    name: "Gestionar personeros",
+    description: "Crear, editar, activar/desactivar y eliminar personeros",
+    category: "Personeros",
   },
 ];
 
@@ -102,49 +83,24 @@ export const ROLE_DEFS = [
   {
     key: "admin",
     name: "Administrador",
-    description: "Gestiona usuarios, roles e incidentes del sistema.",
+    description: "Gestiona usuarios, roles y simpatizantes del sistema.",
     system: true,
     permissions: [
       "users.read",
       "users.write",
       "users.assign-roles",
       "roles.read",
-      "incidents.read",
-      "incidents.write",
-      "incidents.create",
-      "incidents.read:own",
       "supporters.read",
       "supporters.write",
-    ],
-  },
-  {
-    key: "editor",
-    name: "Gestor de incidentes",
-    description:
-      "Triage y seguimiento de la bandeja de incidentes; puede consultar usuarios.",
-    system: true,
-    permissions: [
-      "users.read",
-      "incidents.read",
-      "incidents.write",
-      "incidents.create",
-      "incidents.read:own",
-      "supporters.read",
+      "personeros.read",
+      "personeros.write",
     ],
   },
   {
     key: "viewer",
     name: "Consulta",
-    description: "Solo lectura sobre usuarios, roles e incidentes.",
+    description: "Solo lectura sobre usuarios, roles y simpatizantes.",
     system: true,
-    permissions: ["users.read", "roles.read", "incidents.read", "supporters.read"],
-  },
-  {
-    key: "reporter",
-    name: "Reportante",
-    description:
-      "Usuario final que puede crear y consultar sus propios reportes de incidente.",
-    system: true,
-    permissions: ["incidents.create", "incidents.read:own"],
+    permissions: ["users.read", "roles.read", "supporters.read", "personeros.read"],
   },
 ] as const;

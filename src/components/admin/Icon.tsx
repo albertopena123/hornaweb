@@ -43,6 +43,9 @@ export type IconName =
   | "inbox"
   | "tag"
   | "heart"
+  | "eye"
+  | "eye-off"
+  | "id-card"
   | "logo";
 
 type IconProps = {
@@ -82,6 +85,21 @@ export function Icon({
       return (
         <svg {...props}>
           <path d="M12 20.5s-7-4.6-9.4-9C1 8.5 2.6 5.5 5.7 5.5c2 0 3.3 1.1 4.3 2.6 1-1.5 2.3-2.6 4.3-2.6 3.1 0 4.7 3 3.1 6-2.4 4.4-9.4 9-9.4 9z" />
+        </svg>
+      );
+    case "eye":
+      return (
+        <svg {...props}>
+          <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      );
+    case "eye-off":
+      return (
+        <svg {...props}>
+          <path d="m3 3 18 18" />
+          <path d="M10.7 5.7A9 9 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17.8 17.8 0 0 1-3.2 3.9M6.5 6.5A17.2 17.2 0 0 0 2.5 12S6 18.5 12 18.5c1.4 0 2.7-.4 3.9-.9" />
+          <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
         </svg>
       );
     case "search":
@@ -357,6 +375,14 @@ export function Icon({
         <svg {...props}>
           <path d="M4 4h7l9 9-7 7-9-9Z" />
           <circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" strokeWidth={0} />
+        </svg>
+      );
+    case "id-card":
+      return (
+        <svg {...props}>
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <circle cx="8.5" cy="11" r="2" />
+          <path d="M5.3 16c.5-1.4 1.8-2.2 3.2-2.2s2.7.8 3.2 2.2M14 10h4M14 13.5h4" />
         </svg>
       );
     case "logo":

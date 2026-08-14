@@ -6,6 +6,10 @@ export type SupporterRow = {
   id: string;
   name: string;
   phone: string | null;
+  docType: "dni" | "ce" | "passport";
+  docNumber: string | null;
+  latitude: number | null;
+  longitude: number | null;
   district: string;
   source: "admin" | "public";
   status: "pending" | "approved" | "rejected";

@@ -20,7 +20,9 @@ export async function GET() {
     res.headers.set("Cache-Control", "public, max-age=60");
     return res;
   } catch (e) {
-    console.error("GET /api/apoyos/mapa", e);
-    return fail("Error interno.", 500);
+    console.warn("GET /api/apoyos/mapa (Sin conexión a BD):", e);
+    const districts: Record<string, number> = {};
+    for (const id of DISTRICT_IDS) districts[id] = 0;
+    return ok({ total: 0, districts });
   }
 }

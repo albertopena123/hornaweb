@@ -28,6 +28,11 @@ const STATUS_LABEL: Record<Tab, string> = {
   approved: "Aprobado",
   rejected: "Rechazado",
 };
+const DOC_LABEL: Record<SupporterRow["docType"], string> = {
+  dni: "DNI",
+  ce: "CE",
+  passport: "Pasaporte",
+};
 
 export function SupportersClient({ rows, perms }: { rows: SupporterRow[]; perms: PermFlags }) {
   const [tab, setTab] = useState<Tab>("pending");
@@ -113,13 +118,16 @@ export function SupportersClient({ rows, perms }: { rows: SupporterRow[]; perms:
         </select>
       </div>
 
-      <div className="supporters__tablewrap">
-        <table className="supporters__table">
+      <div className="tablewrap density-comfy">
+        <div className="tablewrap__scroll">
+        <table className="dtable">
           <thead>
             <tr>
               <th>Nombre</th>
+              <th>Documento</th>
               <th>Distrito</th>
               <th>Teléfono</th>
+              <th>Ubicación</th>
               <th>Origen</th>
               <th>Registrado</th>
               <th>Estado</th>
@@ -129,8 +137,9 @@ export function SupportersClient({ rows, perms }: { rows: SupporterRow[]; perms:
           <tbody>
             {visible.length === 0 && (
               <tr>
-                <td colSpan={perms.canWrite ? 7 : 6} className="supporters__empty">
-                  Sin registros en esta vista.
+                <td colSpan={perms.canWrite ? 9 : 8} className="supporters__empty">
+                  <Icon name="users" size={22} />
+                  <span>No hay simpatizantes {STATUS_LABEL[tab].toLowerCase()}s con estos filtros.</span>
                 </td>
               </tr>
             )}
@@ -140,8 +149,33 @@ export function SupportersClient({ rows, perms }: { rows: SupporterRow[]; perms:
                   <div className="supporters__name">{r.name}</div>
                   {r.notes && <div className="supporters__notes">{r.notes}</div>}
                 </td>
+                <td>
+                  {r.docNumber ? (
+                    <span className="supporters__doc">
+                      <span className="badge badge--neutral">{DOC_LABEL[r.docType]}</span>
+                      <span className="supporters__doc-num">{r.docNumber}</span>
+                    </span>
+                  ) : (
+                    <span className="dtable__muted">—</span>
+                  )}
+                </td>
                 <td>{districtLabel(r.district as DistrictId)}</td>
-                <td>{r.phone ?? "—"}</td>
+                <td>{r.phone ?? <span className="dtable__muted">—</span>}</td>
+                <td>
+                  {r.latitude != null && r.longitude != null ? (
+                    <a
+                      className="rowlink"
+                      href={`https://www.google.com/maps?q=${r.latitude},${r.longitude}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${r.latitude.toFixed(5)}, ${r.longitude.toFixed(5)}`}
+                    >
+                      Ver mapa
+                    </a>
+                  ) : (
+                    <span className="dtable__muted">—</span>
+                  )}
+                </td>
                 <td>
                   <span className="badge badge--neutral">
                     {r.source === "admin" ? "Equipo" : "Web"}
@@ -206,6 +240,13 @@ export function SupportersClient({ rows, perms }: { rows: SupporterRow[]; perms:
             ))}
           </tbody>
         </table>
+        </div>
+        <div className="tablefoot">
+          <span>
+            {visible.length} de {counts[tab]} {STATUS_LABEL[tab].toLowerCase()}
+            {counts[tab] === 1 ? "" : "s"}
+          </span>
+        </div>
       </div>
 
       {modal && (

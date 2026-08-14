@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { AdminShell } from "@/components/admin/AdminShell";
 import type { AdminNotification } from "@/components/admin/data";
 
+export const dynamic = "force-dynamic";
+
 const WEEK_MS = 7 * 86_400_000;
 
 export default async function AdminLayout({
@@ -32,20 +34,20 @@ async function buildNotifications(
 ): Promise<AdminNotification[]> {
   const out: AdminNotification[] = [];
 
-  if (userHas(user, "incidents.read")) {
-    const open = await prisma.incident.findMany({
-      where: { status: { in: ["open", "triaged"] } },
+  if (userHas(user, "supporters.read")) {
+    const pending = await prisma.supporter.findMany({
+      where: { status: "pending" },
       orderBy: { createdAt: "desc" },
       take: 5,
-      select: { id: true, code: true, title: true, severity: true },
+      select: { id: true, name: true },
     });
-    for (const i of open) {
+    for (const s of pending) {
       out.push({
-        id: `inc-${i.id}`,
-        title: i.severity === "critical" ? `Incidente crítico · ${i.code}` : `Incidente abierto · ${i.code}`,
-        sub: i.title,
-        icon: "alert",
-        href: "/incidentes",
+        id: `sup-${s.id}`,
+        title: "Apoyo pendiente de revisión",
+        sub: s.name,
+        icon: "heart",
+        href: "/simpatizantes",
       });
     }
   }

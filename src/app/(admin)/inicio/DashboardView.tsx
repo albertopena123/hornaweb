@@ -38,15 +38,14 @@ export function DashboardView({
   data: DashboardData;
   nowMs: number;
 }) {
-  const { users, roles, incidents, activity, quickActions } = data;
+  const { users, roles, supporters, activity, quickActions } = data;
   const now = nowMs;
 
   const maxRole = Math.max(1, ...(roles?.distribution.map((r) => r.count) ?? [1]));
-  const maxSeverity = Math.max(
+  const maxDistrict = Math.max(
     1,
-    ...(incidents?.bySeverity.map((s) => s.count) ?? [1]),
+    ...(supporters?.byDistrict.map((d) => d.count) ?? [1]),
   );
-  const statusTotal = incidents?.byStatus.reduce((a, s) => a + s.count, 0) ?? 0;
 
   return (
     <div className="page dash">
@@ -77,95 +76,66 @@ export function DashboardView({
             sub="Configurados en el sistema"
           />
         )}
-        {incidents && (
+        {supporters && (
           <Kpi
-            icon="alert"
+            icon="heart"
             tone="amber"
-            value={incidents.open}
-            label="Incidentes abiertos"
-            sub={`${incidents.total} en total`}
+            value={supporters.pending}
+            label="Apoyos pendientes"
+            sub={`${supporters.total} registrados en total`}
           />
         )}
-        {incidents && (
+        {supporters && (
           <Kpi
             icon="check"
             tone="green"
-            value={incidents.resolved}
-            label="Incidentes resueltos"
-            sub={`${incidents.critical} críticos`}
+            value={supporters.approved}
+            label="Apoyos aprobados"
+            sub={`${supporters.rejected} rechazados`}
           />
         )}
       </section>
 
       <div className="dash__cols">
         <div className="dash__main">
-          {/* Incidents breakdown */}
-          {incidents && (
+          {/* Simpatizantes por distrito */}
+          {supporters && (
             <section className="panel">
               <div className="panel__hd">
-                <h2>Incidentes</h2>
-                <Link className="linkbtn" href="/incidentes">
-                  Ver bandeja
+                <h2>Simpatizantes por distrito</h2>
+                <Link className="linkbtn" href="/simpatizantes">
+                  Ver todos
                   <Icon name="chevron-right" size={16} />
                 </Link>
               </div>
 
-              {incidents.total === 0 ? (
+              {supporters.total === 0 ? (
                 <div className="panel__empty">
                   <span className="panel__empty-icon">
                     <Icon name="inbox" size={24} />
                   </span>
-                  <p>Aún no hay incidentes registrados.</p>
+                  <p>Aún no hay simpatizantes registrados.</p>
                 </div>
               ) : (
-                <>
-                  <div className="statbar" role="img" aria-label="Distribución por estado">
-                    {incidents.byStatus
-                      .filter((s) => s.count > 0)
-                      .map((s) => (
+                <div className="sevbars">
+                  {supporters.byDistrict.map((d) => (
+                    <div className="sevrow" key={d.key}>
+                      <span className="sevrow__label" title={d.label}>
+                        {d.label}
+                      </span>
+                      <span className="sevtrack">
                         <span
-                          key={s.key}
-                          className="statbar__seg"
+                          className="sevtrack__fill"
                           style={{
-                            width: `${(s.count / statusTotal) * 100}%`,
-                            background: `var(--st-${s.token}-fg)`,
+                            width: `${(d.count / maxDistrict) * 100}%`,
+                            background: "var(--accent)",
                           }}
-                          title={`${s.label}: ${s.count}`}
                         />
-                      ))}
-                  </div>
-                  <ul className="statlegend">
-                    {incidents.byStatus.map((s) => (
-                      <li key={s.key}>
-                        <span
-                          className="dot"
-                          style={{ background: `var(--st-${s.token}-fg)` }}
-                        />
-                        <span className="statlegend__label">{s.label}</span>
-                        <span className="statlegend__count">{s.count}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <h3 className="panel__subhd">Por severidad</h3>
-                  <div className="sevbars">
-                    {incidents.bySeverity.map((s) => (
-                      <div className="sevrow" key={s.key}>
-                        <span className="sevrow__label">{s.label}</span>
-                        <span className="sevtrack">
-                          <span
-                            className="sevtrack__fill"
-                            style={{
-                              width: `${(s.count / maxSeverity) * 100}%`,
-                              background: s.color,
-                            }}
-                          />
-                        </span>
-                        <span className="sevrow__count">{s.count}</span>
-                      </div>
-                    ))}
-                  </div>
-                </>
+                      </span>
+                      <span className="sevrow__count">{d.count}</span>
+                    </div>
+                  ))}
+                </div>
               )}
             </section>
           )}

@@ -1,33 +1,71 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { DISTRICTS, districtLabel, type DistrictId } from '@/lib/districts'
 import { MAP_VIEWBOX, DISTRICT_PATHS } from '@/components/landing/data/madre-de-dios-distritos'
+import './apoyo.css'
 
-// Rampa secuencial validada (dataviz): luminosidad monótona sobre fondo oscuro.
-const ZERO_FILL = '#33404e'
-const RAMP = ['#5a1e22', '#8c2126', '#b62a2c', '#dd3a35', '#ff6b5a']
+// Mapa de densidad de puntos: 1 punto = 1 simpatizante, ubicado en una posición
+// pseudoaleatoria (determinística por distrito) DENTRO de su distrito. No son
+// direcciones reales — los datos solo registran el distrito de cada apoyo.
+const DOT_COLOR = '#1E5B2E'
+const DOT_RADIUS = 3.1 // en unidades del viewBox (800×743)
 
-function fillFor(count: number, max: number): string {
-  if (count <= 0 || max <= 0) return ZERO_FILL
-  const idx = Math.min(RAMP.length - 1, Math.floor((count / max) * RAMP.length))
-  return RAMP[idx]
-}
+const PROVINCE: Record<DistrictId, string> = Object.fromEntries(
+  DISTRICTS.map((d) => [d.id, d.province]),
+) as Record<DistrictId, string>
 
 type Counts = Record<DistrictId, number>
+type Dot = { x: number; y: number }
+
+// PRNG determinístico (mulberry32): los puntos no saltan entre renders ni visitas.
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0
+    seed = (seed + 0x6d2b79f5) | 0
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function seedFor(id: string): number {
+  let h = 2166136261
+  for (let i = 0; i < id.length; i++) {
+    h ^= id.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  return h >>> 0
+}
+
+// Muestreo por rechazo dentro del path del distrito.
+function sampleDots(path: SVGPathElement, count: number, seed: number): Dot[] {
+  const rng = mulberry32(seed)
+  const box = path.getBBox()
+  const svg = path.ownerSVGElement
+  const dots: Dot[] = []
+  const maxAttempts = count * 120
+  let attempts = 0
+  const margin = DOT_RADIUS + 1
+  while (dots.length < count && attempts < maxAttempts) {
+    attempts++
+    const x = box.x + margin + rng() * (box.width - margin * 2)
+    const y = box.y + margin + rng() * (box.height - margin * 2)
+    const pt = svg ? new DOMPoint(x, y) : null
+    if (pt && path.isPointInFill(pt)) {
+      dots.push({ x, y })
+    }
+  }
+  // Fallback improbable: si el rechazo no alcanzó, apila lo que falta al centro.
+  while (dots.length < count) {
+    dots.push({ x: box.x + box.width / 2, y: box.y + box.height / 2 })
+  }
+  return dots
+}
 
 const Apoyo = () => {
   const [counts, setCounts] = useState<Counts | null>(null)
-  const [total, setTotal] = useState(0)
-  const [hover, setHover] = useState<{ id: DistrictId; x: number; y: number } | null>(null)
-
-  // Formulario
-  const [name, setName] = useState('')
-  const [district, setDistrict] = useState('')
-  const [phone, setPhone] = useState('')
-  const [website, setWebsite] = useState('') // honeypot
-  const [sending, setSending] = useState(false)
-  const [done, setDone] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+  const [dots, setDots] = useState<Record<DistrictId, Dot[]> | null>(null)
+  const [hover, setHover] = useState<{ id: DistrictId; x: number; y: number; w: number } | null>(null)
+  const pathRefs = useRef<Partial<Record<DistrictId, SVGPathElement | null>>>({})
 
   useEffect(() => {
     fetch('/api/apoyos/mapa')
@@ -35,220 +73,94 @@ const Apoyo = () => {
       .then((j) => {
         if (j && j.ok) {
           setCounts(j.districts)
-          setTotal(j.total)
         }
       })
       .catch(() => {})
   }, [])
+
+  // Genera los puntos cuando llegan los conteos y los paths ya están en el DOM.
+  useEffect(() => {
+    if (!counts) return
+    const result = {} as Record<DistrictId, Dot[]>
+    for (const p of DISTRICT_PATHS) {
+      const el = pathRefs.current[p.id]
+      const n = counts[p.id] ?? 0
+      result[p.id] = el && n > 0 ? sampleDots(el, n, seedFor(p.id)) : []
+    }
+    setDots(result)
+  }, [counts])
 
   const max = useMemo(
     () => (counts ? Math.max(0, ...Object.values(counts)) : 0),
     [counts],
   )
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault()
-    if (sending) return
-    setSending(true)
-    setError(null)
-    setFieldErrors({})
-    try {
-      const res = await fetch('/api/apoyos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, district, phone: phone || undefined, website }),
-      })
-      const j = await res.json().catch(() => null)
-      if (res.ok && j && j.ok) {
-        setDone(true)
-      } else if (j && j.fieldErrors) {
-        setFieldErrors(j.fieldErrors)
-        setError(j.error ?? 'Revisa los campos.')
-      } else {
-        setError((j && j.error) || 'No se pudo registrar. Intenta más tarde.')
-      }
-    } catch {
-      setError('Sin conexión. Intenta de nuevo.')
-    } finally {
-      setSending(false)
-    }
-  }
+  const liderId = useMemo<DistrictId | null>(() => {
+    if (!counts || max <= 0) return null
+    return (Object.keys(counts) as DistrictId[]).find((id) => counts[id] === max) ?? null
+  }, [counts, max])
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.25)',
-    borderRadius: '10px',
-    color: '#fff',
-    padding: '12px 14px',
-    fontSize: '15px',
+  function place(e: React.MouseEvent<SVGPathElement>, id: DistrictId) {
+    const box = (e.currentTarget.ownerSVGElement?.parentElement as HTMLElement).getBoundingClientRect()
+    setHover({ id, x: e.clientX - box.left, y: e.clientY - box.top, w: box.width })
   }
-  const labelStyle: React.CSSProperties = {
-    color: 'rgba(255,255,255,0.75)',
-    fontSize: '13px',
-    marginBottom: '6px',
-    display: 'block',
-  }
-  const errStyle: React.CSSProperties = { color: '#ffb0a6', fontSize: '13px', marginTop: '4px' }
 
   return (
-    <section id="apoyo" className="py-120 position-relative z-1" style={{background: 'linear-gradient(135deg, #0D1B2A 0%, #1a2a3a 100%)'}}>
+    <section id="apoyo" className="py-120 position-relative z-1">
       <div className="container">
-        <div className="row justify-content-center tw-mb-10">
-          <div className="col-xl-8">
-            <div className="text-center" data-aos="fade-up" data-aos-duration="800">
-              <div className="section-subtitle text-center bg-main-600 tw-py-2 tw-px-6 tw-mb-4 d-inline-flex align-items-center tw-gap-3 text-white font-body fw-semibold text-uppercase tw-rounded-3xl">
-                <span className="tw-w-205 tw-h-205 lh-1 d-inline-block bg-white rounded-circle position-relative z-1"></span>
-                El apoyo crece
-                <span className="tw-w-205 tw-h-205 lh-1 d-inline-block bg-white rounded-circle position-relative z-1"></span>
-              </div>
-              <h2 className="section-title tw-text-170 fw-normal text-white">
-                Madre de Dios se suma distrito por distrito
-              </h2>
-            </div>
-          </div>
-        </div>
-
-        <div className="row align-items-start" data-aos="fade-up" data-aos-duration="800" data-aos-delay="150">
-          {/* Mapa */}
-          <div className="col-lg-7 tw-mb-8">
-            <div
-              style={{position: 'relative', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '20px'}}
-              onMouseLeave={() => setHover(null)}
-            >
-              <svg viewBox={MAP_VIEWBOX} style={{width: '100%', height: 'auto', display: 'block'}} role="img" aria-label="Mapa de apoyos por distrito de Madre de Dios">
-                {DISTRICT_PATHS.map((p) => {
-                  const c = counts ? counts[p.id] ?? 0 : 0
-                  return (
-                    <path
-                      key={p.id}
-                      d={p.d}
-                      fill={fillFor(c, max)}
-                      stroke="rgba(255,255,255,0.35)"
-                      strokeWidth="1.5"
-                      style={{cursor: 'pointer', transition: 'fill 0.3s ease'}}
-                      onMouseMove={(e) => {
-                        const box = (e.currentTarget.ownerSVGElement?.parentElement as HTMLElement).getBoundingClientRect()
-                        setHover({ id: p.id, x: e.clientX - box.left, y: e.clientY - box.top })
-                      }}
-                      onClick={(e) => {
-                        const box = (e.currentTarget.ownerSVGElement?.parentElement as HTMLElement).getBoundingClientRect()
-                        setHover({ id: p.id, x: e.clientX - box.left, y: e.clientY - box.top })
-                      }}
-                    />
-                  )
-                })}
+        <div className="row justify-content-center" data-aos="fade-up" data-aos-duration="800">
+          <div className="col-12">
+            <div className="ap-card ap-card-mapa" onMouseLeave={() => setHover(null)}>
+              <svg viewBox={MAP_VIEWBOX} style={{width: '100%', height: 'auto', display: 'block'}} role="img" aria-label="Mapa de simpatizantes por distrito de Madre de Dios: un punto por apoyo">
+                {/* Distritos (base neutra) */}
+                {DISTRICT_PATHS.map((p) => (
+                  <path
+                    key={p.id}
+                    d={p.d}
+                    ref={(el) => { pathRefs.current[p.id] = el }}
+                    className={`ap-distrito${p.id === liderId ? ' is-lider' : ''}`}
+                    onMouseMove={(e) => place(e, p.id)}
+                    onClick={(e) => place(e, p.id)}
+                  />
+                ))}
+                {/* Puntos: 1 = 1 simpatizante */}
+                {dots &&
+                  DISTRICT_PATHS.map((p) =>
+                    (dots[p.id] ?? []).map((d, i) => (
+                      <circle
+                        key={`${p.id}-${i}`}
+                        className="ap-punto"
+                        cx={d.x}
+                        cy={d.y}
+                        r={DOT_RADIUS}
+                        fill={DOT_COLOR}
+                        style={{animationDelay: `${Math.min(i * 12, 900)}ms`}}
+                      />
+                    )),
+                  )}
               </svg>
 
               {hover && (
-                <div style={{
-                  position: 'absolute',
-                  left: Math.min(hover.x + 12, 560),
-                  top: hover.y - 40,
-                  background: '#0D1B2A',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  borderRadius: '8px',
-                  padding: '6px 12px',
-                  color: '#fff',
-                  fontSize: '13px',
-                  pointerEvents: 'none',
-                  whiteSpace: 'nowrap',
-                  zIndex: 5,
-                }}>
-                  <strong>{districtLabel(hover.id)}</strong> — {counts ? (counts[hover.id] ?? 0) : 0} apoyos
+                <div className="ap-tooltip" style={{left: Math.min(hover.x + 12, hover.w - 180), top: hover.y - 48}}>
+                  <strong>
+                    {districtLabel(hover.id)}
+                    {hover.id === liderId ? ' ★' : ''}
+                  </strong>
+                  <span>
+                    {PROVINCE[hover.id]} · {counts ? (counts[hover.id] ?? 0) : 0} apoyos
+                  </span>
                 </div>
               )}
 
               {/* Leyenda */}
-              <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginTop: '14px', flexWrap: 'wrap'}}>
-                <span style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px'}}>0</span>
-                <span style={{width: '18px', height: '12px', background: ZERO_FILL, borderRadius: '3px', display: 'inline-block'}}></span>
-                <span style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px', marginLeft: '10px'}}>menos</span>
-                {RAMP.map((c) => (
-                  <span key={c} style={{width: '18px', height: '12px', background: c, borderRadius: '3px', display: 'inline-block'}}></span>
-                ))}
-                <span style={{color: 'rgba(255,255,255,0.6)', fontSize: '12px'}}>más</span>
+              <div className="ap-leyenda">
+                <span className="ap-leyenda-punto">
+                  <i aria-hidden="true"></i> 1 punto = 1 simpatizante
+                </span>
+                <span className="ap-leyenda-nota">
+                  Posición referencial dentro de cada distrito · ★ distrito líder
+                </span>
               </div>
-
-              {/* Lista accesible de conteos */}
-              <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '4px 16px', marginTop: '14px'}}>
-                {DISTRICTS.map((d) => (
-                  <div key={d.id} style={{display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.75)', fontSize: '13px'}}>
-                    <span>{d.label}</span>
-                    <strong style={{color: '#fff'}}>{counts ? counts[d.id] ?? 0 : '—'}</strong>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Total + formulario */}
-          <div className="col-lg-5">
-            <div style={{background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '28px'}}>
-              <div style={{textAlign: 'center', marginBottom: '20px'}}>
-                <div style={{fontSize: 'clamp(2.4rem, 4vw, 3.4rem)', fontWeight: 800, color: '#ff6b5a', lineHeight: 1}}>
-                  {total.toLocaleString('es-PE')}
-                </div>
-                <div style={{color: 'rgba(255,255,255,0.8)', fontSize: '15px', marginTop: '6px'}}>
-                  madrediosenses ya se sumaron
-                </div>
-              </div>
-
-              {done ? (
-                <div style={{textAlign: 'center', padding: '24px 8px', color: '#fff'}}>
-                  <div style={{fontSize: '40px', marginBottom: '8px'}}>🎉</div>
-                  <p style={{margin: 0, fontSize: '17px', fontWeight: 700}}>¡Gracias por sumarte!</p>
-                  <p style={{margin: '6px 0 0', color: 'rgba(255,255,255,0.75)', fontSize: '14px'}}>
-                    Tu apoyo será verificado y pronto aparecerá en el mapa.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={submit} style={{position: 'relative'}}>
-                  <div style={{marginBottom: '14px'}}>
-                    <label style={labelStyle} htmlFor="apoyo-nombre">Tu nombre</label>
-                    <input id="apoyo-nombre" style={inputStyle} value={name} onChange={(e) => setName(e.target.value)} maxLength={120} required />
-                    {fieldErrors.name && <div style={errStyle}>{fieldErrors.name}</div>}
-                  </div>
-                  <div style={{marginBottom: '14px'}}>
-                    <label style={labelStyle} htmlFor="apoyo-distrito">Tu distrito</label>
-                    <select id="apoyo-distrito" className="no-nice-select" style={{...inputStyle, appearance: 'auto'}} value={district} onChange={(e) => setDistrict(e.target.value)} required>
-                      <option value="" disabled>Elige tu distrito…</option>
-                      {DISTRICTS.map((d) => (
-                        <option key={d.id} value={d.id} style={{color: '#111'}}>{d.label} ({d.province})</option>
-                      ))}
-                    </select>
-                    {fieldErrors.district && <div style={errStyle}>{fieldErrors.district}</div>}
-                  </div>
-                  <div style={{marginBottom: '18px'}}>
-                    <label style={labelStyle} htmlFor="apoyo-telefono">Teléfono (opcional)</label>
-                    <input id="apoyo-telefono" style={inputStyle} value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" maxLength={15} />
-                    {fieldErrors.phone && <div style={errStyle}>{fieldErrors.phone}</div>}
-                  </div>
-                  {/* Honeypot invisible */}
-                  <div style={{position: 'absolute', left: '-9999px', top: 'auto'}} aria-hidden="true">
-                    <label htmlFor="apoyo-web">No llenar</label>
-                    <input id="apoyo-web" tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
-                  </div>
-
-                  {error && (
-                    <div style={{background: 'rgba(233,3,5,0.15)', border: '1px solid rgba(233,3,5,0.5)', borderRadius: '8px', padding: '10px 12px', color: '#ffb0a6', fontSize: '14px', marginBottom: '14px'}}>
-                      {error}
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={sending}
-                    className="tw-hover-btn text-white fw-bold tw-py-4 d-inline-block w-100"
-                    style={{background: 'var(--an-red)', borderRadius: '8px', border: 'none', cursor: sending ? 'wait' : 'pointer', boxShadow: '0 6px 20px rgba(233, 3, 5, 0.4)', opacity: sending ? 0.7 : 1}}
-                  >
-                    {sending ? 'Enviando…' : 'Sumar mi apoyo'}
-                  </button>
-                  <p style={{color: 'rgba(255,255,255,0.5)', fontSize: '12px', marginTop: '10px', marginBottom: 0, textAlign: 'center'}}>
-                    Solo usamos tus datos para la campaña. No se publican nombres.
-                  </p>
-                </form>
-              )}
             </div>
           </div>
         </div>

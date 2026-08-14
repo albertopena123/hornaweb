@@ -1,0 +1,75 @@
+.mm {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: linear-gradient(160deg, #e90305 0%, #b0060c 100%);
+  font-family: "Google Sans Text", system-ui, sans-serif;
+}
+.mm__card {
+  width: 100%;
+  max-width: 460px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px 24px 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+.mm__brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.mm__brand img { width: 46px; height: 46px; object-fit: contain; }
+.mm__brand strong { display: block; font-size: 15px; color: #b0060c; text-transform: uppercase; letter-spacing: 0.5px; }
+.mm__brand span { font-size: 11px; color: #777; text-transform: uppercase; }
+.mm__title { font-size: 22px; font-weight: 800; color: #16232f; margin: 0 0 6px; line-height: 1.2; }
+.mm__lead { font-size: 14px; color: #5a6472; margin: 0 0 20px; }
+.mm__form { display: flex; flex-direction: column; gap: 10px; }
+.mm__dni {
+  height: 52px; border: 2px solid #e3e8ef; border-radius: 12px; padding: 0 16px;
+  font-size: 20px; font-variant-numeric: tabular-nums; letter-spacing: 2px; text-align: center; outline: none;
+  transition: border-color 0.15s;
+}
+.mm__dni:focus { border-color: #e90305; }
+.mm__btn {
+  height: 52px; border: none; border-radius: 12px; background: #e90305; color: #fff;
+  font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.15s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.mm__spin { animation: mm-spin 0.8s linear infinite; }
+@keyframes mm-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .mm__spin { animation: none; }
+}
+.mm__btn:hover:not(:disabled) { background: #c40204; }
+.mm__btn:disabled { opacity: 0.6; cursor: default; }
+.mm__alert {
+  margin-top: 16px; padding: 12px 14px; border-radius: 10px; font-size: 14px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.mm__alert svg { flex-shrink: 0; margin-top: 2px; }
+.mm__alert.error { background: #fef2f2; color: #b91c1c; }
+.mm__alert.info { background: #fffbeb; color: #92600a; }
+.mm__result { margin-top: 22px; border-top: 1px solid #eef2f6; padding-top: 20px; }
+.mm__hi { font-size: 15px; color: #16232f; margin: 0 0 14px; }
+.mm__mesa {
+  display: flex; align-items: baseline; justify-content: center; gap: 12px;
+  background: #fff5f5; border: 2px solid #fed7d7; border-radius: 14px; padding: 14px; margin-bottom: 16px;
+}
+.mm__mesa span { font-size: 14px; color: #b0060c; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+.mm__mesa strong { font-size: 44px; color: #e90305; font-variant-numeric: tabular-nums; line-height: 1; }
+.mm__local { background: #f7f9fc; border-radius: 12px; padding: 14px; margin-bottom: 14px; }
+.mm__local-name { font-weight: 700; color: #16232f; }
+.mm__local-dist { font-size: 13px; color: #5a6472; margin-top: 2px; }
+.mm__local-addr { font-size: 13px; color: #5a6472; margin-top: 2px; }
+.mm__link {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 8px;
+  color: #e90305; font-weight: 600; font-size: 14px; text-decoration: none;
+}
+.mm__coord { background: #f7f9fc; border-radius: 12px; padding: 14px; }
+.mm__coord-label { font-size: 12px; color: #7a8699; text-transform: uppercase; letter-spacing: 0.5px; }
+.mm__coord-name { font-weight: 700; color: #16232f; margin: 2px 0 10px; }
+.mm__coord-actions { display: flex; gap: 10px; }
+.mm__call, .mm__wa {
+  flex: 1; padding: 11px; border-radius: 10px; font-weight: 700; font-size: 14px; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+}
+.mm__call { background: #eef2f6; color: #16232f; }
+.mm__wa { background: #25d366; color: #fff; }

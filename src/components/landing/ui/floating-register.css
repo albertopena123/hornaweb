@@ -1,0 +1,230 @@
+/* Botón y formulario flotante de registro de simpatizantes */
+
+.fr-fab {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 99990;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 999px;
+  background: #e90305;
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(233, 3, 5, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fr-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(233, 3, 5, 0.55);
+}
+
+.fr-panel {
+  position: fixed;
+  left: 16px;
+  bottom: 86px;
+  z-index: 99991;
+  width: min(360px, calc(100vw - 32px));
+  max-height: calc(100dvh - 110px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28);
+  animation: fr-pop 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes fr-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fr-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.fr-head h4 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.fr-head p {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: #777;
+  line-height: 1.4;
+}
+
+.fr-close {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: #f1f3f5;
+  color: #333;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fr-body {
+  padding: 14px 18px 18px;
+}
+
+.fr-field {
+  margin-bottom: 12px;
+}
+
+.fr-field label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.fr-field input,
+.fr-field select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.fr-field input:focus,
+.fr-field select:focus {
+  border-color: #e90305;
+}
+
+.fr-field .fr-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.fr-field.has-error input,
+.fr-field.has-error select {
+  border-color: #c0392b;
+}
+
+.fr-doc-row {
+  display: grid;
+  grid-template-columns: 42% 1fr;
+  gap: 8px;
+}
+
+.fr-gps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666;
+  margin: 2px 0 12px;
+}
+
+.fr-gps i {
+  font-size: 15px;
+}
+
+.fr-gps.ok {
+  color: #1e5b2e;
+}
+
+.fr-submit {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: #e90305;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.fr-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.fr-alert {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.fr-alert.error {
+  background: rgba(192, 57, 43, 0.09);
+  color: #c0392b;
+}
+
+.fr-success {
+  padding: 34px 24px;
+  text-align: center;
+}
+
+.fr-success i {
+  font-size: 46px;
+  color: #1e5b2e;
+}
+
+.fr-success h4 {
+  margin: 10px 0 4px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.fr-success p {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+@media (max-width: 575px) {
+  .fr-fab {
+    left: 14px;
+    bottom: 14px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .fr-panel {
+    left: 14px;
+    bottom: 74px;
+  }
+}

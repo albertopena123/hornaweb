@@ -5,73 +5,6 @@ import { PrismaClient } from "../src/generated/prisma/client";
 import { hashPassword } from "../src/lib/auth/password";
 import { PERMISSIONS, ROLE_DEFS } from "../src/lib/auth/permissions";
 
-// CONADIS-oriented categories for accessibility incidents.
-const INCIDENT_CATEGORIES: Array<{
-  key: string;
-  name: string;
-  description: string;
-  icon: string;
-  order: number;
-}> = [
-  {
-    key: "ramps",
-    name: "Rampas y accesos",
-    description: "Falta de rampas, pendiente excesiva, mal estado.",
-    icon: "ramp",
-    order: 10,
-  },
-  {
-    key: "restrooms",
-    name: "Servicios higiénicos accesibles",
-    description: "Baños no accesibles, falta de barras, espacio insuficiente.",
-    icon: "restroom",
-    order: 20,
-  },
-  {
-    key: "signage",
-    name: "Señalización",
-    description: "Falta de señalización Braille, contraste o lectura fácil.",
-    icon: "signage",
-    order: 30,
-  },
-  {
-    key: "audio",
-    name: "Audio y comunicación",
-    description: "Falta de bucle magnético, intérprete de señas o subtítulos.",
-    icon: "audio",
-    order: 40,
-  },
-  {
-    key: "transport",
-    name: "Transporte y estacionamiento",
-    description: "Estacionamiento reservado mal usado, paradas no accesibles.",
-    icon: "transport",
-    order: 50,
-  },
-  {
-    key: "digital",
-    name: "Servicios digitales",
-    description: "Sitios web o sistemas no accesibles, formularios no usables.",
-    icon: "digital",
-    order: 60,
-  },
-  {
-    key: "discrimination",
-    name: "Trato discriminatorio",
-    description:
-      "Denuncia de trato inadecuado o discriminación por discapacidad.",
-    icon: "discrimination",
-    order: 70,
-  },
-  {
-    key: "other",
-    name: "Otros",
-    description: "Cualquier otra barrera o incidente no listado arriba.",
-    icon: "other",
-    order: 999,
-  },
-];
-
 async function main() {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) throw new Error("DATABASE_URL is not set");
@@ -154,22 +87,6 @@ async function main() {
 
     console.log(`✓ admin listo: ${adminEmail}`);
   }
-
-  console.log("→ Sincronizando categorías de incidentes…");
-  for (const c of INCIDENT_CATEGORIES) {
-    await prisma.incidentCategory.upsert({
-      where: { key: c.key },
-      update: {
-        name: c.name,
-        description: c.description,
-        icon: c.icon,
-        order: c.order,
-        active: true,
-      },
-      create: { ...c, active: true },
-    });
-  }
-  console.log(`✓ ${INCIDENT_CATEGORIES.length} categorías listas.`);
 
   console.log("✓ Seed completado.");
   await prisma.$disconnect();

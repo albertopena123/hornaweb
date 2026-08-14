@@ -5,17 +5,11 @@ import "./landing.css";
 
 import Preloader from "./ui/Preloader";
 import ScrollToTop from "./ui/ScrollToTop";
+import FloatingRegister from "./ui/FloatingRegister";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import Hero from "./sections/Hero";
-import Propuestas from "./sections/Propuestas";
-import About from "./sections/About";
-import Counter from "./sections/Counter";
 import Apoyo from "./sections/Apoyo";
-import Team from "./sections/Team";
-import Events from "./sections/Events";
-import Blog from "./sections/Blog";
-import CierreCta from "./sections/CierreCta";
 
 // La plantilla Politicly depende de scripts globales con orden estricto de
 // dependencia (jQuery antes que sus plugins, gsap antes que sus plugins,
@@ -72,6 +66,14 @@ export default function LandingPage() {
   useEffect(() => {
     let cancelled = false;
 
+    // Force page to start at the top on load (especially on mobile)
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+    }
+
     (async () => {
       for (const src of LEGACY_SCRIPTS) {
         if (cancelled) return;
@@ -92,12 +94,14 @@ export default function LandingPage() {
       if (window.PureCounter) {
         new window.PureCounter();
       }
+
+      window.scrollTo(0, 0);
       const loader = document.querySelector<HTMLElement>(".loader-mask");
       if (loader) {
         loader.style.opacity = "0";
         setTimeout(() => {
           loader.style.display = "none";
-        }, 400);
+        }, 500);
       }
     })();
 
@@ -116,26 +120,19 @@ export default function LandingPage() {
       <div id="toast-container"></div>
       {/* Scroll to top */}
       <ScrollToTop />
+      {/* Registro flotante de simpatizantes */}
+      <FloatingRegister />
       {/* Custom Cursor */}
       <div className="cursor"></div>
       <span className="dot"></span>
 
       <Header />
 
-      <div id="smooth-wrapper">
-        <div id="smooth-content">
-          <Hero />
-          <Propuestas />
-          <About />
-          <Counter />
-          <Apoyo />
-          <Team />
-          <Events />
-          <Blog />
-          <CierreCta />
-          <Footer />
-        </div>
-      </div>
+      <main>
+        <Hero />
+        <Apoyo />
+        <Footer />
+      </main>
     </>
   );
 }

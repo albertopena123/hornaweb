@@ -40,4 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/src/generated/prisma
+
+# playwright-mcp debug artifacts (logs y snapshots de sesiones)
+.playwright-mcp/
+
+# Claude Code local settings
+.claude/

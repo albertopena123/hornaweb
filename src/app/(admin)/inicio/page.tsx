@@ -1,32 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { requireUser, userHas } from "@/lib/auth/server";
+import { districtLabel, type DistrictId } from "@/lib/districts";
 import { DashboardView } from "./DashboardView";
 import type {
   ActivityItem,
   DashboardData,
+  DistrictSlice,
   QuickAction,
-  SeveritySlice,
-  StatusSlice,
 } from "./types";
 
-export const metadata = { title: "Inicio · UNAMAD Admin" };
+export const metadata = { title: "Inicio · Simón Horna | Ahora Nación" };
 export const dynamic = "force-dynamic";
-
-const STATUS_META: { key: string; label: string; token: string }[] = [
-  { key: "open", label: "Abiertos", token: "open" },
-  { key: "triaged", label: "Clasificados", token: "triaged" },
-  { key: "in_progress", label: "En progreso", token: "progress" },
-  { key: "resolved", label: "Resueltos", token: "resolved" },
-  { key: "rejected", label: "Rechazados", token: "rejected" },
-  { key: "closed", label: "Cerrados", token: "closed" },
-];
-
-const SEVERITY_META: { key: string; label: string; color: string }[] = [
-  { key: "critical", label: "Crítica", color: "var(--sev-critical)" },
-  { key: "high", label: "Alta", color: "var(--sev-high)" },
-  { key: "medium", label: "Media", color: "var(--sev-medium)" },
-  { key: "low", label: "Baja", color: "var(--sev-low)" },
-];
 
 function greetingFor(hour: number): string {
   if (hour < 12) return "Buenos días";
@@ -39,7 +23,7 @@ export default async function Page() {
 
   const canUsers = userHas(me, "users.read");
   const canRoles = userHas(me, "roles.read");
-  const canIncidents = userHas(me, "incidents.read");
+  const canSupporters = userHas(me, "supporters.read");
 
   // Local time in Lima for greeting + date, independent of server TZ.
   const now = new Date();
@@ -94,85 +78,50 @@ export default async function Page() {
         }))
     : null;
 
-  // ── Incidents ────────────────────────────────────────────────────────────
-  let incidentsBlock: DashboardData["incidents"] = null;
-  let recentIncidents: {
+  // ── Simpatizantes ────────────────────────────────────────────────────────
+  let supportersBlock: DashboardData["supporters"] = null;
+  let recentSupporters: {
     id: string;
-    code: string;
-    title: string;
+    name: string;
+    district: string;
     createdAt: Date;
-  }[] = [];
-  let recentStatus: {
-    id: string;
-    toStatus: string;
-    fromStatus: string;
-    createdAt: Date;
-    incident: { code: string };
   }[] = [];
 
-  if (canIncidents) {
-    const [byStatusRaw, bySeverityRaw, total] = await Promise.all([
-      prisma.incident.groupBy({ by: ["status"], _count: { _all: true } }),
-      prisma.incident.groupBy({ by: ["severity"], _count: { _all: true } }),
-      prisma.incident.count(),
+  if (canSupporters) {
+    const [byStatusRaw, byDistrictRaw, total] = await Promise.all([
+      prisma.supporter.groupBy({ by: ["status"], _count: { _all: true } }),
+      prisma.supporter.groupBy({ by: ["district"], _count: { _all: true } }),
+      prisma.supporter.count(),
     ]);
 
     const statusCount = new Map<string, number>(
       byStatusRaw.map((r) => [String(r.status), r._count._all]),
     );
-    const severityCount = new Map<string, number>(
-      bySeverityRaw.map((r) => [String(r.severity), r._count._all]),
-    );
 
-    const byStatus: StatusSlice[] = STATUS_META.map((m) => ({
-      key: m.key,
-      label: m.label,
-      token: m.token,
-      count: statusCount.get(m.key) ?? 0,
-    }));
-    const bySeverity: SeveritySlice[] = SEVERITY_META.map((m) => ({
-      key: m.key,
-      label: m.label,
-      color: m.color,
-      count: severityCount.get(m.key) ?? 0,
-    }));
+    const byDistrict: DistrictSlice[] = byDistrictRaw
+      .map((r) => ({
+        key: String(r.district),
+        label: districtLabel(r.district as DistrictId),
+        count: r._count._all,
+      }))
+      .sort((a, b) => b.count - a.count);
 
-    incidentsBlock = {
+    supportersBlock = {
       total,
-      open:
-        (statusCount.get("open") ?? 0) +
-        (statusCount.get("triaged") ?? 0) +
-        (statusCount.get("in_progress") ?? 0),
-      critical: severityCount.get("critical") ?? 0,
-      resolved: statusCount.get("resolved") ?? 0,
-      byStatus,
-      bySeverity,
+      pending: statusCount.get("pending") ?? 0,
+      approved: statusCount.get("approved") ?? 0,
+      rejected: statusCount.get("rejected") ?? 0,
+      byDistrict,
     };
 
-    [recentIncidents, recentStatus] = await Promise.all([
-      prisma.incident.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 5,
-        select: { id: true, code: true, title: true, createdAt: true },
-      }),
-      prisma.incidentStatusLog.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 5,
-        select: {
-          id: true,
-          toStatus: true,
-          fromStatus: true,
-          createdAt: true,
-          incident: { select: { code: true } },
-        },
-      }),
-    ]);
+    recentSupporters = await prisma.supporter.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: { id: true, name: true, district: true, createdAt: true },
+    });
   }
 
   // ── Activity feed (merge + sort) ─────────────────────────────────────────
-  const statusLabel = (k: string) =>
-    STATUS_META.find((s) => s.key === k)?.label ?? k;
-
   const activity: ActivityItem[] = [
     ...recentUsers.map(
       (u): ActivityItem => ({
@@ -184,23 +133,13 @@ export default async function Page() {
         at: u.createdAt.toISOString(),
       }),
     ),
-    ...recentIncidents.map(
-      (i): ActivityItem => ({
-        id: `i-${i.id}`,
-        icon: "alert",
-        tone: "amber",
-        title: `${i.code} · ${i.title}`,
-        sub: "Incidente reportado",
-        at: i.createdAt.toISOString(),
-      }),
-    ),
-    ...recentStatus.map(
+    ...recentSupporters.map(
       (s): ActivityItem => ({
         id: `s-${s.id}`,
-        icon: "check",
+        icon: "heart",
         tone: "green",
-        title: s.incident.code,
-        sub: `${statusLabel(s.fromStatus)} → ${statusLabel(s.toStatus)}`,
+        title: s.name,
+        sub: `Nuevo apoyo · ${districtLabel(s.district as DistrictId)}`,
         at: s.createdAt.toISOString(),
       }),
     ),
@@ -213,7 +152,7 @@ export default async function Page() {
   if (userHas(me, "users.write"))
     quickActions.push({
       label: "Crear usuario",
-      desc: "Da de alta una cuenta institucional",
+      desc: "Da de alta una cuenta del equipo",
       href: "/usuarios",
       icon: "user",
     });
@@ -224,12 +163,12 @@ export default async function Page() {
       href: "/roles",
       icon: "shield",
     });
-  if (canIncidents)
+  if (canSupporters)
     quickActions.push({
-      label: "Ver incidentes",
-      desc: "Bandeja de reportes y seguimiento",
-      href: "/incidentes",
-      icon: "alert",
+      label: "Ver simpatizantes",
+      desc: "Apoyos registrados y pendientes",
+      href: "/simpatizantes",
+      icon: "heart",
     });
 
   const data: DashboardData = {
@@ -238,7 +177,7 @@ export default async function Page() {
     dateLabel,
     users: usersBlock,
     roles: rolesBlock,
-    incidents: incidentsBlock,
+    supporters: supportersBlock,
     activity,
     quickActions,
   };

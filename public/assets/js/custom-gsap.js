@@ -30,69 +30,13 @@ function smoothSctoll() {
     });
 }
 smoothSctoll();
-if ($('#smooth-wrapper').length && $('#smooth-content').length) {
-    gsap.registerPlugin(ScrollTrigger, ScrollSmoother, TweenMax, ScrollToPlugin);
-
-    gsap.config({
-        nullTargetWarn: false,
-    });
-
-    let smoother = ScrollSmoother.create({
-        smooth: 2,
-        effects: true,
-        smoothTouch: 0.1,
-        normalizeScroll: false,
-        ignoreMobileResize: true,
-    });
-}
+// ScrollSmoother disabled to ensure 100% reliable React layout and visibility
 
 
 
 ////////////////////////////////////////////////////
-// 02. Mobile Menul Js
-var mmm = gsap.matchMedia();
-var mtl = gsap.timeline({
-    paused: true
-});
-const toggleMobileMenu = document.querySelector(".toggle-mobileMenu");
-const closeButton = document.querySelector(".close-button");
-const mobileSideOverlay = document.querySelector(".side-overlay");
-
-mmm.add("(max-width: 991px)", () => {
-    mtl.to(".side-overlay", {
-        opacity: 1,
-        visibility: "visible",
-        duration: 0.15,
-    });
-
-    mtl.to(".mobile-menu", {
-        x: 0,
-        delay: 0.2,
-        duration: 0.2,
-    });
-
-    mtl.from(".nav-menu__item", {
-        opacity: 0,
-        duration: 0.2,
-        y: -60,
-        stagger: 0.08,
-    });
-
-    toggleMobileMenu.addEventListener("click", function () {
-        mtl.play();
-        document.body.style.overflow = "hidden";
-    });
-
-    closeButton.addEventListener("click", function () {
-        mtl.reverse();
-        document.body.style.overflow = "";
-    });
-
-    mobileSideOverlay.addEventListener("click", function () {
-        mtl.reverse();
-        document.body.style.overflow = "";
-    });
-});
+// 02. Mobile Menu Js (Handled React-side in Header.jsx)
+// Legacy GSAP handlers disabled to prevent side-overlay conflicts
 
 
 
@@ -207,57 +151,7 @@ hoverBtns.forEach((btn, i) => {
 
 
 
-////////////////////////////////////////////////////
-// 06. project scroll Js
-let pr = gsap.matchMedia();
-pr.add("(min-width: 1199px)", () => {
-    let tl = gsap.timeline();
-    let projectpanels = document.querySelectorAll('.project-panel')
-    projectpanels.forEach((section, index) => {
-        tl.to(section, {
-            scrollTrigger: {
-                trigger: section,
-                pin: section,
-                scrub: 1,
-                start: 'center center',
-                end: "bottom 60%",
-                endTrigger: '.project-panel-area',
-                pinSpacing: false,
-                markers: false,
-            },
-        })
-    })
-});
-
-
-////////////////////////////////////////////////////
-// 07. mission two sticky Js
-gsap.utils.toArray('.mission-two-sticky').forEach(sticky => {
-    if (window.innerWidth < 0 || window.innerWidth > 992) {
-        ScrollTrigger.create({
-            trigger: sticky,
-            start: 'top top+=278',
-            end: '+=1290',
-            pin: true,
-            scrub: true,
-        });
-    }
-});
-
-
-////////////////////////////////////////////////////
-// 08. mission four sticky Js
-gsap.utils.toArray('.mission-four-sticky').forEach(sticky => {
-    if (window.innerWidth < 0 || window.innerWidth > 992) {
-        ScrollTrigger.create({
-            trigger: sticky,
-            start: 'top top+=278',
-            end: '+=1490',
-            pin: true,
-            scrub: true,
-        });
-    }
-});
+// 06, 07, 08: GSAP pinning handlers disabled to maintain natural page flow and prevent blank gaps
 
 
 /* **************************************************************************** 

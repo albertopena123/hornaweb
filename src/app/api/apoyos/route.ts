@@ -44,6 +44,37 @@ export async function POST(req: NextRequest) {
       phone = p;
     }
   }
+
+  const docType =
+    body.docType === "ce" || body.docType === "passport" ? body.docType : "dni";
+  const docNumber =
+    typeof body.docNumber === "string" ? body.docNumber.trim().toUpperCase() : "";
+  if (docType === "dni") {
+    if (!/^\d{8}$/.test(docNumber)) {
+      fieldErrors.docNumber = "El DNI debe tener 8 dígitos.";
+    }
+  } else if (!/^[A-Z0-9]{6,12}$/.test(docNumber)) {
+    fieldErrors.docNumber = "Documento inválido (6 a 12 letras o números).";
+  }
+
+  // Coordenadas GPS: referenciales. Si faltan o están fuera de rango se
+  // descartan sin bloquear el registro.
+  let latitude: number | null = null;
+  let longitude: number | null = null;
+  let gpsAccuracy: number | null = null;
+  const lat = Number(body.latitude);
+  const lng = Number(body.longitude);
+  if (
+    Number.isFinite(lat) && Number.isFinite(lng) &&
+    Math.abs(lat) <= 90 && Math.abs(lng) <= 180 &&
+    (lat !== 0 || lng !== 0)
+  ) {
+    latitude = lat;
+    longitude = lng;
+    const acc = Number(body.gpsAccuracy);
+    if (Number.isFinite(acc) && acc >= 0) gpsAccuracy = Math.round(acc);
+  }
+
   if (Object.keys(fieldErrors).length > 0 || !isDistrictId(district)) {
     return fail("Revisa los campos marcados.", 400, fieldErrors);
   }
@@ -57,10 +88,25 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const existing = await prisma.supporter.findFirst({
+      where: { docType, docNumber },
+      select: { id: true },
+    });
+    if (existing) {
+      return fail("Este documento ya está registrado. ¡Gracias por tu apoyo!", 409, {
+        docNumber: "Este documento ya está registrado.",
+      });
+    }
+
     await prisma.supporter.create({
       data: {
         name,
         phone,
+        docType,
+        docNumber,
+        latitude,
+        longitude,
+        gpsAccuracy,
         district,
         source: "public",
         status: "pending",
@@ -69,6 +115,11 @@ export async function POST(req: NextRequest) {
     });
     return ok({});
   } catch (e) {
+    if (e && typeof e === "object" && "code" in e && e.code === "P2002") {
+      return fail("Este documento ya está registrado. ¡Gracias por tu apoyo!", 409, {
+        docNumber: "Este documento ya está registrado.",
+      });
+    }
     console.error("POST /api/apoyos", e);
     return fail("No se pudo registrar. Intenta de nuevo.", 500);
   }

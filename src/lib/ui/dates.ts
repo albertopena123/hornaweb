@@ -3,6 +3,14 @@
 
 const TZ = "America/Lima";
 
+// ICU varies between Node and browsers in the space it emits inside "p. m."
+// (U+00A0 vs U+0020), which breaks React hydration on SSR'd dates. Normalize
+// every no-break/narrow space to a plain space so both runtimes emit
+// identical strings.
+function norm(s: string): string {
+  return s.replace(/[\u00A0\u202F]/g, " ");
+}
+
 const FULL_FMT: Intl.DateTimeFormatOptions = {
   timeZone: TZ,
   weekday: "short",
@@ -29,13 +37,13 @@ const DATE_FMT: Intl.DateTimeFormatOptions = {
 export function formatFullDate(iso: string | Date | null): string {
   if (!iso) return "Nunca";
   const d = typeof iso === "string" ? new Date(iso) : iso;
-  return d.toLocaleString("es-PE", FULL_FMT);
+  return norm(d.toLocaleString("es-PE", FULL_FMT));
 }
 
 export function formatDateOnly(iso: string | Date | null): string {
   if (!iso) return "Nunca";
   const d = typeof iso === "string" ? new Date(iso) : iso;
-  return d.toLocaleDateString("es-PE", DATE_FMT);
+  return norm(d.toLocaleDateString("es-PE", DATE_FMT));
 }
 
 /** Relative for recent, absolute for older. */
@@ -50,7 +58,7 @@ export function formatRelative(
   const diffMin = Math.floor(diffMs / 60_000);
   const diffH = Math.floor(diffMs / 3_600_000);
 
-  if (diffMs < 0) return d.toLocaleDateString("es-PE", DATE_FMT);
+  if (diffMs < 0) return norm(d.toLocaleDateString("es-PE", DATE_FMT));
   if (diffMin < 1) return "Justo ahora";
   if (diffMin < 60) return `hace ${diffMin} min`;
   if (diffH < 12) return `hace ${diffH} h`;
@@ -59,17 +67,17 @@ export function formatRelative(
   const target = inLima(t);
 
   if (sameLimaDay(target, today))
-    return `Hoy ${d.toLocaleTimeString("es-PE", TIME_FMT)}`;
+    return `Hoy ${norm(d.toLocaleTimeString("es-PE", TIME_FMT))}`;
 
   const yest = { ...today };
   yest.day -= 1;
   if (sameLimaDay(target, yest))
-    return `Ayer ${d.toLocaleTimeString("es-PE", TIME_FMT)}`;
+    return `Ayer ${norm(d.toLocaleTimeString("es-PE", TIME_FMT))}`;
 
   const diffDays = Math.floor(diffMs / 86_400_000);
   if (diffDays < 7) return `hace ${diffDays} días`;
 
-  return d.toLocaleDateString("es-PE", DATE_FMT);
+  return norm(d.toLocaleDateString("es-PE", DATE_FMT));
 }
 
 // Helpers: compute year/month/day in America/Lima for stable day boundaries.

@@ -148,7 +148,7 @@ export function TopBar({ onMenuClick, user, notifications }: Props) {
           <Icon name="search" size={20} className="topbar__search-icon" />
           <input
             type="text"
-            placeholder="Buscar usuarios, roles o incidentes"
+            placeholder="Buscar usuarios, roles o simpatizantes"
             value={search}
             onChange={onSearchChange}
             onFocus={() => setFocused(true)}

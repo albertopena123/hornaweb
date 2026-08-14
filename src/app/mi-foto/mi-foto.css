@@ -1,0 +1,58 @@
+.mf {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: linear-gradient(160deg, #16232f 0%, #20242c 100%);
+  font-family: "Google Sans Text", system-ui, sans-serif;
+}
+.mf__card {
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 22px 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+.mf__brand { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.mf__brand img { width: 44px; height: 44px; object-fit: contain; }
+.mf__brand strong { display: block; font-size: 14px; color: #b0060c; text-transform: uppercase; letter-spacing: 0.5px; }
+.mf__brand span { font-size: 11px; color: #777; text-transform: uppercase; }
+.mf__title { font-size: 21px; font-weight: 800; color: #16232f; margin: 0 0 6px; line-height: 1.2; }
+.mf__lead { font-size: 13.5px; color: #5a6472; margin: 0 0 18px; }
+.mf__stage {
+  position: relative;
+  margin: 0 auto 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #20242c;
+  touch-action: none;
+  cursor: grab;
+  width: 100%;
+}
+.mf__stage--square { aspect-ratio: 1 / 1; max-width: 360px; }
+.mf__stage--story { aspect-ratio: 9 / 16; max-width: 260px; }
+.mf__canvas { width: 100%; height: 100%; display: block; }
+.mf__placeholder {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: #9aa4b2; font-size: 14px; pointer-events: none;
+}
+.mf__formats { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; }
+.mf__chip {
+  border: 1.5px solid #e3e8ef; background: #fff; color: #5a6472; border-radius: 999px;
+  padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.mf__chip.is-active { border-color: #e90305; color: #e90305; background: #fff5f5; }
+.mf__zoom { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.mf__zoom span { font-size: 13px; color: #5a6472; font-weight: 600; }
+.mf__zoom input { flex: 1; accent-color: #e90305; }
+.mf__actions { display: flex; gap: 10px; }
+.mf__upload, .mf__download, .mf__share {
+  flex: 1; text-align: center; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 14px;
+  cursor: pointer; border: none;
+}
+.mf__upload { background: #eef2f6; color: #16232f; }
+.mf__download { background: #16232f; color: #fff; }
+.mf__share { background: #e90305; color: #fff; }
+.mf__download:disabled, .mf__share:disabled { opacity: 0.5; cursor: default; }

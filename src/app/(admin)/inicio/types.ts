@@ -12,29 +12,18 @@ export type RoleDist = {
   system: boolean;
 };
 
-export type StatusSlice = {
+export type DistrictSlice = {
   key: string;
   label: string;
   count: number;
-  /** CSS var prefix, e.g. "open" → var(--st-open-bg/fg) */
-  token: string;
 };
 
-export type SeveritySlice = {
-  key: string;
-  label: string;
-  count: number;
-  /** CSS var name for the fill color */
-  color: string;
-};
-
-export type IncidentStats = {
+export type SupporterStats = {
   total: number;
-  open: number;
-  critical: number;
-  resolved: number;
-  byStatus: StatusSlice[];
-  bySeverity: SeveritySlice[];
+  pending: number;
+  approved: number;
+  rejected: number;
+  byDistrict: DistrictSlice[];
 };
 
 export type ActivityItem = {
@@ -59,7 +48,7 @@ export type DashboardData = {
   dateLabel: string;
   users: UserStats | null;
   roles: { total: number; distribution: RoleDist[] } | null;
-  incidents: IncidentStats | null;
+  supporters: SupporterStats | null;
   activity: ActivityItem[];
   quickActions: QuickAction[];
 };

@@ -1,0 +1,4812 @@
+[
+ {
+  "code": "395940",
+  "name": "327",
+  "address": "DIAMANTE NUEVO",
+  "locality": "DIAMANTE NUEVO",
+  "district": "fitzcarrald",
+  "latitude": -12.334577,
+  "longitude": -70.956316,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395742",
+  "name": "345 BOCA MANU",
+  "address": "SHINTUYA RIO ALTO MDD 5 HORAS",
+  "locality": "BOCA DEL MANU",
+  "district": "fitzcarrald",
+  "latitude": -12.262414,
+  "longitude": -70.908119,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "541475",
+  "name": "360",
+  "address": "YOMIBATO",
+  "locality": "YOMIBATO",
+  "district": "fitzcarrald",
+  "latitude": -11.803637,
+  "longitude": -71.911283,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "559088",
+  "name": "364",
+  "address": "TAYACOME COMUNIDAD",
+  "locality": "TAYACOME",
+  "district": "fitzcarrald",
+  "latitude": -11.729811,
+  "longitude": -71.644806,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "649107",
+  "name": "391",
+  "address": "NUEVO EDEN",
+  "locality": "NUEVO EDEN",
+  "district": "fitzcarrald",
+  "latitude": -12.551468,
+  "longitude": -71.168526,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "677789",
+  "name": "406",
+  "address": "PUERTO AZUL",
+  "locality": "PUERTO AZUL",
+  "district": "fitzcarrald",
+  "latitude": -12.29739,
+  "longitude": -70.76486,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "677949",
+  "name": "407",
+  "address": "ISLA DE LOS VALLES",
+  "locality": "ISLA DE LOS VALLES",
+  "district": "fitzcarrald",
+  "latitude": -12.25413,
+  "longitude": -70.90726,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "806994",
+  "name": "429",
+  "address": "SARIGUEMINIKI COMUNIDAD NATIVA",
+  "locality": "SARIGUEMINIKI",
+  "district": "fitzcarrald",
+  "latitude": -11.78193,
+  "longitude": -71.78778,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "806828",
+  "name": "430",
+  "address": "MAIZAL",
+  "locality": "MAIZAL",
+  "district": "fitzcarrald",
+  "latitude": -11.83256,
+  "longitude": -71.48817,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "757597",
+  "name": "50843",
+  "address": "DIAMANTE NUEVO",
+  "locality": "DIAMANTE NUEVO",
+  "district": "fitzcarrald",
+  "latitude": -12.331473,
+  "longitude": -70.954434,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395916",
+  "name": "50875",
+  "address": "TAYACOME COMUNIDAD",
+  "locality": "TAYACOME",
+  "district": "fitzcarrald",
+  "latitude": -11.728579,
+  "longitude": -71.645693,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "395723",
+  "name": "50876",
+  "address": "BAJADA DE SHINTUYA RIO MADRE DE DIOS",
+  "locality": "BOCA DEL MANU",
+  "district": "fitzcarrald",
+  "latitude": -12.263789,
+  "longitude": -70.907766,
+  "levels": "Primaria"
+ },
+ {
+  "code": "757601",
+  "name": "50876",
+  "address": "RIO ALTO MADRE DE DIOS",
+  "locality": "BOCA DEL MANU",
+  "district": "fitzcarrald",
+  "latitude": -12.263789,
+  "longitude": -70.907766,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "395921",
+  "name": "52116 JUAN J. LARREÑETA",
+  "address": "YOMIBATO",
+  "locality": "YOMIBATO",
+  "district": "fitzcarrald",
+  "latitude": -11.80259,
+  "longitude": -71.91084,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "395780",
+  "name": "52205",
+  "address": "SHINTUYA RIO MDD 2 HORAS AGUAS ABAJO",
+  "locality": "NUEVO EDEN",
+  "district": "fitzcarrald",
+  "latitude": -12.551088,
+  "longitude": -71.170725,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395935",
+  "name": "52217",
+  "address": "RIO ALTO MADRE DE DIOS 7 HORAS AGUAS ARRIBA",
+  "locality": "PUERTO AZUL",
+  "district": "fitzcarrald",
+  "latitude": -12.29773,
+  "longitude": -70.76452,
+  "levels": "Primaria"
+ },
+ {
+  "code": "349953",
+  "name": "52240",
+  "address": "MAIZAL",
+  "locality": "MAIZAL",
+  "district": "fitzcarrald",
+  "latitude": -11.828134,
+  "longitude": -71.489079,
+  "levels": "Primaria"
+ },
+ {
+  "code": "541461",
+  "name": "52245",
+  "address": "SARIGUEMINIKI COMUNIDAD NATIVA",
+  "locality": "SARIGUEMINIKI",
+  "district": "fitzcarrald",
+  "latitude": -11.781709,
+  "longitude": -71.787748,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395959",
+  "name": "DIAMANTE",
+  "address": "RIO ALTO MADRE DE DIOS 4 HORAS AGUAS ARRIBA",
+  "locality": "DIAMANTE NUEVO",
+  "district": "fitzcarrald",
+  "latitude": -12.332167,
+  "longitude": -70.954421,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "395964",
+  "name": "288 LAS SEMILLITAS",
+  "address": "CALLE PUEBLO JOVEN S/N",
+  "locality": "HUAYPETUE",
+  "district": "huepetuhe",
+  "latitude": -12.9945,
+  "longitude": -70.53,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395997",
+  "name": "321",
+  "address": "CARRETERA MALDONADO - HUEPETUHE KM 210",
+  "locality": "CAYCHIHUE BARRACA",
+  "district": "huepetuhe",
+  "latitude": -13.0336,
+  "longitude": -70.4288,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396204",
+  "name": "322 NUEVA",
+  "address": "MIRAFLORES",
+  "locality": "CAYCHIHUE ALTO Y QUEBRADA NUEVA",
+  "district": "huepetuhe",
+  "latitude": -13.0262,
+  "longitude": -70.4968,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396001",
+  "name": "323",
+  "address": "POBLADO DE CHOQUE",
+  "locality": "CHOQUE",
+  "district": "huepetuhe",
+  "latitude": -12.9825,
+  "longitude": -70.5918,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396237",
+  "name": "332 DOCE DE ENERO",
+  "address": "AVENIDA INDEPENDENCIA S/N",
+  "locality": "HUAYPETUE",
+  "district": "huepetuhe",
+  "latitude": -12.9936,
+  "longitude": -70.5265,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "081195",
+  "name": "349 SAGRADO CORAZON",
+  "address": "CALLE PUEBLO UNIDO S/N",
+  "locality": "HUAYPETUE",
+  "district": "huepetuhe",
+  "latitude": -12.9999,
+  "longitude": -70.527,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "339586",
+  "name": "355 EMILIA FERREIRO",
+  "address": "PUENTE INAMBARI",
+  "locality": "PUENTE INAMBARI",
+  "district": "huepetuhe",
+  "latitude": -13.181,
+  "longitude": -70.3858,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "538109",
+  "name": "358",
+  "address": "PUERTO PUNKIRI",
+  "locality": "PUERTO PUNKIRI",
+  "district": "huepetuhe",
+  "latitude": -13.06573,
+  "longitude": -70.39522,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "571938",
+  "name": "365 EMILIA BARCIA BONIFFATTI",
+  "address": "ALTO PUKIRI",
+  "locality": "ALTO PUKIRI",
+  "district": "huepetuhe",
+  "latitude": -12.8535,
+  "longitude": -70.5451,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "789353",
+  "name": "424",
+  "address": "HUEPETUHE",
+  "locality": "HUEPETUHE",
+  "district": "huepetuhe",
+  "latitude": -12.992937,
+  "longitude": -70.527873,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "855381",
+  "name": "446",
+  "address": "CARRETERA PUERTO MALDONADO - HUEPETUHE KM 218",
+  "locality": "BARRANCO CHICO",
+  "district": "huepetuhe",
+  "latitude": -12.89101,
+  "longitude": -70.48599,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396020",
+  "name": "52027 PUNKIRI",
+  "address": "CARRETERA MALDONADO - HUEPETUHE KM 177",
+  "locality": "PUNKIRI CHICO",
+  "district": "huepetuhe",
+  "latitude": -13.065574,
+  "longitude": -70.395272,
+  "levels": "Primaria"
+ },
+ {
+  "code": "758200",
+  "name": "52082 HORACIO ZEBALLOS GAMEZ",
+  "address": "AVENIDA INDEPENDENCIA S/N",
+  "locality": "HUAYPETUE",
+  "district": "huepetuhe",
+  "latitude": -12.993923,
+  "longitude": -70.524935,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396063",
+  "name": "52087 JOSE ANTONIO ENCINAS FRANCO",
+  "address": "AVENIDA 28 DE JULIO S/N",
+  "locality": "CAYCHIHUE BARRACA",
+  "district": "huepetuhe",
+  "latitude": -13.03443,
+  "longitude": -70.428687,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396096",
+  "name": "52133",
+  "address": "CARRETERA MALDONADO - HUEPETUHE KM 218",
+  "locality": "BARRANCO CHICO",
+  "district": "huepetuhe",
+  "latitude": -12.89025,
+  "longitude": -70.48614,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396100",
+  "name": "52143",
+  "address": "CARRETERA MALDONADO - HUEPETUHE- NUEVA KM 203",
+  "locality": "HUEPETUHE",
+  "district": "huepetuhe",
+  "latitude": -12.992413,
+  "longitude": -70.519452,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396138",
+  "name": "52159 CIENCIAS DE NUEVA",
+  "address": "PASAJE MIGUEL GRAU S/N",
+  "locality": "CAYCHIHUE ALTO Y QUEBRADA NUEVA",
+  "district": "huepetuhe",
+  "latitude": -13.026599,
+  "longitude": -70.497378,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394950",
+  "name": "52200 ABRAHAM VALDELOMAR",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 187",
+  "locality": "PUENTE INAMBARI",
+  "district": "huepetuhe",
+  "latitude": -13.1809,
+  "longitude": -70.3856,
+  "levels": "Primaria"
+ },
+ {
+  "code": "511628",
+  "name": "52211",
+  "address": "CARRETERA MALDONADO - PUENTE INAMBARI KM 185",
+  "locality": "KIMIRI",
+  "district": "huepetuhe",
+  "latitude": -13.0881,
+  "longitude": -70.4271,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396256",
+  "name": "52221",
+  "address": "RIO ALTO PUKIRI",
+  "locality": "ALTO PUKIRI",
+  "district": "huepetuhe",
+  "latitude": -12.8514,
+  "longitude": -70.5447,
+  "levels": "Primaria"
+ },
+ {
+  "code": "757583",
+  "name": "52238",
+  "address": "BOCA TOCABE",
+  "locality": "BOCA TOCABE",
+  "district": "huepetuhe",
+  "latitude": -12.821534,
+  "longitude": -70.511189,
+  "levels": "Primaria"
+ },
+ {
+  "code": "607975",
+  "name": "ADVENTISTA HUEPETUHE",
+  "address": "CALLE 14 & 2",
+  "locality": "HUAYPETUE",
+  "district": "huepetuhe",
+  "latitude": -12.99326,
+  "longitude": -70.528284,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "396082",
+  "name": "CHOQUE",
+  "address": "CARRETERA MALDONADO - HUEPETUHE - CHOQUE KM 210",
+  "locality": "CHOQUE",
+  "district": "huepetuhe",
+  "latitude": -12.98236,
+  "longitude": -70.591292,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "814871",
+  "name": "CRISTO SALVADOR III",
+  "address": "JIRON CANCHIS Y CALLE 22 S/N MZ O LOTE 1-2 ETAPA I",
+  "locality": "HUEPETUHE",
+  "district": "huepetuhe",
+  "latitude": -12.786099,
+  "longitude": -70.520665,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "396379",
+  "name": "260 LOS ANGELES",
+  "address": "AVENIDA JOSE ALDAMIZ S/N",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.405425,
+  "longitude": -69.488693,
+  "levels": "Inicial - Cuna-jardín"
+ },
+ {
+  "code": "396384",
+  "name": "270",
+  "address": "AVENIDA PRIMERO DE MAYO S/N",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.401745,
+  "longitude": -69.488412,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396398",
+  "name": "276",
+  "address": "EMPLEADO",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.40869,
+  "longitude": -69.493566,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396402",
+  "name": "308",
+  "address": "CALLE LORETO S/N",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.410836,
+  "longitude": -69.486997,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "757700",
+  "name": "335",
+  "address": "RIO PACAHUARA",
+  "locality": "PACAHUARA",
+  "district": "iberia",
+  "latitude": -11.3313,
+  "longitude": -69.6153,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "649796",
+  "name": "392",
+  "address": "AVENIDA JORGE CHAVEZ",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.401009,
+  "longitude": -69.495707,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "761014",
+  "name": "412",
+  "address": "BAMBU",
+  "locality": "BAMBU",
+  "district": "iberia",
+  "latitude": -11.39535,
+  "longitude": -69.49249,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396421",
+  "name": "52053",
+  "address": "RIO TAHUAMANU MARGEN IZQUIERDA",
+  "locality": "OCEANIA",
+  "district": "iberia",
+  "latitude": -11.40426,
+  "longitude": -69.54126,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396435",
+  "name": "52058 REPUBLICA",
+  "address": "CARRETERA IBERIA - IÑAPARI MARGEN DERECHA INT 13 KM",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.318341,
+  "longitude": -69.461441,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396440",
+  "name": "52085 TUPAC AMARU II",
+  "address": "CALLE MOCOPATA S/N",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.41104,
+  "longitude": -69.48917,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "396459",
+  "name": "52086 NIÑA MARIA",
+  "address": "CHALACO",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.40765,
+  "longitude": -69.49394,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396534",
+  "name": "52216 EL ARCA DE PACAHUARA",
+  "address": "CARRETERA IBERIA - PACAHUARA KM 17",
+  "locality": "PACAHUARA",
+  "district": "iberia",
+  "latitude": -11.3318,
+  "longitude": -69.6187,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396483",
+  "name": "53004 MIGUEL GRAU",
+  "address": "AVENIDA PRIMERO DE MAYO S/N",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.403587,
+  "longitude": -69.489945,
+  "levels": "Primaria"
+ },
+ {
+  "code": "102207",
+  "name": "ANGELITOS",
+  "address": "CARRETERA IBERIA - PACAHUARA KM 18",
+  "locality": "PACAHUARA",
+  "district": "iberia",
+  "latitude": -11.333229,
+  "longitude": -69.614782,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "396497",
+  "name": "DOS DE MAYO",
+  "address": "AVENIDA JOSE ALDAMIZ S/N",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.405154,
+  "longitude": -69.488445,
+  "levels": "Secundaria, Básica Alternativa-Avanzado"
+ },
+ {
+  "code": "396505",
+  "name": "IBERIA-TAHUAMANU",
+  "address": "AVENIDA MOCOPATA S/N",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.406235,
+  "longitude": -69.496476,
+  "levels": "Instituto Superior Tecnológico"
+ },
+ {
+  "code": "553656",
+  "name": "SAN BLAS",
+  "address": "BARRIO CHALACO S/N MZ 30",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.409629,
+  "longitude": -69.493877,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "825582",
+  "name": "SAN BLAS",
+  "address": "JIRON CESAR VALLEJO MZ 6",
+  "locality": "IBERIA",
+  "district": "iberia",
+  "latitude": -11.409629,
+  "longitude": -69.493877,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394785",
+  "name": "271 NIÑOS POR LA PAZ",
+  "address": "JIRON FRANCISCO BOLOGNESI - MAZUKO S/N",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.10025,
+  "longitude": -70.36803,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394790",
+  "name": "275 ISABEL YALICO LÓPEZ",
+  "address": "CARRETERA MALDONADO - CUSCO KM 143",
+  "locality": "SANTA ROSA",
+  "district": "inambari",
+  "latitude": -12.925475,
+  "longitude": -70.303058,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394993",
+  "name": "336 VICTORIA BARCIA BONIFFATTI",
+  "address": "CARRETERA MALDONADO - CUSCO KM 110",
+  "locality": "SARAYACU",
+  "district": "inambari",
+  "latitude": -12.7965,
+  "longitude": -70.0369,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395704",
+  "name": "339 ROSARIO VERA PEÑALOZA",
+  "address": "CARRETERA MALDONADO - CUSCO KM 83",
+  "locality": "UNION PROGRESO",
+  "district": "inambari",
+  "latitude": -12.8882,
+  "longitude": -69.8322,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395011",
+  "name": "342",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 135",
+  "locality": "SANTA RITA ALTA",
+  "district": "inambari",
+  "latitude": -12.919095,
+  "longitude": -70.251084,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "081204",
+  "name": "351",
+  "address": "CARRETERA PUERTO MALDONADO - PUERTO MAZUKO",
+  "locality": "PUERTO MAZUKO",
+  "district": "inambari",
+  "latitude": -13.0913,
+  "longitude": -70.3899,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "559045",
+  "name": "362 ADOLFO MOTTA MONTES",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 98",
+  "locality": "ALTO LIBERTAD",
+  "district": "inambari",
+  "latitude": -12.903504,
+  "longitude": -69.9368,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "559050",
+  "name": "366 APOLINARIO FERNÁNDEZ BARRIENTOS",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 105",
+  "locality": "NUEVA AREQUIPA",
+  "district": "inambari",
+  "latitude": -12.89207,
+  "longitude": -69.998006,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "582098",
+  "name": "368 NIÑOS DE LA SELVA",
+  "address": "PONAL",
+  "locality": "PONAL",
+  "district": "inambari",
+  "latitude": -12.800195,
+  "longitude": -70.217628,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "582116",
+  "name": "374",
+  "address": "2 DE MAYO",
+  "locality": "2 DE MAYO",
+  "district": "inambari",
+  "latitude": -13.0754,
+  "longitude": -70.3593,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "852684",
+  "name": "376 HORMIGUITAS ESCRITORAS",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 129",
+  "locality": "SANTA RITA BAJA",
+  "district": "inambari",
+  "latitude": -12.915493,
+  "longitude": -70.195149,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "614853",
+  "name": "377 JOSE JIMÉNEZ BORJA",
+  "address": "CENTROMIN",
+  "locality": "CENTROMIN",
+  "district": "inambari",
+  "latitude": -12.814065,
+  "longitude": -70.196423,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "618436",
+  "name": "379",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM. 98",
+  "locality": "VIRGEN DE LA CANDELARIA",
+  "district": "inambari",
+  "latitude": -12.877617,
+  "longitude": -70.039572,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "622080",
+  "name": "380 AUGUSTO SALAZAR BONDY",
+  "address": "COMUNIDAD",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.0954,
+  "longitude": -70.3639,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "648283",
+  "name": "387 MARÍA REICHE",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM. 119",
+  "locality": "PRIMAVERA BAJA",
+  "district": "inambari",
+  "latitude": -12.910407,
+  "longitude": -70.112019,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "648278",
+  "name": "388",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 92",
+  "locality": "SOL NACIENTE",
+  "district": "inambari",
+  "latitude": -12.897191,
+  "longitude": -69.896719,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "784713",
+  "name": "417",
+  "address": "CARRETERA INTEROCEANICA KM. 107.5 PTO. MALDONADO - MAZUKO",
+  "locality": "LA PAMPA",
+  "district": "inambari",
+  "latitude": -12.89074,
+  "longitude": -70.01972,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "789310",
+  "name": "420 EMILIO BARRANTES",
+  "address": "JIRON FRANCISCO BOLOGNESI MZ B LOTE 1 ETAPA I",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.09216,
+  "longitude": -70.36511,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394808",
+  "name": "52013 JULIO CÉSAR TELLO",
+  "address": "CARRETERA MALDONADO - CUSCO KM 135",
+  "locality": "SANTA RITA ALTA",
+  "district": "inambari",
+  "latitude": -12.919139,
+  "longitude": -70.250625,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394813",
+  "name": "52019 ALBERT EINSTEIN",
+  "address": "CARRETERA MALDONADO - CUSCO KM 123",
+  "locality": "PRIMAVERA ALTA",
+  "district": "inambari",
+  "latitude": -12.914,
+  "longitude": -70.1448,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394827",
+  "name": "52036 PITÁGORAS",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 129",
+  "locality": "PRIMAVERA BAJA",
+  "district": "inambari",
+  "latitude": -12.909854,
+  "longitude": -70.111808,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394851",
+  "name": "52042 MANUEL GONZALES PRADA",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 129",
+  "locality": "SANTA RITA BAJA",
+  "district": "inambari",
+  "latitude": -12.914252,
+  "longitude": -70.196324,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394865",
+  "name": "52063 JOSE TIJE HUARAO",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 161",
+  "locality": "VILLA SANTIAGO",
+  "district": "inambari",
+  "latitude": -13.00713,
+  "longitude": -70.34544,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "394870",
+  "name": "52072 MARIO VARGAS LLOSA",
+  "address": "CARRETERA PUERTO MALDONADO - QUINCEMIL KM 161",
+  "locality": "2 DE MAYO",
+  "district": "inambari",
+  "latitude": -13.0761,
+  "longitude": -70.3591,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394889",
+  "name": "52077 MARIANO SANTOS MATEO",
+  "address": "CARRETERA MALDONADO - CUSCO KM 177",
+  "locality": "PALMERA",
+  "district": "inambari",
+  "latitude": -13.1163,
+  "longitude": -70.3816,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394894",
+  "name": "52114 FRANCISCO BOLOGNESI CERVANTES",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 83",
+  "locality": "ALTO LIBERTAD",
+  "district": "inambari",
+  "latitude": -12.8995,
+  "longitude": -69.9464,
+  "levels": "Primaria"
+ },
+ {
+  "code": "756871",
+  "name": "52114 FRANCISCO BOLOGNESI CERVANTES",
+  "address": "CARRETERA MALDONADO- CUSCO KM 98",
+  "locality": "ALTO LIBERTAD",
+  "district": "inambari",
+  "latitude": -12.899333,
+  "longitude": -69.946164,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "395582",
+  "name": "52115 GUILLERMO DÍAZ MÁRQUEZ",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 83",
+  "locality": "UNION PROGRESO",
+  "district": "inambari",
+  "latitude": -12.8797,
+  "longitude": -69.8265,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394907",
+  "name": "52128 JOSÉ LUIS BUSTAMANTE Y RIVERO",
+  "address": "CARRETERA MALDONADO - CUSCO KM 105",
+  "locality": "NUEVA AREQUIPA",
+  "district": "inambari",
+  "latitude": -12.89145,
+  "longitude": -69.998786,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394912",
+  "name": "52129 JORGE MAZUKO",
+  "address": "CARRETERA MALDONADO - PUERTO MAZUKO S/N",
+  "locality": "PUERTO MAZUKO",
+  "district": "inambari",
+  "latitude": -13.0904,
+  "longitude": -70.3911,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394926",
+  "name": "52160 ANTONIO RAIMONDI",
+  "address": "CARRETERA MALDONADO - CUSCO ALTO DOS DE MAYO KM 178",
+  "locality": "ALTO 2 DE MAYO",
+  "district": "inambari",
+  "latitude": -13.0783,
+  "longitude": -70.3315,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "394988",
+  "name": "52187 RICARDO PALMA SORIANO",
+  "address": "CARRETERA MALDONADO - CUSCO KM 110",
+  "locality": "SARAYACU",
+  "district": "inambari",
+  "latitude": -12.797245,
+  "longitude": -70.035509,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "395676",
+  "name": "52192",
+  "address": "CARRETERA MALDONADO - CUSCO KM 92",
+  "locality": "SOL NACIENTE",
+  "district": "inambari",
+  "latitude": -12.897381,
+  "longitude": -69.897481,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394969",
+  "name": "52199",
+  "address": "RIO INAMBARI",
+  "locality": "JAYAVE",
+  "district": "inambari",
+  "latitude": -12.7719,
+  "longitude": -69.948811,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "394974",
+  "name": "52201",
+  "address": "CARRETERA MALDONADO - MAZUKO - KOTSIMBA KM 191",
+  "locality": "KOTSIMBA",
+  "district": "inambari",
+  "latitude": -13.105938,
+  "longitude": -70.251111,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "395006",
+  "name": "52219",
+  "address": "CARRETERA MALDONADO - CUSCO KM 11O",
+  "locality": "VIRGEN DE LA CANDELARIA",
+  "district": "inambari",
+  "latitude": -12.87837,
+  "longitude": -70.039425,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "758177",
+  "name": "52237 JOSE SILVERIO OLAYA BALANDRA",
+  "address": "PONAL",
+  "locality": "PONAL",
+  "district": "inambari",
+  "latitude": -12.793102,
+  "longitude": -70.215242,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "614872",
+  "name": "52251",
+  "address": "CENTROMIN",
+  "locality": "CENTROMIN",
+  "district": "inambari",
+  "latitude": -12.814065,
+  "longitude": -70.196423,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "902858",
+  "name": "52266 JUAN VELAZCO ALVARADO",
+  "address": "BELLA UNION",
+  "locality": "BELLA UNION",
+  "district": "inambari",
+  "latitude": -12.820508,
+  "longitude": -70.134165,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "903202",
+  "name": "52268 JOSE HIPOLITO UNANUE",
+  "address": "BOCA CARACOL",
+  "locality": "BOCA CARACOL",
+  "district": "inambari",
+  "latitude": -12.646295,
+  "longitude": -70.016068,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "903216",
+  "name": "52269 JOSE MARIA ARGUEDAS",
+  "address": "QUEBRADA ALTO PONAL",
+  "locality": "QUEBRADA ALTO PONAL",
+  "district": "inambari",
+  "latitude": -12.77137,
+  "longitude": -70.256045,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "117867",
+  "name": "APRENDER JUGANDO",
+  "address": "JIRON AREQUIPA S/N",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.1048,
+  "longitude": -70.37144,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117343",
+  "name": "CASITA DE LA PRIMAVERA ALTA",
+  "address": "CARRETERA A CUSCO KM. 123",
+  "locality": "PRIMAVERA ALTA",
+  "district": "inambari",
+  "latitude": -12.914305,
+  "longitude": -70.144401,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "903037",
+  "name": "CIRO ALEGRIA",
+  "address": "AVENIDA EL PIONERO S/N",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.098539,
+  "longitude": -70.371214,
+  "levels": "Básica Especial-Inicial, Básica Especial-Primaria"
+ },
+ {
+  "code": "808356",
+  "name": "CRISTO REY I",
+  "address": "CALLE FRANCISCO BOLOGNESI S/N",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.101375,
+  "longitude": -70.373285,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "520939",
+  "name": "ENMANUEL",
+  "address": "AVENIDA FRANCISCO BOLOGNESI S/N",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.09766,
+  "longitude": -70.36682,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "829108",
+  "name": "INDEPENDENCIA",
+  "address": "CARRETERA VIA INTEROCEANICA - PUERT MALDONADO - CUSCO KM. 110",
+  "locality": "VIRGEN DE LA CANDELARIA",
+  "district": "inambari",
+  "latitude": -12.87826,
+  "longitude": -70.03177,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "910636",
+  "name": "ISABEL I DE CASTILLA",
+  "address": "MZ G LOTE 2",
+  "locality": "VIRGEN DE LA CANDELARIA",
+  "district": "inambari",
+  "latitude": -12.882283,
+  "longitude": -70.046479,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "394846",
+  "name": "JOSE C. MARIATEGUI",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 143",
+  "locality": "SANTA ROSA",
+  "district": "inambari",
+  "latitude": -12.925398,
+  "longitude": -70.305914,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "916596",
+  "name": "JUAN SANTOS ATAHUALPA",
+  "address": "JIRON MIGUEL GRAU S/N MZ 24 LOTE 8",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.103492,
+  "longitude": -70.368483,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "913705",
+  "name": "LEONCIO PRADO GUTIERREZ",
+  "address": "JIRON UNION S/N MZ G LOTE 13 SECTOR LA PAMPA",
+  "locality": "LA PAMPA",
+  "district": "inambari",
+  "latitude": -12.889609,
+  "longitude": -70.019699,
+  "levels": "Inicial - Jardín, Secundaria, Primaria"
+ },
+ {
+  "code": "834379",
+  "name": "M.J.M. LOS EMBAJADORES",
+  "address": "CARRETERA INTEROCEANICA KM 107.5 LOTE 01 SECTOR LA PAMPA",
+  "locality": "LA PAMPA",
+  "district": "inambari",
+  "latitude": -12.887646,
+  "longitude": -70.020101,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "827430",
+  "name": "MALINOWSKI",
+  "address": "CARRETERA PUERTO MALDONADO-CUSCO KM. 101 SECTOR MALINOWSKI",
+  "locality": "MALINOWSKI",
+  "district": "inambari",
+  "latitude": -13.005806,
+  "longitude": -69.964704,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "913791",
+  "name": "MANUEL FERNANDO BONILLA ELHART",
+  "address": "ASOCIACION BAJO SARAYACU PUERTO KORY",
+  "locality": "BAJO SARAYACU",
+  "district": "inambari",
+  "latitude": -12.761972,
+  "longitude": -69.993103,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "913499",
+  "name": "MARIA PARADO DE BELLIDO",
+  "address": "PASAJE 20 DE JUNIO S/N MZ F LOTE 1",
+  "locality": "2 DE MAYO",
+  "district": "inambari",
+  "latitude": -13.071797,
+  "longitude": -70.359664,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "916134",
+  "name": "MATEO GARCIA PUMACAHUA CHIHUANTITO",
+  "address": "CALLE ADRIEL TITO MAMANI S/N",
+  "locality": "LA PAMPA",
+  "district": "inambari",
+  "latitude": -12.888115,
+  "longitude": -70.016726,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "110816",
+  "name": "MIS HUELLITAS",
+  "address": "CARRETERA PUERTO MALDONADO CUZCO KM 76",
+  "locality": "LA DISTANCIA",
+  "district": "inambari",
+  "latitude": -12.881617,
+  "longitude": -69.770718,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "845250",
+  "name": "NUEVA AREQUIPA",
+  "address": "CARRETERA PUERTO MALDONADO- MAZUKO KM 107",
+  "locality": "NUEVA AREQUIPA",
+  "district": "inambari",
+  "latitude": -12.89255,
+  "longitude": -69.99766,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "394832",
+  "name": "SIMON BOLIVAR",
+  "address": "JIRON FRANCISCO BOLOGNESI S/N",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.100627,
+  "longitude": -70.36827,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "826039",
+  "name": "SIMON BOLIVAR",
+  "address": "AVENIDA ALFONSO UGARTE CON FUKUMOTO",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.100738,
+  "longitude": -70.368837,
+  "levels": "Básica Alternativa-Avanzado, Básica Alternativa-Inicial e Intermedio"
+ },
+ {
+  "code": "117866",
+  "name": "SUEÑOS Y SONRISAS",
+  "address": "JIRON FRANCISCO BOLOGNESI CON JR. JOSE GALVEZ S/N",
+  "locality": "MAZUKO",
+  "district": "inambari",
+  "latitude": -13.10385,
+  "longitude": -70.36909,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "848748",
+  "name": "TALENTOS SCHOOL",
+  "address": "CARRETERA INTEROCEANICA KM. 111",
+  "locality": "VIRGEN DE LA CANDELARIA",
+  "district": "inambari",
+  "latitude": -12.88155,
+  "longitude": -70.04241,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "396303",
+  "name": "298 ANGELES DE LA FRONTERA",
+  "address": "AVENIDA BRASIL S/N",
+  "locality": "IÑAPARI",
+  "district": "inapari",
+  "latitude": -10.94778,
+  "longitude": -69.57742,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "655674",
+  "name": "394",
+  "address": "RIO ACRE",
+  "locality": "BELGICA",
+  "district": "inapari",
+  "latitude": -10.97278,
+  "longitude": -69.731006,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "845368",
+  "name": "444",
+  "address": "CARRETERA IÑAPARI - BELGICA KM.1.2 SECTOR NUEVO IÑAPARI",
+  "locality": "IÑAPARI",
+  "district": "inapari",
+  "latitude": -10.958657,
+  "longitude": -69.580605,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396317",
+  "name": "52055",
+  "address": "RIO ACRE SURCADA 6 HORAS MARGEN IZQUIERDA",
+  "locality": "BELGICA",
+  "district": "inapari",
+  "latitude": -10.97339,
+  "longitude": -69.731057,
+  "levels": "Primaria"
+ },
+ {
+  "code": "757719",
+  "name": "52056",
+  "address": "MALDONADO - IÑAPARI",
+  "locality": "NOAYA",
+  "district": "inapari",
+  "latitude": -11.125233,
+  "longitude": -69.565055,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396336",
+  "name": "52135",
+  "address": "CARRETERA IBERIA - IÑAPARI KM 24",
+  "locality": "SAN ISIDRO",
+  "district": "inapari",
+  "latitude": -11.216655,
+  "longitude": -69.548148,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396341",
+  "name": "52144",
+  "address": "CARRETERA IBERIA - IÑAPARI KM 12",
+  "locality": "VILLA PRIMAVERA",
+  "district": "inapari",
+  "latitude": -11.041843,
+  "longitude": -69.573119,
+  "levels": "Primaria"
+ },
+ {
+  "code": "707734",
+  "name": "52255",
+  "address": "NUEVA OCEANIA BOCA CANALES",
+  "locality": "NUEVA OCEANIA BOCA CANALES",
+  "district": "inapari",
+  "latitude": -11.224193,
+  "longitude": -70.439428,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396355",
+  "name": "53003 ELENA BERTHA",
+  "address": "AVENIDA LEON VELARDE S/N",
+  "locality": "IÑAPARI",
+  "district": "inapari",
+  "latitude": -10.954591,
+  "longitude": -69.578632,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396360",
+  "name": "IÑAPARI",
+  "address": "AVENIDA LEON VELARDE S/N",
+  "locality": "IÑAPARI",
+  "district": "inapari",
+  "latitude": -10.94736,
+  "longitude": -69.57742,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "109266",
+  "name": "LAS FLORCITAS",
+  "address": "CARRETERA IBERIA A IÑAPARI KM. 50",
+  "locality": "VILLA PRIMAVERA",
+  "district": "inapari",
+  "latitude": -11.041794,
+  "longitude": -69.573141,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "105112",
+  "name": "MIS AVENTURAS",
+  "address": "CARRETERA INTEROCEANICA PATQUE - CARDOZO",
+  "locality": "IÑAPARI",
+  "district": "inapari",
+  "latitude": -10.955079,
+  "longitude": -69.578623,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "118240",
+  "name": "SEMILLITAS DE AMOR",
+  "address": "CARRETERA SANTA MARTHA",
+  "locality": "COLONIA",
+  "district": "inapari",
+  "latitude": -10.965924,
+  "longitude": -69.580836,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "901477",
+  "name": "02 SAN JUAN DE DIOS",
+  "address": "AVENIDA LOS PASHACOS S/N",
+  "locality": "PUERTO ROSARIO DE LABERINTO",
+  "district": "laberinto",
+  "latitude": -12.71857,
+  "longitude": -69.584911,
+  "levels": "Básica Especial-Inicial, Básica Especial-Primaria"
+ },
+ {
+  "code": "395488",
+  "name": "274 LOS ANGELITOS",
+  "address": "AVENIDA INAMBARI - LABERINTO S/N",
+  "locality": "LABERINTO",
+  "district": "laberinto",
+  "latitude": -12.718636,
+  "longitude": -69.58798,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395493",
+  "name": "319",
+  "address": "RIO MADRE DE DIOS",
+  "locality": "FORTUNA",
+  "district": "laberinto",
+  "latitude": -12.69954,
+  "longitude": -69.63646,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "559031",
+  "name": "328 CARLOS KAMENO YOREY",
+  "address": "DE LABERINTO RIO MADRE DE DIOS AGUAS ARRIBA",
+  "locality": "AMARAKAERI",
+  "district": "laberinto",
+  "latitude": -12.71856,
+  "longitude": -69.73609,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "582084",
+  "name": "367",
+  "address": "SHIRINGAYOC",
+  "locality": "VUELTA GRANDE",
+  "district": "laberinto",
+  "latitude": -12.6354,
+  "longitude": -69.9029,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "631268",
+  "name": "382 PEQUEÑAS GOTAS DE VIDA",
+  "address": null,
+  "locality": "VILLA ALEJANDRO TOLEDO",
+  "district": "laberinto",
+  "latitude": -12.72954,
+  "longitude": -69.57842,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "707324",
+  "name": "408",
+  "address": "CARRETERA INTEROCEANICA - PUERTO MAZUKO A 10 KM. MARGEN DERE KM. 55",
+  "locality": "FLORIDA ALTA",
+  "district": "laberinto",
+  "latitude": -12.727721,
+  "longitude": -69.656671,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395501",
+  "name": "52033 ALFREDO PÉREZ ALENCART",
+  "address": "CARRETERA PUERTO MALDONADO - MAZUKO",
+  "locality": "FLORIDA ALTA",
+  "district": "laberinto",
+  "latitude": -12.785581,
+  "longitude": -69.611053,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "395520",
+  "name": "52039",
+  "address": "CARRETERA VIRGENES DEL SOL KM 62",
+  "locality": "VIRGENES DEL SOL",
+  "district": "laberinto",
+  "latitude": -12.8233,
+  "longitude": -69.66334,
+  "levels": "Primaria"
+ },
+ {
+  "code": "252470",
+  "name": "52062 JAVIER HERAUD",
+  "address": "JIRON LAS PIEDRAS S/N",
+  "locality": "LABERINTO",
+  "district": "laberinto",
+  "latitude": -12.71685,
+  "longitude": -69.587721,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "022969",
+  "name": "52088 CHABUCA GRANDA",
+  "address": "CARRETERA MALDONADO - CUSCO S/N",
+  "locality": "SAN JUAN",
+  "district": "laberinto",
+  "latitude": -12.869888,
+  "longitude": -69.706643,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395558",
+  "name": "52096 ANTONIO SUEYO IRANGUA",
+  "address": "RIO MDD - DE LABERINTO 3 HORAS AGUAS ARRIBA",
+  "locality": "AMARAKAERI",
+  "district": "laberinto",
+  "latitude": -12.71942,
+  "longitude": -69.73632,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395563",
+  "name": "52097",
+  "address": "COMUNIDAD FORTUNA",
+  "locality": "FORTUNA",
+  "district": "laberinto",
+  "latitude": -12.69958,
+  "longitude": -69.63656,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395577",
+  "name": "52105 JUAN FRANCISCO VELASCO ALVARADO",
+  "address": "CARRETERA MALDONADO - QUINCEMIL KM 47",
+  "locality": "FLORIDA BAJA",
+  "district": "laberinto",
+  "latitude": -12.7497,
+  "longitude": -69.5527,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395596",
+  "name": "52124",
+  "address": "CARRETERA MALDONADO - CUSCO KM 39",
+  "locality": "VICTOR RAUL HAYA DE LA TORRE",
+  "district": "laberinto",
+  "latitude": -12.7181,
+  "longitude": -69.487,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395600",
+  "name": "52132 JOAQUÍN FERRER BENIEL",
+  "address": "CARRETERA MALDONADO CUSCO KM 43",
+  "locality": "TAHUANTINSUYO",
+  "district": "laberinto",
+  "latitude": -12.7323,
+  "longitude": -69.519,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395619",
+  "name": "52140 AGUSTÍN MISHAJA SHAJAÓ",
+  "address": "LAGARTO",
+  "locality": "LAGARTO",
+  "district": "laberinto",
+  "latitude": -12.653161,
+  "longitude": -69.832005,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "395638",
+  "name": "52164",
+  "address": "BOCA UNION",
+  "locality": "BOCA UNION",
+  "district": "laberinto",
+  "latitude": -12.70313,
+  "longitude": -69.66479,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "395695",
+  "name": "52170 HORACIO ZEVALLOS GAMEZ",
+  "address": "HORACIO ZEVALLOS GOMEZ COMUNIDAD",
+  "locality": "HORACIO ZEVALLOS GOMEZ",
+  "district": "laberinto",
+  "latitude": -12.697447,
+  "longitude": -69.737672,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394931",
+  "name": "52171 DOMINGO TRONCOSO MENDOZA",
+  "address": "LAGO INAMBARILLO",
+  "locality": "LAGO INAMBARILLO",
+  "district": "laberinto",
+  "latitude": -12.722804,
+  "longitude": -69.803731,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "394498",
+  "name": "52180",
+  "address": "LABERINTO RIO MDD 8 HORAS AGUAS ARRIBA",
+  "locality": "VUELTA GRANDE",
+  "district": "laberinto",
+  "latitude": -12.6356,
+  "longitude": -69.9026,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395681",
+  "name": "52218 CÁPAC YUPANQUI",
+  "address": "CARRETERA MALDONADO - CUSCO S/N",
+  "locality": "LA DISTANCIA",
+  "district": "laberinto",
+  "latitude": -12.8816,
+  "longitude": -69.770662,
+  "levels": "Primaria"
+ },
+ {
+  "code": "650799",
+  "name": "52252 MARIANO MELGAR",
+  "address": "CARRETERA INTEROCEANICA PUERTO MALDONADO CUSCO KM. 42",
+  "locality": "HUANTUPA",
+  "district": "laberinto",
+  "latitude": -12.697589,
+  "longitude": -69.514832,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "707338",
+  "name": "52254 LAURO ROLANDO MEDINA PIZANGO",
+  "address": "CARRETERA INTEROCEANICA - PUERTO MAZUKO A 10 KM. MARGEN DERE KM. 55",
+  "locality": "FLORIDA ALTA",
+  "district": "laberinto",
+  "latitude": -12.727721,
+  "longitude": -69.656671,
+  "levels": "Primaria"
+ },
+ {
+  "code": "827468",
+  "name": "52262 CARLOS MARQUEZ BRAGA",
+  "address": "CARRETERA INTEROCEANICA PUERTO MALDONADO - CUSCO KM. 50",
+  "locality": "LABERINTO",
+  "district": "laberinto",
+  "latitude": -12.73207,
+  "longitude": -69.58173,
+  "levels": "Primaria"
+ },
+ {
+  "code": "844873",
+  "name": "ALEJANDRO TOLEDO",
+  "address": "AVENIDA SHIHUAHUACO CON AV. FORTALEZA",
+  "locality": "VILLA ALEJANDRO TOLEDO",
+  "district": "laberinto",
+  "latitude": -12.732052,
+  "longitude": -69.576248,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "915356",
+  "name": "CESAR ABRAHAM VALLEJO MENDOZA",
+  "address": "CALLE LAS ORQUIDEAS S/N",
+  "locality": "ALTO UNION ESPERANZA",
+  "district": "laberinto",
+  "latitude": -12.65596,
+  "longitude": -69.70332,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "757026",
+  "name": "JAVIER HERAUD",
+  "address": "AVENIDA TAMBOPATA S/N",
+  "locality": "LABERINTO",
+  "district": "laberinto",
+  "latitude": -12.71685,
+  "longitude": -69.587721,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "858209",
+  "name": "JAVIER HERAUD",
+  "address": "JIRON LOS ZABALOS S/N",
+  "locality": "VILLA ALEJANDRO TOLEDO MANRIQUE",
+  "district": "laberinto",
+  "latitude": -12.73203,
+  "longitude": -69.58189,
+  "levels": "Básica Alternativa-Inicial e Intermedio, Básica Alternativa-Avanzado"
+ },
+ {
+  "code": "916600",
+  "name": "JOSE FRANCISCO DE SAN MARTIN Y MATORRAS",
+  "address": "AVENIDA LA LUPUNA S/N MZ B LOTE 9-10",
+  "locality": "VILLA ALEJANDRO TOLEDO",
+  "district": "laberinto",
+  "latitude": -12.7303,
+  "longitude": -69.572875,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "109389",
+  "name": "LOS COQUITOS",
+  "address": "CARRETERA PUERTO MALDONADO - CUZCO KM 63 COMUNIDAD",
+  "locality": "VIRGENES DEL SOL",
+  "district": "laberinto",
+  "latitude": -12.823654,
+  "longitude": -69.663593,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "111298",
+  "name": "LUZ DEL SABER",
+  "address": "CARRETERA TAHUANTINSUYO - CUSCOO KM. 43",
+  "locality": "TAHUANTINSUYO",
+  "district": "laberinto",
+  "latitude": -12.732076,
+  "longitude": -69.518963,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "116660",
+  "name": "NIÑOS CORAZON MILAGROSO",
+  "address": "COMUNIDAD HORACIO ZEVALLOS GÁMEZ",
+  "locality": "HORACIO ZEVALLOS GOMEZ",
+  "district": "laberinto",
+  "latitude": -12.703913,
+  "longitude": -69.741806,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "917671",
+  "name": "PEDRO RUIZ GALLO",
+  "address": "JIRON ARCOIRIS MZ L LOTE 05",
+  "locality": "VILLA ALEJANDRO TOLEDO",
+  "district": "laberinto",
+  "latitude": -12.727588,
+  "longitude": -69.576845,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "104265",
+  "name": "PEQUEÑOS COMIENZOS",
+  "address": "CARRETERA A CUSCO KM. 35",
+  "locality": "LAS MERCEDES",
+  "district": "laberinto",
+  "latitude": -12.704462,
+  "longitude": -69.446978,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "113817",
+  "name": "RAYITOS DE CIELO",
+  "address": "CARRETERA A CUSCO KM 47 COMUNIDAD",
+  "locality": "LA FLORIDA",
+  "district": "laberinto",
+  "latitude": -12.749798,
+  "longitude": -69.552829,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "395662",
+  "name": "SANTO DOMINGO",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 49.5",
+  "locality": "SANTO DOMINGO",
+  "district": "laberinto",
+  "latitude": -12.76381,
+  "longitude": -69.56558,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "855376",
+  "name": "SANTO DOMINGO",
+  "address": "AVENIDA LOS PIONEROS",
+  "locality": "SANTO DOMINGO",
+  "district": "laberinto",
+  "latitude": -12.76434,
+  "longitude": -69.56549,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "607961",
+  "name": "VIRGEN DEL ROSARIO",
+  "address": "AVENIDA MIGUEL GRAU",
+  "locality": "LABERINTO",
+  "district": "laberinto",
+  "latitude": -12.71998,
+  "longitude": -69.58276,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "782002",
+  "name": "VIRGEN DEL ROSARIO",
+  "address": "JIRON LOS CEDROS LOTE 5",
+  "locality": "LABERINTO",
+  "district": "laberinto",
+  "latitude": -12.71998,
+  "longitude": -69.58276,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "395025",
+  "name": "278",
+  "address": "AVENIDA MADRE DE DIOS S/N",
+  "locality": "PLANCHON",
+  "district": "las_piedras",
+  "latitude": -12.279609,
+  "longitude": -69.149462,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395030",
+  "name": "286 CARITAS FELICES",
+  "address": "CARRETERA MALDONADO - IBERIA KM 58",
+  "locality": "ALEGRIA",
+  "district": "las_piedras",
+  "latitude": -12.11847,
+  "longitude": -69.1197,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395049",
+  "name": "293 NIÑOS DE JESUS",
+  "address": "CARRETERA PUERTO MALDONADO - IBERIA KM 80",
+  "locality": "MAVILA",
+  "district": "las_piedras",
+  "latitude": -11.932949,
+  "longitude": -69.121501,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395054",
+  "name": "300 MADRE COVADONGA",
+  "address": "CARRETERA MALDONADO - IBERIA KM 26",
+  "locality": "SUDADERO",
+  "district": "las_piedras",
+  "latitude": -12.381365,
+  "longitude": -69.144328,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395068",
+  "name": "305 ALMIRANTE MIGUEL GRAU SEMINARIO",
+  "address": "AVENIDA ELENA RIVERO S/N",
+  "locality": "TRIUNFO",
+  "district": "las_piedras",
+  "latitude": -12.588246,
+  "longitude": -69.169439,
+  "levels": "Inicial - Cuna-jardín"
+ },
+ {
+  "code": "395073",
+  "name": "311",
+  "address": "CARRETERA MALDONADO - OTILIA KM 10",
+  "locality": "PUERTO ARTURO",
+  "district": "las_piedras",
+  "latitude": -12.488453,
+  "longitude": -69.215637,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395450",
+  "name": "341 SEMILLITAS DEL SABER",
+  "address": "MALDONADO - IBERIA",
+  "locality": "MONTERREY",
+  "district": "las_piedras",
+  "latitude": -12.208014,
+  "longitude": -69.129381,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395469",
+  "name": "346 ROCIÓ DEL PILAR SOTO NAVARRO",
+  "address": "RIO MADRE DE DIOS",
+  "locality": "LAGO VALENCIA",
+  "district": "las_piedras",
+  "latitude": -12.405941,
+  "longitude": -68.802483,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "668308",
+  "name": "396 ANTONIA CAYA",
+  "address": "UPIS",
+  "locality": "PLANCHON",
+  "district": "las_piedras",
+  "latitude": -12.274569,
+  "longitude": -69.153318,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "768609",
+  "name": "413 MARISCAL AGUSTÍN GAMARRA",
+  "address": "PUERTO LUCERNA",
+  "locality": "PUERTO LUCERNA",
+  "district": "las_piedras",
+  "latitude": -12.097683,
+  "longitude": -69.469554,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "768614",
+  "name": "414 SAN JUAN BOSCO",
+  "address": "UPIS CONTINENTAL",
+  "locality": "LAS PIEDRAS",
+  "district": "las_piedras",
+  "latitude": -12.568924,
+  "longitude": -69.175371,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "789292",
+  "name": "418 LEV VYGOTSKY",
+  "address": "ASOCIACION VILLA TERRASOL",
+  "locality": "ASOCIACION VILLA TERRASOL",
+  "district": "las_piedras",
+  "latitude": -12.583168,
+  "longitude": -69.176791,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "789305",
+  "name": "419",
+  "address": "RIOS LAS PIEDRAS COMUNIDAD NATIVA",
+  "locality": "PUERTO NUEVO",
+  "district": "las_piedras",
+  "latitude": -11.90323,
+  "longitude": -70.13527,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "835213",
+  "name": "435 NUEVA JERUSALEN",
+  "address": "CARRETERA PUERTO MALDONADO - IÑAPARI KM. 57",
+  "locality": "ALEGRIA",
+  "district": "las_piedras",
+  "latitude": -12.141592,
+  "longitude": -69.11662,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "849088",
+  "name": "445 SANTA ALICIA",
+  "address": "SANTA ALICIA",
+  "locality": "LAS PIEDRAS",
+  "district": "las_piedras",
+  "latitude": -11.991883,
+  "longitude": -70.028624,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "395087",
+  "name": "52003 FRANCISCO BOLOGNESI",
+  "address": "CARRETERA MADRE DE DIOS",
+  "locality": "LAGO VALENCIA",
+  "district": "las_piedras",
+  "latitude": -12.406021,
+  "longitude": -68.802588,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "395110",
+  "name": "52018 SANTA CECILIA",
+  "address": "CACHUELA OVIEDO",
+  "locality": "CACHUELA OVIEDO",
+  "district": "las_piedras",
+  "latitude": -12.533916,
+  "longitude": -69.164822,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395153",
+  "name": "52032 MARISCAL RAMON CASTILLA",
+  "address": "CARRETERA PUERTO MALDONADO - OTILIA KM 10.5",
+  "locality": "PUERTO ARTURO",
+  "district": "las_piedras",
+  "latitude": -12.488386,
+  "longitude": -69.216493,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395228",
+  "name": "52064 EL PIÑAL",
+  "address": "MALDONADO - IBERIA INT. KM 13",
+  "locality": "PIÑAL",
+  "district": "las_piedras",
+  "latitude": -12.0119,
+  "longitude": -69.0649,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395233",
+  "name": "52068",
+  "address": "CARRETERA MALDONADO - IBERIA KM 70 INT 10 KM",
+  "locality": "NUEVA VISTA",
+  "district": "las_piedras",
+  "latitude": -11.9787,
+  "longitude": -69.2413,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395252",
+  "name": "52076",
+  "address": "CARRETERA MALDONADO - IBERIA KM 8",
+  "locality": "SANTA TERESA",
+  "district": "las_piedras",
+  "latitude": -12.5372,
+  "longitude": -69.1424,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395266",
+  "name": "52080 PRAEXDES COLLAZOS RAMÍREZ",
+  "address": "CARRETERA MALDONADO - IBERIA KM 12.5",
+  "locality": "BELLO HORIZONTE",
+  "district": "las_piedras",
+  "latitude": -12.4979,
+  "longitude": -69.1459,
+  "levels": "Primaria"
+ },
+ {
+  "code": "864663",
+  "name": "52081",
+  "address": "JIRON GUILLERMO IKEDA TANATA S/N",
+  "locality": "BAJO MADRE DE DIOS",
+  "district": "las_piedras",
+  "latitude": -12.58791,
+  "longitude": -69.138886,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395285",
+  "name": "52094 ALMIRANTE MIGUEL GRAU SEMINARIO",
+  "address": "AVENIDA TADEO VERA S/N",
+  "locality": "TRIUNFO",
+  "district": "las_piedras",
+  "latitude": -12.58772,
+  "longitude": -69.17018,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "395290",
+  "name": "52095 JUAN ARAUJO SANGAMA",
+  "address": "CARRETERA MALDONADO - IBERIA KM 26.5",
+  "locality": "SUDADERO",
+  "district": "las_piedras",
+  "latitude": -12.3808,
+  "longitude": -69.1437,
+  "levels": "Secundaria, Primaria"
+ },
+ {
+  "code": "395445",
+  "name": "52110",
+  "address": "CARRETERA MALDONADO - IBERIA KM 75",
+  "locality": "CAFETAL",
+  "district": "las_piedras",
+  "latitude": -11.9715,
+  "longitude": -69.1354,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395332",
+  "name": "52126 SALUSTIO CCOPA AUCALLA",
+  "address": "RIO PIEDRAS MARG IZQ",
+  "locality": "SABALUYO",
+  "district": "las_piedras",
+  "latitude": -12.3198,
+  "longitude": -69.275,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395346",
+  "name": "52136 SAN MARTIN DE PORRES",
+  "address": "CARRETERA MALDONADO - IBERIA KM 68",
+  "locality": "FRAY MARTIN",
+  "district": "las_piedras",
+  "latitude": -12.033351,
+  "longitude": -69.133093,
+  "levels": "Primaria"
+ },
+ {
+  "code": "533183",
+  "name": "52137",
+  "address": "RIO MADRE DE DIOS S/N",
+  "locality": "TIPISHKA",
+  "district": "las_piedras",
+  "latitude": -12.225673,
+  "longitude": -69.357295,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395351",
+  "name": "52141 JUAN MEZA HUAYTA",
+  "address": "CARRETERA MALDONADO - IBERIA KM 48",
+  "locality": "MONTERREY",
+  "district": "las_piedras",
+  "latitude": -12.2074,
+  "longitude": -69.1286,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395407",
+  "name": "52168 ALFONSO UGARTE",
+  "address": "CARRETERA MALDONADO - IBERIA KM 21",
+  "locality": "NUEVA ALIANZA",
+  "district": "las_piedras",
+  "latitude": -12.417828,
+  "longitude": -69.117424,
+  "levels": "Primaria"
+ },
+ {
+  "code": "520920",
+  "name": "52242",
+  "address": "RIO PIEDRAS",
+  "locality": "PUERTO NUEVO",
+  "district": "las_piedras",
+  "latitude": -11.903281,
+  "longitude": -70.13516,
+  "levels": "Primaria"
+ },
+ {
+  "code": "647655",
+  "name": "52253 NUEVO BETHEL",
+  "address": "CARRETERA INTEROCEANICA PUERTO MALDONADO - IÑAPARI KM 72",
+  "locality": "NUEVO BETHEL / JULIO MERCADO",
+  "district": "las_piedras",
+  "latitude": -11.999763,
+  "longitude": -69.204257,
+  "levels": "Primaria"
+ },
+ {
+  "code": "712764",
+  "name": "52258 ROMULO HUAMAN GAMBOA",
+  "address": "ASOCIACION AGROFORESTAL RIO LAS PIEDRAS",
+  "locality": "PUERTO LUCERNA",
+  "district": "las_piedras",
+  "latitude": -12.097627,
+  "longitude": -69.4698,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "784708",
+  "name": "52259",
+  "address": "A ORILLAS DEL RIO PIEDRAS COMUNIDAD NATIVA",
+  "locality": "LA VICTORIA",
+  "district": "las_piedras",
+  "latitude": -12.194552,
+  "longitude": -69.367454,
+  "levels": "Primaria"
+ },
+ {
+  "code": "109308",
+  "name": "ANGELITOS",
+  "address": "CARRETERA FRAY MARTIN KM. 68",
+  "locality": "FRAY MARTIN",
+  "district": "las_piedras",
+  "latitude": -12.03357,
+  "longitude": -69.132832,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "104902",
+  "name": "ANGELITOS DE ALEGRIA",
+  "address": "COMUNIDAD LOS ANGELES",
+  "locality": "ALEGRIA",
+  "district": "las_piedras",
+  "latitude": -12.101772,
+  "longitude": -69.115698,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "108414",
+  "name": "ANGELITOS TRIUNFADORES",
+  "address": "AVENIDA CONTINENTAL S/N",
+  "locality": "EL TRIUNFO",
+  "district": "las_piedras",
+  "latitude": -12.580376,
+  "longitude": -69.164675,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "110780",
+  "name": "CAFETAL",
+  "address": "PUERTO - IBERIA",
+  "locality": "CAFETAL",
+  "district": "las_piedras",
+  "latitude": -11.971544,
+  "longitude": -69.13515,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "108834",
+  "name": "ESTRELLITAS DE COLORES",
+  "address": "CARRETERA A IBERIA KM. 12",
+  "locality": "BELLO HORIZONTE",
+  "district": "las_piedras",
+  "latitude": -12.497661,
+  "longitude": -69.145879,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "110878",
+  "name": "ESTRELLITAS DE LUZ",
+  "address": "CARRETERA PUERTO MALDONADO - IBERIA KM 8",
+  "locality": "SANTA TERESA",
+  "district": "las_piedras",
+  "latitude": -12.537111,
+  "longitude": -69.142284,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "395129",
+  "name": "HEROES DE ILLAMPU",
+  "address": "CARRETERA PUERTO MALDONADO - IBERIA KM 80",
+  "locality": "MAVILA",
+  "district": "las_piedras",
+  "latitude": -11.933347,
+  "longitude": -69.11648,
+  "levels": "Primaria, Secundaria, Básica Alternativa-Avanzado"
+ },
+ {
+  "code": "108847",
+  "name": "HUELLITA INFANTIL",
+  "address": "CARRETERA BAJO MADRE DE DIOS KM 6.5",
+  "locality": "EL TRIUNFO",
+  "district": "las_piedras",
+  "latitude": -12.589497,
+  "longitude": -69.16357,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "395092",
+  "name": "JORGE CHAVEZ RENGIFO",
+  "address": "AVENIDA MADRE DE DIOS S/N",
+  "locality": "PLANCHON",
+  "district": "las_piedras",
+  "latitude": -12.279505,
+  "longitude": -69.151938,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "108413",
+  "name": "LA CASITA DE LA VILLA",
+  "address": "AVENIDA CONTINENTAL S/N",
+  "locality": "EL TRIUNFO",
+  "district": "las_piedras",
+  "latitude": -12.579701,
+  "longitude": -69.164075,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "111322",
+  "name": "LA VICTORIA",
+  "address": "COM. NATIVA BOCA LA VICTORIA",
+  "locality": "LA VICTORIA",
+  "district": "las_piedras",
+  "latitude": -12.19372,
+  "longitude": -69.367531,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "110134",
+  "name": "LAPICITOS VERDES",
+  "address": "JIRON LOS FITOS CON JIRON LAS FLORES S/N MZ L LOTE 12",
+  "locality": "EL TRIUNFO",
+  "district": "las_piedras",
+  "latitude": -12.590523,
+  "longitude": -69.153228,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "110832",
+  "name": "MANITOS DE COLORES",
+  "address": "CARRETERA INTER OCEÁNICA A IBERIA",
+  "locality": "SANTA TERESA",
+  "district": "las_piedras",
+  "latitude": -12.537823,
+  "longitude": -69.142182,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117869",
+  "name": "MANITOS UNIDAS",
+  "address": "AVENIDA MADRE DE DIOS S/N",
+  "locality": "LAS PIEDRAS/PLANCHON",
+  "district": "las_piedras",
+  "latitude": -12.27921,
+  "longitude": -69.14942,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "109270",
+  "name": "MI DULCE HOGAR",
+  "address": "CARRETERA INTEROCEANICA A IBERIA INTERIOR KM 8.5 KM. 75",
+  "locality": "NUEVO BETHEL / JULIO MERCADO",
+  "district": "las_piedras",
+  "latitude": -11.998301,
+  "longitude": -69.205917,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "108910",
+  "name": "MUNDO GARABATO",
+  "address": "CARRETERA INTEROCEANICA KM. 78",
+  "locality": "NUEVA VISTA",
+  "district": "las_piedras",
+  "latitude": -11.978623,
+  "longitude": -69.24121,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117347",
+  "name": "NIÑOS ALEGRES",
+  "address": "CARRETERA PTO. MALDONADO A IBERIA KM 68",
+  "locality": "ALEGRIA",
+  "district": "las_piedras",
+  "latitude": -12.120271,
+  "longitude": -69.12058,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "395308",
+  "name": "NIÑOS FRANCISCANOS",
+  "address": "CARRETERA A IBERIA",
+  "locality": "SAN FRANCISCO",
+  "district": "las_piedras",
+  "latitude": -12.3421,
+  "longitude": -69.1606,
+  "levels": "Primaria, Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "395167",
+  "name": "RAUL VARGAS QUIROZ",
+  "address": "CARRETERA MALDONADO - IBERIA KM 58",
+  "locality": "ALEGRIA",
+  "district": "las_piedras",
+  "latitude": -12.119179,
+  "longitude": -69.119977,
+  "levels": "Secundaria, Primaria"
+ },
+ {
+  "code": "117874",
+  "name": "TRAZOS Y GARABATOS",
+  "address": "CARRETERA INTEROCEANICA KM 3",
+  "locality": "CACHUELA MARGEN IZQUIERDA",
+  "district": "las_piedras",
+  "latitude": -12.53399,
+  "longitude": -69.16482,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "395978",
+  "name": "306",
+  "address": "SAN JOSE DE KARENE",
+  "locality": "SAN JOSE DE KARENE",
+  "district": "madre_de_dios",
+  "latitude": -12.68781,
+  "longitude": -70.52075,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395983",
+  "name": "314 MARÍA JESÚS WIESSE",
+  "address": "AVENIDA MADRE DE DIOS - BOCA COLORADO S/N",
+  "locality": "BOCA COLORADO",
+  "district": "madre_de_dios",
+  "latitude": -12.6179,
+  "longitude": -70.3933,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396015",
+  "name": "324 OVIDE DECROLY",
+  "address": "LABERINTO RIO MADRE DE DIOS",
+  "locality": "SAN JUAN GRANDE",
+  "district": "madre_de_dios",
+  "latitude": -12.5806,
+  "longitude": -70.2014,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396195",
+  "name": "325 MARÍA ELENA MOYANO",
+  "address": "DE LABERINTO RIO",
+  "locality": "PACAL",
+  "district": "madre_de_dios",
+  "latitude": -12.6419,
+  "longitude": -70.3129,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396176",
+  "name": "329 NIÑOS DE MARIA",
+  "address": "PUERTO LUZ",
+  "locality": "PUERTO LUZ",
+  "district": "madre_de_dios",
+  "latitude": -12.7462,
+  "longitude": -70.5966,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396280",
+  "name": "347",
+  "address": "CARRETERA MALDONADO - CUSCO",
+  "locality": "PUNKIRI CHICO",
+  "district": "madre_de_dios",
+  "latitude": -12.909771,
+  "longitude": -70.361168,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "757578",
+  "name": "353",
+  "address": "RIO MDD - DE LABERINTO 15 HORAS AGUAS ARRIBA",
+  "locality": "BAJO COLORADO",
+  "district": "madre_de_dios",
+  "latitude": -12.6395,
+  "longitude": -70.4521,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "350437",
+  "name": "356",
+  "address": "DELTA 1 S/N",
+  "locality": "DELTA 1 / BAJO PUKIRI",
+  "district": "madre_de_dios",
+  "latitude": -12.790199,
+  "longitude": -70.522501,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "650327",
+  "name": "393 FIDEL RAYMONTI KASHIRI",
+  "address": "BOCA ISIRIWE",
+  "locality": "BOCA ISIRI",
+  "district": "madre_de_dios",
+  "latitude": -12.5056,
+  "longitude": -70.6006,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396039",
+  "name": "52075",
+  "address": "SAN JOSE DE KARENE",
+  "locality": "SAN JOSE DE KARENE",
+  "district": "madre_de_dios",
+  "latitude": -12.6866,
+  "longitude": -70.5206,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396077",
+  "name": "52102 PADRE JOSE ALVAREZ",
+  "address": "PUERTO LUZ",
+  "locality": "PUERTO LUZ",
+  "district": "madre_de_dios",
+  "latitude": -12.746,
+  "longitude": -70.5969,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396119",
+  "name": "52148",
+  "address": "CARRETERA RIO PUKIRI MARGEN DERECHA",
+  "locality": "DELTA 2 / CENTRO PUKIRI",
+  "district": "madre_de_dios",
+  "latitude": -12.8114,
+  "longitude": -70.5333,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396124",
+  "name": "52154 FREDY NICOLAS GAMBETTA URÍA",
+  "address": "PACAL GUACAMAYO",
+  "locality": "PACAL GUACAMAYO",
+  "district": "madre_de_dios",
+  "latitude": -12.64095,
+  "longitude": -70.31325,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396162",
+  "name": "52204 ABRAHAM LINCOLN",
+  "address": "LABERINTO RIO MADRE DE DIOS",
+  "locality": "BOCA AMIGOS",
+  "district": "madre_de_dios",
+  "latitude": -12.6045,
+  "longitude": -70.0889,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "700493",
+  "name": "52204 ABRAHAM LINCOLN",
+  "address": "BOCA AMIGO",
+  "locality": "BOCA AMIGOS",
+  "district": "madre_de_dios",
+  "latitude": -12.604584,
+  "longitude": -70.088612,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396181",
+  "name": "52210",
+  "address": "RIO MADRE DE DIOS 3 DIAS AGUAS ARRIBA",
+  "locality": "ISIRIVE",
+  "district": "madre_de_dios",
+  "latitude": -12.5064,
+  "longitude": -70.5998,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396218",
+  "name": "52212 INCA GARCILASO DE LA VEGA",
+  "address": "LABERINTO RIO ARRIBA",
+  "locality": "BAJO COLORADO",
+  "district": "madre_de_dios",
+  "latitude": -12.6392,
+  "longitude": -70.4518,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396275",
+  "name": "52230 CARLOS LEÓN VELARDE",
+  "address": "CARRETERA MALDONADO - SANTA ROSA - COLORADO",
+  "locality": "PUNKIRI CHICO",
+  "district": "madre_de_dios",
+  "latitude": -12.9101,
+  "longitude": -70.3607,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "758139",
+  "name": "52233",
+  "address": "MALDONADO - HUEPETUHE - SETAPO",
+  "locality": "SETAPO",
+  "district": "madre_de_dios",
+  "latitude": -12.9685,
+  "longitude": -70.6473,
+  "levels": "Primaria"
+ },
+ {
+  "code": "758158",
+  "name": "52236 BAMBERME",
+  "address": "CARRETERA MALDONADO - HUEPETUHE KM 221",
+  "locality": "VAN BERME",
+  "district": "madre_de_dios",
+  "latitude": -13.0127,
+  "longitude": -70.6599,
+  "levels": "Primaria"
+ },
+ {
+  "code": "854409",
+  "name": "52263",
+  "address": "PUERTO VILLA MALVINAS",
+  "locality": "MALVINAS",
+  "district": "madre_de_dios",
+  "latitude": -12.60456,
+  "longitude": -70.13024,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "900661",
+  "name": "52264",
+  "address": "AWAJUN - KASHAP ENTSA",
+  "locality": "AWAJUN - KASHAP ENTSA",
+  "district": "madre_de_dios",
+  "latitude": -12.839134,
+  "longitude": -70.31441,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "917685",
+  "name": "BARTOLOME HERRERA VELEZ",
+  "address": "AVENIDA ABANCAY MZ F3 LOTE 1C",
+  "locality": "DELTA 1 / BAJO PUKIRI",
+  "district": "madre_de_dios",
+  "latitude": -12.789778,
+  "longitude": -70.518525,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "396242",
+  "name": "DANIEL ALCIDES CARRION",
+  "address": "CARRETERA HUEPETUHE PUKIRI 228",
+  "locality": "DELTA 1 / BAJO PUKIRI",
+  "district": "madre_de_dios",
+  "latitude": -12.790478,
+  "longitude": -70.521496,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "913687",
+  "name": "FRAY JOSE ALVAREZ FERNANDEZ",
+  "address": "LOS HIJOS DE PERU DA",
+  "locality": "VILLA BOCA COLORADO",
+  "district": "madre_de_dios",
+  "latitude": -12.486627,
+  "longitude": -70.553706,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "826459",
+  "name": "GALILEO GALILEI",
+  "address": "JIRON 14 AMIGOS",
+  "locality": "BAJO PUKIRI DELTA",
+  "district": "madre_de_dios",
+  "latitude": -12.995819,
+  "longitude": -70.531411,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "917379",
+  "name": "LEONARDO DA VINCI",
+  "address": "CALLE COLONIAL S/N MZ P LOTE 02",
+  "locality": "BOCA COLORADO",
+  "district": "madre_de_dios",
+  "latitude": -12.618233,
+  "longitude": -70.394528,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "396143",
+  "name": "PEDRO PAULET",
+  "address": "LABERINTO RIO MADRE DE DIOS",
+  "locality": "SAN JUAN GRANDE",
+  "district": "madre_de_dios",
+  "latitude": -12.5822,
+  "longitude": -70.2013,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "757696",
+  "name": "RVDO. PADRE PABLO ZAVALA MARTINEZ",
+  "address": "AVENIDA MADRE DE DIOS S/N",
+  "locality": "BOCA COLORADO",
+  "district": "madre_de_dios",
+  "latitude": -12.618095,
+  "longitude": -70.394255,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "396044",
+  "name": "RVDO. PADRE PABLO ZAVALA MARTINEZ",
+  "address": "AVENIDA MADRE DE DIOS S/N",
+  "locality": "BOCA COLORADO",
+  "district": "madre_de_dios",
+  "latitude": -12.619058,
+  "longitude": -70.395502,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395879",
+  "name": "279 NIÑO DE PRAGA",
+  "address": "AVENIDA ESPERANZA S/N",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.83553,
+  "longitude": -71.361816,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395898",
+  "name": "303",
+  "address": "SHINTUYA COMUNIDAD",
+  "locality": "SHINTUYA",
+  "district": "manu",
+  "latitude": -12.668918,
+  "longitude": -71.295352,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "511609",
+  "name": "316 NIÑO JESUS",
+  "address": "SAN ISIDRO",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.836653,
+  "longitude": -71.355509,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395718",
+  "name": "326 PALOTOA",
+  "address": "PALOTOA S/N",
+  "locality": "PALOTOA/LLACTAPAMPA",
+  "district": "manu",
+  "latitude": -12.665572,
+  "longitude": -71.356913,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "081218",
+  "name": "350",
+  "address": "ITAHUANIA",
+  "locality": "ITAHUANIA",
+  "district": "manu",
+  "latitude": -12.638298,
+  "longitude": -71.223897,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "582135",
+  "name": "375",
+  "address": "GAMITANA",
+  "locality": "ASUNCION DE GAMITANA",
+  "district": "manu",
+  "latitude": -12.8883,
+  "longitude": -71.3494,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "631287",
+  "name": "385",
+  "address": "COMUNIDAD NATIVA DE SHIPITIARI",
+  "locality": "SHIPITIARI",
+  "district": "manu",
+  "latitude": -12.491744,
+  "longitude": -71.171512,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "649094",
+  "name": "390",
+  "address": "PANTIACOLLA",
+  "locality": "PANTIACOLLA",
+  "district": "manu",
+  "latitude": -12.61595,
+  "longitude": -71.3755,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "668365",
+  "name": "403",
+  "address": "PAITITI",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.830799,
+  "longitude": -71.370888,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "767742",
+  "name": "410",
+  "address": "VISTA ALEGRE",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.833822,
+  "longitude": -71.365629,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "395822",
+  "name": "50431 JOSE CARLOS MARIATEGUI",
+  "address": "AVENIDA NUEVA ESPERANZA S/N",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.836238,
+  "longitude": -71.360968,
+  "levels": "Primaria, Secundaria, Básica Alternativa-Avanzado, Básica Alternativa-Inicial e Intermedio"
+ },
+ {
+  "code": "395860",
+  "name": "50432 GAMITANA",
+  "address": "CARRETERA SALVACION - RIO CARBON CUSCO KM 213",
+  "locality": "ASUNCION DE GAMITANA",
+  "district": "manu",
+  "latitude": -12.889009,
+  "longitude": -71.349344,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395799",
+  "name": "50918 JOSE ABELARDO QUIÑONES",
+  "address": "RIO ALTO MADRE DE DIOS MARGEN IZQUIERDA",
+  "locality": "PALOTOA",
+  "district": "manu",
+  "latitude": -12.666228,
+  "longitude": -71.356569,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "383107",
+  "name": "50919",
+  "address": "SHINTUYA RIO MADRE DE DIOS",
+  "locality": "MAMAJAPA",
+  "district": "manu",
+  "latitude": -12.607232,
+  "longitude": -71.240338,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395884",
+  "name": "52066 VIRGEN MADRE DE DIOS",
+  "address": "SHINTUYA COMUNIDAD",
+  "locality": "SHINTUYA",
+  "district": "manu",
+  "latitude": -12.669376,
+  "longitude": -71.295846,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "395855",
+  "name": "52103",
+  "address": "CARRETERA SALVACION SHINTUYA KM 33",
+  "locality": "SANTA CRUZ",
+  "district": "manu",
+  "latitude": -12.667613,
+  "longitude": -71.343143,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395841",
+  "name": "52104",
+  "address": "CARRETERA SALVACION SHINTUYA KM 16",
+  "locality": "MANSILLA",
+  "district": "manu",
+  "latitude": -12.749385,
+  "longitude": -71.352096,
+  "levels": "Primaria"
+ },
+ {
+  "code": "020121",
+  "name": "52161 SANTOS KAWAY KOMORI",
+  "address": "RIO ALTO MADRE DE DIOS",
+  "locality": "ITAHUANIA",
+  "district": "manu",
+  "latitude": -12.640984,
+  "longitude": -71.222991,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "395756",
+  "name": "52172",
+  "address": "SHIPITIARI",
+  "locality": "SHIPITIARI",
+  "district": "manu",
+  "latitude": -12.49082,
+  "longitude": -71.17154,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395775",
+  "name": "52179",
+  "address": "RIO PALOTOA MARGEN IZQUIERDA",
+  "locality": "PANTIACOLLA",
+  "district": "manu",
+  "latitude": -12.615698,
+  "longitude": -71.374526,
+  "levels": "Primaria"
+ },
+ {
+  "code": "395836",
+  "name": "52207",
+  "address": "CARRETERA SALVACION - SHINTUYA KM 20",
+  "locality": "NUEVA MANSILLA",
+  "district": "manu",
+  "latitude": -12.726712,
+  "longitude": -71.362091,
+  "levels": "Primaria"
+ },
+ {
+  "code": "110747",
+  "name": "ANGELITOS DE DIOS",
+  "address": "NUEVA ESPERANZA",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.835747,
+  "longitude": -71.362381,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "906069",
+  "name": "CIRILO ESPINAL SUAREZ",
+  "address": "AVENIDA MANSILLA S/N SECTOR APROVINGE",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.827556,
+  "longitude": -71.364774,
+  "levels": "Primaria"
+ },
+ {
+  "code": "102462",
+  "name": "DIVINOS NIÑOS",
+  "address": "BARRIO PAITITI",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.831897,
+  "longitude": -71.370009,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "110877",
+  "name": "KUKISITOS",
+  "address": "SANTA CRUZ",
+  "locality": "SANTA CRUZ",
+  "district": "manu",
+  "latitude": -12.667708,
+  "longitude": -71.343718,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "107382",
+  "name": "LAS ESTRELLITAS",
+  "address": "BARRIO SAN ISIDRO AA.HH.",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.836647,
+  "longitude": -71.35559,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "113981",
+  "name": "LOS NIÑOS LABRADORES",
+  "address": "APROVINGE",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.828519,
+  "longitude": -71.365192,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "113978",
+  "name": "LOS PEQUEÑOS SABIOS",
+  "address": "CARRETERA BARRIO MAGISTERIAL",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.837463,
+  "longitude": -71.36355,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "395902",
+  "name": "MANU",
+  "address": "AVENIDA MANU S/N",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.831071,
+  "longitude": -71.368643,
+  "levels": "Instituto Superior Tecnológico"
+ },
+ {
+  "code": "107227",
+  "name": "MELODÍAS DE DIOS",
+  "address": "CARRETERA MANU",
+  "locality": "MANSILLA",
+  "district": "manu",
+  "latitude": -12.749243,
+  "longitude": -71.352307,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "105309",
+  "name": "PUSHARITOS DEL SABER",
+  "address": "PUSHARO VILLA SALVACION",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.836877,
+  "longitude": -71.369419,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "110865",
+  "name": "SEMILLITAS",
+  "address": "NUEVA MANSILLA",
+  "locality": "NUEVA MANSILLA",
+  "district": "manu",
+  "latitude": -12.726676,
+  "longitude": -71.362054,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "108591",
+  "name": "SEMILLITAS DEL FUTURO",
+  "address": "BARRIO PROGRESO",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.837583,
+  "longitude": -71.366125,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "102463",
+  "name": "TESORITOS DEL MANU",
+  "address": "JIRON BARRIO VISTA ALEGRE S/N",
+  "locality": "SALVACION",
+  "district": "manu",
+  "latitude": -12.832567,
+  "longitude": -71.367075,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "396548",
+  "name": "272",
+  "address": "CARRETERA PUERTO MALDONADO - IBERIA KM 118",
+  "locality": "ALERTA",
+  "district": "tahuamanu",
+  "latitude": -11.657874,
+  "longitude": -69.234927,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396553",
+  "name": "282 SHIRINGAYOC",
+  "address": "CARRETERA MALDONADO - IBERIA KM 82 MARGEN DERECHA INT 5 KM",
+  "locality": "SHIRINGAYO",
+  "district": "tahuamanu",
+  "latitude": -11.9032,
+  "longitude": -69.0858,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396567",
+  "name": "283",
+  "address": "CARRETERA PUERTO MALDONADO - IBERIA KM 146",
+  "locality": "SAN LORENZO",
+  "district": "tahuamanu",
+  "latitude": -11.4556,
+  "longitude": -69.32264,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396572",
+  "name": "289 CORDERITOS DE JESUS LA NOVIA",
+  "address": "CARRETERA MALDONADO - IBERIA KM 90",
+  "locality": "LA NOVIA",
+  "district": "tahuamanu",
+  "latitude": -11.86754,
+  "longitude": -69.13807,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "631292",
+  "name": "384",
+  "address": "SAN PEDRO",
+  "locality": "SAN PEDRO",
+  "district": "tahuamanu",
+  "latitude": -11.721095,
+  "longitude": -69.174089,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "648297",
+  "name": "389",
+  "address": "CARRETERA PUERTO MALDONADO - IÑAPARI KM. 84",
+  "locality": "SANTA MARIA",
+  "district": "tahuamanu",
+  "latitude": -11.8945,
+  "longitude": -69.0064,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "815578",
+  "name": "432",
+  "address": "NUEVO PACARAN",
+  "locality": "NUEVO PACARAN",
+  "district": "tahuamanu",
+  "latitude": -11.83919,
+  "longitude": -69.11648,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "396591",
+  "name": "52052 SAN LORENZO",
+  "address": "CARRETERA PUERTO MALDONADO - IBERIA KM 116",
+  "locality": "SAN LORENZO",
+  "district": "tahuamanu",
+  "latitude": -11.455118,
+  "longitude": -69.321442,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396609",
+  "name": "52057",
+  "address": "CARRETERA MALDONADO - IBERIA KM 116",
+  "locality": "ALERTA",
+  "district": "tahuamanu",
+  "latitude": -11.6537,
+  "longitude": -69.2346,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396614",
+  "name": "52061",
+  "address": "CARRETERA MALDONADO - IBERIA KM 82",
+  "locality": "SANTA MARIA",
+  "district": "tahuamanu",
+  "latitude": -11.8945,
+  "longitude": -69.0064,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396628",
+  "name": "52073",
+  "address": "CARRETERA MALDONADO - IBERIA KM 89",
+  "locality": "NUEVO PACARAN",
+  "district": "tahuamanu",
+  "latitude": -11.8389,
+  "longitude": -69.1164,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396633",
+  "name": "52089",
+  "address": "CARRETERA MALDONADO - IBERIA KM 101",
+  "locality": "VILLA ROCIO",
+  "district": "tahuamanu",
+  "latitude": -11.7816,
+  "longitude": -69.186,
+  "levels": "Primaria"
+ },
+ {
+  "code": "758375",
+  "name": "52093 JESUS DIVINO MAESTRO",
+  "address": "CARRETERA PUERTO MALDONADO - IBERIA KM 90",
+  "locality": "LA NOVIA",
+  "district": "tahuamanu",
+  "latitude": -11.8675,
+  "longitude": -69.1384,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "396464",
+  "name": "52098",
+  "address": "CARRETERA IBERIA - SAN LORENZO KM 11",
+  "locality": "ABEJA",
+  "district": "tahuamanu",
+  "latitude": -11.415044,
+  "longitude": -69.392605,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396652",
+  "name": "52130",
+  "address": "CARRETERA IBERIA - SAN LORENZO KM 10 MARGEN IZQUIERDA INT 1",
+  "locality": "LA MERCED",
+  "district": "tahuamanu",
+  "latitude": -11.383903,
+  "longitude": -69.375432,
+  "levels": "Primaria"
+ },
+ {
+  "code": "396666",
+  "name": "52145",
+  "address": "CARRETERA MALDONADO - IBERIA KM 108",
+  "locality": "SAN PEDRO",
+  "district": "tahuamanu",
+  "latitude": -11.7217,
+  "longitude": -69.1729,
+  "levels": "Primaria"
+ },
+ {
+  "code": "105111",
+  "name": "CORAZON DE JESUS",
+  "address": "AVENIDA 30 DE AGOSTO",
+  "locality": "ALERTA",
+  "district": "tahuamanu",
+  "latitude": -11.656369,
+  "longitude": -69.234931,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "396586",
+  "name": "JUAN QUIROZ CHUECA",
+  "address": "CARRETERA PUERTO MALDONADO - IBERIA KM 82",
+  "locality": "SHIRINGAYO",
+  "district": "tahuamanu",
+  "latitude": -11.9032,
+  "longitude": -69.0857,
+  "levels": "Secundaria, Primaria"
+ },
+ {
+  "code": "105283",
+  "name": "MIS PRIMEROS PASITOS",
+  "address": "NUEVO SAN MARTIN",
+  "locality": "LA NOVIA",
+  "district": "tahuamanu",
+  "latitude": -11.869731,
+  "longitude": -69.13221,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "757724",
+  "name": "OLLANTA HUMALA TASSO",
+  "address": "CARRETERA PUERTO MALDONADO - IÑAPARI KM 118",
+  "locality": "ALERTA",
+  "district": "tahuamanu",
+  "latitude": -11.6583,
+  "longitude": -69.2336,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "393979",
+  "name": "261 NUESTRA SEÑORA DE LA ESPERANZA",
+  "address": "AVENIDA DOS DE MAYO CUADRA 18",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.5839,
+  "longitude": -69.19143,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "393998",
+  "name": "264 VIRGEN DE FATIMA",
+  "address": "JIRON LORETO 425",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59261,
+  "longitude": -69.17772,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394002",
+  "name": "266",
+  "address": "CARRETERA MALDONADO - OTILIA KM.7",
+  "locality": "OTILIA",
+  "district": "tambopata",
+  "latitude": -12.530326,
+  "longitude": -69.213341,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394016",
+  "name": "267 CORAZON DE MARIA",
+  "address": "JIRON CAJAMARCA 635",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.5921,
+  "longitude": -69.1972,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "756809",
+  "name": "269 JARDIN DE DIOS",
+  "address": "AVENIDA CENTENERIO S/N",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.601576,
+  "longitude": -69.212797,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394035",
+  "name": "277",
+  "address": "CALLE LOS MANANTIALES S/N",
+  "locality": "PUEBLO VIEJO",
+  "district": "tambopata",
+  "latitude": -12.596281,
+  "longitude": -69.17499,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "756965",
+  "name": "292",
+  "address": "CARRETERA MALDONADO - CUSCO KM 29",
+  "locality": "SAN BERNARDO",
+  "district": "tambopata",
+  "latitude": -12.686324,
+  "longitude": -69.399632,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394040",
+  "name": "295 ARCO IRIS",
+  "address": "CALLE 26 DE DICIEMBRE S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.6031,
+  "longitude": -69.183,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394059",
+  "name": "296 LAS PALMERAS",
+  "address": "AVENIDA TAMBOPATA CUADRA 8",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59045,
+  "longitude": -69.19264,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394064",
+  "name": "297",
+  "address": "JIRON MOQUEGUA 688",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59538,
+  "longitude": -69.18209,
+  "levels": "Inicial - Cuna-jardín"
+ },
+ {
+  "code": "394078",
+  "name": "301 ESE EJA SHOI",
+  "address": "CARRETERA PUERTO MALDONADO - INFIERNO KM 19",
+  "locality": "INFIERNO",
+  "district": "tambopata",
+  "latitude": -12.73078,
+  "longitude": -69.22912,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394083",
+  "name": "307 SEBASTIÁN BARRANCA",
+  "address": "RIO MADRE DE DIOS",
+  "locality": "PUERTO PARDO",
+  "district": "tambopata",
+  "latitude": -12.5045,
+  "longitude": -68.6592,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394097",
+  "name": "310 RAYITOS DEL SOL",
+  "address": "JIRON JUNIN MZ L LOTE 20",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.593892,
+  "longitude": -69.197019,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394101",
+  "name": "312",
+  "address": "CARRETERA MALDONADO - TRES ISLAS KM 19",
+  "locality": "TRES ISLAS",
+  "district": "tambopata",
+  "latitude": -12.54864,
+  "longitude": -69.36999,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394115",
+  "name": "313",
+  "address": "RIO MADRE DE DIOS",
+  "locality": "PALMA REAL",
+  "district": "tambopata",
+  "latitude": -12.5117,
+  "longitude": -68.7779,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394120",
+  "name": "315 HUERTO INFANTIL",
+  "address": "15 DE AGOSTO",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.594395,
+  "longitude": -69.192439,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394139",
+  "name": "317 LA FLORIDA",
+  "address": "JIRON AMAZONAS CUADRA 9",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.5958,
+  "longitude": -69.1921,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394144",
+  "name": "318 MI PEQUEÑO MUNDO",
+  "address": "PASAJE MANU",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.6015,
+  "longitude": -69.191,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "915078",
+  "name": "334 GOTITAS DEL SABER",
+  "address": "CALLE FRANCISCO BOLOGNESI S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.587875,
+  "longitude": -69.2126,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394709",
+  "name": "340 SAGRADO CORAZON DE JESUS",
+  "address": "AVENIDA LEON VELARDE S/N LOTE F-2",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.606,
+  "longitude": -69.1878,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394714",
+  "name": "343",
+  "address": "RIO MADRE DE DIOS - RIO HEATH",
+  "locality": "SONENE",
+  "district": "tambopata",
+  "latitude": -12.5707,
+  "longitude": -68.70189,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "756946",
+  "name": "344 MARIA DE LOS ANGELES",
+  "address": "AVENIDA ELISA TOULLIER S/N MZ G LOTE 2",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.6095,
+  "longitude": -69.1964,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "828199",
+  "name": "354 LA UNION",
+  "address": "LA UNION",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.601368,
+  "longitude": -69.180771,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "582102",
+  "name": "373 LOS MOTELITOS",
+  "address": "MONTE SALVADO SECTOR LAS PIEDRAS",
+  "locality": "MONTE SALVADO",
+  "district": "tambopata",
+  "latitude": -11.718276,
+  "longitude": -70.374392,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "614867",
+  "name": "378 PIHUICHITOS",
+  "address": "SANTA TERESITA",
+  "locality": "SANTA TERESITA",
+  "district": "tambopata",
+  "latitude": -12.504536,
+  "longitude": -69.249642,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "631254",
+  "name": "381",
+  "address": "CARRETERA INMEDIACIONES DE LA CACHUELA",
+  "locality": "EL PRADO",
+  "district": "tambopata",
+  "latitude": -12.543075,
+  "longitude": -69.19362,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "631273",
+  "name": "383 VIRGEN DEL CARMEM",
+  "address": "ROMPEOLAS",
+  "locality": "ROMPE OLAS",
+  "district": "tambopata",
+  "latitude": -12.576021,
+  "longitude": -69.19474,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "813150",
+  "name": "386 VICENTA CARDENAS - MAMA VISHI",
+  "address": "JIRON MANU 589",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59101,
+  "longitude": -69.19048,
+  "levels": "Inicial - Cuna-jardín"
+ },
+ {
+  "code": "668290",
+  "name": "395 GABRIELA MISTRAL",
+  "address": "PRIMERO DE AGOSTO",
+  "locality": "MIRAFLORES",
+  "district": "tambopata",
+  "latitude": -12.57463,
+  "longitude": -69.199857,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "668313",
+  "name": "398",
+  "address": "EL CASTAÑAL",
+  "locality": "EL CASTAÑAL",
+  "district": "tambopata",
+  "latitude": -12.634564,
+  "longitude": -69.261064,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "668327",
+  "name": "399 EL AGUAJAL",
+  "address": "EL AGUAJAL",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.60418,
+  "longitude": -69.21963,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "668332",
+  "name": "400 LUCECITAS DEL SABER",
+  "address": "JORGE CHAVEZ RENGIFO",
+  "locality": "JORGE CHAVEZ RENGIFO",
+  "district": "tambopata",
+  "latitude": -12.6686,
+  "longitude": -69.117005,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "668346",
+  "name": "401 EMMI PIKLER",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 6",
+  "locality": "JOSE ALDAMIS",
+  "district": "tambopata",
+  "latitude": -12.5957,
+  "longitude": -69.2218,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "668351",
+  "name": "402 ANTONIO GUEVARA CHAVEZ",
+  "address": "PASAJE QUINILLA CON JR. CHIMICUAS S/N SECTOR ROMPEOLAS",
+  "locality": "TAMBOPATA",
+  "district": "tambopata",
+  "latitude": -12.57329,
+  "longitude": -69.203266,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "768628",
+  "name": "415",
+  "address": "ALTA PASTORA",
+  "locality": "LA PASTORA",
+  "district": "tambopata",
+  "latitude": -12.58498,
+  "longitude": -69.21714,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "761009",
+  "name": "416",
+  "address": "TIPISKA",
+  "locality": "TIPISKA",
+  "district": "tambopata",
+  "latitude": -12.22565,
+  "longitude": -69.358065,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "789329",
+  "name": "421 MARIA MONTESSORI",
+  "address": "VILLA SEÑOR DE TORRECHAYOC",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.58309,
+  "longitude": -69.20548,
+  "levels": "Inicial - Cuna-jardín"
+ },
+ {
+  "code": "789334",
+  "name": "422 NIÑO JESUS DE PRAGA",
+  "address": "UPIS 13 DEJULIO",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.62901,
+  "longitude": -69.215746,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "789348",
+  "name": "423 ARTURO VELA MORENO",
+  "address": "ARTURO Y OLGA",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.601977,
+  "longitude": -69.234396,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "815564",
+  "name": "431 CAROLINA AGAZZI",
+  "address": "CARRETERA A LA JOYITA KM 4",
+  "locality": "LA JOYITA",
+  "district": "tambopata",
+  "latitude": -12.61215,
+  "longitude": -69.21413,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394511",
+  "name": "433 ROBERTO GUILLERMO VELA VALLES",
+  "address": "CARRETERA PUERTO MALDONADO - OTILIA KM. 3.5",
+  "locality": "ROMPE OLAS",
+  "district": "tambopata",
+  "latitude": -12.557093,
+  "longitude": -69.205322,
+  "levels": "Primaria, Secundaria, Inicial - Jardín"
+ },
+ {
+  "code": "836420",
+  "name": "434 JUANA ALARCO DE DAMMERT",
+  "address": "CALLE LAS LIMAS S/N MZ F LOTE 10,11,12",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.595086,
+  "longitude": -69.2266,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394177",
+  "name": "52001 SANTA ROSA",
+  "address": "AVENIDA CIRCUNVALACION 577",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.587535,
+  "longitude": -69.202779,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394182",
+  "name": "52002 LORENZO COLLAZOS GUEVARA",
+  "address": "CARRETERA MALDONADO - LA CACHUELA KM 8",
+  "locality": "CENTRO CACHUELA",
+  "district": "tambopata",
+  "latitude": -12.537041,
+  "longitude": -69.169579,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394196",
+  "name": "52004 MODESTO FIGUEROA MINAYA",
+  "address": "RIO MADRE DE DIOS",
+  "locality": "PUERTO PARDO",
+  "district": "tambopata",
+  "latitude": -12.5036,
+  "longitude": -68.659,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394219",
+  "name": "52006 SILVERIO GUERRA ECONEMA",
+  "address": "CARRETERA MALDONADO - LA CACHUELA KM 16",
+  "locality": "ALTA CACHUELA",
+  "district": "tambopata",
+  "latitude": -12.488441,
+  "longitude": -69.182312,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394224",
+  "name": "52007",
+  "address": "CARRETERA MALDONADO - OTILIA KM 6",
+  "locality": "OTILIA",
+  "district": "tambopata",
+  "latitude": -12.529255,
+  "longitude": -69.213489,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394238",
+  "name": "52008 SANTA CRUZ",
+  "address": "AVENIDA 28 DE JULIO CUADRA 7",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59631,
+  "longitude": -69.18765,
+  "levels": "Secundaria, Primaria"
+ },
+ {
+  "code": "394257",
+  "name": "52011 SAN JUAN BAUTISTA",
+  "address": "CARRETERA A EL PRADO KM 4",
+  "locality": "EL PRADO",
+  "district": "tambopata",
+  "latitude": -12.542474,
+  "longitude": -69.194176,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "756989",
+  "name": "52012",
+  "address": "CARRETERA MALDONADO - TRES ISLAS KM 9",
+  "locality": "CENTRO PASTORA",
+  "district": "tambopata",
+  "latitude": -12.605596,
+  "longitude": -69.250273,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "394021",
+  "name": "52020 CAP. FAP JOSE ABELARDO QUIÑONES",
+  "address": "AVENIDA CENTENARIO S/N",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.602946,
+  "longitude": -69.212059,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394262",
+  "name": "52021",
+  "address": "CARRETERA MALDONADO - TRES ISLAS KM 14",
+  "locality": "CHORRILLOS",
+  "district": "tambopata",
+  "latitude": -12.606418,
+  "longitude": -69.285498,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "511812",
+  "name": "52025 AQUILES VELASQUEZ OROZ",
+  "address": "CARRETERA PUERTO MALDONADO - TRES ISLAS KM 26",
+  "locality": "TRES ISLAS",
+  "district": "tambopata",
+  "latitude": -12.54801,
+  "longitude": -69.3713,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "524372",
+  "name": "52028",
+  "address": "CARRETERA C. M. I. KM 12",
+  "locality": "CHONTA",
+  "district": "tambopata",
+  "latitude": -12.669,
+  "longitude": -69.2277,
+  "levels": "Primaria"
+ },
+ {
+  "code": "859398",
+  "name": "52028",
+  "address": "CARRETERA PUERTO MALDONADO - CHONTA",
+  "locality": "CHONTA",
+  "district": "tambopata",
+  "latitude": -12.668378,
+  "longitude": -69.227775,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "394304",
+  "name": "52030 PABLO PICASSO",
+  "address": "CARRETERA MALDONADO - QUINCEMIL KM 23",
+  "locality": "CARLOS FITZCARRALD",
+  "district": "tambopata",
+  "latitude": -12.6686,
+  "longitude": -69.3488,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "395515",
+  "name": "52038",
+  "address": "CARRETERA MALDONADO - CUSCO KM 35",
+  "locality": "LAS MERCEDES",
+  "district": "tambopata",
+  "latitude": -12.7046,
+  "longitude": -69.4469,
+  "levels": "Primaria, Inicial - Jardín"
+ },
+ {
+  "code": "394337",
+  "name": "52043 SHAJAO",
+  "address": "EL INFIERNO",
+  "locality": "INFIERNO",
+  "district": "tambopata",
+  "latitude": -12.729927,
+  "longitude": -69.228624,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "395172",
+  "name": "52044",
+  "address": "RIO MDD - RIO PIEDRAS A ARRIBA 3 H",
+  "locality": "BOCA PARIAMANU",
+  "district": "tambopata",
+  "latitude": -12.4269,
+  "longitude": -69.2681,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394342",
+  "name": "52065",
+  "address": "EL PILAR",
+  "locality": "EL PILAR",
+  "district": "tambopata",
+  "latitude": -12.5694,
+  "longitude": -69.2704,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394356",
+  "name": "52067 JAVIER PULGAR VIDAL",
+  "address": "TAMBOPATA AGUAS ARRIBA 1 HORA Y 30 MIN",
+  "locality": "LOERO",
+  "district": "tambopata",
+  "latitude": -12.6636,
+  "longitude": -69.1591,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394375",
+  "name": "52078",
+  "address": "CARRETERA MALDONADO - TRES ISLAS KM 12",
+  "locality": "TUPAC AMARU",
+  "district": "tambopata",
+  "latitude": -12.5941,
+  "longitude": -69.3269,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394380",
+  "name": "52084",
+  "address": "RIO MDD - RIO HEATH A ARRIBA 2 H",
+  "locality": "SONENE",
+  "district": "tambopata",
+  "latitude": -12.571223,
+  "longitude": -68.701835,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394417",
+  "name": "52117",
+  "address": "MALDONADO - TRES ISLAS",
+  "locality": "SAN JACINTO",
+  "district": "tambopata",
+  "latitude": -12.5775,
+  "longitude": -69.3917,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394460",
+  "name": "52156 FRANCISCO ANTONIO DE ZELA",
+  "address": "TAMBOPATA 2 HORAS AGUAS ARRIBA",
+  "locality": "JORGE CHAVEZ RENGIFO",
+  "district": "tambopata",
+  "latitude": -12.6688,
+  "longitude": -69.1191,
+  "levels": "Primaria"
+ },
+ {
+  "code": "394484",
+  "name": "52166 NUESTRA SEÑORA DE FATIMA",
+  "address": "JIRON SISA S/N",
+  "locality": "BARRIO LINDO",
+  "district": "tambopata",
+  "latitude": -12.6056,
+  "longitude": -69.1899,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "511911",
+  "name": "52181 SEÑOR DE LOS MILAGROS",
+  "address": "AVENIDA LOS PROCERES CUADRA 4",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59528,
+  "longitude": -69.20014,
+  "levels": "Primaria, Secundaria, Inicial - Jardín"
+ },
+ {
+  "code": "394573",
+  "name": "52194 CAPITAN ALIPIO PONCE VASQUEZ",
+  "address": "JIRON LOS ROBLES - SANTA ROSA S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.60278,
+  "longitude": -69.19305,
+  "levels": "Primaria"
+ },
+ {
+  "code": "511614",
+  "name": "52225",
+  "address": "MONTE SALVADO",
+  "locality": "MONTE SALVADO",
+  "district": "tambopata",
+  "latitude": -11.718907,
+  "longitude": -70.374475,
+  "levels": "Primaria"
+ },
+ {
+  "code": "582121",
+  "name": "52250 CARLOS JIMENEZ NORIEGA",
+  "address": "SANTA TERESITA",
+  "locality": "SANTA TERESITA",
+  "district": "tambopata",
+  "latitude": -12.504111,
+  "longitude": -69.248876,
+  "levels": "Primaria"
+ },
+ {
+  "code": "827449",
+  "name": "52265 MARCELINO CHAMPAGNAT",
+  "address": "AVENIDA CENTENARIO MZ L LOTE 8",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.602519,
+  "longitude": -69.210209,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "827454",
+  "name": "52267 MICAELA BASTIDAS",
+  "address": "CALLE LAS PALMERAS S/N SECTOR LA JOYA",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.622308,
+  "longitude": -69.216912,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "617696",
+  "name": "AMERICANA DE MADRE DE DIOS",
+  "address": "AVENIDA FITZCARRALD 130",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.60037,
+  "longitude": -69.181876,
+  "levels": "Instituto Superior Tecnológico, Técnico Productiva"
+ },
+ {
+  "code": "106949",
+  "name": "AMOR DE NIÑOS",
+  "address": "JIRON ALEJANDRO HUMBOLDT S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.597737,
+  "longitude": -69.199512,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "844887",
+  "name": "ANDRES AVELINO CACERES",
+  "address": "AVENIDA ANDRES AVELINO CACERES S/N MZ 17",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.582085,
+  "longitude": -69.195666,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "394610",
+  "name": "APLICACION NUESTRA SEÑORA DEL ROSARIO",
+  "address": "AVENIDA FITZCARRALD CUADRA 14",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59046,
+  "longitude": -69.19501,
+  "levels": "Primaria, Escuela Superior Pedagógica, Secundaria, Inicial - Jardín"
+ },
+ {
+  "code": "394592",
+  "name": "AUGUSTO BOURONCLE ACUÑA",
+  "address": "JIRON PUNO 1000",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.5997,
+  "longitude": -69.1838,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "677992",
+  "name": "BELEN",
+  "address": "PASAJE JUAN HIDALGO PAREDES MZ A LOTE 4-B",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.586928,
+  "longitude": -69.212508,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "108437",
+  "name": "BOSQUE DE COLORES",
+  "address": "JIRON VICTOR RUIZ GONZALES CON PASAJE SELVA ALEGRE S/N",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.606093,
+  "longitude": -69.203514,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "533753",
+  "name": "CAP. ALIPIO PONCE VASQUEZ",
+  "address": "JIRON LOS ROBLES S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.601875,
+  "longitude": -69.196872,
+  "levels": "Secundaria"
+ },
+ {
+  "code": "394605",
+  "name": "CARLOS FERMIN FITZCARRALD",
+  "address": "AVENIDA MADRE DE DIOS CUADRA 4",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.591576,
+  "longitude": -69.188401,
+  "levels": "Secundaria, Primaria, Básica Alternativa-Avanzado, Básica Alternativa-Inicial e Intermedio"
+ },
+ {
+  "code": "117216",
+  "name": "CASITA MARAVILLOSA",
+  "address": "PASAJE SELVA ALEGRE S/N",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.606087,
+  "longitude": -69.203514,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117405",
+  "name": "CHAPAJAL DE COLORES",
+  "address": "JIRON MICAELA BASTIDAS",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.617992,
+  "longitude": -69.221957,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "613392",
+  "name": "CHIKIMUNDO",
+  "address": "JIRON CAJAMARCA 1062",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59405,
+  "longitude": -69.19052,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "801294",
+  "name": "COLUMBIA SCHOOL",
+  "address": "AVENIDA FITZCARRALD 130",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.60037,
+  "longitude": -69.181876,
+  "levels": "Básica Alternativa-Avanzado"
+ },
+ {
+  "code": "116012",
+  "name": "CORAZON ALEGRE",
+  "address": "JIRON FRANCISCO",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.587853,
+  "longitude": -69.218094,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "107393",
+  "name": "CRECIENDO JUNTOS",
+  "address": "CALLE NUEVA ORIENTE CON PASAJE LOS AGUAJEROS ROMPEOLAS",
+  "locality": "ROMPE OLAS",
+  "district": "tambopata",
+  "latitude": -12.555904,
+  "longitude": -69.204587,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "828180",
+  "name": "CRISTO SALVADOR",
+  "address": "AVENIDA LEON VELARDE 960",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.600497,
+  "longitude": -69.199256,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394648",
+  "name": "DIONISIA HERRERA ALVARADO",
+  "address": "JIRON CAJAMARCA CUADRA 3",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.5998,
+  "longitude": -69.1848,
+  "levels": "Técnico Productiva"
+ },
+ {
+  "code": "107569",
+  "name": "DIVINOS SUEÑOS",
+  "address": "JUAN PABLO II",
+  "locality": "CHONTA",
+  "district": "tambopata",
+  "latitude": -12.6688,
+  "longitude": -69.228155,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "865813",
+  "name": "DON FRANCISCO",
+  "address": "JIRON JOSE MARIA ARGUEDAS MZ C LOTE 21",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.600497,
+  "longitude": -69.199256,
+  "levels": "Básica Alternativa-Avanzado, Básica Alternativa-Inicial e Intermedio, Técnico Productiva"
+ },
+ {
+  "code": "394276",
+  "name": "DOS DE MAYO",
+  "address": "AVENIDA DOS DE MAYO CUADRA 17",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.584543,
+  "longitude": -69.1906,
+  "levels": "Primaria, Secundaria, Básica Alternativa-Avanzado, Básica Alternativa-Inicial e Intermedio"
+ },
+ {
+  "code": "105327",
+  "name": "DULCES PASITOS",
+  "address": "BAJADA INFIERNO",
+  "locality": "DIAMANTE",
+  "district": "tambopata",
+  "latitude": -12.633151,
+  "longitude": -69.217231,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "394629",
+  "name": "EMBLEMATICO GUILLERMO BILLINGHURST",
+  "address": "AVENIDA LEON VELARDE CUADRA 11",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.6005,
+  "longitude": -69.1826,
+  "levels": "Básica Alternativa-Avanzado, Secundaria, Primaria, Básica Alternativa-Inicial e Intermedio"
+ },
+ {
+  "code": "394399",
+  "name": "ENAWIPA",
+  "address": "RIO MADRE DE DIOS 5 HORAS AGUAS ABAJO",
+  "locality": "PALMA REAL",
+  "district": "tambopata",
+  "latitude": -12.511522,
+  "longitude": -68.777216,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "103505",
+  "name": "ESPERANZA DEL MAÑANA",
+  "address": "PASAJE AUGUSTO JIMENEZ",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.598198,
+  "longitude": -69.206277,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "110639",
+  "name": "ESTRELLITA DE BELEN",
+  "address": "JIRON CAJAMARCA CON MOQUEGUA",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.599711,
+  "longitude": -69.184663,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "394587",
+  "name": "FAUSTINO MALDONADO",
+  "address": "JIRON AREQUIPA 539",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59756,
+  "longitude": -69.17791,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "109766",
+  "name": "FRAY MARTIN",
+  "address": "JIRON CHIMICUAS S/N",
+  "locality": "ROMPE OLAS",
+  "district": "tambopata",
+  "latitude": -12.555014,
+  "longitude": -69.204281,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117870",
+  "name": "GOTITAS DE ALEGRÍA",
+  "address": "AVENIDA MADRE DE DIOS S/N",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.61533,
+  "longitude": -69.21459,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "108214",
+  "name": "GOTITAS DE AMOR",
+  "address": "JUAN VELASCO ALAVARADO",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.600826,
+  "longitude": -69.234338,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117872",
+  "name": "GOTITAS DE SOL",
+  "address": "PASAJE IGNACIO MERINO",
+  "locality": "MICAELA BASTIDAS",
+  "district": "tambopata",
+  "latitude": -12.59154,
+  "longitude": -69.20026,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "868029",
+  "name": "INSTITUTO POLITECNICO",
+  "address": "AVENIDA LEON VELARDE S/N MZ 4H LOTE 20",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.594217,
+  "longitude": -69.176249,
+  "levels": "Instituto Superior Tecnológico"
+ },
+ {
+  "code": "846358",
+  "name": "IPAR KALLPA",
+  "address": "JIRON GONZALES PRADA 771 MZ 5-D LOTE 3A- 01",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59333,
+  "longitude": -69.18332,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "559069",
+  "name": "ISAAC NEWTON",
+  "address": "AVENIDA BOLOGNESI MZ 34",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.581667,
+  "longitude": -69.202725,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "394728",
+  "name": "JAIME WHITE",
+  "address": "AVENIDA 28 DE JULO 1001",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59808,
+  "longitude": -69.18971,
+  "levels": "Inicial - Jardín, Secundaria, Primaria"
+ },
+ {
+  "code": "854268",
+  "name": "JARDIN TROPICAL",
+  "address": "AVENIDA POMAROSA MZ P LOTE 6",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.5908,
+  "longitude": -69.1974,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394653",
+  "name": "JORGE BASADRE GROHMAN",
+  "address": "AVENIDA TAMBOPATA CUADRA 14",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.5918,
+  "longitude": -69.1946,
+  "levels": "Instituto Superior Tecnológico"
+ },
+ {
+  "code": "108683",
+  "name": "JUEGA Y APRENDE",
+  "address": "LAS CASTAÑUELAS",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.57246,
+  "longitude": -69.192662,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "104836",
+  "name": "JUEGO Y TERNURA",
+  "address": "JIRON ITININGA",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.568151,
+  "longitude": -69.202302,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "863913",
+  "name": "KLARETIANO",
+  "address": "AVENIDA MARIA FAKYHE DE HERRERA S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.60548,
+  "longitude": -69.19476,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "394243",
+  "name": "LA PASTORA",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO",
+  "locality": "LA PASTORA",
+  "district": "tambopata",
+  "latitude": -12.585947,
+  "longitude": -69.21302,
+  "levels": "Primaria, Secundaria, Inicial - Jardín"
+ },
+ {
+  "code": "394163",
+  "name": "LAS ARDILLITAS",
+  "address": "JIRON CAJAMARCA S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.598248,
+  "longitude": -69.194453,
+  "levels": "Inicial - Cuna-jardín"
+ },
+ {
+  "code": "108215",
+  "name": "LOS GRILLITOS",
+  "address": "TIERRA PROMETIDA",
+  "locality": "EL CASTAÑAL",
+  "district": "tambopata",
+  "latitude": -12.631743,
+  "longitude": -69.260806,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "394323",
+  "name": "LOS HONGUITOS",
+  "address": "CARRETERA A TAMBOPATA KM 4",
+  "locality": "IZUYAMA",
+  "district": "tambopata",
+  "latitude": -12.630838,
+  "longitude": -69.185581,
+  "levels": "Primaria, Inicial - Programa no escolarizado, Secundaria"
+ },
+ {
+  "code": "110886",
+  "name": "LOS NARANJITOS",
+  "address": "CARRETERA MARGEN DERECHA KM 10",
+  "locality": "TUPAC AMARU",
+  "district": "tambopata",
+  "latitude": -12.594141,
+  "longitude": -69.326756,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "645449",
+  "name": "LOS OLIVOS DEL PERU E.I.R.L.",
+  "address": "AVENIDA LA ALAMEDA CON EMILIO CASTILLO MZ A LOTE 8",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.58995,
+  "longitude": -69.20562,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "114059",
+  "name": "LOS TRAVIESOS",
+  "address": "CALLE 24 DE SETIEMBRE KM 2.5 MZ L LOTE 05",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.612307,
+  "longitude": -69.217612,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "394295",
+  "name": "LUIS OTSUKA SALAZAR",
+  "address": "CARRETERA MALDONADO - CUSCO KM 13",
+  "locality": "EL CASTAÑAL",
+  "district": "tambopata",
+  "latitude": -12.634017,
+  "longitude": -69.260691,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "867789",
+  "name": "MADRE DE DIOS",
+  "address": "JIRON ATAHUALPA S/N MZ L LOTE 1",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.578012,
+  "longitude": -69.200001,
+  "levels": "Básica Alternativa-Avanzado"
+ },
+ {
+  "code": "108668",
+  "name": "MANITOS DE TERNURA",
+  "address": "CARRETERA A PUERTO MALDONADO KM. 4",
+  "locality": "CACHUELA BAJA",
+  "district": "tambopata",
+  "latitude": -12.555396,
+  "longitude": -69.168699,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "707828",
+  "name": "MANOS DE DIOS",
+  "address": "PASAJE LOS TULIPANES A MZ 05",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.572571,
+  "longitude": -69.194741,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "553623",
+  "name": "MARIA MOLINARI REATEGUI",
+  "address": "PASAJE MIYASHIRO 353",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.58061,
+  "longitude": -69.1931,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "756951",
+  "name": "MARIA REINA",
+  "address": "JIRON 26 DE DICIEMBRE 466",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.597001,
+  "longitude": -69.17681,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "756866",
+  "name": "MAX UHLE",
+  "address": "AVENIDA CIRCUNVALACION CUADRA 6",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.593309,
+  "longitude": -69.201427,
+  "levels": "Primaria, Inicial - Jardín, Secundaria"
+ },
+ {
+  "code": "114896",
+  "name": "MI PRIMERA SONRISA",
+  "address": "CARRETERA A CUSCO KM. 8",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.599004,
+  "longitude": -69.225948,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117875",
+  "name": "MI SEGUNDA CASITA",
+  "address": "CALLE INFANCIA CON CALLE LOS MANANTIALES LOTE B24",
+  "locality": "PUEBLO VIEJO",
+  "district": "tambopata",
+  "latitude": -12.596235,
+  "longitude": -69.175099,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "115118",
+  "name": "MIS ANGELES DE LA JOYA",
+  "address": "AVENIDA CENTENARIO S/N",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.6027,
+  "longitude": -69.210954,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "826044",
+  "name": "MIS PASITOS",
+  "address": "JIRON LOS NOGALES E-20",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.602763,
+  "longitude": -69.194598,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "636317",
+  "name": "MUNDO FELIZ",
+  "address": "JIRON JAIME TRONCOSO 347",
+  "locality": "TAMBOPATA",
+  "district": "tambopata",
+  "latitude": -12.586498,
+  "longitude": -69.188467,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "108669",
+  "name": "MUNDO INFANTIL DE COLORES",
+  "address": "CARRETERA KM 4 DE PUERTO MALDONADO",
+  "locality": "CACHUELA BAJA",
+  "district": "tambopata",
+  "latitude": -12.555616,
+  "longitude": -69.167513,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117730",
+  "name": "NIDO MÁGICO",
+  "address": "CARRETERA TRES ISLAS KM 12",
+  "locality": "TUPAC AMARU",
+  "district": "tambopata",
+  "latitude": -12.594052,
+  "longitude": -69.326745,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "756970",
+  "name": "NIÑOS DE JESUS",
+  "address": "JIRON CAJAMARCA 532",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59801,
+  "longitude": -69.18612,
+  "levels": "Inicial - Cuna-jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "110709",
+  "name": "NIÑOS PEQUEÑOS TESOROS",
+  "address": "BOCA PARIAMANU BOCA PARIAMANU",
+  "locality": "BOCA PARIAMANU",
+  "district": "tambopata",
+  "latitude": -12.426576,
+  "longitude": -69.267592,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "779542",
+  "name": "NUESTRA SEÑORA DE GUADALUPE",
+  "address": "JIRON LAMBAYEQUE 854",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59578,
+  "longitude": -69.18628,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "744901",
+  "name": "NUESTRA SEÑORA DE LA MERCED",
+  "address": "JIRON JORGE CHAVEZ",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.58876,
+  "longitude": -69.19971,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "915064",
+  "name": "NUESTRA SEÑORA DE LAS MERCEDES",
+  "address": "JIRON CUSCO S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.594238,
+  "longitude": -69.178152,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "108483",
+  "name": "PASITO A PASITO",
+  "address": "PASAJE PASAJE PERU",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.589544,
+  "longitude": -69.188628,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "108228",
+  "name": "PASITOS FELICES",
+  "address": "CARRETERA INTEROCEANICA KM. 29 ETAPA I ZONA RURAL CENTRO POBLADO",
+  "locality": "SAN BERNARDO",
+  "district": "tambopata",
+  "latitude": -12.68939,
+  "longitude": -69.400232,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "113986",
+  "name": "PASITOS FELICES",
+  "address": "CARRETERA INTEROCEANICA 9",
+  "locality": "EL CASTAÑAL",
+  "district": "tambopata",
+  "latitude": -12.630843,
+  "longitude": -69.234461,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "108455",
+  "name": "PEQUEÑAS SONRISAS",
+  "address": "AVENIDA SINCHI ROCA",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.571444,
+  "longitude": -69.193611,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "117218",
+  "name": "PEQUEÑOS EXPLORADORES",
+  "address": "JIRON LOS GIRASOLES MZ D",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.597355,
+  "longitude": -69.224317,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "109273",
+  "name": "PEQUEÑOS PASITOS",
+  "address": "CARRETERA INTERO",
+  "locality": "CARLOS FITZCARRALD",
+  "district": "tambopata",
+  "latitude": -12.669634,
+  "longitude": -69.348519,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "394634",
+  "name": "PRITE MADRE DE DIOS",
+  "address": "JIRON MOQUEGUA CUADRA 11",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.60012,
+  "longitude": -69.18533,
+  "levels": "Básica Especial-Primaria, Básica Especial-Inicial, Básica Especial"
+ },
+ {
+  "code": "117871",
+  "name": "RAYITOS DE LUZ",
+  "address": "AVENIDA MADRE DE DIOS S/N",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.61239,
+  "longitude": -69.21767,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "839697",
+  "name": "SAN ALBERTO MAGNO",
+  "address": "JIRON CAOBA CON PASAJE NEPTUNO S/N MZ S LOTE 1 Y 2",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.610476,
+  "longitude": -69.221734,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "801326",
+  "name": "SAN BARTOLOME",
+  "address": "PASAJE LOS ALPES C-15",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.583143,
+  "longitude": -69.194932,
+  "levels": "Instituto Superior Tecnológico"
+ },
+ {
+  "code": "394318",
+  "name": "SAN BERNARDO",
+  "address": "CARRETERA PUERTO MALDONADO - CUSCO KM 29",
+  "locality": "SAN BERNARDO",
+  "district": "tambopata",
+  "latitude": -12.68765,
+  "longitude": -69.39896,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "394733",
+  "name": "SAN ISIDRO",
+  "address": "JIRON JAIME TRONCOSO 881",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.592248,
+  "longitude": -69.186452,
+  "levels": "Secundaria, Primaria"
+ },
+ {
+  "code": "825445",
+  "name": "SAN JOSE",
+  "address": "PASAJE TERESA GONZALES 10 MZ LL LOTE 19",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.600497,
+  "longitude": -69.199256,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "113767",
+  "name": "SAN JOSE",
+  "address": "JIRON INES MONTOY S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.598952,
+  "longitude": -69.199858,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "914272",
+  "name": "SAN JUAN",
+  "address": "AVENIDA ANDRES AVELINO CACERES S/N MZ 16",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.581216,
+  "longitude": -69.200185,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "828175",
+  "name": "SAN JUAN BAUTISTA DE LA SALLE",
+  "address": "JIRON CAJAMARCA CON PIURA S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59778,
+  "longitude": -69.18675,
+  "levels": "Primaria, Secundaria, Inicial - Jardín"
+ },
+ {
+  "code": "553637",
+  "name": "SANTA FE",
+  "address": "AVENIDA UCAYALI S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.60276,
+  "longitude": -69.19073,
+  "levels": "Primaria, Secundaria"
+ },
+ {
+  "code": "917765",
+  "name": "SANTA MARIA AUXILIADORA",
+  "address": "JIRON JORGE CHAVEZ",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.588808,
+  "longitude": -69.200456,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "614886",
+  "name": "SANTA MARIA MADRE DE DIOS",
+  "address": "AVENIDA MADRE DE DIOS MZ J-1 LOTE 001",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59418,
+  "longitude": -69.18966,
+  "levels": "Inicial - Jardín, Primaria, Secundaria"
+ },
+ {
+  "code": "394771",
+  "name": "SANTA RITA DE CASIA",
+  "address": "AVENIDA ALAMEDA CUADRA 2",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.58893,
+  "longitude": -69.19839,
+  "levels": "Inicial - Cuna-jardín"
+ },
+ {
+  "code": "804202",
+  "name": "SANTA ROSA",
+  "address": "PASAJE JUAN HIDALGO PAREDES S/N MZ A LOTE 4 - B",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.586928,
+  "longitude": -69.212508,
+  "levels": "Instituto Superior Tecnológico"
+ },
+ {
+  "code": "111697",
+  "name": "SOL RADIANTE",
+  "address": "CARRETERA LOERO A JORGE CHAVEZ COMUNIDAD",
+  "locality": "LOERO",
+  "district": "tambopata",
+  "latitude": -12.663714,
+  "longitude": -69.158984,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "110873",
+  "name": "SONRISITAS",
+  "address": "PASAJE SINAMI S/N COMUNIDAD",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.574853,
+  "longitude": -69.195242,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "837189",
+  "name": "STEINER COLLEGE",
+  "address": "JIRON MIGUEL GRAU MZ A LOTE 11",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.5877,
+  "longitude": -69.2068,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "837066",
+  "name": "SUPREME KIDS",
+  "address": "JIRON INCA GARCILAZO DE LA VEGA S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.602583,
+  "longitude": -69.190534,
+  "levels": "Inicial - Jardín"
+ },
+ {
+  "code": "112834",
+  "name": "TERNURAS DE AMOR",
+  "address": "CALLE 12 DE NOVIEMBRE",
+  "locality": "LA JOYA",
+  "district": "tambopata",
+  "latitude": -12.608537,
+  "longitude": -69.219291,
+  "levels": "Inicial - Programa no escolarizado"
+ },
+ {
+  "code": "571778",
+  "name": "TRILCE",
+  "address": "AVENIDA ANDRES AVELINO CACERES S/N",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59366,
+  "longitude": -69.19552,
+  "levels": "Primaria, Secundaria, Inicial - Jardín"
+ },
+ {
+  "code": "900562",
+  "name": "VIRGEN DE COPACABANA",
+  "address": "PASAJE LUNA PIZARRO S/N MZ 12 LOTE 20",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.594172,
+  "longitude": -69.199963,
+  "levels": "Inicial - Jardín, Primaria"
+ },
+ {
+  "code": "851222",
+  "name": "VIRGEN DE LA MEDALLA MILAGROSA",
+  "address": "JIRON CROSBY 1171",
+  "locality": "PUERTO MALDONADO",
+  "district": "tambopata",
+  "latitude": -12.59682,
+  "longitude": -69.19359,
+  "levels": "Inicial - Jardín"
+ }
+]
