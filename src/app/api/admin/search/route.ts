@@ -101,5 +101,32 @@ export async function GET(request: Request) {
       });
   }
 
+  if (me.permissions.has("mensajes.read")) {
+    const contacts = await prisma.contact.findMany({
+      where: {
+        OR: [
+          { name: { contains: q, mode: "insensitive" } },
+          { docNumber: { contains: q } },
+          { phone: { contains: q.replace(/\D/g, "") || q } },
+        ],
+      },
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      select: { id: true, name: true, docNumber: true },
+    });
+    if (contacts.length)
+      groups.push({
+        key: "contacts",
+        label: "Contactos (mensajería)",
+        items: contacts.map((c) => ({
+          id: c.id,
+          title: c.name,
+          sub: c.docNumber,
+          href: `/mensajes/contactos?q=${enc}`,
+          icon: "message",
+        })),
+      });
+  }
+
   return Response.json({ groups });
 }

@@ -11,7 +11,8 @@ sin migrations), patrón de módulo `page.tsx / actions.ts / XClient.tsx / types
 (referencia: `personeros`), helpers `requirePermission`/`userHas` (`src/lib/auth/server`),
 catálogo de permisos (`src/lib/auth/permissions.ts`), `rateLimit`, `ok`/`fail`
 (`src/app/api/v1/_lib/response`), `DISTRICTS`/`isDistrictId` (`src/lib/districts`), `Icon`,
-`ConfirmDialog`, `Toasts`, `useEscClose`. **No hay framework de tests.**
+`ConfirmDialog`, `Toasts`, `useEscClose`. Tests unitarios de módulos puros con `node:test` + `tsx`
+(`npm test`); sin tests de UI/integración.
 
 Se añade un módulo **Mensajería**: importar un Excel (DNI, nombre, celular) a una base única de
 contactos deduplicada por DNI, y enviar campañas de WhatsApp de forma automática y pausada a través
@@ -44,8 +45,8 @@ de **WAHA** (WhatsApp HTTP API, self-hosted en Docker), con seguimiento de entre
 4. Deduplicación: **base única de contactos por DNI** (upsert en cada importación) + campañas que
    seleccionan audiencia. Bajas permanentes.
 5. Orquestación: **planificador dentro del proceso Next** (`src/instrumentation.ts`), estado en Postgres.
-6. El `.xlsx` **se parsea en el navegador** (`read-excel-file`, web worker); al servidor solo llegan
-   filas JSON por lotes. Nunca se sube el archivo.
+6. El `.xlsx` **se parsea en el navegador** (`read-excel-file/browser`, en el hilo principal: pocos miles
+   de filas tardan < 1 s); al servidor solo llegan filas JSON por lotes. Nunca se sube el archivo.
 7. Cumplimiento **no opcional**: pie con remitente + "Responde BAJA", registro de origen/consentimiento,
    veda no desactivable desde la UI.
 
@@ -112,16 +113,18 @@ Funciones tipadas, todas con header `X-Api-Key` y timeout 15 s (`AbortSignal.tim
 | `getSession()` | `GET /api/sessions/{session}` → `{ status: 'STOPPED'\|'STARTING'\|'SCAN_QR_CODE'\|'WORKING'\|'FAILED', me? }` (404 → `'STOPPED'`, no creada) |
 | `startSession()` | `POST /api/sessions` con `{ name, start: true, config: { webhooks: [{ url, events: ['message','message.ack','session.status'], hmac: { key }, retries: { policy: 'constant', delaySeconds: 2, attempts: 15 } }] } }`; si ya existe → `POST /api/sessions/{session}/start` |
 | `getQr()` | `GET /api/{session}/auth/qr` con `Accept: application/json` → `{ mimetype, data }` (base64) |
-| `logoutSession()` | `POST /api/sessions/{session}/logout` |
+| `logoutSession()` | `POST …/logout` seguido de `POST …/stop` (WAHA reinicia la sesión tras el logout) |
 | `stopSession()` | `POST /api/sessions/{session}/stop` |
 | `checkExists(phoneE164)` | `GET /api/contacts/check-exists?phone=519XXXXXXXX&session=…` → `{ numberExists, chatId }` |
-| `sendText(chatId, text)` | `POST /api/sendText` `{ session, chatId, text }` → `{ id }` (el `id` puede venir como `id` string o `id._serialized`; normalizar) |
+| `sendText(chatId, text)` | `POST /api/sendText` `{ session, chatId, text }` → `{ id }` (el `id` puede venir como `id` string o `id._serialized`; normaliza el id al formato `${fromMe}_${chatId}_${id}` cuando el engine NOWEB devuelve el `key` crudo) |
 
 `chatId` = número E.164 sin `+` + `@c.us` (ej. `51987654321@c.us`), salvo que `checkExists`
 devuelva un `chatId` distinto (se usa ese).
 
 Errores: `WahaError { status, body }`. 401 → "API key inválida"; conexión rechazada → "WAHA no
-responde"; ambos se muestran en `/mensajes/conexion`.
+responde"; ambos se muestran en `/mensajes/conexion`. `describeWahaError` centraliza este mapeo de
+error a texto legible. `WahaConfigError` — `startSession()` falla rápido con este error (sin llamar
+a WAHA) si `WAHA_WEBHOOK_SECRET` está vacío.
 
 ---
 
@@ -318,7 +321,8 @@ Añadir a `PERMISSIONS` en `src/lib/auth/permissions.ts`:
   nombre ∈ {`nombre`, `nombres`, `nombre completo`, `apellidos y nombres`}; teléfono ∈ {`celular`,
   `telefono`, `teléfono`, `numero`, `número`, `whatsapp`, `movil`, `móvil`}. Si hay columnas separadas
   `apellido paterno`/`materno`/`nombres`, se concatenan `nombres + paterno + materno`.
-- `renderTemplate(template, { nombre, dni })` — reemplaza `{nombre}` (primer nombre en Title Case) y
+- `renderTemplate(template, { nombre, dni })` — reemplaza `{nombre}` (nombre completo en Title Case; los
+  padrones vienen "APELLIDOS NOMBRES") y
   `{dni}`; añade `\n\n` + `MESSAGING_SENDER_FOOTER`.
 - `isOptOutText(body)` — `^\s*(baja|stop|no)\b` case-insensible, sin acentos.
 
@@ -351,10 +355,12 @@ Estructura: `mensajes/layout.tsx` (sub-navegación con 3 pestañas: Campañas ·
   Eliminar contacto (`deleteContact(id)`, `ConfirmDialog`).
 - Resumen superior: total, con WhatsApp, sin WhatsApp, bajas, nunca contactados.
 - **Importar Excel** (`ImportModal`, 3 pasos):
-  1. *Archivo*: `<input type="file" accept=".xlsx">`; se lee con `read-excel-file/web-worker`
-     (`readXlsxFile(file)` → `Row[]`); primera fila = cabeceras. Muestra "N filas detectadas".
+  1. *Archivo*: `<input type="file" accept=".xlsx">`; se lee con `read-excel-file/browser`
+     (en el hilo principal: pocos miles de filas tardan < 1 s) (`readXlsxFile(file)` → `Row[]`);
+     primera fila = cabeceras. Muestra "N filas detectadas".
   2. *Columnas y revisión*: selects DNI / Nombre / Celular precargados por `detectColumns`; opcional
-     Distrito (select fijo para todo el archivo). Vista previa de las primeras 20 filas normalizadas y
+     Distrito (select fijo para todo el archivo). Vista previa de hasta 8 filas válidas y 8 inválidas
+     (las inválidas con motivo y número de fila; exportables a CSV) y
      contadores: válidas, inválidas (con motivo por fila, exportable), repetidas en el archivo.
      Campo **Origen de la lista** (obligatorio) y checkbox **"Confirmo que estas personas autorizaron
      recibir mensajes de la campaña"** (obligatorio).
@@ -380,7 +386,8 @@ Estructura: `mensajes/layout.tsx` (sub-navegación con 3 pestañas: Campañas ·
   audiencia **excluyendo** `optedOut = true` y `whatsappStatus = no`, crea `Campaign` + `CampaignRecipient[]`
   (`createMany`, `status = pending`) y `totalRecipients`. Queda en `draft`.
 - `startCampaign(id)` → `running` (+ `startedAt` si nulo); requiere sesión `WORKING`, si no devuelve
-  `fail("Conecta WhatsApp antes de iniciar.")`. `pauseCampaign(id)` → `paused` (`pausedReason = "manual"`).
+  `fail("Conecta WhatsApp antes de iniciar.")`, y que no estemos en veda (`isElectoralSilence`); si no,
+  devuelve `fail("Estamos en veda electoral…")`. `pauseCampaign(id)` → `paused` (`pausedReason = "manual"`).
   `resumeCampaign(id)` → `running`. `cancelCampaign(id)` → `cancelled` y marca `pending` → `skipped`.
   `deleteCampaign(id)` solo si `draft`/`cancelled`/`finished`.
 
@@ -396,7 +403,7 @@ Estructura: `mensajes/layout.tsx` (sub-navegación con 3 pestañas: Campañas ·
 - Tabla de destinatarios: DNI · Nombre · Celular · Estado · Enviado · Entregado · Error; filtro por estado.
 - Polling: `getCampaignProgress(id)` (server action) cada **5 s** mientras `running`; cada 30 s si no.
 - **Exportar CSV** (generado en cliente desde las filas cargadas; `Blob` + `a[download]`).
-- **Reintentar fallidos** (`retryFailed(id)`): `failed` → `pending`, `attempts = 0`.
+- **Reintentar fallidos** (`retryFailed(id)`, solo en campañas pausadas o finalizadas): `failed` → `pending`, `attempts = 0`.
 
 ---
 
@@ -429,7 +436,8 @@ Algoritmo del tick:
 5. **Tope diario**: `MessagingDailyCounter[hoy Lima].count >= campaign.dailyCap` → salir
    (detalle muestra "Tope diario alcanzado").
 6. **Sesión**: `getSession()`; si no `WORKING` → `status = paused`, `pausedReason = "session_down"`, salir.
-   (Se cachea 30 s para no golpear WAHA cada tick.)
+   Se consulta WAHA justo antes de cada envío (como mucho cada 20 s); `STARTING` se tolera ~1 min antes
+   de pausar.
 7. Tomar destinatario: `updateMany`-style claim atómico —
    `prisma.$queryRaw` `UPDATE "CampaignRecipient" SET status='sent', attempts=attempts+1, "updatedAt"=now()
    WHERE id = (SELECT id FROM "CampaignRecipient" WHERE "campaignId"=$1 AND status='pending'
@@ -437,13 +445,16 @@ Algoritmo del tick:
    `finished` (`finishedAt = now`) y salir.
 8. Cargar contacto. Si `optedOut` → `status = opted_out`, siguiente tick.
 9. Si `whatsappStatus = unknown` → `checkExists(phone)`; guardar `whatsappStatus` + `checkedAt`.
-   Si `false` → recipient `no_whatsapp`, `failedCount++`, `nextAllowedAt = now + 3–8 s`, salir.
+   Si `false` → recipient `no_whatsapp`, `failedCount++`, `nextAllowedAt = now + 3–8 s`, salir. Si
+   `whatsappStatus = no` → `no_whatsapp`, `failedCount++`, sin llamar a WAHA.
 10. `text = renderTemplate(campaign.messageTemplate, contact)`; `sendText(chatId, text)`.
     - OK → recipient `sent`, `wahaMessageId`, `sentAt`; contact `lastMessagedAt`; campaign `sentCount++`;
       counter `count++` (upsert); `nextAllowedAt = now + random(minDelaySec, maxDelaySec)` s.
     - Error → si `attempts < 3`: volver a `pending` y `nextAllowedAt = now + 60 s · attempts`; si no:
       `failed` con `error`, `failedCount++`. Si el error es de conexión a WAHA (no HTTP 4xx) tres veces
       seguidas → pausar campaña (`pausedReason = "waha_error"`, `lastError`).
+    - Si la BD falla después de que WAHA aceptó el mensaje, el destinatario queda en `sent` con error
+      anotado; nunca se reenvía.
 
 `getSchedulerState()` (para el detalle): `{ nextSendAt, reason: 'waiting'|'out_of_window'|'daily_cap'|'session_down'|'veda'|'idle' }`,
 guardado en `globalThis` por el propio scheduler.
@@ -467,10 +478,11 @@ al arrancar, `startScheduler()` corrige: `sent` sin `wahaMessageId` y `sentAt` n
     Nunca retrocede (`read` no vuelve a `delivered`).
   - `message` con `payload.fromMe = false`: buscar `Contact` por `phone` (`payload.from` `51…@c.us` → `+51…`;
     si viene `@lid`, usar `payload._data?.key?.senderPn` o ignorar). Si `isOptOutText(payload.body)` → contacto
-    `optedOut = true`, `optedOutAt`, `optedOutReason = "reply:<texto>"`; sus `CampaignRecipient` `pending` → `opted_out`;
+    `optedOut = true`, `optedOutAt`, `optedOutReason = "reply:<texto>"` (la baja aplica a **todos** los
+    contactos con ese celular); sus `CampaignRecipient` `pending` → `opted_out`;
     responder una sola vez con `sendText(from, "Listo, no recibirás más mensajes de la campaña. Gracias.")`.
     Cualquier otro texto se ignora (v1 sin bandeja de entrada).
-  - `session.status` → si `payload.status !== "WORKING"` → campañas `running` → `paused` (`session_down`).
+  - `session.status` → si `payload.status` no es `WORKING` ni `STARTING` → campañas `running` → `paused` (`session_down`).
     Si vuelve a `WORKING` no se reanuda solo (decisión humana desde el detalle).
 
 ---
@@ -488,7 +500,7 @@ al arrancar, `startScheduler()` corrige: `sent` sin `wahaMessageId` y `sentAt` n
 
 ## 9. Dependencias nuevas
 
-- `read-excel-file` (^9.3, MIT, SAX, activo; entrypoints `/web-worker` y `/node`). Solo se usa en cliente.
+- `read-excel-file` (^9.3, MIT, SAX, activo; se usa el entrypoint `/browser`). Solo se usa en cliente.
 - Sin librerías de WhatsApp en el repo: toda la integración es HTTP contra WAHA.
 
 ---
@@ -509,24 +521,28 @@ al arrancar, `startScheduler()` corrige: `sent` sin `wahaMessageId` y `sentAt` n
 
 Telegram, SMS, Cloud API oficial, varios números/sesiones en paralelo, mensajes con imagen o adjuntos,
 programación por fecha/hora de inicio, segmentación por etiquetas libres, bandeja de respuestas,
-plantillas guardadas, A/B, importación CSV (solo `.xlsx`), paginación server-side, tests automatizados.
+plantillas guardadas, A/B, importación CSV (solo `.xlsx`), paginación server-side, tests automatizados
+de UI/integración.
 
-## Verificación (convención del repo — sin tests automatizados)
+## Verificación (`npm test` + build + manual)
 
 1. `npx prisma validate` · `npx prisma db push` · `npx prisma generate` · `npx tsx prisma/seed.ts` ·
-   `npm run build` · `npx eslint .` sin errores.
+   `npm run build` · eslint acotado a los archivos del módulo (ver plan, Task 14) sin errores.
 2. `docker compose -f docker-compose.waha.yml up -d`; `/mensajes/conexion` muestra "Escanea el QR";
    escanear con el celular de campaña → "Conectado como +51…".
-3. Importar un `.xlsx` de 6 filas: 1 DNI repetido, 1 DNI de 7 dígitos (se completa con 0), 1 teléfono
-   inválido, 1 teléfono con `+51 ` y espacios → resultado "4 nuevos · 0 actualizados · 1 inválido · 1 repetido".
-   Reimportar el mismo archivo → "0 nuevos · 4 actualizados".
+3. Importar un `.xlsx` con cabecera `DNI | NOMBRE | CELULAR` y las filas: `12345678 / JUAN PEREZ / 987654321`,
+   `1234567 / ANA LOPEZ / +51 912 345 678`, `12345678 / JUAN C PEREZ / 987654321` (repetido),
+   `99999999 / PEPE / 123` (celular inválido), una fila vacía, `55555555 / (vacío) / 955555555`
+   (nombre vacío) → resultado "2 nuevos · 0 actualizados · 2 inválidos · 1 repetidos".
+   Reimportar el mismo archivo → "0 nuevos · 2 actualizados".
 4. Dar de baja un contacto manualmente; crear campaña `all` → no aparece en destinatarios.
 5. Campaña a 3 números propios, `dailyCap = 3`, pausas 10–15 s, ventana actual: Iniciar → en ≤ 1 min los
    3 pasan a `sent` → `delivered` → `read` al abrirlos; "Hoy: 3/3"; la campaña pasa a `finished`.
 6. Responder "BAJA" desde uno de los números → contacto con baja, respuesta automática recibida.
 7. Cerrar sesión de WhatsApp con una campaña `running` → pasa a `paused` (`session_down`); reconectar y
    Reanudar → continúa.
-8. Poner `ELECTION_DATE` = mañana → Iniciar campaña → queda `paused` con motivo "veda".
+8. Poner `ELECTION_DATE` = mañana → Iniciar devuelve error de veda; una campaña ya en curso se pausa
+   con motivo `veda`.
 9. Usuario `viewer`: ve todo, sin botones de importar/crear/iniciar/baja; actions devuelven error de permiso.
 10. Móvil 375 px y escritorio 1440 px: tablas con scroll horizontal, modal de importación usable.
 
@@ -534,11 +550,13 @@ plantillas guardadas, A/B, importación CSV (solo `.xlsx`), paginación server-s
 
 **Nuevos**
 - `docker-compose.waha.yml`
+- `scripts/waha-check.ts`
 - `src/instrumentation.ts`
 - `src/lib/text.ts` (`toTitleCase`, extraído de `api/dni`)
-- `src/lib/messaging/normalize.ts`, `src/lib/messaging/waha.ts`, `src/lib/messaging/scheduler.ts`, `src/lib/messaging/lima-time.ts`
+- `src/lib/ui/csv.ts`
+- `src/lib/messaging/normalize.ts`, `src/lib/messaging/waha.ts`, `src/lib/messaging/scheduler.ts`, `src/lib/messaging/lima-time.ts`, `src/lib/messaging/types.ts`, `src/lib/messaging/webhook-signature.ts`
 - `src/app/api/waha/webhook/route.ts`
-- `src/app/(admin)/mensajes/layout.tsx`, `page.tsx`, `mensajes.css`, `types.ts`
+- `src/app/(admin)/mensajes/layout.tsx`, `page.tsx`, `mensajes.css`, `types.ts`, `MensajesTabs.tsx`
 - `src/app/(admin)/mensajes/conexion/{page.tsx, ConexionClient.tsx, actions.ts}`
 - `src/app/(admin)/mensajes/contactos/{page.tsx, ContactosClient.tsx, ImportModal.tsx, actions.ts}`
 - `src/app/(admin)/mensajes/campanas/{page.tsx, CampanasClient.tsx, NewCampaignModal.tsx, actions.ts}`
@@ -548,7 +566,8 @@ plantillas guardadas, A/B, importación CSV (solo `.xlsx`), paginación server-s
 - `prisma/schema.prisma` (4 modelos + 5 enums + relaciones en `User`)
 - `src/lib/auth/permissions.ts` (2 permisos, `ROLE_DEFS`)
 - `src/app/(admin)/roles/category-icons.ts`
-- `src/components/admin/data.ts`, `src/components/admin/Icon.tsx`
+- `src/components/admin/data.ts`, `src/components/admin/Icon.tsx`, `src/components/admin/Sidebar.tsx`
+- `src/app/globals.css`, `src/app/(admin)/usuarios/users.css`, `src/app/(admin)/roles/roles.css`, `src/app/login/login.css`
 - `src/app/api/admin/search/route.ts`
 - `src/app/api/dni/[dni]/route.ts` (usa `toTitleCase` de `src/lib/text.ts`)
 - `src/proxy.ts` (`/api/waha/` público)
