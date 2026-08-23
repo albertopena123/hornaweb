@@ -1,0 +1,19 @@
+# WAHA — WhatsApp HTTP API (self-hosted). Arrancar: docker compose -f docker-compose.waha.yml up -d
+# Lee WAHA_API_KEY del .env del proyecto (docker compose carga .env automáticamente).
+services:
+  waha:
+    image: devlikeapro/waha
+    container_name: waha
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3000"
+    environment:
+      WAHA_API_KEY: ${WAHA_API_KEY}
+      WHATSAPP_DEFAULT_ENGINE: NOWEB
+      WAHA_PRINT_QR: "false"
+      WHATSAPP_RESTART_ALL_SESSIONS: "true"
+      WHATSAPP_HOOK_EVENTS: ""
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./.waha/sessions:/app/.sessions

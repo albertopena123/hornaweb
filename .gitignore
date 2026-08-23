@@ -49,3 +49,9 @@ next-env.d.ts
 
 # Archivos subidos desde el admin (afiches de avisos)
 /uploads
+
+# Plantilla de variables (sí se commitea)
+!.env.example
+
+# Sesiones de WhatsApp de WAHA (credenciales del número)
+/.waha/
