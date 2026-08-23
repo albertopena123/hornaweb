@@ -46,3 +46,6 @@ next-env.d.ts
 
 # Claude Code local settings
 .claude/
+
+# Archivos subidos desde el admin (afiches de avisos)
+/uploads
