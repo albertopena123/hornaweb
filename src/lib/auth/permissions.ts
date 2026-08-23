@@ -5,6 +5,7 @@
 // - "Usuarios"       → /usuarios
 // - "Roles"          → /roles
 // - "Simpatizantes"  → /simpatizantes (mapa de apoyos)
+// - "Avisos"         → /anuncios
 
 export type PermissionDef = {
   key: string;
@@ -68,6 +69,18 @@ export const PERMISSIONS: PermissionDef[] = [
     description: "Crear, editar, activar/desactivar y eliminar personeros",
     category: "Personeros",
   },
+  {
+    key: "anuncios.read",
+    name: "Ver avisos",
+    description: "Consultar los avisos publicados en la página principal",
+    category: "Avisos",
+  },
+  {
+    key: "anuncios.write",
+    name: "Gestionar avisos",
+    description: "Crear, editar, publicar y eliminar avisos de la página principal",
+    category: "Avisos",
+  },
 ];
 
 export type PermissionKey = (typeof PERMISSIONS)[number]["key"];
@@ -94,6 +107,8 @@ export const ROLE_DEFS = [
       "supporters.write",
       "personeros.read",
       "personeros.write",
+      "anuncios.read",
+      "anuncios.write",
     ],
   },
   {
@@ -101,6 +116,12 @@ export const ROLE_DEFS = [
     name: "Consulta",
     description: "Solo lectura sobre usuarios, roles y simpatizantes.",
     system: true,
-    permissions: ["users.read", "roles.read", "supporters.read", "personeros.read"],
+    permissions: [
+      "users.read",
+      "roles.read",
+      "supporters.read",
+      "personeros.read",
+      "anuncios.read",
+    ],
   },
 ] as const;

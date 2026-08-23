@@ -29,6 +29,9 @@ model User {
   createdPersoneros  Personero[] @relation("PersoneroCreator")
   updatedPersoneros  Personero[] @relation("PersoneroUpdater")
 
+  createdAnnouncements Announcement[] @relation("AnnouncementCreator")
+  updatedAnnouncements Announcement[] @relation("AnnouncementUpdater")
+
   @@index([active])
 }
 
@@ -208,4 +211,26 @@ model Personero {
   @@unique([docType, docNumber])
   @@index([district])
   @@index([active])
+}
+
+// Avisos de campaña que se muestran en un modal en la página principal.
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  body        String
+  imagePath   String?   // nombre de archivo dentro de UPLOADS_DIR/anuncios
+  ctaLabel    String?
+  ctaUrl      String?
+  published   Boolean   @default(false)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  createdById String?
+  updatedById String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  createdBy User? @relation("AnnouncementCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedBy User? @relation("AnnouncementUpdater", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@index([published, startsAt, endsAt])
 }

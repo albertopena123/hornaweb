@@ -25,4 +25,5 @@ export const SIDEBAR_NAV: SidebarItem[] = [
   { id: "roles", label: "Roles", icon: "shield", href: "/roles" },
   { id: "simpatizantes", label: "Simpatizantes", icon: "heart", href: "/simpatizantes" },
   { id: "personeros", label: "Personeros", icon: "id-card", href: "/personeros" },
+  { id: "anuncios", label: "Avisos", icon: "bell", href: "/anuncios" },
 ];
