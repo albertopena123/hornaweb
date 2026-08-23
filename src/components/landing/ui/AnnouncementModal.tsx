@@ -33,6 +33,7 @@ export default function AnnouncementModal({ preview, onClose }: Props) {
   const [data, setData] = useState<AnnouncementPublic | null>(preview ?? null)
   const [open, setOpen] = useState(!!preview)
   const [dontShow, setDontShow] = useState(false)
+  const dontShowRef = useRef(false)
   const closeRef = useRef<HTMLButtonElement | null>(null)
 
   // Carga del aviso vigente (solo en modo público).
@@ -49,6 +50,7 @@ export default function AnnouncementModal({ preview, onClose }: Props) {
         setData(a)
         timer = setTimeout(() => setOpen(true), OPEN_DELAY_MS)
       } catch (e) {
+        if (e instanceof DOMException && e.name === 'AbortError') return
         if (process.env.NODE_ENV !== 'production') console.warn('AnnouncementModal', e)
       }
     })()
@@ -76,7 +78,7 @@ export default function AnnouncementModal({ preview, onClose }: Props) {
   }, [open])
 
   function close() {
-    if (!preview && dontShow && data) writeDismissed(data.id)
+    if (!preview && dontShowRef.current && data) writeDismissed(data.id)
     setOpen(false)
     onClose?.()
   }
@@ -84,6 +86,7 @@ export default function AnnouncementModal({ preview, onClose }: Props) {
   if (!open || !data) return null
 
   const external = !!data.ctaUrl && /^https?:\/\//.test(data.ctaUrl)
+  const safeCta = !!data.ctaUrl && /^(https?:\/\/|\/)/.test(data.ctaUrl)
 
   return (
     <div className="anm" onClick={close} role="presentation">
@@ -102,10 +105,10 @@ export default function AnnouncementModal({ preview, onClose }: Props) {
           <span className="anm__eyebrow"><i /> Aviso de campaña</span>
           <h2 id="anm-title" className="anm__title">{data.title}</h2>
           <p className="anm__text">{data.body}</p>
-          {data.ctaUrl && data.ctaLabel && (
+          {safeCta && data.ctaLabel && (
             <a
               className="anm__cta"
-              href={data.ctaUrl}
+              href={data.ctaUrl ?? undefined}
               target={external ? '_blank' : undefined}
               rel={external ? 'noopener noreferrer' : undefined}
             >
@@ -115,7 +118,14 @@ export default function AnnouncementModal({ preview, onClose }: Props) {
           <div className="anm__foot">
             {!preview && (
               <label>
-                <input type="checkbox" checked={dontShow} onChange={(e) => setDontShow(e.target.checked)} />
+                <input
+                  type="checkbox"
+                  checked={dontShow}
+                  onChange={(e) => {
+                    setDontShow(e.target.checked)
+                    dontShowRef.current = e.target.checked
+                  }}
+                />
                 No volver a mostrar este aviso
               </label>
             )}
