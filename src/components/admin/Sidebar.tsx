@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Icon } from "./Icon";
 import { SIDEBAR_NAV } from "./data";
 
@@ -11,25 +11,26 @@ type Props = {
   mobileOpen?: boolean;
 };
 
-function pathToActiveId(pathname: string): string {
-  const segment = pathname.replace(/^\/+/, "").split("/")[0] || "";
-  return segment;
+function pathToIds(pathname: string): { top: string; sub: string } {
+  const segs = pathname.replace(/^\/+/, "").split("/").filter(Boolean);
+  return { top: segs[0] ?? "", sub: segs.slice(0, 2).join("/") };
 }
 
 export function Sidebar({ collapsed, mobileOpen = false }: Props) {
   const pathname = usePathname();
-  const activeId = pathToActiveId(pathname);
+  const { top: activeId, sub: activeSubId } = pathToIds(pathname);
 
   const parentOfActive =
     SIDEBAR_NAV.find((g) =>
-      g.children?.some((c) => c.id === activeId),
+      g.children?.some((c) => c.id === activeSubId),
     )?.id ?? null;
 
   const [openId, setOpenId] = useState<string | null>(parentOfActive);
-
-  useEffect(() => {
+  const [prevParent, setPrevParent] = useState(parentOfActive);
+  if (parentOfActive !== prevParent) {
+    setPrevParent(parentOfActive);
     if (parentOfActive) setOpenId(parentOfActive);
-  }, [parentOfActive]);
+  }
 
   return (
     <aside
@@ -42,7 +43,7 @@ export function Sidebar({ collapsed, mobileOpen = false }: Props) {
           const isOpen = openId === item.id;
           const isSelf = activeId === item.id;
           const hasActiveChild =
-            item.children?.some((c) => c.id === activeId) ?? false;
+            item.children?.some((c) => c.id === activeSubId) ?? false;
 
           const itemClass = `sidebar__item ${
             isSelf && !hasActiveChild ? "is-active" : ""
@@ -68,17 +69,13 @@ export function Sidebar({ collapsed, mobileOpen = false }: Props) {
 
           return (
             <div key={item.id} className="sidebar__group">
-              {item.expandable ? (
-                <button
-                  className={itemClass}
-                  onClick={() => setOpenId(isOpen ? null : item.id)}
-                  title={collapsed ? item.label : undefined}
-                >
+              {item.expandable && !collapsed ? (
+                <button className={itemClass} onClick={() => setOpenId(isOpen ? null : item.id)}>
                   {inner}
                 </button>
               ) : (
                 <Link
-                  href={item.href ?? `/${item.id}`}
+                  href={item.href ?? item.children?.[0]?.href ?? `/${item.id}`}
                   className={itemClass}
                   title={collapsed ? item.label : undefined}
                 >
@@ -93,7 +90,7 @@ export function Sidebar({ collapsed, mobileOpen = false }: Props) {
                       key={child.id}
                       href={child.href}
                       className={`sidebar__subitem ${
-                        activeId === child.id ? "is-active" : ""
+                        activeSubId === child.id ? "is-active" : ""
                       }`}
                     >
                       {child.label}

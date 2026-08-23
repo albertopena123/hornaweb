@@ -25,5 +25,17 @@ export const SIDEBAR_NAV: SidebarItem[] = [
   { id: "roles", label: "Roles", icon: "shield", href: "/roles" },
   { id: "simpatizantes", label: "Simpatizantes", icon: "heart", href: "/simpatizantes" },
   { id: "personeros", label: "Personeros", icon: "id-card", href: "/personeros" },
+  {
+    id: "mensajes",
+    label: "Mensajería",
+    icon: "message",
+    href: "/mensajes", // usado cuando la barra está colapsada (redirige a /mensajes/campanas)
+    expandable: true,
+    children: [
+      { id: "mensajes/campanas", label: "Campañas", href: "/mensajes/campanas" },
+      { id: "mensajes/contactos", label: "Contactos", href: "/mensajes/contactos" },
+      { id: "mensajes/conexion", label: "Conexión", href: "/mensajes/conexion" },
+    ],
+  },
   { id: "anuncios", label: "Avisos", icon: "bell", href: "/anuncios" },
 ];
