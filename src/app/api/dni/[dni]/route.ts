@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { ok, fail } from "@/app/api/v1/_lib/response";
 import { rateLimit } from "@/lib/rate-limit";
+import { toTitleCase } from "@/lib/text";
 
 // GET /api/dni/:dni — proxy de consulta de DNI para autorellenar el nombre.
 // Solo devolvemos el nombre completo; el resto de datos personales que expone
@@ -14,15 +15,6 @@ function clientIp(req: NextRequest): string {
   const xff = req.headers.get("x-forwarded-for");
   if (xff) return xff.split(",")[0].trim();
   return req.headers.get("x-real-ip") ?? "unknown";
-}
-
-function titleCase(s: string): string {
-  return s
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
 }
 
 export async function GET(
@@ -74,7 +66,7 @@ export async function GET(
         return fail("No encontramos ese DNI.", 404);
       }
 
-      return ok({ name: titleCase(fullName) });
+      return ok({ name: toTitleCase(fullName) });
     } catch {
       // Timeout o red: transitorio → reintentar en la siguiente vuelta.
     }
