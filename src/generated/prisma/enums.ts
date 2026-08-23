@@ -58,3 +58,53 @@ export const DocumentType = {
 } as const
 
 export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
+
+
+export const WhatsappStatus = {
+  unknown: 'unknown',
+  yes: 'yes',
+  no: 'no'
+} as const
+
+export type WhatsappStatus = (typeof WhatsappStatus)[keyof typeof WhatsappStatus]
+
+
+export const MessageChannel = {
+  whatsapp: 'whatsapp'
+} as const
+
+export type MessageChannel = (typeof MessageChannel)[keyof typeof MessageChannel]
+
+
+export const CampaignStatus = {
+  draft: 'draft',
+  running: 'running',
+  paused: 'paused',
+  finished: 'finished',
+  cancelled: 'cancelled'
+} as const
+
+export type CampaignStatus = (typeof CampaignStatus)[keyof typeof CampaignStatus]
+
+
+export const CampaignAudience = {
+  all: 'all',
+  not_contacted: 'not_contacted',
+  district: 'district'
+} as const
+
+export type CampaignAudience = (typeof CampaignAudience)[keyof typeof CampaignAudience]
+
+
+export const RecipientStatus = {
+  pending: 'pending',
+  sent: 'sent',
+  delivered: 'delivered',
+  read: 'read',
+  failed: 'failed',
+  no_whatsapp: 'no_whatsapp',
+  opted_out: 'opted_out',
+  skipped: 'skipped'
+} as const
+
+export type RecipientStatus = (typeof RecipientStatus)[keyof typeof RecipientStatus]

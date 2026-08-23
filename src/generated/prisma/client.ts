@@ -91,3 +91,28 @@ export type Personero = Prisma.PersoneroModel
  * 
  */
 export type Announcement = Prisma.AnnouncementModel
+/**
+ * Model Contact
+ * 
+ */
+export type Contact = Prisma.ContactModel
+/**
+ * Model ContactImport
+ * 
+ */
+export type ContactImport = Prisma.ContactImportModel
+/**
+ * Model Campaign
+ * 
+ */
+export type Campaign = Prisma.CampaignModel
+/**
+ * Model CampaignRecipient
+ * 
+ */
+export type CampaignRecipient = Prisma.CampaignRecipientModel
+/**
+ * Model MessagingDailyCounter
+ * 
+ */
+export type MessagingDailyCounter = Prisma.MessagingDailyCounterModel

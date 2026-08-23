@@ -60,7 +60,12 @@ export const ModelName = {
   Supporter: 'Supporter',
   Local: 'Local',
   Personero: 'Personero',
-  Announcement: 'Announcement'
+  Announcement: 'Announcement',
+  Contact: 'Contact',
+  ContactImport: 'ContactImport',
+  Campaign: 'Campaign',
+  CampaignRecipient: 'CampaignRecipient',
+  MessagingDailyCounter: 'MessagingDailyCounter'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -228,6 +233,100 @@ export const AnnouncementScalarFieldEnum = {
 } as const
 
 export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+
+
+export const ContactScalarFieldEnum = {
+  id: 'id',
+  docType: 'docType',
+  docNumber: 'docNumber',
+  name: 'name',
+  phone: 'phone',
+  district: 'district',
+  source: 'source',
+  whatsappStatus: 'whatsappStatus',
+  checkedAt: 'checkedAt',
+  optedOut: 'optedOut',
+  optedOutAt: 'optedOutAt',
+  optedOutReason: 'optedOutReason',
+  lastMessagedAt: 'lastMessagedAt',
+  importId: 'importId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeof ContactScalarFieldEnum]
+
+
+export const ContactImportScalarFieldEnum = {
+  id: 'id',
+  fileName: 'fileName',
+  source: 'source',
+  consentConfirmed: 'consentConfirmed',
+  totalRows: 'totalRows',
+  inserted: 'inserted',
+  updated: 'updated',
+  invalid: 'invalid',
+  duplicatedInFile: 'duplicatedInFile',
+  finishedAt: 'finishedAt',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type ContactImportScalarFieldEnum = (typeof ContactImportScalarFieldEnum)[keyof typeof ContactImportScalarFieldEnum]
+
+
+export const CampaignScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  channel: 'channel',
+  messageTemplate: 'messageTemplate',
+  audience: 'audience',
+  district: 'district',
+  status: 'status',
+  dailyCap: 'dailyCap',
+  minDelaySec: 'minDelaySec',
+  maxDelaySec: 'maxDelaySec',
+  windowStart: 'windowStart',
+  windowEnd: 'windowEnd',
+  totalRecipients: 'totalRecipients',
+  sentCount: 'sentCount',
+  failedCount: 'failedCount',
+  lastError: 'lastError',
+  pausedReason: 'pausedReason',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CampaignScalarFieldEnum = (typeof CampaignScalarFieldEnum)[keyof typeof CampaignScalarFieldEnum]
+
+
+export const CampaignRecipientScalarFieldEnum = {
+  id: 'id',
+  campaignId: 'campaignId',
+  contactId: 'contactId',
+  status: 'status',
+  attempts: 'attempts',
+  wahaMessageId: 'wahaMessageId',
+  error: 'error',
+  sentAt: 'sentAt',
+  deliveredAt: 'deliveredAt',
+  readAt: 'readAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CampaignRecipientScalarFieldEnum = (typeof CampaignRecipientScalarFieldEnum)[keyof typeof CampaignRecipientScalarFieldEnum]
+
+
+export const MessagingDailyCounterScalarFieldEnum = {
+  day: 'day',
+  count: 'count'
+} as const
+
+export type MessagingDailyCounterScalarFieldEnum = (typeof MessagingDailyCounterScalarFieldEnum)[keyof typeof MessagingDailyCounterScalarFieldEnum]
 
 
 export const SortOrder = {

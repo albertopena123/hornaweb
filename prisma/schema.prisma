@@ -32,6 +32,10 @@ model User {
   createdAnnouncements Announcement[] @relation("AnnouncementCreator")
   updatedAnnouncements Announcement[] @relation("AnnouncementUpdater")
 
+  createdContacts       Contact[]       @relation("ContactCreator")
+  createdContactImports ContactImport[] @relation("ContactImportCreator")
+  createdCampaigns      Campaign[]      @relation("CampaignCreator")
+
   @@index([active])
 }
 
@@ -233,4 +237,145 @@ model Announcement {
   updatedBy User? @relation("AnnouncementUpdater", fields: [updatedById], references: [id], onDelete: SetNull)
 
   @@index([published, startsAt, endsAt])
+}
+
+// ─────────────────────────── Mensajería (contactos + campañas WhatsApp) ───────────────────────────
+
+enum WhatsappStatus {
+  unknown
+  yes
+  no
+}
+
+enum MessageChannel {
+  whatsapp
+}
+
+enum CampaignStatus {
+  draft
+  running
+  paused
+  finished
+  cancelled
+}
+
+enum CampaignAudience {
+  all // todos los contactos activos (sin baja y con WhatsApp ≠ no)
+  not_contacted // contactos sin lastMessagedAt
+  district // contactos de un distrito (campaign.district)
+}
+
+enum RecipientStatus {
+  pending
+  sent // aceptado por WAHA (ack SERVER pendiente)
+  delivered // ack DEVICE
+  read // ack READ / PLAYED
+  failed // error de envío tras reintentos, o ack ERROR
+  no_whatsapp // check-exists = false
+  opted_out // el contacto pidió baja antes del envío
+  skipped // campaña cancelada con el destinatario aún pendiente
+}
+
+model Contact {
+  id             String         @id @default(cuid())
+  docType        DocumentType   @default(dni)
+  docNumber      String
+  name           String
+  phone          String // E.164: +519XXXXXXXX
+  district       District?
+  source         String // origen de la lista (texto de la importación)
+  whatsappStatus WhatsappStatus @default(unknown)
+  checkedAt      DateTime? // último check-exists
+  optedOut       Boolean        @default(false)
+  optedOutAt     DateTime?
+  optedOutReason String? // "reply:<texto>" | "manual:<userId>"
+  lastMessagedAt DateTime?
+  importId       String? // última importación que lo creó/actualizó
+  createdById    String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  import     ContactImport?      @relation(fields: [importId], references: [id], onDelete: SetNull)
+  createdBy  User?               @relation("ContactCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  recipients CampaignRecipient[]
+
+  @@unique([docType, docNumber])
+  @@index([phone])
+  @@index([optedOut])
+  @@index([whatsappStatus])
+  @@index([district])
+}
+
+model ContactImport {
+  id               String   @id @default(cuid())
+  fileName         String
+  source           String // "Padrón de personeros 2026", "Inscritos feria Puerto Maldonado"…
+  consentConfirmed Boolean // checkbox obligatorio en la UI
+  totalRows        Int
+  inserted         Int      @default(0)
+  updated          Int      @default(0)
+  invalid          Int // DNI/teléfono inválidos (no se importan)
+  duplicatedInFile Int // DNI repetidos dentro del archivo (se conserva la última fila)
+  finishedAt       DateTime?
+  createdById      String?
+  createdAt        DateTime @default(now())
+
+  createdBy User?     @relation("ContactImportCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  contacts  Contact[]
+}
+
+model Campaign {
+  id              String           @id @default(cuid())
+  name            String
+  channel         MessageChannel   @default(whatsapp)
+  messageTemplate String // admite {nombre} y {dni}
+  audience        CampaignAudience
+  district        District? // solo si audience = district
+  status          CampaignStatus   @default(draft)
+  dailyCap        Int              @default(150)
+  minDelaySec     Int              @default(45)
+  maxDelaySec     Int              @default(120)
+  windowStart     Int              @default(8) // hora Lima (0-23) inclusive
+  windowEnd       Int              @default(20) // hora Lima exclusiva
+  totalRecipients Int              @default(0)
+  sentCount       Int              @default(0) // sent+delivered+read
+  failedCount     Int              @default(0) // failed+no_whatsapp
+  lastError       String?
+  pausedReason    String? // "session_down" | "manual" | "waha_error" | "veda"
+  startedAt       DateTime?
+  finishedAt      DateTime?
+  createdById     String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  createdBy  User?               @relation("CampaignCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  recipients CampaignRecipient[]
+
+  @@index([status])
+}
+
+model CampaignRecipient {
+  id            String          @id @default(cuid())
+  campaignId    String
+  contactId     String
+  status        RecipientStatus @default(pending)
+  attempts      Int             @default(0)
+  wahaMessageId String?
+  error         String?
+  sentAt        DateTime?
+  deliveredAt   DateTime?
+  readAt        DateTime?
+  updatedAt     DateTime        @updatedAt
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contact  Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, contactId])
+  @@unique([wahaMessageId])
+  @@index([campaignId, status])
+}
+
+model MessagingDailyCounter {
+  day   String @id // "YYYY-MM-DD" en hora Lima
+  count Int    @default(0)
 }
