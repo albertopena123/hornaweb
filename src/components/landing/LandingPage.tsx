@@ -6,6 +6,7 @@ import "./landing.css";
 import Preloader from "./ui/Preloader";
 import ScrollToTop from "./ui/ScrollToTop";
 import FloatingRegister from "./ui/FloatingRegister";
+import AnnouncementModal from "./ui/AnnouncementModal";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import Hero from "./sections/Hero";
@@ -122,6 +123,8 @@ export default function LandingPage() {
       <ScrollToTop />
       {/* Registro flotante de simpatizantes */}
       <FloatingRegister />
+      {/* Modal del aviso vigente */}
+      <AnnouncementModal />
       {/* Custom Cursor */}
       <div className="cursor"></div>
       <span className="dot"></span>
