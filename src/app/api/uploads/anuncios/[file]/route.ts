@@ -11,6 +11,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ fil
     return new NextResponse(data, {
       headers: {
         "Content-Type": contentTypeFor(file),
+        "X-Content-Type-Options": "nosniff",
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });

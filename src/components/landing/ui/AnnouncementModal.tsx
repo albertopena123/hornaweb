@@ -86,7 +86,7 @@ export default function AnnouncementModal({ preview, onClose }: Props) {
   if (!open || !data) return null
 
   const external = !!data.ctaUrl && /^https?:\/\//.test(data.ctaUrl)
-  const safeCta = !!data.ctaUrl && /^(https?:\/\/|\/(?!\/))/.test(data.ctaUrl)
+  const safeCta = !!data.ctaUrl && /^(https?:\/\/|\/(?![\/\\]))/.test(data.ctaUrl)
 
   return (
     <div className="anm" onClick={close} role="presentation">

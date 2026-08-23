@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, verifySession } from "@/lib/auth/cookie";
 
-const PUBLIC_PATHS = new Set<string>(["/", "/login", "/403", "/mi-foto"]);
+const PUBLIC_PATHS = new Set<string>(["/", "/login", "/403", "/mi-foto", "/api/anuncios/activo"]);
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -10,8 +10,6 @@ export async function proxy(request: NextRequest) {
     PUBLIC_PATHS.has(pathname) ||
     pathname.startsWith("/api/auth/") ||
     pathname.startsWith("/api/apoyos") ||
-    pathname.startsWith("/api/anuncios/") ||
-    pathname.startsWith("/api/uploads/") ||
     pathname.startsWith("/api/dni/") ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/assets/") ||
