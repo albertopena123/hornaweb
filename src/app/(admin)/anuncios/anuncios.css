@@ -1,0 +1,31 @@
+/* Módulo Avisos — complementa las clases globales del admin */
+.anuncios { display: flex; flex-direction: column; gap: 16px; padding: 0 24px 80px; max-width: 1600px; }
+@media (max-width: 1024px) { .anuncios { padding: 0 16px 80px; } }
+@media (max-width: 900px) { .anuncios { padding: 0 12px 64px; } }
+.anuncios__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.anuncios__head h1 { margin: 0; font-size: 22px; }
+.anuncios__sub { margin: 4px 0 0; color: var(--text-muted, #7a8699); font-size: 13px; }
+.anuncios__thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: #0d1b2a; display: block; }
+.anuncios__thumb--empty { display: grid; place-items: center; color: var(--text-faint, #9aa4b2); background: var(--bg-sunken, #f1f3f4); }
+.anuncios__title { font-weight: 600; color: var(--text, #16232f); }
+.anuncios__body { color: var(--text-muted, #7a8699); font-size: 12px; margin-top: 2px; max-width: 420px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.anuncios__dates { font-size: 12.5px; white-space: nowrap; }
+.anuncios__dates div + div { margin-top: 2px; }
+.anuncios__actions { display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+.anuncios .btn--sm { padding: 5px 10px; font-size: 13px; }
+.anuncios__empty { text-align: center; color: var(--text-muted, #7a8699); padding: 40px 0 !important; }
+.anuncios__empty svg { display: block; margin: 0 auto 8px; opacity: 0.6; }
+.anuncios__row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px) { .anuncios__row { grid-template-columns: 1fr; } }
+.field--check { flex-direction: row; align-items: center; gap: 8px; }
+.field--check input { width: 16px; height: 16px; }
+.anuncios__imgfield { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.anuncios__imgprev { width: 96px; height: 96px; border-radius: 10px; object-fit: cover; background: #0d1b2a; border: 1px solid var(--border, #e5e7eb); }
+
+/* `.anuncios__imgprev` vacío: mismo encuadre, pero con el fondo hundido del tema. */
+div.anuncios__imgprev { background: var(--bg-sunken, #f1f3f4); }
+.anuncios__imgbtns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* `.badge--amber`, `--green` y `--neutral` ya existen en globals.css. */
+.badge--gray { background: #f1f3f4; color: #5f6368; }
+html[data-theme="dark"] .badge--gray { background: rgba(148, 163, 184, 0.18); color: #cbd5e1; }
