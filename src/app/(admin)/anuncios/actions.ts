@@ -61,7 +61,7 @@ function validate(fd: FormData): { data?: Validated; fieldErrors?: Record<string
   const ctaLabelRaw = str(fd, "ctaLabel");
   const ctaUrlRaw = str(fd, "ctaUrl");
   if (ctaLabelRaw.length > 40) fe.ctaLabel = "Máximo 40 caracteres.";
-  if (ctaUrlRaw !== "" && !/^(https?:\/\/\S+|\/\S*)$/.test(ctaUrlRaw))
+  if (ctaUrlRaw !== "" && !/^(https?:\/\/\S+|\/(?!\/)\S*)$/.test(ctaUrlRaw))
     fe.ctaUrl = "Debe empezar por http://, https:// o /.";
   if (ctaLabelRaw !== "" && ctaUrlRaw === "") fe.ctaUrl = "Indica el enlace del botón.";
   if (ctaUrlRaw !== "" && ctaLabelRaw === "") fe.ctaLabel = "Indica el texto del botón.";
