@@ -41,11 +41,10 @@ function str(fd: FormData, key: string): string {
   return typeof v === "string" ? v.trim() : "";
 }
 
-// Acepta el valor de un <input type="datetime-local"> ("YYYY-MM-DDTHH:mm") interpretado
-// en la zona horaria del servidor, o vacío.
-function parseLocalDate(s: string): Date | null | undefined {
+// Acepta una fecha ISO-8601 (el cliente convierte su datetime-local a UTC) o vacío.
+function parseIsoDate(s: string): Date | null | undefined {
   if (s === "") return null;
-  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(s)) return undefined;
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?(Z|[+-]\d{2}:\d{2})$/.test(s)) return undefined;
   const d = new Date(s);
   return Number.isNaN(d.getTime()) ? undefined : d;
 }
@@ -67,9 +66,9 @@ function validate(fd: FormData): { data?: Validated; fieldErrors?: Record<string
   if (ctaLabelRaw !== "" && ctaUrlRaw === "") fe.ctaUrl = "Indica el enlace del botón.";
   if (ctaUrlRaw !== "" && ctaLabelRaw === "") fe.ctaLabel = "Indica el texto del botón.";
 
-  const startsAt = parseLocalDate(str(fd, "startsAt"));
+  const startsAt = parseIsoDate(str(fd, "startsAt"));
   if (startsAt === undefined) fe.startsAt = "Fecha inválida.";
-  const endsAt = parseLocalDate(str(fd, "endsAt"));
+  const endsAt = parseIsoDate(str(fd, "endsAt"));
   if (endsAt === undefined) fe.endsAt = "Fecha inválida.";
   if (startsAt && endsAt && startsAt.getTime() > endsAt.getTime())
     fe.endsAt = "Debe ser posterior a 'Mostrar desde'.";
@@ -118,6 +117,7 @@ export async function createAnnouncement(fd: FormData): Promise<ActionResult<{ i
     const a = await prisma.announcement.create({
       data: { ...data, imagePath: savedImage, createdById: me.id, updatedById: me.id },
     });
+    savedImage = null;
     refresh();
     return { ok: true, data: { id: a.id } };
   } catch (e) {
@@ -155,6 +155,7 @@ export async function updateAnnouncement(id: string, fd: FormData): Promise<Acti
       where: { id },
       data: { ...data, imagePath, updatedById: me.id },
     });
+    savedImage = null;
     // Borra la imagen anterior solo cuando la nueva quedó registrada.
     if (current.imagePath && current.imagePath !== imagePath) await removeUpload(SUB, current.imagePath);
     refresh();
