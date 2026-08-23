@@ -86,3 +86,8 @@ export type Local = Prisma.LocalModel
  * 
  */
 export type Personero = Prisma.PersoneroModel
+/**
+ * Model Announcement
+ * 
+ */
+export type Announcement = Prisma.AnnouncementModel

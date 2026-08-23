@@ -212,6 +212,8 @@ export type UserWhereInput = {
   reviewedSupporters?: Prisma.SupporterListRelationFilter
   createdPersoneros?: Prisma.PersoneroListRelationFilter
   updatedPersoneros?: Prisma.PersoneroListRelationFilter
+  createdAnnouncements?: Prisma.AnnouncementListRelationFilter
+  updatedAnnouncements?: Prisma.AnnouncementListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -229,6 +231,8 @@ export type UserOrderByWithRelationInput = {
   reviewedSupporters?: Prisma.SupporterOrderByRelationAggregateInput
   createdPersoneros?: Prisma.PersoneroOrderByRelationAggregateInput
   updatedPersoneros?: Prisma.PersoneroOrderByRelationAggregateInput
+  createdAnnouncements?: Prisma.AnnouncementOrderByRelationAggregateInput
+  updatedAnnouncements?: Prisma.AnnouncementOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -249,6 +253,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   reviewedSupporters?: Prisma.SupporterListRelationFilter
   createdPersoneros?: Prisma.PersoneroListRelationFilter
   updatedPersoneros?: Prisma.PersoneroListRelationFilter
+  createdAnnouncements?: Prisma.AnnouncementListRelationFilter
+  updatedAnnouncements?: Prisma.AnnouncementListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -294,6 +300,8 @@ export type UserCreateInput = {
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -311,6 +319,8 @@ export type UserUncheckedCreateInput = {
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUpdateInput = {
@@ -328,6 +338,8 @@ export type UserUpdateInput = {
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -345,6 +357,8 @@ export type UserUncheckedUpdateInput = {
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -531,6 +545,38 @@ export type UserUpdateOneWithoutUpdatedPersonerosNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUpdatedPersonerosInput, Prisma.UserUpdateWithoutUpdatedPersonerosInput>, Prisma.UserUncheckedUpdateWithoutUpdatedPersonerosInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedAnnouncementsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedAnnouncementsInput, Prisma.UserUncheckedCreateWithoutCreatedAnnouncementsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedAnnouncementsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutUpdatedAnnouncementsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdatedAnnouncementsInput, Prisma.UserUncheckedCreateWithoutUpdatedAnnouncementsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdatedAnnouncementsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedAnnouncementsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedAnnouncementsInput, Prisma.UserUncheckedCreateWithoutCreatedAnnouncementsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedAnnouncementsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedAnnouncementsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedAnnouncementsInput, Prisma.UserUpdateWithoutCreatedAnnouncementsInput>, Prisma.UserUncheckedUpdateWithoutCreatedAnnouncementsInput>
+}
+
+export type UserUpdateOneWithoutUpdatedAnnouncementsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUpdatedAnnouncementsInput, Prisma.UserUncheckedCreateWithoutUpdatedAnnouncementsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUpdatedAnnouncementsInput
+  upsert?: Prisma.UserUpsertWithoutUpdatedAnnouncementsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUpdatedAnnouncementsInput, Prisma.UserUpdateWithoutUpdatedAnnouncementsInput>, Prisma.UserUncheckedUpdateWithoutUpdatedAnnouncementsInput>
+}
+
 export type UserCreateWithoutRolesInput = {
   id?: string
   email: string
@@ -545,6 +591,8 @@ export type UserCreateWithoutRolesInput = {
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutRolesInput = {
@@ -561,6 +609,8 @@ export type UserUncheckedCreateWithoutRolesInput = {
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutRolesInput = {
@@ -593,6 +643,8 @@ export type UserUpdateWithoutRolesInput = {
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRolesInput = {
@@ -609,6 +661,8 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -625,6 +679,8 @@ export type UserCreateWithoutSessionsInput = {
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -641,6 +697,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -673,6 +731,8 @@ export type UserUpdateWithoutSessionsInput = {
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -689,6 +749,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateWithoutCreatedSupportersInput = {
@@ -705,6 +767,8 @@ export type UserCreateWithoutCreatedSupportersInput = {
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSupportersInput = {
@@ -721,6 +785,8 @@ export type UserUncheckedCreateWithoutCreatedSupportersInput = {
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSupportersInput = {
@@ -742,6 +808,8 @@ export type UserCreateWithoutReviewedSupportersInput = {
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutReviewedSupportersInput = {
@@ -758,6 +826,8 @@ export type UserUncheckedCreateWithoutReviewedSupportersInput = {
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
   createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutReviewedSupportersInput = {
@@ -790,6 +860,8 @@ export type UserUpdateWithoutCreatedSupportersInput = {
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSupportersInput = {
@@ -806,6 +878,8 @@ export type UserUncheckedUpdateWithoutCreatedSupportersInput = {
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUpsertWithoutReviewedSupportersInput = {
@@ -833,6 +907,8 @@ export type UserUpdateWithoutReviewedSupportersInput = {
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedSupportersInput = {
@@ -849,6 +925,8 @@ export type UserUncheckedUpdateWithoutReviewedSupportersInput = {
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
   createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserCreateWithoutCreatedPersonerosInput = {
@@ -865,6 +943,8 @@ export type UserCreateWithoutCreatedPersonerosInput = {
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedPersonerosInput = {
@@ -881,6 +961,8 @@ export type UserUncheckedCreateWithoutCreatedPersonerosInput = {
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
   updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedPersonerosInput = {
@@ -902,6 +984,8 @@ export type UserCreateWithoutUpdatedPersonerosInput = {
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserUncheckedCreateWithoutUpdatedPersonerosInput = {
@@ -918,6 +1002,8 @@ export type UserUncheckedCreateWithoutUpdatedPersonerosInput = {
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
 }
 
 export type UserCreateOrConnectWithoutUpdatedPersonerosInput = {
@@ -950,6 +1036,8 @@ export type UserUpdateWithoutCreatedPersonerosInput = {
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedPersonerosInput = {
@@ -966,6 +1054,8 @@ export type UserUncheckedUpdateWithoutCreatedPersonerosInput = {
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUpsertWithoutUpdatedPersonerosInput = {
@@ -993,6 +1083,8 @@ export type UserUpdateWithoutUpdatedPersonerosInput = {
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUpdatedPersonerosInput = {
@@ -1009,6 +1101,184 @@ export type UserUncheckedUpdateWithoutUpdatedPersonerosInput = {
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type UserCreateWithoutCreatedAnnouncementsInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
+  reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
+  createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
+  updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
+}
+
+export type UserUncheckedCreateWithoutCreatedAnnouncementsInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
+  createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
+}
+
+export type UserCreateOrConnectWithoutCreatedAnnouncementsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedAnnouncementsInput, Prisma.UserUncheckedCreateWithoutCreatedAnnouncementsInput>
+}
+
+export type UserCreateWithoutUpdatedAnnouncementsInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
+  reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
+  createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
+  updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutUpdatedAnnouncementsInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
+  createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutUpdatedAnnouncementsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdatedAnnouncementsInput, Prisma.UserUncheckedCreateWithoutUpdatedAnnouncementsInput>
+}
+
+export type UserUpsertWithoutCreatedAnnouncementsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedAnnouncementsInput, Prisma.UserUncheckedUpdateWithoutCreatedAnnouncementsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedAnnouncementsInput, Prisma.UserUncheckedCreateWithoutCreatedAnnouncementsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedAnnouncementsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedAnnouncementsInput, Prisma.UserUncheckedUpdateWithoutCreatedAnnouncementsInput>
+}
+
+export type UserUpdateWithoutCreatedAnnouncementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
+  reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
+  createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
+  updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedAnnouncementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
+  createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
+}
+
+export type UserUpsertWithoutUpdatedAnnouncementsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUpdatedAnnouncementsInput, Prisma.UserUncheckedUpdateWithoutUpdatedAnnouncementsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUpdatedAnnouncementsInput, Prisma.UserUncheckedCreateWithoutUpdatedAnnouncementsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUpdatedAnnouncementsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUpdatedAnnouncementsInput, Prisma.UserUncheckedUpdateWithoutUpdatedAnnouncementsInput>
+}
+
+export type UserUpdateWithoutUpdatedAnnouncementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
+  reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
+  createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
+  updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUpdatedAnnouncementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
+  createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -1023,6 +1293,8 @@ export type UserCountOutputType = {
   reviewedSupporters: number
   createdPersoneros: number
   updatedPersoneros: number
+  createdAnnouncements: number
+  updatedAnnouncements: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1032,6 +1304,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reviewedSupporters?: boolean | UserCountOutputTypeCountReviewedSupportersArgs
   createdPersoneros?: boolean | UserCountOutputTypeCountCreatedPersonerosArgs
   updatedPersoneros?: boolean | UserCountOutputTypeCountUpdatedPersonerosArgs
+  createdAnnouncements?: boolean | UserCountOutputTypeCountCreatedAnnouncementsArgs
+  updatedAnnouncements?: boolean | UserCountOutputTypeCountUpdatedAnnouncementsArgs
 }
 
 /**
@@ -1086,6 +1360,20 @@ export type UserCountOutputTypeCountUpdatedPersonerosArgs<ExtArgs extends runtim
   where?: Prisma.PersoneroWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedAnnouncementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnnouncementWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUpdatedAnnouncementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnnouncementWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1102,6 +1390,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviewedSupporters?: boolean | Prisma.User$reviewedSupportersArgs<ExtArgs>
   createdPersoneros?: boolean | Prisma.User$createdPersonerosArgs<ExtArgs>
   updatedPersoneros?: boolean | Prisma.User$updatedPersonerosArgs<ExtArgs>
+  createdAnnouncements?: boolean | Prisma.User$createdAnnouncementsArgs<ExtArgs>
+  updatedAnnouncements?: boolean | Prisma.User$updatedAnnouncementsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1146,6 +1436,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviewedSupporters?: boolean | Prisma.User$reviewedSupportersArgs<ExtArgs>
   createdPersoneros?: boolean | Prisma.User$createdPersonerosArgs<ExtArgs>
   updatedPersoneros?: boolean | Prisma.User$updatedPersonerosArgs<ExtArgs>
+  createdAnnouncements?: boolean | Prisma.User$createdAnnouncementsArgs<ExtArgs>
+  updatedAnnouncements?: boolean | Prisma.User$updatedAnnouncementsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1160,6 +1452,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviewedSupporters: Prisma.$SupporterPayload<ExtArgs>[]
     createdPersoneros: Prisma.$PersoneroPayload<ExtArgs>[]
     updatedPersoneros: Prisma.$PersoneroPayload<ExtArgs>[]
+    createdAnnouncements: Prisma.$AnnouncementPayload<ExtArgs>[]
+    updatedAnnouncements: Prisma.$AnnouncementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1570,6 +1864,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   reviewedSupporters<T extends Prisma.User$reviewedSupportersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedSupportersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupporterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdPersoneros<T extends Prisma.User$createdPersonerosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdPersonerosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PersoneroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   updatedPersoneros<T extends Prisma.User$updatedPersonerosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$updatedPersonerosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PersoneroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdAnnouncements<T extends Prisma.User$createdAnnouncementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdAnnouncementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  updatedAnnouncements<T extends Prisma.User$updatedAnnouncementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$updatedAnnouncementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2141,6 +2437,54 @@ export type User$updatedPersonerosArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.PersoneroScalarFieldEnum | Prisma.PersoneroScalarFieldEnum[]
+}
+
+/**
+ * User.createdAnnouncements
+ */
+export type User$createdAnnouncementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Announcement
+   */
+  select?: Prisma.AnnouncementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Announcement
+   */
+  omit?: Prisma.AnnouncementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnnouncementInclude<ExtArgs> | null
+  where?: Prisma.AnnouncementWhereInput
+  orderBy?: Prisma.AnnouncementOrderByWithRelationInput | Prisma.AnnouncementOrderByWithRelationInput[]
+  cursor?: Prisma.AnnouncementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
+}
+
+/**
+ * User.updatedAnnouncements
+ */
+export type User$updatedAnnouncementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Announcement
+   */
+  select?: Prisma.AnnouncementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Announcement
+   */
+  omit?: Prisma.AnnouncementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnnouncementInclude<ExtArgs> | null
+  where?: Prisma.AnnouncementWhereInput
+  orderBy?: Prisma.AnnouncementOrderByWithRelationInput | Prisma.AnnouncementOrderByWithRelationInput[]
+  cursor?: Prisma.AnnouncementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnnouncementScalarFieldEnum | Prisma.AnnouncementScalarFieldEnum[]
 }
 
 /**

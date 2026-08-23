@@ -59,7 +59,8 @@ export const ModelName = {
   Session: 'Session',
   Supporter: 'Supporter',
   Local: 'Local',
-  Personero: 'Personero'
+  Personero: 'Personero',
+  Announcement: 'Announcement'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -208,6 +209,25 @@ export const PersoneroScalarFieldEnum = {
 } as const
 
 export type PersoneroScalarFieldEnum = (typeof PersoneroScalarFieldEnum)[keyof typeof PersoneroScalarFieldEnum]
+
+
+export const AnnouncementScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  body: 'body',
+  imagePath: 'imagePath',
+  ctaLabel: 'ctaLabel',
+  ctaUrl: 'ctaUrl',
+  published: 'published',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
 
 
 export const SortOrder = {
