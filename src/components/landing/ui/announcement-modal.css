@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Staatliches&display=swap');
 .anm {
   position: fixed; inset: 0; z-index: 100000;
   display: flex; align-items: center; justify-content: center;

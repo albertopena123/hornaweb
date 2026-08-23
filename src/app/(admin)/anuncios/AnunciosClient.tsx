@@ -185,6 +185,7 @@ export function AnunciosClient({ rows, perms }: { rows: AnnouncementRow[]; perms
           initial={modal.mode === "edit" ? modal.row : null}
           onClose={() => setModal(null)}
           onPreview={setPreview}
+          previewOpen={preview !== null}
           onSubmit={async (fd) => {
             const res =
               modal.mode === "edit" ? await updateAnnouncement(modal.row.id, fd) : await createAnnouncement(fd);
@@ -229,11 +230,13 @@ function AnuncioModal({
   initial,
   onClose,
   onPreview,
+  previewOpen,
   onSubmit,
 }: {
   initial: AnnouncementRow | null;
   onClose: () => void;
   onPreview: (a: AnnouncementPublic) => void;
+  previewOpen: boolean;
   onSubmit: (fd: FormData) => Promise<ActionResult<unknown>>;
 }) {
   const [title, setTitle] = useState(initial?.title ?? "");
@@ -249,7 +252,8 @@ function AnuncioModal({
   const [busy, setBusy] = useState(false);
   const [topError, setTopError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
-  useEscClose(true, onClose, busy);
+  // Con la vista previa encima, Escape debe cerrarla a ella y no descartar el formulario.
+  useEscClose(!previewOpen, onClose, busy);
 
   // El object URL vivo se libera al reemplazarlo y al cerrar el modal.
   const pickedUrl = useRef<string | null>(null);
@@ -313,7 +317,7 @@ function AnuncioModal({
   }
 
   return (
-    <div className="modal-backdrop" onClick={() => !busy && onClose()}>
+    <div className="modal-backdrop" onClick={() => !busy && !previewOpen && onClose()}>
       <form className="modal" onClick={(e) => e.stopPropagation()} onSubmit={submit}>
         <header className="modal__head">
           <h2>{initial ? "Editar aviso" : "Nuevo aviso"}</h2>
@@ -376,7 +380,7 @@ function AnuncioModal({
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
-                    hidden
+                    className="anuncios__file"
                     onChange={(e) => {
                       pickImage(e.target.files?.[0] ?? null);
                       e.target.value = "";
