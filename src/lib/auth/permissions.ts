@@ -6,6 +6,7 @@
 // - "Roles"          → /roles
 // - "Simpatizantes"  → /simpatizantes (mapa de apoyos)
 // - "Avisos"         → /anuncios
+// - "Mensajería"     → /mensajes (contactos, campañas WhatsApp)
 
 export type PermissionDef = {
   key: string;
@@ -81,6 +82,19 @@ export const PERMISSIONS: PermissionDef[] = [
     description: "Crear, editar, publicar y eliminar avisos de la página principal",
     category: "Avisos",
   },
+  {
+    key: "mensajes.read",
+    name: "Ver mensajería",
+    description: "Consultar contactos, campañas y estado de la conexión de WhatsApp",
+    category: "Mensajería",
+  },
+  {
+    key: "mensajes.write",
+    name: "Gestionar mensajería",
+    description:
+      "Importar contactos, crear y controlar campañas, conectar WhatsApp y dar de baja contactos",
+    category: "Mensajería",
+  },
 ];
 
 export type PermissionKey = (typeof PERMISSIONS)[number]["key"];
@@ -109,6 +123,8 @@ export const ROLE_DEFS = [
       "personeros.write",
       "anuncios.read",
       "anuncios.write",
+      "mensajes.read",
+      "mensajes.write",
     ],
   },
   {
@@ -122,6 +138,7 @@ export const ROLE_DEFS = [
       "supporters.read",
       "personeros.read",
       "anuncios.read",
+      "mensajes.read",
     ],
   },
 ] as const;

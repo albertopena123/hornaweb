@@ -4,6 +4,8 @@ const MAP: Record<string, IconName> = {
   Usuarios: "users",
   Roles: "shield",
   Simpatizantes: "users",
+  Personeros: "id-card",
+  Mensajería: "message",
 };
 
 export function categoryIcon(category: string): IconName {

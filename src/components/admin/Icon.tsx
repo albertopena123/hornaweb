@@ -46,6 +46,7 @@ export type IconName =
   | "eye"
   | "eye-off"
   | "id-card"
+  | "message"
   | "logo";
 
 type IconProps = {
@@ -383,6 +384,13 @@ export function Icon({
           <rect x="3" y="5" width="18" height="14" rx="2" />
           <circle cx="8.5" cy="11" r="2" />
           <path d="M5.3 16c.5-1.4 1.8-2.2 3.2-2.2s2.7.8 3.2 2.2M14 10h4M14 13.5h4" />
+        </svg>
+      );
+    case "message":
+      return (
+        <svg {...props}>
+          <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H9l-4.2 3.4c-.4.3-.8 0-.8-.4V6.5Z" />
+          <path d="M8 9h8M8 12.5h5" />
         </svg>
       );
     case "logo":
