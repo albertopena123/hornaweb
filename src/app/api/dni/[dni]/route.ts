@@ -8,6 +8,9 @@ import { toTitleCase } from "@/lib/text";
 // el API externo (dirección, fecha de nacimiento, padres…) no sale de aquí.
 
 const API_BASE = "https://apidatos.unamad.edu.pe/api/consulta";
+// El token vive solo en el entorno (.env, fuera de git). Este route corre en el
+// servidor, asi que nunca llega al navegador: el cliente pega a /api/dni/:dni.
+const API_TOKEN = process.env.DNI_API_TOKEN ?? "";
 const MAX_PER_IP = 15;
 const WINDOW_MS = 10 * 60 * 1000; // 10 minutos
 
@@ -42,10 +45,21 @@ export async function GET(
       const upstream = await fetch(`${API_BASE}/${dni}`, {
         signal: AbortSignal.timeout(20000),
         cache: "no-store",
+        headers: {
+          Accept: "application/json",
+          ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
+        },
       });
 
       if (upstream.status === 404) {
         return fail("No encontramos ese DNI.", 404);
+      }
+      // 401/403 no son transitorios: reintentar no arregla un token invalido.
+      if (upstream.status === 401 || upstream.status === 403) {
+        console.error(
+          `dni-lookup: el API respondio ${upstream.status}. Revisa DNI_API_TOKEN en .env.`,
+        );
+        return fail("Servicio de consulta no disponible.", 502);
       }
       if (!upstream.ok) {
         continue; // 5xx u otro estado transitorio → reintentar

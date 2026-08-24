@@ -52,6 +52,7 @@
 .field--check { flex-direction: row; align-items: center; gap: 8px; }
 .field--check input { width: 16px; height: 16px; }
 .mensajes__hint { color: var(--text-muted, #7a8699); font-size: 12px; margin-top: 4px; }
+.mensajes__hint--ok { color: #15803d; }
 .mensajes__err { color: #b91c1c; font-size: 12px; margin-top: 4px; }
 
 /* Conexión */

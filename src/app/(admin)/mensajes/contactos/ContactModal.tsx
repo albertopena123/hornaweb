@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Icon } from "@/components/admin/Icon";
 import { useEscClose } from "@/lib/ui/useEscClose";
 import { DISTRICTS } from "@/lib/districts";
@@ -18,6 +18,48 @@ export function ContactModal({ onClose, onCreated }: { onClose: () => void; onCr
   const [topError, setTopError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
   useEscClose(true, onClose, busy);
+
+  // Autorellenado por DNI: al completar 8 digitos consulta /api/dni/:dni (proxy
+  // propio, que es quien guarda el token) y llena el nombre. No sobreescribe un
+  // nombre escrito a mano; solo actualiza si esta vacio o lo puso el autorelleno.
+  const [dniLookup, setDniLookup] = useState<"idle" | "loading" | "found" | "notfound" | "error">("idle");
+  const autoNameRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const doc = docNumber.trim();
+    const eligible = /^\d{8}$/.test(doc);
+    const ctrl = new AbortController();
+    const t = setTimeout(async () => {
+      // Al cambiar el DNI, descarta el nombre que puso el autorrelleno anterior
+      // para no arrastrar datos del DNI previo si el nuevo no resuelve.
+      const auto = autoNameRef.current;
+      setName((prev) => (auto !== null && prev === auto ? "" : prev));
+      autoNameRef.current = null;
+
+      if (!eligible) {
+        setDniLookup("idle");
+        return;
+      }
+      setDniLookup("loading");
+      try {
+        const res = await fetch(`/api/dni/${doc}`, { signal: ctrl.signal });
+        const json = await res.json().catch(() => null);
+        if (res.ok && json?.ok && typeof json.name === "string" && json.name) {
+          setName((prev) => (prev.trim() === "" ? json.name : prev));
+          autoNameRef.current = json.name;
+          setDniLookup("found");
+        } else {
+          setDniLookup(res.status === 404 ? "notfound" : "error");
+        }
+      } catch {
+        if (!ctrl.signal.aborted) setDniLookup("error");
+      }
+    }, eligible ? 350 : 0);
+    return () => {
+      clearTimeout(t);
+      ctrl.abort();
+    };
+  }, [docNumber]);
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -80,11 +122,15 @@ export function ContactModal({ onClose, onCreated }: { onClose: () => void; onCr
             <input
               type="text"
               maxLength={120}
-              placeholder="PEREZ GOMEZ JUAN CARLOS"
+              placeholder={dniLookup === "loading" ? "Buscando datos…" : "PEREZ GOMEZ JUAN CARLOS"}
               value={name}
               onChange={(e) => setName(e.target.value)}
               aria-invalid={!!fieldErrors.name}
             />
+            {dniLookup === "loading" && <span className="mensajes__hint">Consultando DNI…</span>}
+            {dniLookup === "found" && <span className="mensajes__hint mensajes__hint--ok">✓ Datos encontrados con el DNI</span>}
+            {dniLookup === "notfound" && <span className="mensajes__hint">No encontramos el DNI, escribe el nombre.</span>}
+            {dniLookup === "error" && <span className="mensajes__hint">No se pudo consultar el DNI, escribe el nombre.</span>}
             {fieldErrors.name && <span className="mensajes__err">{fieldErrors.name}</span>}
           </label>
 
