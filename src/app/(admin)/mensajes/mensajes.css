@@ -12,6 +12,7 @@
 .mensajes__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
 .mensajes__head h1 { margin: 0; font-size: 22px; }
 .mensajes__head h2 { margin: 0; font-size: 18px; }
+.mensajes__headactions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .mensajes__sub { margin: 4px 0 0; color: var(--text-muted, #7a8699); font-size: 13px; }
 .mensajes__tabs { margin-bottom: 0; }
 .mensajes__actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }

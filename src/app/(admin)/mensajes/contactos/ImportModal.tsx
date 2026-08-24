@@ -169,14 +169,22 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
           )}
 
           {step === "file" && (
-            <label className="mensajes__dropzone">
-              <input type="file" accept=".xlsx" onChange={(e) => onFile(e.target.files?.[0])} disabled={reading} />
-              <Icon name="download" size={22} />
-              <div style={{ marginTop: 8 }}>{reading ? "Leyendo archivo…" : "Haz clic para elegir un archivo .xlsx"}</div>
-              <div className="mensajes__hint">
-                La primera fila debe ser la cabecera (DNI, Nombre, Celular…). El archivo no se sube: se procesa en tu navegador.
-              </div>
-            </label>
+            <>
+              <label className="mensajes__dropzone">
+                <input type="file" accept=".xlsx" onChange={(e) => onFile(e.target.files?.[0])} disabled={reading} />
+                <Icon name="download" size={22} />
+                <div style={{ marginTop: 8 }}>{reading ? "Leyendo archivo…" : "Haz clic para elegir un archivo .xlsx"}</div>
+                <div className="mensajes__hint">
+                  La primera fila debe ser la cabecera (DNI, Nombre, Celular…). El archivo no se sube: se procesa en tu navegador.
+                </div>
+              </label>
+              <p className="mensajes__hint" style={{ marginTop: 10 }}>
+                ¿No sabes cómo armar el archivo?{" "}
+                <a className="linkbtn" href="/ejemplo-contactos.xlsx" download="ejemplo-contactos.xlsx">
+                  Descarga la plantilla de ejemplo (.xlsx)
+                </a>
+              </p>
+            </>
           )}
 
           {step === "map" && normalized && (

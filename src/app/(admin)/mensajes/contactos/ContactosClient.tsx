@@ -81,9 +81,14 @@ export function ContactosClient({ rows, perms, initialQuery }: { rows: ContactRo
           <p className="mensajes__sub">Base única por DNI. Importar de nuevo un DNI actualiza sus datos, nunca lo duplica.</p>
         </div>
         {perms.canWrite && (
-          <button className="btn btn--primary" onClick={() => setImporting(true)}>
-            <Icon name="download" size={16} /> Importar Excel
-          </button>
+          <div className="mensajes__headactions">
+            <a className="btn btn--ghost" href="/ejemplo-contactos.xlsx" download="ejemplo-contactos.xlsx">
+              <Icon name="download" size={16} /> Descargar ejemplo
+            </a>
+            <button className="btn btn--primary" onClick={() => setImporting(true)}>
+              <Icon name="download" size={16} /> Importar Excel
+            </button>
+          </div>
         )}
       </header>
 
