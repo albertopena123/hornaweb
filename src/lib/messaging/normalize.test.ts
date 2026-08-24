@@ -11,6 +11,7 @@ import {
   phoneToChatId,
   chatIdToPhone,
   jidToPhone,
+  validateManualContact,
 } from "./normalize";
 
 test("normalizeDni acepta 8 dígitos, número de Excel, 7 dígitos con cero perdido y notación científica", () => {
@@ -100,4 +101,57 @@ test("phoneToChatId / chatIdToPhone / jidToPhone", () => {
   assert.equal(jidToPhone("51987654321@c.us"), "+51987654321");
   assert.equal(jidToPhone("123456789012345@lid"), null);
   assert.equal(jidToPhone(undefined), null);
+});
+
+test("validateManualContact normaliza DNI, celular y nombre de un alta válida", () => {
+  const res = validateManualContact({
+    docNumber: " 1234567 ",
+    name: "  juan   carlos   perez ",
+    phone: "987 654 321",
+    district: "tambopata",
+    source: "Feria de Puerto Maldonado",
+    consentConfirmed: true,
+  });
+  assert.equal(res.fieldErrors, undefined);
+  assert.deepEqual(res.data, {
+    docNumber: "01234567",
+    name: "Juan Carlos Perez",
+    phone: "+51987654321",
+    district: "tambopata",
+    source: "Feria de Puerto Maldonado",
+  });
+});
+
+test("validateManualContact rechaza DNI, celular y nombre inválidos con un error por campo", () => {
+  const res = validateManualContact({
+    docNumber: "123",
+    name: "   ",
+    phone: "12345",
+    source: "Feria",
+    consentConfirmed: true,
+  });
+  assert.equal(res.data, undefined);
+  assert.ok(res.fieldErrors?.docNumber);
+  assert.ok(res.fieldErrors?.name);
+  assert.ok(res.fieldErrors?.phone);
+});
+
+test("validateManualContact exige origen de 3 a 120 caracteres y consentimiento marcado", () => {
+  const base = { docNumber: "12345678", name: "Ana Lopez", phone: "987654321" };
+  assert.ok(validateManualContact({ ...base, source: "ab", consentConfirmed: true }).fieldErrors?.source);
+  assert.ok(validateManualContact({ ...base, source: "x".repeat(121), consentConfirmed: true }).fieldErrors?.source);
+  assert.ok(validateManualContact({ ...base, source: "Alta manual", consentConfirmed: false }).fieldErrors?.consentConfirmed);
+});
+
+test("validateManualContact descarta un distrito que no está en el catálogo", () => {
+  const res = validateManualContact({
+    docNumber: "12345678",
+    name: "Ana Lopez",
+    phone: "987654321",
+    district: "narnia",
+    source: "Alta manual",
+    consentConfirmed: true,
+  });
+  assert.equal(res.fieldErrors, undefined);
+  assert.equal(res.data?.district, undefined);
 });

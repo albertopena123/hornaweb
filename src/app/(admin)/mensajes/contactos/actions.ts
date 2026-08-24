@@ -9,7 +9,9 @@ import {
   normalizeDni,
   normalizeName,
   normalizePeruPhone,
+  validateManualContact,
   type ImportRowInput,
+  type ManualContactInput,
 } from "@/lib/messaging/normalize";
 import type { ActionResult, ImportSummary } from "../types";
 
@@ -166,6 +168,48 @@ export async function finishImport(importId: string): Promise<ActionResult<Impor
     if (e instanceof Denied) return fail(NO_PERM);
     console.error("finishImport", e);
     return fail("Error inesperado al cerrar la importación.");
+  }
+}
+
+export async function createContact(
+  input: ManualContactInput,
+): Promise<ActionResult<{ id: string }>> {
+  try {
+    const me = await authorize("mensajes.write");
+    // Re-validación en servidor con las mismas reglas que la importación.
+    const { data, fieldErrors } = validateManualContact(input);
+    if (!data) return fail("Revisa los campos marcados.", fieldErrors);
+
+    // La base es única por DNI: no duplicamos ni pisamos en silencio un contacto ya
+    // registrado (perderíamos el `source` de la importación que lo trajo).
+    const existing = await prisma.contact.findUnique({
+      where: { docType_docNumber: { docType: "dni", docNumber: data.docNumber } },
+      select: { name: true },
+    });
+    if (existing) {
+      return fail("Revisa los campos marcados.", {
+        docNumber: `Ese DNI ya está registrado (${existing.name}). Búscalo en la tabla para editarlo o eliminarlo.`,
+      });
+    }
+
+    const contact = await prisma.contact.create({
+      data: {
+        docType: "dni",
+        docNumber: data.docNumber,
+        name: data.name,
+        phone: data.phone,
+        district: data.district ?? null,
+        source: data.source,
+        createdById: me.id,
+      },
+      select: { id: true },
+    });
+    refresh();
+    return { ok: true, data: { id: contact.id } };
+  } catch (e) {
+    if (e instanceof Denied) return fail(NO_PERM);
+    console.error("createContact", e);
+    return fail("Error inesperado al crear el contacto.");
   }
 }
 

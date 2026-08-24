@@ -9,6 +9,7 @@ import { districtLabel, type DistrictId } from "@/lib/districts";
 import { foldText } from "@/lib/text";
 import { formatDateOnly } from "@/lib/ui/dates";
 import { ImportModal } from "./ImportModal";
+import { ContactModal } from "./ContactModal";
 import { setContactOptedOut, deleteContact } from "./actions";
 import type { ContactRow, PermFlags, ActionResult } from "../types";
 
@@ -27,6 +28,7 @@ export function ContactosClient({ rows, perms, initialQuery }: { rows: ContactRo
   const [contacted, setContacted] = useState<"" | "yes" | "no">("");
   const [page, setPage] = useState(1);
   const [importing, setImporting] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [toDelete, setToDelete] = useState<ContactRow | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [pending, startTransition] = useTransition();
@@ -85,8 +87,11 @@ export function ContactosClient({ rows, perms, initialQuery }: { rows: ContactRo
             <a className="btn btn--ghost" href="/ejemplo-contactos.xlsx" download="ejemplo-contactos.xlsx">
               <Icon name="download" size={16} /> Descargar ejemplo
             </a>
-            <button className="btn btn--primary" onClick={() => setImporting(true)}>
+            <button className="btn btn--ghost" onClick={() => setImporting(true)}>
               <Icon name="download" size={16} /> Importar Excel
+            </button>
+            <button className="btn btn--primary" onClick={() => setCreating(true)}>
+              <Icon name="plus" size={16} /> Nuevo contacto
             </button>
           </div>
         )}
@@ -189,6 +194,17 @@ export function ContactosClient({ rows, perms, initialQuery }: { rows: ContactRo
           </div>
         </div>
       </div>
+
+      {creating && (
+        <ContactModal
+          onClose={() => setCreating(false)}
+          onCreated={() => {
+            setCreating(false);
+            toast("success", "Contacto creado.");
+            router.refresh();
+          }}
+        />
+      )}
 
       {importing && (
         <ImportModal

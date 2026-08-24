@@ -1,6 +1,7 @@
 // Normalización de datos de contactos y plantillas. Sin "server-only": se usa
 // en el navegador (vista previa de importación) y en el servidor (acciones, motor).
 import { foldText, toTitleCase } from "@/lib/text";
+import { isDistrictId, type DistrictId } from "@/lib/districts";
 
 export type CellLike = string | number | boolean | Date | null | undefined;
 
@@ -156,4 +157,62 @@ export function chatIdToPhone(chatId: string): string | null {
 export function jidToPhone(jid: string | undefined | null): string | null {
   if (!jid) return null;
   return chatIdToPhone(jid.replace(/:\d+(?=@)/, "").replace(/@s\.whatsapp\.net$/, "@c.us"));
+}
+
+export type ManualContactInput = {
+  docNumber: CellLike;
+  name: CellLike;
+  phone: CellLike;
+  district?: string;
+  source: string;
+  consentConfirmed: boolean;
+};
+export type ManualContactData = {
+  docNumber: string;
+  name: string;
+  phone: string;
+  district?: DistrictId;
+  source: string;
+};
+
+export const SOURCE_MIN = 3;
+export const SOURCE_MAX = 120;
+
+/**
+ * Valida un alta manual reusando la misma normalización que la importación, para que
+ * tecleado y Excel no tengan dos reglas distintas. Devuelve `data` o `fieldErrors`.
+ */
+export function validateManualContact(
+  input: ManualContactInput,
+): { data?: ManualContactData; fieldErrors?: Record<string, string> } {
+  const fieldErrors: Record<string, string> = {};
+
+  const docNumber = normalizeDni(input.docNumber);
+  if (!docNumber) fieldErrors.docNumber = "El DNI debe tener 8 dígitos.";
+
+  const name = normalizeName(input.name);
+  if (!name) fieldErrors.name = "Escribe el nombre completo.";
+
+  const phone = normalizePeruPhone(input.phone);
+  if (!phone) fieldErrors.phone = "El celular debe ser un número peruano de 9 dígitos (empieza con 9).";
+
+  const source = (input.source ?? "").trim();
+  if (source.length < SOURCE_MIN || source.length > SOURCE_MAX) {
+    fieldErrors.source = `Indica el origen del contacto (${SOURCE_MIN} a ${SOURCE_MAX} caracteres).`;
+  }
+
+  if (!input.consentConfirmed) {
+    fieldErrors.consentConfirmed = "Debes confirmar el consentimiento de la persona.";
+  }
+
+  if (Object.keys(fieldErrors).length) return { fieldErrors };
+  return {
+    data: {
+      docNumber: docNumber!,
+      name,
+      phone: phone!,
+      district: input.district && isDistrictId(input.district) ? input.district : undefined,
+      source,
+    },
+  };
 }
