@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./mi-foto.css";
 
-// Marco oficial (PNG 1254×1254 con centro transparente). La foto se recorta a un círculo
-// de radio OFFICIAL_FRAME_CLIP·ancho: debe quedar por encima del hueco interior del anillo
-// (máx. 0.376 del ancho) y por debajo de su borde exterior más fino (mín. 0.447, bajo el casco)
-// para que no asome ni se vea un hueco entre foto y marco.
-const OFFICIAL_FRAME_SRC = "/perfil_usuario.png";
+// Marco oficial (PNG 1254×1254 con centro transparente; derivado de public/perfil_usaurio_oficial.png,
+// que viene con fondo rojo plano sin alfa). La foto se recorta a un círculo de radio
+// OFFICIAL_FRAME_CLIP·ancho: debe quedar por encima del hueco interior del anillo (máx. 0.375
+// del ancho) y por debajo de su borde exterior más fino (mín. 0.442, bajo el casco) para que
+// no asome ni se vea un hueco entre foto y marco.
+const OFFICIAL_FRAME_SRC = "/marco_oficial.png";
 const OFFICIAL_FRAME_CLIP = 0.44;
 
 type Style = "official" | "ring" | "flag";
