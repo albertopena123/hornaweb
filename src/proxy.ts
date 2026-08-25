@@ -1,7 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, verifySession } from "@/lib/auth/cookie";
 
-const PUBLIC_PATHS = new Set<string>(["/", "/login", "/403", "/mi-foto", "/api/anuncios/activo"]);
+const PUBLIC_PATHS = new Set<string>([
+  "/",
+  "/login",
+  "/403",
+  "/mi-foto",
+  "/api/anuncios/activo",
+  // Inscripción pública de personeros (formulario flotante del landing; GET flag + POST alta).
+  "/api/personeros/registro",
+]);
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

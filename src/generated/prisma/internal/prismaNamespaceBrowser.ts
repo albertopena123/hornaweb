@@ -60,6 +60,7 @@ export const ModelName = {
   Supporter: 'Supporter',
   Local: 'Local',
   Personero: 'Personero',
+  SiteSetting: 'SiteSetting',
   Announcement: 'Announcement',
   Contact: 'Contact',
   ContactImport: 'ContactImport',
@@ -199,6 +200,8 @@ export const PersoneroScalarFieldEnum = {
   docType: 'docType',
   docNumber: 'docNumber',
   name: 'name',
+  phone: 'phone',
+  source: 'source',
   district: 'district',
   localName: 'localName',
   localAddress: 'localAddress',
@@ -214,6 +217,15 @@ export const PersoneroScalarFieldEnum = {
 } as const
 
 export type PersoneroScalarFieldEnum = (typeof PersoneroScalarFieldEnum)[keyof typeof PersoneroScalarFieldEnum]
+
+
+export const SiteSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteSettingScalarFieldEnum = (typeof SiteSettingScalarFieldEnum)[keyof typeof SiteSettingScalarFieldEnum]
 
 
 export const AnnouncementScalarFieldEnum = {

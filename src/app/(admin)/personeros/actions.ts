@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser, type CurrentUser } from "@/lib/auth/server";
 import { isDistrictId, type DistrictId } from "@/lib/districts";
+import { setSettingBool, SETTING_PERSONEROS_PUBLIC } from "@/lib/settings";
 import type { ActionResult, PersoneroInput } from "./types";
 
 class Denied extends Error {}
@@ -30,6 +31,7 @@ type Validated = {
   docType: "dni" | "ce" | "passport";
   docNumber: string;
   name: string;
+  phone: string | null;
   district: DistrictId | null;
   localName: string;
   localAddress: string | null;
@@ -69,6 +71,13 @@ function validate(input: PersoneroInput): { data?: Validated; fieldErrors?: Reco
   if (!/^[0-9+\s-]{6,15}$/.test(coordinatorPhone))
     fe.coordinatorPhone = "Teléfono del coordinador inválido.";
 
+  let phone: string | null = null;
+  if (input.phone && input.phone.trim() !== "") {
+    const p = input.phone.trim();
+    if (!/^[0-9+\s-]{6,15}$/.test(p)) fe.phone = "Celular inválido.";
+    else phone = p;
+  }
+
   let district: DistrictId | null = null;
   if (input.district && input.district.trim() !== "") {
     if (!isDistrictId(input.district)) fe.district = "Distrito inválido.";
@@ -88,6 +97,7 @@ function validate(input: PersoneroInput): { data?: Validated; fieldErrors?: Reco
       docType,
       docNumber,
       name,
+      phone,
       district,
       localName,
       localAddress,
@@ -168,5 +178,19 @@ export async function deletePersonero(id: string): Promise<ActionResult> {
     if (e instanceof Denied) return fail("No tienes permiso para gestionar personeros.");
     console.error("deletePersonero", e);
     return fail("Error inesperado al eliminar.");
+  }
+}
+
+/** Switch de Admin → Personeros: abre/cierra la inscripción pública desde el landing. */
+export async function setPublicRegistration(enabled: boolean): Promise<ActionResult> {
+  try {
+    await authorize("personeros.write");
+    await setSettingBool(SETTING_PERSONEROS_PUBLIC, !!enabled);
+    refresh();
+    return { ok: true };
+  } catch (e) {
+    if (e instanceof Denied) return fail("No tienes permiso para gestionar personeros.");
+    console.error("setPublicRegistration", e);
+    return fail("Error inesperado al guardar el ajuste.");
   }
 }

@@ -87,6 +87,11 @@ export type Local = Prisma.LocalModel
  */
 export type Personero = Prisma.PersoneroModel
 /**
+ * Model SiteSetting
+ * 
+ */
+export type SiteSetting = Prisma.SiteSettingModel
+/**
  * Model Announcement
  * 
  */

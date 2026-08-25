@@ -191,11 +191,18 @@ model Local {
 
 // ─────────────────────────── Personeros (consultor de mesa) ───────────────────────────
 
+enum PersoneroSource {
+  admin
+  public
+}
+
 model Personero {
-  id               String       @id @default(cuid())
-  docType          DocumentType @default(dni)
+  id               String          @id @default(cuid())
+  docType          DocumentType    @default(dni)
   docNumber        String
   name             String
+  phone            String?         // celular del personero (opcional; obligatorio en la inscripción web)
+  source           PersoneroSource @default(admin)
   district         District?
   localName        String       // colegio / local de votación
   localAddress     String?
@@ -215,6 +222,13 @@ model Personero {
   @@unique([docType, docNumber])
   @@index([district])
   @@index([active])
+}
+
+// Ajustes globales clave/valor (p. ej. si la inscripción pública de personeros está abierta).
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }
 
 // Avisos de campaña que se muestran en un modal en la página principal.

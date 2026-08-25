@@ -60,6 +60,14 @@ export const DocumentType = {
 export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
 
 
+export const PersoneroSource = {
+  admin: 'admin',
+  public: 'public'
+} as const
+
+export type PersoneroSource = (typeof PersoneroSource)[keyof typeof PersoneroSource]
+
+
 export const WhatsappStatus = {
   unknown: 'unknown',
   yes: 'yes',

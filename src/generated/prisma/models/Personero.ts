@@ -29,6 +29,8 @@ export type PersoneroMinAggregateOutputType = {
   docType: $Enums.DocumentType | null
   docNumber: string | null
   name: string | null
+  phone: string | null
+  source: $Enums.PersoneroSource | null
   district: $Enums.District | null
   localName: string | null
   localAddress: string | null
@@ -48,6 +50,8 @@ export type PersoneroMaxAggregateOutputType = {
   docType: $Enums.DocumentType | null
   docNumber: string | null
   name: string | null
+  phone: string | null
+  source: $Enums.PersoneroSource | null
   district: $Enums.District | null
   localName: string | null
   localAddress: string | null
@@ -67,6 +71,8 @@ export type PersoneroCountAggregateOutputType = {
   docType: number
   docNumber: number
   name: number
+  phone: number
+  source: number
   district: number
   localName: number
   localAddress: number
@@ -88,6 +94,8 @@ export type PersoneroMinAggregateInputType = {
   docType?: true
   docNumber?: true
   name?: true
+  phone?: true
+  source?: true
   district?: true
   localName?: true
   localAddress?: true
@@ -107,6 +115,8 @@ export type PersoneroMaxAggregateInputType = {
   docType?: true
   docNumber?: true
   name?: true
+  phone?: true
+  source?: true
   district?: true
   localName?: true
   localAddress?: true
@@ -126,6 +136,8 @@ export type PersoneroCountAggregateInputType = {
   docType?: true
   docNumber?: true
   name?: true
+  phone?: true
+  source?: true
   district?: true
   localName?: true
   localAddress?: true
@@ -218,6 +230,8 @@ export type PersoneroGroupByOutputType = {
   docType: $Enums.DocumentType
   docNumber: string
   name: string
+  phone: string | null
+  source: $Enums.PersoneroSource
   district: $Enums.District | null
   localName: string
   localAddress: string | null
@@ -258,6 +272,8 @@ export type PersoneroWhereInput = {
   docType?: Prisma.EnumDocumentTypeFilter<"Personero"> | $Enums.DocumentType
   docNumber?: Prisma.StringFilter<"Personero"> | string
   name?: Prisma.StringFilter<"Personero"> | string
+  phone?: Prisma.StringNullableFilter<"Personero"> | string | null
+  source?: Prisma.EnumPersoneroSourceFilter<"Personero"> | $Enums.PersoneroSource
   district?: Prisma.EnumDistrictNullableFilter<"Personero"> | $Enums.District | null
   localName?: Prisma.StringFilter<"Personero"> | string
   localAddress?: Prisma.StringNullableFilter<"Personero"> | string | null
@@ -279,6 +295,8 @@ export type PersoneroOrderByWithRelationInput = {
   docType?: Prisma.SortOrder
   docNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrder
   district?: Prisma.SortOrderInput | Prisma.SortOrder
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -304,6 +322,8 @@ export type PersoneroWhereUniqueInput = Prisma.AtLeast<{
   docType?: Prisma.EnumDocumentTypeFilter<"Personero"> | $Enums.DocumentType
   docNumber?: Prisma.StringFilter<"Personero"> | string
   name?: Prisma.StringFilter<"Personero"> | string
+  phone?: Prisma.StringNullableFilter<"Personero"> | string | null
+  source?: Prisma.EnumPersoneroSourceFilter<"Personero"> | $Enums.PersoneroSource
   district?: Prisma.EnumDistrictNullableFilter<"Personero"> | $Enums.District | null
   localName?: Prisma.StringFilter<"Personero"> | string
   localAddress?: Prisma.StringNullableFilter<"Personero"> | string | null
@@ -325,6 +345,8 @@ export type PersoneroOrderByWithAggregationInput = {
   docType?: Prisma.SortOrder
   docNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrder
   district?: Prisma.SortOrderInput | Prisma.SortOrder
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -350,6 +372,8 @@ export type PersoneroScalarWhereWithAggregatesInput = {
   docType?: Prisma.EnumDocumentTypeWithAggregatesFilter<"Personero"> | $Enums.DocumentType
   docNumber?: Prisma.StringWithAggregatesFilter<"Personero"> | string
   name?: Prisma.StringWithAggregatesFilter<"Personero"> | string
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
+  source?: Prisma.EnumPersoneroSourceWithAggregatesFilter<"Personero"> | $Enums.PersoneroSource
   district?: Prisma.EnumDistrictNullableWithAggregatesFilter<"Personero"> | $Enums.District | null
   localName?: Prisma.StringWithAggregatesFilter<"Personero"> | string
   localAddress?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
@@ -369,6 +393,8 @@ export type PersoneroCreateInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -388,6 +414,8 @@ export type PersoneroUncheckedCreateInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -407,6 +435,8 @@ export type PersoneroUpdateInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -426,6 +456,8 @@ export type PersoneroUncheckedUpdateInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -445,6 +477,8 @@ export type PersoneroCreateManyInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -464,6 +498,8 @@ export type PersoneroUpdateManyMutationInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -481,6 +517,8 @@ export type PersoneroUncheckedUpdateManyInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -515,6 +553,8 @@ export type PersoneroCountOrderByAggregateInput = {
   docType?: Prisma.SortOrder
   docNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   district?: Prisma.SortOrder
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrder
@@ -534,6 +574,8 @@ export type PersoneroMaxOrderByAggregateInput = {
   docType?: Prisma.SortOrder
   docNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   district?: Prisma.SortOrder
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrder
@@ -553,6 +595,8 @@ export type PersoneroMinOrderByAggregateInput = {
   docType?: Prisma.SortOrder
   docNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  source?: Prisma.SortOrder
   district?: Prisma.SortOrder
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrder
@@ -651,6 +695,10 @@ export type PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput = {
   deleteMany?: Prisma.PersoneroScalarWhereInput | Prisma.PersoneroScalarWhereInput[]
 }
 
+export type EnumPersoneroSourceFieldUpdateOperationsInput = {
+  set?: $Enums.PersoneroSource
+}
+
 export type NullableEnumDistrictFieldUpdateOperationsInput = {
   set?: $Enums.District | null
 }
@@ -660,6 +708,8 @@ export type PersoneroCreateWithoutCreatedByInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -678,6 +728,8 @@ export type PersoneroUncheckedCreateWithoutCreatedByInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -706,6 +758,8 @@ export type PersoneroCreateWithoutUpdatedByInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -724,6 +778,8 @@ export type PersoneroUncheckedCreateWithoutUpdatedByInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -771,6 +827,8 @@ export type PersoneroScalarWhereInput = {
   docType?: Prisma.EnumDocumentTypeFilter<"Personero"> | $Enums.DocumentType
   docNumber?: Prisma.StringFilter<"Personero"> | string
   name?: Prisma.StringFilter<"Personero"> | string
+  phone?: Prisma.StringNullableFilter<"Personero"> | string | null
+  source?: Prisma.EnumPersoneroSourceFilter<"Personero"> | $Enums.PersoneroSource
   district?: Prisma.EnumDistrictNullableFilter<"Personero"> | $Enums.District | null
   localName?: Prisma.StringFilter<"Personero"> | string
   localAddress?: Prisma.StringNullableFilter<"Personero"> | string | null
@@ -806,6 +864,8 @@ export type PersoneroCreateManyCreatedByInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -824,6 +884,8 @@ export type PersoneroCreateManyUpdatedByInput = {
   docType?: $Enums.DocumentType
   docNumber: string
   name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
   district?: $Enums.District | null
   localName: string
   localAddress?: string | null
@@ -842,6 +904,8 @@ export type PersoneroUpdateWithoutCreatedByInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -860,6 +924,8 @@ export type PersoneroUncheckedUpdateWithoutCreatedByInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -878,6 +944,8 @@ export type PersoneroUncheckedUpdateManyWithoutCreatedByInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -896,6 +964,8 @@ export type PersoneroUpdateWithoutUpdatedByInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -914,6 +984,8 @@ export type PersoneroUncheckedUpdateWithoutUpdatedByInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -932,6 +1004,8 @@ export type PersoneroUncheckedUpdateManyWithoutUpdatedByInput = {
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   docNumber?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -952,6 +1026,8 @@ export type PersoneroSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   docType?: boolean
   docNumber?: boolean
   name?: boolean
+  phone?: boolean
+  source?: boolean
   district?: boolean
   localName?: boolean
   localAddress?: boolean
@@ -973,6 +1049,8 @@ export type PersoneroSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   docType?: boolean
   docNumber?: boolean
   name?: boolean
+  phone?: boolean
+  source?: boolean
   district?: boolean
   localName?: boolean
   localAddress?: boolean
@@ -994,6 +1072,8 @@ export type PersoneroSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   docType?: boolean
   docNumber?: boolean
   name?: boolean
+  phone?: boolean
+  source?: boolean
   district?: boolean
   localName?: boolean
   localAddress?: boolean
@@ -1015,6 +1095,8 @@ export type PersoneroSelectScalar = {
   docType?: boolean
   docNumber?: boolean
   name?: boolean
+  phone?: boolean
+  source?: boolean
   district?: boolean
   localName?: boolean
   localAddress?: boolean
@@ -1029,7 +1111,7 @@ export type PersoneroSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PersoneroOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "docType" | "docNumber" | "name" | "district" | "localName" | "localAddress" | "mesa" | "coordinatorName" | "coordinatorPhone" | "active" | "notes" | "createdById" | "updatedById" | "createdAt" | "updatedAt", ExtArgs["result"]["personero"]>
+export type PersoneroOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "docType" | "docNumber" | "name" | "phone" | "source" | "district" | "localName" | "localAddress" | "mesa" | "coordinatorName" | "coordinatorPhone" | "active" | "notes" | "createdById" | "updatedById" | "createdAt" | "updatedAt", ExtArgs["result"]["personero"]>
 export type PersoneroInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.Personero$createdByArgs<ExtArgs>
   updatedBy?: boolean | Prisma.Personero$updatedByArgs<ExtArgs>
@@ -1054,6 +1136,8 @@ export type $PersoneroPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     docType: $Enums.DocumentType
     docNumber: string
     name: string
+    phone: string | null
+    source: $Enums.PersoneroSource
     district: $Enums.District | null
     localName: string
     localAddress: string | null
@@ -1495,6 +1579,8 @@ export interface PersoneroFieldRefs {
   readonly docType: Prisma.FieldRef<"Personero", 'DocumentType'>
   readonly docNumber: Prisma.FieldRef<"Personero", 'String'>
   readonly name: Prisma.FieldRef<"Personero", 'String'>
+  readonly phone: Prisma.FieldRef<"Personero", 'String'>
+  readonly source: Prisma.FieldRef<"Personero", 'PersoneroSource'>
   readonly district: Prisma.FieldRef<"Personero", 'District'>
   readonly localName: Prisma.FieldRef<"Personero", 'String'>
   readonly localAddress: Prisma.FieldRef<"Personero", 'String'>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { requirePermission } from "@/lib/auth/server";
 import { prisma } from "@/lib/prisma";
+import { getSettingBool, SETTING_PERSONEROS_PUBLIC } from "@/lib/settings";
 import { PersonerosClient } from "./PersonerosClient";
 import type { PersoneroRow, PermFlags, LocalOption } from "./types";
 
@@ -20,6 +21,8 @@ export default async function Page() {
     docType: p.docType,
     docNumber: p.docNumber,
     name: p.name,
+    phone: p.phone,
+    source: p.source,
     district: p.district,
     localName: p.localName,
     localAddress: p.localAddress,
@@ -43,5 +46,7 @@ export default async function Page() {
     select: { id: true, name: true, address: true, locality: true, district: true },
   });
 
-  return <PersonerosClient rows={rows} perms={perms} locales={locales} />;
+  const publicRegistration = await getSettingBool(SETTING_PERSONEROS_PUBLIC);
+
+  return <PersonerosClient rows={rows} perms={perms} locales={locales} publicRegistration={publicRegistration} />;
 }

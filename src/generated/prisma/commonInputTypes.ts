@@ -260,11 +260,28 @@ export type EnumSupporterStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSupporterStatusFilter<$PrismaModel>
 }
 
+export type EnumPersoneroSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.PersoneroSource | Prisma.EnumPersoneroSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPersoneroSourceFilter<$PrismaModel> | $Enums.PersoneroSource
+}
+
 export type EnumDistrictNullableFilter<$PrismaModel = never> = {
   equals?: $Enums.District | Prisma.EnumDistrictFieldRefInput<$PrismaModel> | null
   in?: $Enums.District[] | Prisma.ListEnumDistrictFieldRefInput<$PrismaModel> | null
   notIn?: $Enums.District[] | Prisma.ListEnumDistrictFieldRefInput<$PrismaModel> | null
   not?: Prisma.NestedEnumDistrictNullableFilter<$PrismaModel> | $Enums.District | null
+}
+
+export type EnumPersoneroSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PersoneroSource | Prisma.EnumPersoneroSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPersoneroSourceWithAggregatesFilter<$PrismaModel> | $Enums.PersoneroSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPersoneroSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPersoneroSourceFilter<$PrismaModel>
 }
 
 export type EnumDistrictNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -648,11 +665,28 @@ export type NestedEnumSupporterStatusWithAggregatesFilter<$PrismaModel = never> 
   _max?: Prisma.NestedEnumSupporterStatusFilter<$PrismaModel>
 }
 
+export type NestedEnumPersoneroSourceFilter<$PrismaModel = never> = {
+  equals?: $Enums.PersoneroSource | Prisma.EnumPersoneroSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPersoneroSourceFilter<$PrismaModel> | $Enums.PersoneroSource
+}
+
 export type NestedEnumDistrictNullableFilter<$PrismaModel = never> = {
   equals?: $Enums.District | Prisma.EnumDistrictFieldRefInput<$PrismaModel> | null
   in?: $Enums.District[] | Prisma.ListEnumDistrictFieldRefInput<$PrismaModel> | null
   notIn?: $Enums.District[] | Prisma.ListEnumDistrictFieldRefInput<$PrismaModel> | null
   not?: Prisma.NestedEnumDistrictNullableFilter<$PrismaModel> | $Enums.District | null
+}
+
+export type NestedEnumPersoneroSourceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PersoneroSource | Prisma.EnumPersoneroSourceFieldRefInput<$PrismaModel>
+  in?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPersoneroSourceWithAggregatesFilter<$PrismaModel> | $Enums.PersoneroSource
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPersoneroSourceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPersoneroSourceFilter<$PrismaModel>
 }
 
 export type NestedEnumDistrictNullableWithAggregatesFilter<$PrismaModel = never> = {

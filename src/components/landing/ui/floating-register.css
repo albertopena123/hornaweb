@@ -228,3 +228,48 @@
     bottom: 74px;
   }
 }
+
+/* Pestañas Simpatizante / Personero (solo cuando la inscripción de personeros está activa) */
+.fr-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 18px 0;
+}
+
+.fr-tab {
+  flex: 1;
+  padding: 9px 10px;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 999px;
+  background: #fafafa;
+  color: #555;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.fr-tab.is-active {
+  background: #e90305;
+  border-color: #e90305;
+  color: #fff;
+}
+
+.fr-hint {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #666;
+}
+
+.fr-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.fr-field .fr-opt {
+  font-weight: 500;
+  color: #999;
+}

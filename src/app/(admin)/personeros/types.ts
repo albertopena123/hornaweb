@@ -7,6 +7,8 @@ export type PersoneroRow = {
   docType: "dni" | "ce" | "passport";
   docNumber: string;
   name: string;
+  phone: string | null;
+  source: "admin" | "public"; // public = inscrito desde el formulario del landing
   district: string | null;
   localName: string;
   localAddress: string | null;
@@ -23,6 +25,7 @@ export type PersoneroInput = {
   docType: "dni" | "ce" | "passport";
   docNumber: string;
   name: string;
+  phone?: string;
   district?: string;
   localName: string;
   localAddress?: string;

@@ -12,6 +12,7 @@ import {
   updatePersonero,
   deletePersonero,
   setPersoneroActive,
+  setPublicRegistration,
 } from "./actions";
 import type { PersoneroRow, PersoneroInput, PermFlags, ActionResult, LocalOption } from "./types";
 
@@ -31,16 +32,34 @@ export function PersonerosClient({
   rows,
   perms,
   locales,
+  publicRegistration,
 }: {
   rows: PersoneroRow[];
   perms: PermFlags;
   locales: LocalOption[];
+  publicRegistration: boolean;
 }) {
   const [q, setQ] = useState("");
   const [district, setDistrict] = useState<string>("");
   const [modal, setModal] = useState<null | { mode: "create" } | { mode: "edit"; row: PersoneroRow }>(null);
   const [toDelete, setToDelete] = useState<PersoneroRow | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
+  // Switch "Inscripción pública": abre la pestaña Personero del formulario flotante del landing.
+  const [pubReg, setPubReg] = useState(publicRegistration);
+  const [pubBusy, setPubBusy] = useState(false);
+
+  async function togglePublic() {
+    const next = !pubReg;
+    setPubBusy(true);
+    const res = await setPublicRegistration(next);
+    if (res.ok) {
+      setPubReg(next);
+      toast("success", next ? "Inscripción pública activada." : "Inscripción pública desactivada.");
+    } else {
+      toast("error", res.error);
+    }
+    setPubBusy(false);
+  }
   const [pending, startTransition] = useTransition();
 
   function toast(kind: Toast["kind"], message: string) {
@@ -79,6 +98,26 @@ export function PersonerosClient({
           </button>
         )}
       </header>
+
+      <div className="personeros__toggle">
+        <div>
+          <div className="personeros__toggle-label">Inscripción pública en la web</div>
+          <div className="personeros__toggle-sub">
+            {pubReg
+              ? "El formulario flotante del landing muestra la pestaña «Personero». Las inscripciones entran como inactivas para que las revises y asignes."
+              : "Desactivado: el landing solo muestra el registro de simpatizantes."}
+          </div>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={pubReg}
+          aria-label="Activar inscripción pública de personeros"
+          className={`personeros__switch ${pubReg ? "is-on" : ""}`}
+          disabled={!perms.canWrite || pubBusy}
+          onClick={togglePublic}
+        />
+      </div>
 
       <div className="personeros__filters">
         <input
@@ -128,7 +167,15 @@ export function PersonerosClient({
               {visible.map((r) => (
                 <tr key={r.id}>
                   <td>
-                    <div className="personeros__name">{r.name}</div>
+                    <div className="personeros__name-row">
+                      <span className="personeros__name">{r.name}</span>
+                      {r.source === "public" && (
+                        <span className="badge badge--neutral" title="Inscrito desde el formulario del landing">
+                          Web
+                        </span>
+                      )}
+                    </div>
+                    {r.phone && <div className="personeros__notes">{r.phone}</div>}
                     {r.notes && <div className="personeros__notes">{r.notes}</div>}
                   </td>
                   <td>
@@ -255,6 +302,7 @@ function PersoneroModal({
   const [docType, setDocType] = useState<PersoneroInput["docType"]>(initial?.docType ?? "dni");
   const [docNumber, setDocNumber] = useState(initial?.docNumber ?? "");
   const [name, setName] = useState(initial?.name ?? "");
+  const [phone, setPhone] = useState(initial?.phone ?? "");
   const [district, setDistrict] = useState(initial?.district ?? "");
   const [localName, setLocalName] = useState(initial?.localName ?? "");
   const [localAddress, setLocalAddress] = useState(initial?.localAddress ?? "");
@@ -351,6 +399,7 @@ function PersoneroModal({
       docType,
       docNumber,
       name,
+      phone: phone || undefined,
       district: district || undefined,
       localName,
       localAddress: localAddress || undefined,
@@ -433,6 +482,20 @@ function PersoneroModal({
               <span style={hintMuted}>No se pudo consultar el DNI, escribe el nombre.</span>
             )}
             {fieldErrors.name && <span style={errStyle}>{fieldErrors.name}</span>}
+          </label>
+
+          <label className="field">
+            <span className="field__label">Celular del personero</span>
+            <input
+              type="tel"
+              inputMode="tel"
+              value={phone}
+              maxLength={15}
+              placeholder="987 654 321"
+              onChange={(e) => setPhone(e.target.value)}
+              aria-invalid={!!fieldErrors.phone}
+            />
+            {fieldErrors.phone && <span style={errStyle}>{fieldErrors.phone}</span>}
           </label>
 
           <label className="field">

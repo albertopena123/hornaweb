@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { DISTRICTS } from '@/lib/districts'
+import PersoneroForm from './PersoneroForm'
 import './floating-register.css'
 
 const DOC_TYPES = [
@@ -13,6 +14,8 @@ type DocTypeId = (typeof DOC_TYPES)[number]['id']
 type Coords = { latitude: number; longitude: number; gpsAccuracy: number | null }
 
 type FieldErrors = Record<string, string>
+
+type Tab = 'simpatizante' | 'personero'
 
 const FloatingRegister = () => {
   // En móvil el panel arranca cerrado (se muestra el botón "Únete") para no
@@ -30,6 +33,10 @@ const FloatingRegister = () => {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [gpsState, setGpsState] = useState<'pending' | 'ok' | 'unavailable'>('pending')
   const [dniLookup, setDniLookup] = useState<'idle' | 'loading' | 'found' | 'notfound' | 'error'>('idle')
+  // Pestaña "Personero": solo aparece si el switch de Admin → Personeros está activo.
+  const [personeroEnabled, setPersoneroEnabled] = useState(false)
+  const [tab, setTab] = useState<Tab>('simpatizante')
+  const [successKind, setSuccessKind] = useState<Tab>('simpatizante')
 
   // Las coordenadas se capturan en segundo plano al abrir el panel; si el
   // permiso se rechaza o falla, el registro se envía igual sin ubicación.
@@ -80,6 +87,17 @@ const FloatingRegister = () => {
       if (!coordsRef.current) requestLocation()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    const ctrl = new AbortController()
+    fetch('/api/personeros/registro', { signal: ctrl.signal, cache: 'no-store' })
+      .then((res) => res.json().catch(() => null))
+      .then((json) => {
+        if (json?.ok && json.enabled === true) setPersoneroEnabled(true)
+      })
+      .catch(() => {})
+    return () => ctrl.abort()
   }, [])
 
   function requestLocation() {
@@ -148,6 +166,7 @@ const FloatingRegister = () => {
       })
       const json = await res.json().catch(() => null)
       if (json?.ok) {
+        setSuccessKind('simpatizante')
         setSuccess(true)
         setDocNumber('')
         setName('')
@@ -180,20 +199,69 @@ const FloatingRegister = () => {
           {success ? (
             <div className="fr-success">
               <i className="ph-fill ph-check-circle"></i>
-              <h4>¡Gracias por tu apoyo!</h4>
-              <p>Tu registro fue recibido correctamente.</p>
+              {successKind === 'personero' ? (
+                <>
+                  <h4>¡Gracias por sumarte como personero!</h4>
+                  <p>Recibimos tu inscripción. Un coordinador se comunicará contigo para confirmar tu local y mesa.</p>
+                </>
+              ) : (
+                <>
+                  <h4>¡Gracias por tu apoyo!</h4>
+                  <p>Tu registro fue recibido correctamente.</p>
+                </>
+              )}
             </div>
           ) : (
             <>
               <div className="fr-head">
                 <div>
-                  <h4>Únete a la campaña</h4>
-                  <p>Regístrate como simpatizante de Simón Horna.</p>
+                  {tab === 'personero' ? (
+                    <>
+                      <h4>Sé personero</h4>
+                      <p>Inscríbete para cuidar el voto de Simón Horna el día de la elección.</p>
+                    </>
+                  ) : (
+                    <>
+                      <h4>Únete a la campaña</h4>
+                      <p>Regístrate como simpatizante de Simón Horna.</p>
+                    </>
+                  )}
                 </div>
                 <button type="button" className="fr-close" onClick={() => setOpen(false)} aria-label="Cerrar formulario">
                   ✕
                 </button>
               </div>
+              {personeroEnabled && (
+                <div className="fr-tabs" role="tablist" aria-label="Tipo de registro">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === 'simpatizante'}
+                    className={`fr-tab ${tab === 'simpatizante' ? 'is-active' : ''}`}
+                    onClick={() => setTab('simpatizante')}
+                  >
+                    Simpatizante
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === 'personero'}
+                    className={`fr-tab ${tab === 'personero' ? 'is-active' : ''}`}
+                    onClick={() => setTab('personero')}
+                  >
+                    Personero
+                  </button>
+                </div>
+              )}
+              {tab === 'personero' && personeroEnabled ? (
+                <PersoneroForm
+                  onSuccess={() => {
+                    setSuccessKind('personero')
+                    setSuccess(true)
+                    setTimeout(() => setOpen(false), 4000)
+                  }}
+                />
+              ) : (
               <form className="fr-body" onSubmit={handleSubmit} noValidate>
                 {error && <div className="fr-alert error">{error}</div>}
 
@@ -311,6 +379,7 @@ const FloatingRegister = () => {
                   {sending ? 'Enviando…' : 'Registrarme'}
                 </button>
               </form>
+              )}
             </>
           )}
         </div>
