@@ -4,11 +4,10 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./mi-foto.css";
 
-// Marco oficial (PNG 1254×1254 con centro transparente; derivado de public/perfil_usaurio_oficial.png,
-// que viene con fondo rojo plano sin alfa). La foto se recorta a un círculo de radio
-// OFFICIAL_FRAME_CLIP·ancho: debe quedar por encima del hueco interior del anillo (máx. 0.375
-// del ancho) y por debajo de su borde exterior más fino (mín. 0.442, bajo el casco) para que
-// no asome ni se vea un hueco entre foto y marco.
+// Marco oficial (PNG 1254×1254, derivado de public/perfil_usaurio_oficial.png): fondo rojo
+// sólido fuera del anillo y solo el hueco central transparente. La foto se recorta a un
+// círculo de radio OFFICIAL_FRAME_CLIP·ancho, por encima del hueco (máx. 0.375 del ancho)
+// para que no quede un borde sin foto; el resto lo cubre el marco.
 const OFFICIAL_FRAME_SRC = "/marco_oficial.png";
 const OFFICIAL_FRAME_CLIP = 0.44;
 
@@ -27,6 +26,8 @@ const ZOOM_MAX = 3;
 const PAN_SLACK = SIZE * 0.22;
 
 const RED = "#e90305";
+// Rojo de fondo del Marco Oficial (public/marco_oficial.png), reutilizado en el Aro.
+const BG_RED = "#fa0101";
 const RED_DEEP = "#9f0408";
 const YELLOW = "#ffd400";
 const NAVY = "#0b141f";
@@ -326,6 +327,14 @@ export default function PhotoFrameClient() {
       ctx.beginPath();
       ctx.arc(w / 2, w / 2, w / 2, 0, Math.PI * 2);
       ctx.fill();
+      ctx.restore();
+    }
+    if (style === "ring") {
+      // El Aro lleva fondo rojo sólido fuera del anillo (mismo rojo que el Marco Oficial).
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-over";
+      ctx.fillStyle = BG_RED;
+      ctx.fillRect(0, 0, w, w);
       ctx.restore();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
