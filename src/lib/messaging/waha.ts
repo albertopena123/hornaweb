@@ -178,9 +178,17 @@ function extractMessageId(data: unknown, fallbackChatId: string): string | null 
   return null;
 }
 
+// linkPreview (explícito; WAHA lo asume true) + linkPreviewHighQuality: si el texto lleva una URL,
+// WAHA la manda como enlace "nativo" (extendedTextMessage con matchedText + tarjeta de
+// previsualización con miniatura subida a WA), igual que al compartirla desde el teléfono.
+// Ojo: WhatsApp igual no hace clicable un enlace si el destinatario no tiene guardado el número
+// y nunca respondió (antispam); eso no se puede cambiar desde el envío.
 export async function sendText(chatId: string, text: string): Promise<{ id: string }> {
   const { session } = wahaConfig();
-  const res = await wahaFetch(`/api/sendText`, { method: "POST", body: { session, chatId, text } });
+  const res = await wahaFetch(`/api/sendText`, {
+    method: "POST",
+    body: { session, chatId, text, linkPreview: true, linkPreviewHighQuality: true },
+  });
   const data = await expectOk(res);
   const id = extractMessageId(data, chatId);
   if (!id) throw new WahaError(res.status, `Respuesta sin id de mensaje: ${JSON.stringify(data).slice(0, 200)}`);

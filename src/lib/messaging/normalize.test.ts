@@ -12,6 +12,7 @@ import {
   chatIdToPhone,
   jidToPhone,
   validateManualContact,
+  splitUrls,
 } from "./normalize";
 
 test("normalizeDni acepta 8 dígitos, número de Excel, 7 dígitos con cero perdido y notación científica", () => {
@@ -154,4 +155,24 @@ test("validateManualContact descarta un distrito que no está en el catálogo", 
   });
   assert.equal(res.fieldErrors, undefined);
   assert.equal(res.data?.district, undefined);
+});
+
+test("splitUrls separa texto y enlaces (https, http y www.) sin comerse la puntuación final", () => {
+  assert.deepEqual(splitUrls("Mira https://www.facebook.com/100054144776426/posts/pfbid0H7M/ y responde"), [
+    { type: "text", value: "Mira " },
+    { type: "url", value: "https://www.facebook.com/100054144776426/posts/pfbid0H7M/" },
+    { type: "text", value: " y responde" },
+  ]);
+  assert.deepEqual(splitUrls("Entra a www.simonhorna.pe."), [
+    { type: "text", value: "Entra a " },
+    { type: "url", value: "www.simonhorna.pe" },
+    { type: "text", value: "." },
+  ]);
+  assert.deepEqual(splitUrls("(http://a.com/x?y=1)"), [
+    { type: "text", value: "(" },
+    { type: "url", value: "http://a.com/x?y=1" },
+    { type: "text", value: ")" },
+  ]);
+  assert.deepEqual(splitUrls("sin enlaces"), [{ type: "text", value: "sin enlaces" }]);
+  assert.deepEqual(splitUrls(""), []);
 });

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Icon } from "@/components/admin/Icon";
 import { useEscClose } from "@/lib/ui/useEscClose";
 import { DISTRICTS } from "@/lib/districts";
-import { renderTemplate, TEMPLATE_MAX } from "@/lib/messaging/normalize";
+import { renderTemplate, splitUrls, TEMPLATE_MAX } from "@/lib/messaging/normalize";
 import { previewAudience } from "./actions";
 import type { ActionResult, AudienceKey, CampaignInput } from "../types";
 
@@ -128,11 +128,27 @@ export function NewCampaignModal({
                 aria-invalid={!!fieldErrors.messageTemplate}
               />
               <span className="mensajes__hint">{messageTemplate.length}/{TEMPLATE_MAX} · El pie con «Responde BAJA» se añade automáticamente.</span>
+              <span className="mensajes__hint">
+                Enlaces: pégalos completos (con <code>https://</code>) y separados por espacios; se envían con previsualización. WhatsApp solo los
+                muestra clicables si el ciudadano tiene guardado el número o ya te respondió alguna vez.
+              </span>
               {fieldErrors.messageTemplate && <span className="mensajes__err">{fieldErrors.messageTemplate}</span>}
             </div>
             <div className="field">
               <span className="field__label">Vista previa ({preview?.sample ? "contacto real" : "ejemplo"})</span>
-              <div className={`mensajes__preview ${rendered ? "" : "mensajes__preview--empty"}`}>{rendered || "Escribe el mensaje para ver la vista previa."}</div>
+              <div className={`mensajes__preview ${rendered ? "" : "mensajes__preview--empty"}`}>
+                {rendered
+                  ? splitUrls(rendered).map((p, i) =>
+                      p.type === "url" ? (
+                        <a key={i} href={p.value.startsWith("http") ? p.value : `https://${p.value}`} target="_blank" rel="noopener noreferrer">
+                          {p.value}
+                        </a>
+                      ) : (
+                        <span key={i}>{p.value}</span>
+                      ),
+                    )
+                  : "Escribe el mensaje para ver la vista previa."}
+              </div>
             </div>
           </div>
 

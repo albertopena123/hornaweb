@@ -216,3 +216,29 @@ export function validateManualContact(
     },
   };
 }
+
+export type TextPart = { type: "text" | "url"; value: string };
+
+// Detección de enlaces al estilo WhatsApp: https://, http:// o www. seguido de caracteres sin espacios.
+// La puntuación de cierre habitual (. , ; : ! ? ) ] ' ") no forma parte del enlace.
+const URL_RE = /(?:https?:\/\/|www\.)[^\s<>"']+/gi;
+const TRAILING_PUNCT = /[.,;:!?)\]'"]+$/;
+
+/** Parte un texto en tramos de texto plano y enlaces, para pintarlos igual que lo hará WhatsApp. */
+export function splitUrls(text: string): TextPart[] {
+  const parts: TextPart[] = [];
+  let last = 0;
+  for (const m of text.matchAll(URL_RE)) {
+    let url = m[0];
+    // Un paréntesis de cierre sólo se conserva si el enlace también abrió uno (p. ej. Wikipedia).
+    const trailing = TRAILING_PUNCT.exec(url)?.[0] ?? "";
+    const keepParen = trailing.includes(")") && url.includes("(");
+    if (trailing && !keepParen) url = url.slice(0, -trailing.length);
+    const start = m.index ?? 0;
+    if (start > last) parts.push({ type: "text", value: text.slice(last, start) });
+    parts.push({ type: "url", value: url });
+    last = start + url.length;
+  }
+  if (last < text.length) parts.push({ type: "text", value: text.slice(last) });
+  return parts;
+}

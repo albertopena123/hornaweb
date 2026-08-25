@@ -80,6 +80,7 @@ html[data-theme="dark"] .mensajes__warn { background: #3a2a08; border-color: #b4
   white-space: pre-wrap; font-size: 13.5px; line-height: 1.5; padding: 12px 14px; border-radius: 12px;
   background: #dcf8c6; color: #111; border: 1px solid #b7e4a0; max-width: 420px;
 }
+.mensajes__preview a { color: #027eb5; text-decoration: underline; word-break: break-all; }
 .mensajes__preview--empty { background: var(--bg-soft, #eef2f7); color: var(--text-muted, #7a8699); border-color: var(--border, #e3e8ef); }
 .mensajes__steps { display: flex; gap: 6px; font-size: 12px; color: var(--text-muted, #7a8699); margin-bottom: 8px; }
 .mensajes__steps .is-active { color: var(--accent); font-weight: 600; }
