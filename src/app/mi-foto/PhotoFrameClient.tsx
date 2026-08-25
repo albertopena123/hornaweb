@@ -4,9 +4,16 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./mi-foto.css";
 
-type Style = "custom_svg" | "ring" | "flag";
+// Marco oficial (PNG 1254×1254 con centro transparente). La foto se recorta a un círculo
+// de radio OFFICIAL_FRAME_CLIP·ancho: debe quedar por encima del hueco interior del anillo
+// (máx. 0.376 del ancho) y por debajo de su borde exterior más fino (mín. 0.447, bajo el casco)
+// para que no asome ni se vea un hueco entre foto y marco.
+const OFFICIAL_FRAME_SRC = "/perfil_usuario.png";
+const OFFICIAL_FRAME_CLIP = 0.44;
+
+type Style = "official" | "ring" | "flag";
 const STYLES: Record<Style, { label: string; hint: string }> = {
-  custom_svg: { label: "Marco Oficial", hint: "diseño de campaña" },
+  official: { label: "Marco Oficial", hint: "diseño de campaña" },
   ring: { label: "Aro", hint: "anillo con lema" },
   flag: { label: "Bandera", hint: "bandera sobre tu foto" },
 };
@@ -96,15 +103,15 @@ function badgeCenter(R: number, d: number, angle: number) {
 }
 
 // Dibuja el marco de perfil sobre el canvas ya pintado con la foto.
-function drawFrame(ctx: CanvasRenderingContext2D, style: Style, logo: HTMLImageElement | null, svgFrame: HTMLImageElement | null) {
+function drawFrame(ctx: CanvasRenderingContext2D, style: Style, logo: HTMLImageElement | null, frameImg: HTMLImageElement | null) {
   const w = SIZE;
   const cx = w / 2;
   const cy = w / 2;
   const R = w / 2;
 
-  if (style === "custom_svg") {
-    if (svgFrame) {
-      ctx.drawImage(svgFrame, 0, 0, w, w);
+  if (style === "official") {
+    if (frameImg) {
+      ctx.drawImage(frameImg, 0, 0, w, w);
     }
     return;
   }
@@ -223,10 +230,10 @@ export default function PhotoFrameClient() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const logoRef = useRef<HTMLImageElement | null>(null);
-  const svgFrameRef = useRef<HTMLImageElement | null>(null);
+  const frameRef = useRef<HTMLImageElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
-  const [style, setStyle] = useState<Style>("custom_svg");
+  const [style, setStyle] = useState<Style>("official");
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState<Offset>({ x: 0, y: 0 }); // px de canvas respecto al centro
   const [hasImage, setHasImage] = useState(false);
@@ -251,12 +258,12 @@ export default function PhotoFrameClient() {
 
   // Precargar marcos, logo y tipografías.
   useEffect(() => {
-    const sf = new Image();
-    sf.onload = () => {
-      svgFrameRef.current = sf;
+    const fr = new Image();
+    fr.onload = () => {
+      frameRef.current = fr;
       setAssetsReady((n) => n + 1);
     };
-    sf.src = "/assets/images/marcos/marco_horna.svg";
+    fr.src = OFFICIAL_FRAME_SRC;
 
     const l = new Image();
     l.onload = () => {
@@ -286,9 +293,9 @@ export default function PhotoFrameClient() {
     const img = imgRef.current;
     if (img) {
       ctx.save();
-      if (style === "custom_svg") {
+      if (style === "official") {
         ctx.beginPath();
-        ctx.arc(w / 2, w / 2, w * 0.465, 0, Math.PI * 2);
+        ctx.arc(w / 2, w / 2, w * OFFICIAL_FRAME_CLIP, 0, Math.PI * 2);
         ctx.clip();
       }
 
@@ -308,9 +315,9 @@ export default function PhotoFrameClient() {
       ctx.restore();
     }
 
-    drawFrame(ctx, style, logoRef.current, svgFrameRef.current);
+    drawFrame(ctx, style, logoRef.current, frameRef.current);
 
-    if (style !== "custom_svg") {
+    if (style !== "official") {
       // Recorte circular para estilos generados: todo lo que queda fuera del círculo se vuelve transparente.
       ctx.save();
       ctx.globalCompositeOperation = "destination-in";
