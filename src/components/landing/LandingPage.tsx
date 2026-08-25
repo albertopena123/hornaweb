@@ -75,6 +75,19 @@ export default function LandingPage() {
       window.scrollTo(0, 0);
     }
 
+    const hideLoader = () => {
+      const loader = document.querySelector<HTMLElement>(".loader-mask");
+      if (loader && loader.style.display !== "none") {
+        loader.style.opacity = "0";
+        setTimeout(() => {
+          if (loader) loader.style.display = "none";
+        }, 400);
+      }
+    };
+
+    // Ocultar preloader en 500ms para una carga instantánea y fluida
+    const maxTimer = setTimeout(hideLoader, 500);
+
     (async () => {
       for (const src of LEGACY_SCRIPTS) {
         if (cancelled) return;
@@ -97,17 +110,12 @@ export default function LandingPage() {
       }
 
       window.scrollTo(0, 0);
-      const loader = document.querySelector<HTMLElement>(".loader-mask");
-      if (loader) {
-        loader.style.opacity = "0";
-        setTimeout(() => {
-          loader.style.display = "none";
-        }, 500);
-      }
+      hideLoader();
     })();
 
     return () => {
       cancelled = true;
+      clearTimeout(maxTimer);
     };
   }, []);
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { CircleAlert, Info, LoaderCircle, MapPin, MessageCircle, Phone } from "lucide-react";
 import "./mi-mesa.css";
 
@@ -60,8 +61,30 @@ export default function MesaLookupClient() {
   }
 
   return (
-    <main className="mm">
-      <div className="mm__card">
+    <div className="mm">
+      <header className="mm__top">
+        <Link className="mm__logo" href="/">
+          <img src="/assets/images/logo/logo-an.webp" alt="Ahora Nación" />
+          <span>
+            <strong>Simón Horna Alpaca</strong>
+            <span>Ahora Nación · Madre de Dios</span>
+          </span>
+        </Link>
+
+        <nav className="mm__nav" aria-label="Navegación principal">
+          <Link href="/" className="mm__nav-link">Inicio</Link>
+          <Link href="/#apoyo" className="mm__nav-link">Apoyo</Link>
+          <Link href="/mi-mesa" className="mm__nav-link is-active">Consultor de Mesa</Link>
+          <Link href="/mi-foto" className="mm__nav-link">Foto con Marco</Link>
+        </nav>
+
+        <div className="mm__top-actions">
+          <Link className="mm__back-btn" href="/">← Volver al inicio</Link>
+        </div>
+      </header>
+
+      <main className="mm__main">
+        <div className="mm__card">
         <header className="mm__brand">
           <img src="/assets/images/logo/logo-an.webp" alt="Ahora Nación" />
           <div>
@@ -141,6 +164,7 @@ export default function MesaLookupClient() {
           </div>
         )}
       </div>
-    </main>
+      </main>
+    </div>
   );
 }

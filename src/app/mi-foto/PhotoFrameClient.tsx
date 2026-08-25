@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./mi-foto.css";
 
-type Style = "ring" | "flag";
+type Style = "custom_svg" | "ring" | "flag";
 const STYLES: Record<Style, { label: string; hint: string }> = {
+  custom_svg: { label: "Marco Oficial", hint: "diseño de campaña" },
   ring: { label: "Aro", hint: "anillo con lema" },
   flag: { label: "Bandera", hint: "bandera sobre tu foto" },
 };
@@ -95,11 +96,18 @@ function badgeCenter(R: number, d: number, angle: number) {
 }
 
 // Dibuja el marco de perfil sobre el canvas ya pintado con la foto.
-function drawFrame(ctx: CanvasRenderingContext2D, style: Style, logo: HTMLImageElement | null) {
+function drawFrame(ctx: CanvasRenderingContext2D, style: Style, logo: HTMLImageElement | null, svgFrame: HTMLImageElement | null) {
   const w = SIZE;
   const cx = w / 2;
   const cy = w / 2;
   const R = w / 2;
+
+  if (style === "custom_svg") {
+    if (svgFrame) {
+      ctx.drawImage(svgFrame, 0, 0, w, w);
+    }
+    return;
+  }
 
   if (style === "flag") {
     // Bandera del Perú translúcida (rojo | blanco | rojo) sobre la foto.
@@ -185,6 +193,13 @@ const isIOS = () =>
   typeof navigator !== "undefined" &&
   (/iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1));
 
+const IconWhatsApp = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm0 18.15c-1.49 0-2.95-.4-4.22-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.51 3.67-8.18 8.18-8.18 2.19 0 4.24.85 5.79 2.4 1.54 1.55 2.4 3.6 2.4 5.79 0 4.51-3.67 8.2-8.18 8.2z"/>
+    <path d="M16.82 14.39c-.26-.13-1.54-.76-1.78-.85-.24-.09-.41-.13-.58.13-.17.26-.68.85-.83 1.02-.15.18-.31.2-.57.07-.26-.13-1.11-.41-2.11-1.3-.78-.7-1.31-1.56-1.46-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.43.09-.18.04-.33-.02-.46-.07-.13-.58-1.4-.8-1.92-.21-.51-.43-.44-.59-.45h-.5c-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.2 0 1.3.95 2.55 1.08 2.73.13.17 1.87 2.85 4.53 4 2.66 1.15 2.66.77 3.14.72.48-.04 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.06-.11-.24-.18-.5-.31z"/>
+  </svg>
+);
+
 const IconUpload = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M12 16V4m0 0-4 4m4-4 4 4" /><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
@@ -208,9 +223,10 @@ export default function PhotoFrameClient() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const logoRef = useRef<HTMLImageElement | null>(null);
+  const svgFrameRef = useRef<HTMLImageElement | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
-  const [style, setStyle] = useState<Style>("ring");
+  const [style, setStyle] = useState<Style>("custom_svg");
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState<Offset>({ x: 0, y: 0 }); // px de canvas respecto al centro
   const [hasImage, setHasImage] = useState(false);
@@ -218,6 +234,7 @@ export default function PhotoFrameClient() {
   const [isOver, setIsOver] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
 
   // Espejos de zoom/offset para los handlers de puntero (evitan closures obsoletos).
   const zoomRef = useRef(zoom);
@@ -232,14 +249,22 @@ export default function PhotoFrameClient() {
   const dragRef = useRef<{ id: number; x: number; y: number; ox: number; oy: number } | null>(null);
   const pinchRef = useRef<{ dist: number; zoom: number; off: Offset } | null>(null);
 
-  // Precargar logo y tipografías del marco.
+  // Precargar marcos, logo y tipografías.
   useEffect(() => {
+    const sf = new Image();
+    sf.onload = () => {
+      svgFrameRef.current = sf;
+      setAssetsReady((n) => n + 1);
+    };
+    sf.src = "/assets/images/marcos/marco_horna.svg";
+
     const l = new Image();
     l.onload = () => {
       logoRef.current = l;
       setAssetsReady((n) => n + 1);
     };
     l.src = "/assets/images/logo/logo-an.webp";
+
     if (typeof document !== "undefined" && "fonts" in document) {
       Promise.all([document.fonts.load("400 80px Staatliches"), document.fonts.load('700 40px "Inter"')])
         .then(() => setAssetsReady((n) => n + 1))
@@ -256,11 +281,17 @@ export default function PhotoFrameClient() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    ctx.fillStyle = NAVY;
-    ctx.fillRect(0, 0, w, w);
+    ctx.clearRect(0, 0, w, w);
 
     const img = imgRef.current;
     if (img) {
+      ctx.save();
+      if (style === "custom_svg") {
+        ctx.beginPath();
+        ctx.arc(w / 2, w / 2, w * 0.465, 0, Math.PI * 2);
+        ctx.clip();
+      }
+
       // Fondo: la misma foto difuminada cubriendo todo, para que el margen de
       // desplazamiento nunca muestre un hueco vacío.
       if ("filter" in ctx) {
@@ -274,19 +305,21 @@ export default function PhotoFrameClient() {
       const dx = (w - dw) / 2 + offset.x;
       const dy = (w - dh) / 2 + offset.y;
       ctx.drawImage(img, dx, dy, dw, dh);
+      ctx.restore();
     }
 
-    drawFrame(ctx, style, logoRef.current);
+    drawFrame(ctx, style, logoRef.current, svgFrameRef.current);
 
-    // Recorte circular: todo lo que queda fuera del círculo se vuelve transparente,
-    // así el PNG final es solo el círculo (las redes lo muestran igual, sin esquinas).
-    ctx.save();
-    ctx.globalCompositeOperation = "destination-in";
-    ctx.fillStyle = "#000";
-    ctx.beginPath();
-    ctx.arc(w / 2, w / 2, w / 2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
+    if (style !== "custom_svg") {
+      // Recorte circular para estilos generados: todo lo que queda fuera del círculo se vuelve transparente.
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-in";
+      ctx.fillStyle = "#000";
+      ctx.beginPath();
+      ctx.arc(w / 2, w / 2, w / 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [style, zoom, offset, assetsReady]);
 
@@ -485,6 +518,22 @@ export default function PhotoFrameClient() {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
+  async function handleWhatsApp() {
+    const file = await makeFile();
+    if (!file) return;
+
+    // 1. Guardar la foto en la galería/descargas
+    saveViaAnchor(file);
+
+    // 2. Si el dispositivo soporta compartir nativo (móviles Android / iOS), abrir hoja de compartir
+    if (canShareFiles(file)) {
+      await shareFile(file, true);
+    }
+
+    // 3. Mostrar modal con guía rápida y acceso directo a WhatsApp
+    setShowWhatsAppModal(true);
+  }
+
   async function download() {
     const file = await makeFile();
     if (!file) return;
@@ -494,7 +543,7 @@ export default function PhotoFrameClient() {
       if (await shareFile(file, false)) return;
     }
     saveViaAnchor(file);
-    setToast(isIOS() ? "Si no ves la imagen, usa Compartir → Guardar imagen." : "Foto descargada. Ponla de perfil en WhatsApp, TikTok o Facebook.");
+    setToast(isIOS() ? "Si no ves la imagen, usa Compartir → Guardar imagen." : "Foto descargada en alta resolución.");
   }
 
   async function share() {
@@ -516,7 +565,17 @@ export default function PhotoFrameClient() {
             <span>Ahora Nación · Madre de Dios</span>
           </span>
         </Link>
-        <Link className="mf__back" href="/">← Volver al inicio</Link>
+
+        <nav className="mf__nav" aria-label="Navegación principal">
+          <Link href="/" className="mf__nav-link">Inicio</Link>
+          <Link href="/#apoyo" className="mf__nav-link">Apoyo</Link>
+          <Link href="/mi-mesa" className="mf__nav-link">Consultor de Mesa</Link>
+          <Link href="/mi-foto" className="mf__nav-link is-active">Foto con Marco</Link>
+        </nav>
+
+        <div className="mf__top-actions">
+          <Link className="mf__back" href="/">← Volver al inicio</Link>
+        </div>
       </header>
 
       <div className="mf__wrap">
@@ -610,14 +669,17 @@ export default function PhotoFrameClient() {
 
           <div className="mf__actions">
             <input ref={fileRef} type="file" accept="image/*" onChange={onFile} hidden />
+            
+            <button className="mf__btn mf__btn--whatsapp" type="button" onClick={handleWhatsApp} disabled={!hasImage}>
+              <IconWhatsApp /> Poner en WhatsApp
+            </button>
+
+            <button className="mf__btn mf__btn--light" type="button" onClick={download} disabled={!hasImage}>
+              <IconDownload /> Descargar PNG
+            </button>
+
             <button className="mf__btn mf__btn--ghost" type="button" onClick={() => fileRef.current?.click()}>
               <IconUpload /> {hasImage ? "Cambiar foto" : "Subir foto"}
-            </button>
-            <button className="mf__btn mf__btn--light" type="button" onClick={download} disabled={!hasImage}>
-              <IconDownload /> Descargar
-            </button>
-            <button className="mf__btn mf__btn--red" type="button" onClick={share} disabled={!hasImage}>
-              <IconShare /> Compartir
             </button>
           </div>
         </section>
@@ -627,6 +689,59 @@ export default function PhotoFrameClient() {
       <div className={`mf__toast ${toast ? "is-visible" : ""}`} role="status" aria-live="polite">
         {toast ?? ""}
       </div>
+
+      {/* Modal Guía Rápida para WhatsApp */}
+      {showWhatsAppModal && (
+        <div className="mf__modal-overlay" onClick={() => setShowWhatsAppModal(false)}>
+          <div className="mf__modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="mf-modal-title">
+            <div className="mf__modal-header">
+              <h3 id="mf-modal-title" className="mf__modal-title">
+                <IconWhatsApp /> Foto lista para WhatsApp
+              </h3>
+              <button
+                type="button"
+                className="mf__modal-close"
+                onClick={() => setShowWhatsAppModal(false)}
+                aria-label="Cerrar guía"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mf__guide-steps">
+              <div className="mf__guide-step">
+                <b>1</b>
+                <span><strong>¡Foto guardada!</strong> Ya se descargó en tu galería / fotos.</span>
+              </div>
+              <div className="mf__guide-step">
+                <b>2</b>
+                <span>Abre <strong>WhatsApp</strong> y ve a <strong>Ajustes → Toca tu foto</strong>.</span>
+              </div>
+              <div className="mf__guide-step">
+                <b>3</b>
+                <span>Toca <strong>Editar / Galería</strong> y selecciona esta imagen.</span>
+              </div>
+            </div>
+
+            <div className="mf__modal-actions">
+              <a
+                href="whatsapp://app"
+                className="mf__btn mf__btn--whatsapp"
+                style={{ textDecoration: "none", textAlign: "center" }}
+                onClick={() => {
+                  setTimeout(() => {
+                    if (!document.hidden) {
+                      window.open("https://web.whatsapp.com", "_blank");
+                    }
+                  }, 1200);
+                }}
+              >
+                <IconWhatsApp /> Abrir WhatsApp ahora
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
