@@ -512,6 +512,13 @@ export default function UneteClient() {
                   <ArrowRight size={16} />
                 </a>
 
+                <Link href="/aprende-a-votar" className="uc__action-btn secondary" style={{ borderColor: "#E90305", color: "#ffffff", background: "rgba(233, 3, 5, 0.15)" }}>
+                  <span className="d-flex align-items-center gap-2">
+                    <Vote size={18} /> Aprende a Votar (Cédula Interactiva)
+                  </span>
+                  <ArrowRight size={16} />
+                </Link>
+
                 <Link href="/mi-mesa" className="uc__action-btn secondary">
                   <span className="d-flex align-items-center gap-2">
                     <Vote size={18} /> Consultor de Mesa de Votación

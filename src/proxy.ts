@@ -8,6 +8,9 @@ const PUBLIC_PATHS = new Set<string>([
   "/mi-foto",
   "/mi-mesa",
   "/unete",
+  "/aprende-a-votar",
+  "/cedula",
+  "/simulador",
   "/api/anuncios/activo",
   // Inscripción pública de personeros (formulario flotante del landing; GET flag + POST alta).
   "/api/personeros/registro",

@@ -111,6 +111,9 @@ export default function MesaLookupClient() {
           <Link href="/mi-foto" className="mm__nav-link">
             Foto con Marco
           </Link>
+          <Link href="/aprende-a-votar" className="mm__nav-link">
+            Aprende a Votar
+          </Link>
           <Link href="/unete" className="mm__nav-link">
             Únete
           </Link>

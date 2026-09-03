@@ -1,8 +1,10 @@
+"use client";
+
 import { useState, useEffect } from 'react'
 
 const navItems = [
-  { label: 'Inicio', href: '#inicio' },
-  { label: 'Apoyo', href: '#apoyo' },
+  { label: 'Inicio', href: '/#inicio' },
+  { label: 'Apoyo', href: '/#apoyo' },
 ]
 
 const Header = () => {
@@ -134,6 +136,11 @@ const Header = () => {
                 </a>
               </li>
               <li className="nav-menu__item" style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <a href="/aprende-a-votar" onClick={() => setMobileOpen(false)} className="nav-menu__link text-heading d-block py-3 px-3" style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500, borderRadius: '6px', textDecoration: 'none' }}>
+                  Aprende a Votar
+                </a>
+              </li>
+              <li className="nav-menu__item" style={{ borderBottom: '1px solid #f0f0f0' }}>
                 <a href="/unete" onClick={() => setMobileOpen(false)} className="nav-menu__link text-heading d-block py-3 px-3" style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500, borderRadius: '6px', textDecoration: 'none' }}>
                   Únete a la Campaña
                 </a>
@@ -183,7 +190,7 @@ const Header = () => {
           <nav className="d-flex align-items-center justify-content-between position-relative" style={{ width: '100%', gap: '16px' }}>
             {/* Logo */}
             <div className="logo" style={{ flexShrink: 0 }}>
-              <a href="#inicio" className="link d-flex align-items-center tw-gap-3" style={{ whiteSpace: 'nowrap' }}>
+              <a href="/#inicio" className="link d-flex align-items-center tw-gap-3" style={{ whiteSpace: 'nowrap' }}>
                 <img
                   src="/assets/images/logo/logo-an.webp"
                   alt="Ahora Nación"
@@ -230,6 +237,11 @@ const Header = () => {
                 <li className="nav-menu__item" style={{ flexShrink: 0 }}>
                   <a href="/mi-foto" className="nav-menu__link text-heading" style={{ whiteSpace: 'nowrap', fontSize: '14px', padding: '8px 12px', color: '#222', fontWeight: 500, textDecoration: 'none' }}>
                     Foto con Marco
+                  </a>
+                </li>
+                <li className="nav-menu__item" style={{ flexShrink: 0 }}>
+                  <a href="/aprende-a-votar" className="nav-menu__link text-heading" style={{ whiteSpace: 'nowrap', fontSize: '14px', padding: '8px 12px', color: '#222', fontWeight: 500, textDecoration: 'none' }}>
+                    Aprende a Votar
                   </a>
                 </li>
                 <li className="nav-menu__item" style={{ flexShrink: 0 }}>

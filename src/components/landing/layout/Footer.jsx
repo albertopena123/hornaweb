@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Mail,
   Phone,
@@ -39,6 +41,7 @@ const SECTIONS = [
   { label: "Apoyo", href: "#apoyo" },
   { label: "Consultor de Mesa", href: "/mi-mesa" },
   { label: "Foto con Marco", href: "/mi-foto" },
+  { label: "Aprende a Votar", href: "/aprende-a-votar" },
   { label: "Únete a la Campaña", href: "/unete" },
 ];
 
