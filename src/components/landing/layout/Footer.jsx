@@ -37,6 +37,9 @@ const BRAND_PATHS = {
 const SECTIONS = [
   { label: "Inicio", href: "#inicio" },
   { label: "Apoyo", href: "#apoyo" },
+  { label: "Consultor de Mesa", href: "/mi-mesa" },
+  { label: "Foto con Marco", href: "/mi-foto" },
+  { label: "Únete a la Campaña", href: "/unete" },
 ];
 
 const DIMENSIONS = [

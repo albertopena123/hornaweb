@@ -6,6 +6,8 @@ const PUBLIC_PATHS = new Set<string>([
   "/login",
   "/403",
   "/mi-foto",
+  "/mi-mesa",
+  "/unete",
   "/api/anuncios/activo",
   // Inscripción pública de personeros (formulario flotante del landing; GET flag + POST alta).
   "/api/personeros/registro",
@@ -19,6 +21,7 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/auth/") ||
     pathname.startsWith("/api/apoyos") ||
     pathname.startsWith("/api/dni/") ||
+    pathname.startsWith("/api/personeros/") ||
     pathname.startsWith("/api/waha/") ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/assets/") ||

@@ -133,6 +133,11 @@ const Header = () => {
                   Foto con Marco
                 </a>
               </li>
+              <li className="nav-menu__item" style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <a href="/unete" onClick={() => setMobileOpen(false)} className="nav-menu__link text-heading d-block py-3 px-3" style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500, borderRadius: '6px', textDecoration: 'none' }}>
+                  Únete a la Campaña
+                </a>
+              </li>
             </ul>
             <a
               href="/login"
@@ -225,6 +230,11 @@ const Header = () => {
                 <li className="nav-menu__item" style={{ flexShrink: 0 }}>
                   <a href="/mi-foto" className="nav-menu__link text-heading" style={{ whiteSpace: 'nowrap', fontSize: '14px', padding: '8px 12px', color: '#222', fontWeight: 500, textDecoration: 'none' }}>
                     Foto con Marco
+                  </a>
+                </li>
+                <li className="nav-menu__item" style={{ flexShrink: 0 }}>
+                  <a href="/unete" className="nav-menu__link text-heading" style={{ whiteSpace: 'nowrap', fontSize: '14px', padding: '8px 12px', color: '#222', fontWeight: 500, textDecoration: 'none' }}>
+                    Únete
                   </a>
                 </li>
               </ul>
