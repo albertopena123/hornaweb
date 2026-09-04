@@ -14,6 +14,11 @@ const PUBLIC_PATHS = new Set<string>([
   "/api/anuncios/activo",
   // Inscripción pública de personeros (formulario flotante del landing; GET flag + POST alta).
   "/api/personeros/registro",
+  // Archivos que los buscadores piden sin sesión: si el middleware los manda a
+  // /login, Google los ve como redirección y el sitio no se indexa.
+  "/robots.txt",
+  "/sitemap.xml",
+  "/manifest.webmanifest",
 ]);
 
 export async function proxy(request: NextRequest) {
@@ -28,6 +33,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/waha/") ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/assets/") ||
+    pathname.startsWith("/opengraph-image") ||
+    pathname.startsWith("/twitter-image") ||
     pathname === "/favicon.ico";
 
   const token = request.cookies.get(SESSION_COOKIE)?.value;

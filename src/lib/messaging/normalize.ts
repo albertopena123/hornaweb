@@ -79,7 +79,8 @@ export function detectColumns(headers: CellLike[]): ColumnMapping {
   return out;
 }
 
-export type ImportRowInput = { docNumber: string; name: string; phone: string; district?: string };
+/** Solo el celular es obligatorio; DNI y nombre son opcionales (si el DNI viene mal formado se guarda sin DNI). */
+export type ImportRowInput = { phone: string; name: string; docNumber: string | null; district?: string };
 export type InvalidRow = { row: number; docNumber: string; name: string; phone: string; reason: string };
 export type NormalizedSheet = {
   valid: ImportRowInput[];
@@ -98,7 +99,7 @@ function pick(row: CellLike[], idx: number | null): CellLike {
 
 /** `rows` sin la cabecera. `row` en los inválidos es 1-based contando la cabecera como fila 1. */
 export function normalizeRows(rows: CellLike[][], mapping: ColumnMapping, district?: string): NormalizedSheet {
-  const byDni = new Map<string, ImportRowInput>();
+  const byPhone = new Map<string, ImportRowInput>();
   const invalid: InvalidRow[] = [];
   let totalRows = 0;
   let duplicatedInFile = 0;
@@ -114,34 +115,103 @@ export function normalizeRows(rows: CellLike[][], mapping: ColumnMapping, distri
     const materno = normalizeName(pick(row, mapping.materno));
     const name = [nombres, paterno, materno].filter(Boolean).join(" ");
 
-    const docNumber = normalizeDni(rawDni);
+    const docNumber = normalizeDni(rawDni); // opcional
     const phone = normalizePeruPhone(rawPhone);
-    const reason = !docNumber ? "DNI inválido" : !phone ? "Celular inválido" : name === "" ? "Nombre vacío" : null;
-    if (reason) {
-      invalid.push({ row: rowNumber, docNumber: rawDni, name, phone: rawPhone, reason });
+    if (!phone) {
+      invalid.push({ row: rowNumber, docNumber: rawDni, name, phone: rawPhone, reason: "Celular inválido" });
       return;
     }
-    if (byDni.has(docNumber!)) duplicatedInFile += 1;
-    const item: ImportRowInput = { docNumber: docNumber!, name, phone: phone! };
+    if (byPhone.has(phone)) duplicatedInFile += 1;
+    const item: ImportRowInput = { phone, name, docNumber };
     if (district) item.district = district;
-    byDni.set(docNumber!, item);
+    byPhone.set(phone, item);
   });
 
-  return { valid: [...byDni.values()], invalid, duplicatedInFile, totalRows };
+  return { valid: [...byPhone.values()], invalid, duplicatedInFile, totalRows };
 }
 
-/** Reemplaza {nombre} (nombre completo en Title Case) y {dni}; añade el pie separado por línea en blanco. */
-export function renderTemplate(template: string, contact: { name: string; docNumber: string }, footer: string): string {
-  const body = template
-    .replace(/\{nombre\}/gi, toTitleCase(contact.name))
-    .replace(/\{dni\}/gi, contact.docNumber)
+// Variación por destinatario para que una campaña de cientos de envíos no sean cientos de
+// mensajes byte a byte idénticos: rota el saludo inicial, el emoji del pie y la posición del
+// emoji (delante o detrás de la firma). Todo es determinista por destinatario: un reintento
+// repite exactamente el mismo texto.
+// Configurable: MESSAGING_FOOTER_EMOJIS ("🇵🇪,🙌,✨") y MESSAGING_GREETINGS ("Hola|Buenas|Buen día").
+export const DEFAULT_FOOTER_EMOJIS = ["🇵🇪", "🙌", "✨", "🤝", "⭐", "💪", "👋", "🙏", "🌟", "❤️", "💙", "✅", "📣", "🎉", "👏", "🔴"];
+export const DEFAULT_GREETINGS = ["Hola", "Buenas", "Buen día", "Qué tal", "Saludos", "Hola, qué tal", "Hola, buenas"];
+
+/** Hash estable (djb2) con sal: el mismo destinatario recibe siempre la misma variante, también al reintentar. */
+function hashSeed(seed: string, salt = 0): number {
+  let h = 5381 + salt;
+  for (let i = 0; i < seed.length; i++) h = ((h << 5) + h + seed.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function pickFrom(list: string[], seed: string, salt: number): string {
+  const l = list.map((x) => x.trim()).filter(Boolean);
+  if (l.length === 0) return "";
+  return l[hashSeed(seed, salt) % l.length];
+}
+
+export function pickFooterEmoji(emojis: string[], seed: string): string {
+  return pickFrom(emojis, seed, 0);
+}
+
+export function pickGreeting(greetings: string[], seed: string): string {
+  return pickFrom(greetings, seed, 7919);
+}
+
+/** Pie final: emoji + firma, con el emoji delante o detrás según el destinatario. Cualquiera de las partes puede faltar. */
+export function composeFooter(footer: string, emoji: string, seed = ""): string {
+  const e = emoji.trim();
+  const f = footer.trim();
+  if (!e || !f) return e || f;
+  return hashSeed(seed, 104729) % 2 === 0 ? `${e} ${f}` : `${f} ${e}`;
+}
+
+// Saludos que el motor reconoce al principio de la plantilla para rotarlos aunque el admin
+// no haya escrito {saludo}: "Hola {nombre}, ..." → "Buenas Juan, ...".
+const LEADING_GREETING = /^(hola|buenas|buen d[ií]a|buenos d[ií]as|buenas tardes|buenas noches|saludos|qu[eé] tal)\b[,!]?\s*/i;
+
+/** Sustituye {saludo} (o el saludo inicial de la plantilla) por el saludo elegido. */
+export function applyGreeting(template: string, greeting: string): string {
+  const g = greeting.trim();
+  if (!g) return template.replace(/\{saludo\}/gi, "Hola");
+  if (/\{saludo\}/i.test(template)) return template.replace(/\{saludo\}/gi, g);
+  return template.replace(LEADING_GREETING, `${g} `);
+}
+
+/**
+ * Reemplaza {saludo}, {nombre} (nombre completo en Title Case) y {dni}; añade el pie separado por
+ * línea en blanco. Nombre y DNI son opcionales: si faltan, se cierran los huecos ("Hola , …" → "Hola, …").
+ * `greeting` es el saludo de este destinatario (si no se pasa, se deja "Hola").
+ */
+export function renderTemplate(
+  template: string,
+  contact: { name: string; docNumber: string | null },
+  footer: string,
+  greeting = "Hola",
+): string {
+  const body = applyGreeting(template, greeting)
+    .replace(/\{nombre\}/gi, toTitleCase(contact.name ?? ""))
+    .replace(/\{dni\}/gi, contact.docNumber ?? "")
+    .replace(/[ \t]+([,.;:!?)])/g, "$1")
+    .replace(/[ \t]{2,}/g, " ")
     .trim();
   const f = footer.trim();
   return f ? `${body}\n\n${f}` : body;
 }
 
+// Palabras y emojis que valen como baja. El pie ya no anuncia "responde BAJA", pero la
+// puerta de salida sigue abierta: quien conteste cualquiera de estas cosas deja de recibir.
+const OPT_OUT_EMOJIS = ["\u{1F515}", "\u{1F507}", "\u{1F6AB}", "\u274C", "\u{1F44E}", "\u{1F621}", "\u{1F92C}"];
+
+// Al principio del mensaje ("BAJA", "stop", "no quiero"…): la respuesta corta de siempre.
+const OPT_OUT_START = /^(baja|stop|unsubscribe|no|salir|basta|elimina|eliminame|borrame)\b/;
+// En cualquier parte: frases inequívocas, para no perder un "por favor elimíname de la lista".
+const OPT_OUT_ANY = /\b(eliminame|borrame|no quiero recibir|no me (escriban|manden|envien|molesten)|dejen de (enviar|escribir|molestar))\b/;
+
 export function isOptOutText(body: string): boolean {
-  return /^(baja|stop|no)\b/.test(foldText(body));
+  const t = foldText(body);
+  return OPT_OUT_START.test(t) || OPT_OUT_ANY.test(t) || OPT_OUT_EMOJIS.some((e) => t.includes(e));
 }
 
 export function phoneToChatId(phoneE164: string): string {
@@ -168,7 +238,7 @@ export type ManualContactInput = {
   consentConfirmed: boolean;
 };
 export type ManualContactData = {
-  docNumber: string;
+  docNumber: string | null;
   name: string;
   phone: string;
   district?: DistrictId;
@@ -187,11 +257,12 @@ export function validateManualContact(
 ): { data?: ManualContactData; fieldErrors?: Record<string, string> } {
   const fieldErrors: Record<string, string> = {};
 
-  const docNumber = normalizeDni(input.docNumber);
-  if (!docNumber) fieldErrors.docNumber = "El DNI debe tener 8 dígitos.";
+  // Solo el celular es obligatorio. El DNI, si se indica, debe ser válido; el nombre puede ir vacío.
+  const rawDoc = cellToString(input.docNumber);
+  const docNumber = rawDoc ? normalizeDni(rawDoc) : null;
+  if (rawDoc && !docNumber) fieldErrors.docNumber = "Si indicas el DNI, debe tener 8 dígitos.";
 
   const name = normalizeName(input.name);
-  if (!name) fieldErrors.name = "Escribe el nombre completo.";
 
   const phone = normalizePeruPhone(input.phone);
   if (!phone) fieldErrors.phone = "El celular debe ser un número peruano de 9 dígitos (empieza con 9).";
@@ -208,7 +279,7 @@ export function validateManualContact(
   if (Object.keys(fieldErrors).length) return { fieldErrors };
   return {
     data: {
-      docNumber: docNumber!,
+      docNumber,
       name,
       phone: phone!,
       district: input.district && isDistrictId(input.district) ? input.district : undefined,

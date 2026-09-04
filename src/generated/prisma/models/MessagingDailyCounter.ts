@@ -36,16 +36,19 @@ export type MessagingDailyCounterSumAggregateOutputType = {
 
 export type MessagingDailyCounterMinAggregateOutputType = {
   day: string | null
+  sessionId: string | null
   count: number | null
 }
 
 export type MessagingDailyCounterMaxAggregateOutputType = {
   day: string | null
+  sessionId: string | null
   count: number | null
 }
 
 export type MessagingDailyCounterCountAggregateOutputType = {
   day: number
+  sessionId: number
   count: number
   _all: number
 }
@@ -61,16 +64,19 @@ export type MessagingDailyCounterSumAggregateInputType = {
 
 export type MessagingDailyCounterMinAggregateInputType = {
   day?: true
+  sessionId?: true
   count?: true
 }
 
 export type MessagingDailyCounterMaxAggregateInputType = {
   day?: true
+  sessionId?: true
   count?: true
 }
 
 export type MessagingDailyCounterCountAggregateInputType = {
   day?: true
+  sessionId?: true
   count?: true
   _all?: true
 }
@@ -163,6 +169,7 @@ export type MessagingDailyCounterGroupByArgs<ExtArgs extends runtime.Types.Exten
 
 export type MessagingDailyCounterGroupByOutputType = {
   day: string
+  sessionId: string
   count: number
   _count: MessagingDailyCounterCountAggregateOutputType | null
   _avg: MessagingDailyCounterAvgAggregateOutputType | null
@@ -191,24 +198,32 @@ export type MessagingDailyCounterWhereInput = {
   OR?: Prisma.MessagingDailyCounterWhereInput[]
   NOT?: Prisma.MessagingDailyCounterWhereInput | Prisma.MessagingDailyCounterWhereInput[]
   day?: Prisma.StringFilter<"MessagingDailyCounter"> | string
+  sessionId?: Prisma.StringFilter<"MessagingDailyCounter"> | string
   count?: Prisma.IntFilter<"MessagingDailyCounter"> | number
+  session?: Prisma.XOR<Prisma.WhatsappSessionScalarRelationFilter, Prisma.WhatsappSessionWhereInput>
 }
 
 export type MessagingDailyCounterOrderByWithRelationInput = {
   day?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
   count?: Prisma.SortOrder
+  session?: Prisma.WhatsappSessionOrderByWithRelationInput
 }
 
 export type MessagingDailyCounterWhereUniqueInput = Prisma.AtLeast<{
-  day?: string
+  day_sessionId?: Prisma.MessagingDailyCounterDaySessionIdCompoundUniqueInput
   AND?: Prisma.MessagingDailyCounterWhereInput | Prisma.MessagingDailyCounterWhereInput[]
   OR?: Prisma.MessagingDailyCounterWhereInput[]
   NOT?: Prisma.MessagingDailyCounterWhereInput | Prisma.MessagingDailyCounterWhereInput[]
+  day?: Prisma.StringFilter<"MessagingDailyCounter"> | string
+  sessionId?: Prisma.StringFilter<"MessagingDailyCounter"> | string
   count?: Prisma.IntFilter<"MessagingDailyCounter"> | number
-}, "day">
+  session?: Prisma.XOR<Prisma.WhatsappSessionScalarRelationFilter, Prisma.WhatsappSessionWhereInput>
+}, "day_sessionId">
 
 export type MessagingDailyCounterOrderByWithAggregationInput = {
   day?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
   count?: Prisma.SortOrder
   _count?: Prisma.MessagingDailyCounterCountOrderByAggregateInput
   _avg?: Prisma.MessagingDailyCounterAvgOrderByAggregateInput
@@ -222,31 +237,37 @@ export type MessagingDailyCounterScalarWhereWithAggregatesInput = {
   OR?: Prisma.MessagingDailyCounterScalarWhereWithAggregatesInput[]
   NOT?: Prisma.MessagingDailyCounterScalarWhereWithAggregatesInput | Prisma.MessagingDailyCounterScalarWhereWithAggregatesInput[]
   day?: Prisma.StringWithAggregatesFilter<"MessagingDailyCounter"> | string
+  sessionId?: Prisma.StringWithAggregatesFilter<"MessagingDailyCounter"> | string
   count?: Prisma.IntWithAggregatesFilter<"MessagingDailyCounter"> | number
 }
 
 export type MessagingDailyCounterCreateInput = {
   day: string
   count?: number
+  session: Prisma.WhatsappSessionCreateNestedOneWithoutCountersInput
 }
 
 export type MessagingDailyCounterUncheckedCreateInput = {
   day: string
+  sessionId: string
   count?: number
 }
 
 export type MessagingDailyCounterUpdateInput = {
   day?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
+  session?: Prisma.WhatsappSessionUpdateOneRequiredWithoutCountersNestedInput
 }
 
 export type MessagingDailyCounterUncheckedUpdateInput = {
   day?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MessagingDailyCounterCreateManyInput = {
   day: string
+  sessionId: string
   count?: number
 }
 
@@ -257,11 +278,28 @@ export type MessagingDailyCounterUpdateManyMutationInput = {
 
 export type MessagingDailyCounterUncheckedUpdateManyInput = {
   day?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionId?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MessagingDailyCounterListRelationFilter = {
+  every?: Prisma.MessagingDailyCounterWhereInput
+  some?: Prisma.MessagingDailyCounterWhereInput
+  none?: Prisma.MessagingDailyCounterWhereInput
+}
+
+export type MessagingDailyCounterOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type MessagingDailyCounterDaySessionIdCompoundUniqueInput = {
+  day: string
+  sessionId: string
 }
 
 export type MessagingDailyCounterCountOrderByAggregateInput = {
   day?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
   count?: Prisma.SortOrder
 }
 
@@ -271,11 +309,13 @@ export type MessagingDailyCounterAvgOrderByAggregateInput = {
 
 export type MessagingDailyCounterMaxOrderByAggregateInput = {
   day?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
   count?: Prisma.SortOrder
 }
 
 export type MessagingDailyCounterMinOrderByAggregateInput = {
   day?: Prisma.SortOrder
+  sessionId?: Prisma.SortOrder
   count?: Prisma.SortOrder
 }
 
@@ -283,35 +323,161 @@ export type MessagingDailyCounterSumOrderByAggregateInput = {
   count?: Prisma.SortOrder
 }
 
+export type MessagingDailyCounterCreateNestedManyWithoutSessionInput = {
+  create?: Prisma.XOR<Prisma.MessagingDailyCounterCreateWithoutSessionInput, Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput> | Prisma.MessagingDailyCounterCreateWithoutSessionInput[] | Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput[]
+  connectOrCreate?: Prisma.MessagingDailyCounterCreateOrConnectWithoutSessionInput | Prisma.MessagingDailyCounterCreateOrConnectWithoutSessionInput[]
+  createMany?: Prisma.MessagingDailyCounterCreateManySessionInputEnvelope
+  connect?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+}
+
+export type MessagingDailyCounterUncheckedCreateNestedManyWithoutSessionInput = {
+  create?: Prisma.XOR<Prisma.MessagingDailyCounterCreateWithoutSessionInput, Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput> | Prisma.MessagingDailyCounterCreateWithoutSessionInput[] | Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput[]
+  connectOrCreate?: Prisma.MessagingDailyCounterCreateOrConnectWithoutSessionInput | Prisma.MessagingDailyCounterCreateOrConnectWithoutSessionInput[]
+  createMany?: Prisma.MessagingDailyCounterCreateManySessionInputEnvelope
+  connect?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+}
+
+export type MessagingDailyCounterUpdateManyWithoutSessionNestedInput = {
+  create?: Prisma.XOR<Prisma.MessagingDailyCounterCreateWithoutSessionInput, Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput> | Prisma.MessagingDailyCounterCreateWithoutSessionInput[] | Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput[]
+  connectOrCreate?: Prisma.MessagingDailyCounterCreateOrConnectWithoutSessionInput | Prisma.MessagingDailyCounterCreateOrConnectWithoutSessionInput[]
+  upsert?: Prisma.MessagingDailyCounterUpsertWithWhereUniqueWithoutSessionInput | Prisma.MessagingDailyCounterUpsertWithWhereUniqueWithoutSessionInput[]
+  createMany?: Prisma.MessagingDailyCounterCreateManySessionInputEnvelope
+  set?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+  disconnect?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+  delete?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+  connect?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+  update?: Prisma.MessagingDailyCounterUpdateWithWhereUniqueWithoutSessionInput | Prisma.MessagingDailyCounterUpdateWithWhereUniqueWithoutSessionInput[]
+  updateMany?: Prisma.MessagingDailyCounterUpdateManyWithWhereWithoutSessionInput | Prisma.MessagingDailyCounterUpdateManyWithWhereWithoutSessionInput[]
+  deleteMany?: Prisma.MessagingDailyCounterScalarWhereInput | Prisma.MessagingDailyCounterScalarWhereInput[]
+}
+
+export type MessagingDailyCounterUncheckedUpdateManyWithoutSessionNestedInput = {
+  create?: Prisma.XOR<Prisma.MessagingDailyCounterCreateWithoutSessionInput, Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput> | Prisma.MessagingDailyCounterCreateWithoutSessionInput[] | Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput[]
+  connectOrCreate?: Prisma.MessagingDailyCounterCreateOrConnectWithoutSessionInput | Prisma.MessagingDailyCounterCreateOrConnectWithoutSessionInput[]
+  upsert?: Prisma.MessagingDailyCounterUpsertWithWhereUniqueWithoutSessionInput | Prisma.MessagingDailyCounterUpsertWithWhereUniqueWithoutSessionInput[]
+  createMany?: Prisma.MessagingDailyCounterCreateManySessionInputEnvelope
+  set?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+  disconnect?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+  delete?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+  connect?: Prisma.MessagingDailyCounterWhereUniqueInput | Prisma.MessagingDailyCounterWhereUniqueInput[]
+  update?: Prisma.MessagingDailyCounterUpdateWithWhereUniqueWithoutSessionInput | Prisma.MessagingDailyCounterUpdateWithWhereUniqueWithoutSessionInput[]
+  updateMany?: Prisma.MessagingDailyCounterUpdateManyWithWhereWithoutSessionInput | Prisma.MessagingDailyCounterUpdateManyWithWhereWithoutSessionInput[]
+  deleteMany?: Prisma.MessagingDailyCounterScalarWhereInput | Prisma.MessagingDailyCounterScalarWhereInput[]
+}
+
+export type MessagingDailyCounterCreateWithoutSessionInput = {
+  day: string
+  count?: number
+}
+
+export type MessagingDailyCounterUncheckedCreateWithoutSessionInput = {
+  day: string
+  count?: number
+}
+
+export type MessagingDailyCounterCreateOrConnectWithoutSessionInput = {
+  where: Prisma.MessagingDailyCounterWhereUniqueInput
+  create: Prisma.XOR<Prisma.MessagingDailyCounterCreateWithoutSessionInput, Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput>
+}
+
+export type MessagingDailyCounterCreateManySessionInputEnvelope = {
+  data: Prisma.MessagingDailyCounterCreateManySessionInput | Prisma.MessagingDailyCounterCreateManySessionInput[]
+  skipDuplicates?: boolean
+}
+
+export type MessagingDailyCounterUpsertWithWhereUniqueWithoutSessionInput = {
+  where: Prisma.MessagingDailyCounterWhereUniqueInput
+  update: Prisma.XOR<Prisma.MessagingDailyCounterUpdateWithoutSessionInput, Prisma.MessagingDailyCounterUncheckedUpdateWithoutSessionInput>
+  create: Prisma.XOR<Prisma.MessagingDailyCounterCreateWithoutSessionInput, Prisma.MessagingDailyCounterUncheckedCreateWithoutSessionInput>
+}
+
+export type MessagingDailyCounterUpdateWithWhereUniqueWithoutSessionInput = {
+  where: Prisma.MessagingDailyCounterWhereUniqueInput
+  data: Prisma.XOR<Prisma.MessagingDailyCounterUpdateWithoutSessionInput, Prisma.MessagingDailyCounterUncheckedUpdateWithoutSessionInput>
+}
+
+export type MessagingDailyCounterUpdateManyWithWhereWithoutSessionInput = {
+  where: Prisma.MessagingDailyCounterScalarWhereInput
+  data: Prisma.XOR<Prisma.MessagingDailyCounterUpdateManyMutationInput, Prisma.MessagingDailyCounterUncheckedUpdateManyWithoutSessionInput>
+}
+
+export type MessagingDailyCounterScalarWhereInput = {
+  AND?: Prisma.MessagingDailyCounterScalarWhereInput | Prisma.MessagingDailyCounterScalarWhereInput[]
+  OR?: Prisma.MessagingDailyCounterScalarWhereInput[]
+  NOT?: Prisma.MessagingDailyCounterScalarWhereInput | Prisma.MessagingDailyCounterScalarWhereInput[]
+  day?: Prisma.StringFilter<"MessagingDailyCounter"> | string
+  sessionId?: Prisma.StringFilter<"MessagingDailyCounter"> | string
+  count?: Prisma.IntFilter<"MessagingDailyCounter"> | number
+}
+
+export type MessagingDailyCounterCreateManySessionInput = {
+  day: string
+  count?: number
+}
+
+export type MessagingDailyCounterUpdateWithoutSessionInput = {
+  day?: Prisma.StringFieldUpdateOperationsInput | string
+  count?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MessagingDailyCounterUncheckedUpdateWithoutSessionInput = {
+  day?: Prisma.StringFieldUpdateOperationsInput | string
+  count?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type MessagingDailyCounterUncheckedUpdateManyWithoutSessionInput = {
+  day?: Prisma.StringFieldUpdateOperationsInput | string
+  count?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
 
 
 export type MessagingDailyCounterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   day?: boolean
+  sessionId?: boolean
   count?: boolean
+  session?: boolean | Prisma.WhatsappSessionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["messagingDailyCounter"]>
 
 export type MessagingDailyCounterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   day?: boolean
+  sessionId?: boolean
   count?: boolean
+  session?: boolean | Prisma.WhatsappSessionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["messagingDailyCounter"]>
 
 export type MessagingDailyCounterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   day?: boolean
+  sessionId?: boolean
   count?: boolean
+  session?: boolean | Prisma.WhatsappSessionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["messagingDailyCounter"]>
 
 export type MessagingDailyCounterSelectScalar = {
   day?: boolean
+  sessionId?: boolean
   count?: boolean
 }
 
-export type MessagingDailyCounterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"day" | "count", ExtArgs["result"]["messagingDailyCounter"]>
+export type MessagingDailyCounterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"day" | "sessionId" | "count", ExtArgs["result"]["messagingDailyCounter"]>
+export type MessagingDailyCounterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  session?: boolean | Prisma.WhatsappSessionDefaultArgs<ExtArgs>
+}
+export type MessagingDailyCounterIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  session?: boolean | Prisma.WhatsappSessionDefaultArgs<ExtArgs>
+}
+export type MessagingDailyCounterIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  session?: boolean | Prisma.WhatsappSessionDefaultArgs<ExtArgs>
+}
 
 export type $MessagingDailyCounterPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "MessagingDailyCounter"
-  objects: {}
+  objects: {
+    session: Prisma.$WhatsappSessionPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     day: string
+    sessionId: string
     count: number
   }, ExtArgs["result"]["messagingDailyCounter"]>
   composites: {}
@@ -707,6 +873,7 @@ readonly fields: MessagingDailyCounterFieldRefs;
  */
 export interface Prisma__MessagingDailyCounterClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  session<T extends Prisma.WhatsappSessionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WhatsappSessionDefaultArgs<ExtArgs>>): Prisma.Prisma__WhatsappSessionClient<runtime.Types.Result.GetResult<Prisma.$WhatsappSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -737,6 +904,7 @@ export interface Prisma__MessagingDailyCounterClient<T, Null = never, ExtArgs ex
  */
 export interface MessagingDailyCounterFieldRefs {
   readonly day: Prisma.FieldRef<"MessagingDailyCounter", 'String'>
+  readonly sessionId: Prisma.FieldRef<"MessagingDailyCounter", 'String'>
   readonly count: Prisma.FieldRef<"MessagingDailyCounter", 'Int'>
 }
     
@@ -754,6 +922,10 @@ export type MessagingDailyCounterFindUniqueArgs<ExtArgs extends runtime.Types.Ex
    * Omit specific fields from the MessagingDailyCounter
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
   /**
    * Filter, which MessagingDailyCounter to fetch.
    */
@@ -773,6 +945,10 @@ export type MessagingDailyCounterFindUniqueOrThrowArgs<ExtArgs extends runtime.T
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
+  /**
    * Filter, which MessagingDailyCounter to fetch.
    */
   where: Prisma.MessagingDailyCounterWhereUniqueInput
@@ -790,6 +966,10 @@ export type MessagingDailyCounterFindFirstArgs<ExtArgs extends runtime.Types.Ext
    * Omit specific fields from the MessagingDailyCounter
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
   /**
    * Filter, which MessagingDailyCounter to fetch.
    */
@@ -839,6 +1019,10 @@ export type MessagingDailyCounterFindFirstOrThrowArgs<ExtArgs extends runtime.Ty
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
+  /**
    * Filter, which MessagingDailyCounter to fetch.
    */
   where?: Prisma.MessagingDailyCounterWhereInput
@@ -886,6 +1070,10 @@ export type MessagingDailyCounterFindManyArgs<ExtArgs extends runtime.Types.Exte
    * Omit specific fields from the MessagingDailyCounter
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
   /**
    * Filter, which MessagingDailyCounters to fetch.
    */
@@ -935,6 +1123,10 @@ export type MessagingDailyCounterCreateArgs<ExtArgs extends runtime.Types.Extens
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
+  /**
    * The data needed to create a MessagingDailyCounter.
    */
   data: Prisma.XOR<Prisma.MessagingDailyCounterCreateInput, Prisma.MessagingDailyCounterUncheckedCreateInput>
@@ -968,6 +1160,10 @@ export type MessagingDailyCounterCreateManyAndReturnArgs<ExtArgs extends runtime
    */
   data: Prisma.MessagingDailyCounterCreateManyInput | Prisma.MessagingDailyCounterCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -982,6 +1178,10 @@ export type MessagingDailyCounterUpdateArgs<ExtArgs extends runtime.Types.Extens
    * Omit specific fields from the MessagingDailyCounter
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
   /**
    * The data needed to update a MessagingDailyCounter.
    */
@@ -1034,6 +1234,10 @@ export type MessagingDailyCounterUpdateManyAndReturnArgs<ExtArgs extends runtime
    * Limit how many MessagingDailyCounters to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1048,6 +1252,10 @@ export type MessagingDailyCounterUpsertArgs<ExtArgs extends runtime.Types.Extens
    * Omit specific fields from the MessagingDailyCounter
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
   /**
    * The filter to search for the MessagingDailyCounter to update in case it exists.
    */
@@ -1074,6 +1282,10 @@ export type MessagingDailyCounterDeleteArgs<ExtArgs extends runtime.Types.Extens
    * Omit specific fields from the MessagingDailyCounter
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
   /**
    * Filter which MessagingDailyCounter to delete.
    */
@@ -1106,4 +1318,8 @@ export type MessagingDailyCounterDefaultArgs<ExtArgs extends runtime.Types.Exten
    * Omit specific fields from the MessagingDailyCounter
    */
   omit?: Prisma.MessagingDailyCounterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessagingDailyCounterInclude<ExtArgs> | null
 }

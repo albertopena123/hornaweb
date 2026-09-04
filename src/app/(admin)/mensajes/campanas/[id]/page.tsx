@@ -12,12 +12,20 @@ export const dynamic = "force-dynamic";
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const me = await requirePermission("mensajes.read");
   const { id } = await params;
-  const c = await prisma.campaign.findUnique({ where: { id }, include: { createdBy: { select: { name: true } } } });
+  const c = await prisma.campaign.findUnique({
+    where: { id },
+    include: {
+      createdBy: { select: { name: true } },
+      sessions: { orderBy: { position: "asc" }, include: { session: { select: { id: true, label: true, phone: true } } } },
+    },
+  });
   if (!c) notFound();
 
   const campaign: CampaignDetail = {
     id: c.id,
     name: c.name,
+    sessions: c.sessions.map((m) => ({ id: m.session.id, label: m.session.label, phone: m.session.phone, sentCount: m.sentCount })),
+    rotationBatch: c.rotationBatch,
     status: c.status,
     audience: c.audience,
     district: c.district,

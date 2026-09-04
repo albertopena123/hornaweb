@@ -120,8 +120,8 @@ export async function GET(request: Request) {
         label: "Contactos (mensajería)",
         items: contacts.map((c) => ({
           id: c.id,
-          title: c.name,
-          sub: c.docNumber,
+          title: c.name || "Sin nombre",
+          sub: c.docNumber ?? "Sin DNI",
           href: `/mensajes/contactos?q=${enc}`,
           icon: "message",
         })),

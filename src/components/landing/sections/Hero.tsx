@@ -387,7 +387,7 @@ export default function Hero() {
                   <img src="/assets/images/logo/logo-an.webp" alt="AN"
                     style={{width:22,height:22,objectFit:'contain',borderRadius:5}} />
                   <span style={{color:'#fff',fontSize:12,fontWeight:700,textTransform:'uppercase',letterSpacing:1}}>
-                    Candidato Regional 2027–2030
+                    Candidato a Gobernador Regional 2027–2030
                   </span>
                 </span>
               </div>
@@ -407,6 +407,18 @@ export default function Hero() {
               }}>
                 "<span style={{fontStyle:'italic'}}>{typed}</span><span className="h-cur" />"
               </div>
+
+              {/* Línea de contexto: nombra el cargo y las provincias tal como
+                  la gente los busca ("gobernador de Madre de Dios", "Puerto
+                  Maldonado"), términos que antes no aparecían en la página. */}
+              <p style={{
+                fontSize:'clamp(.95rem,1.4vw,1.08rem)',lineHeight:1.6,
+                color:'rgba(255,255,255,.78)',maxWidth:600,marginBottom:'1.6rem',
+              }}>
+                Candidato a <strong style={{color:'#fff',fontWeight:700}}>Gobernador Regional de Madre de Dios</strong> por{" "}
+                <strong style={{color:'#fff',fontWeight:700}}>Ahora Nación</strong>, periodo 2027–2030.
+                Un plan para Puerto Maldonado y las provincias de Tambopata, Manu y Tahuamanu.
+              </p>
 
               {/* Stat cards with Lucide icons */}
               <div className="h-stats-flex">

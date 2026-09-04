@@ -17,12 +17,13 @@ import type { ImportSummary } from "../types";
 
 type Step = "file" | "map" | "importing" | "done";
 
+// Solo el celular es obligatorio: es la clave del contacto. DNI y nombre se guardan si vienen.
 const MAP_FIELDS: { key: keyof ColumnMapping; label: string; required: boolean }[] = [
-  { key: "dni", label: "DNI", required: true },
-  { key: "name", label: "Nombre(s)", required: true },
+  { key: "phone", label: "Celular", required: true },
+  { key: "name", label: "Nombre(s) (opcional)", required: false },
   { key: "paterno", label: "Apellido paterno (opcional)", required: false },
   { key: "materno", label: "Apellido materno (opcional)", required: false },
-  { key: "phone", label: "Celular", required: true },
+  { key: "dni", label: "DNI (opcional)", required: false },
 ];
 
 const EMPTY_MAPPING: ColumnMapping = { dni: null, name: null, phone: null, paterno: null, materno: null };
@@ -78,8 +79,6 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
     setError(null);
     setFieldErrors({});
     const fe: Record<string, string> = {};
-    if (mapping.dni === null) fe.dni = "Elige la columna del DNI.";
-    if (mapping.name === null) fe.name = "Elige la columna del nombre.";
     if (mapping.phone === null) fe.phone = "Elige la columna del celular.";
     if (source.trim().length < 3) fe.source = "Indica el origen de la lista.";
     if (!consent) fe.consentConfirmed = "Debes confirmar el consentimiento.";
@@ -175,7 +174,8 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
                 <Icon name="download" size={22} />
                 <div style={{ marginTop: 8 }}>{reading ? "Leyendo archivo…" : "Haz clic para elegir un archivo .xlsx"}</div>
                 <div className="mensajes__hint">
-                  La primera fila debe ser la cabecera (DNI, Nombre, Celular…). El archivo no se sube: se procesa en tu navegador.
+                  La primera fila debe ser la cabecera. Basta con una columna de <strong>celular</strong>; nombre y DNI son opcionales.
+                  El archivo no se sube: se procesa en tu navegador.
                 </div>
               </label>
               <p className="mensajes__hint" style={{ marginTop: 10 }}>
@@ -230,29 +230,29 @@ export function ImportModal({ onClose, onDone }: { onClose: () => void; onDone: 
               <div className="mensajes__stats" style={{ margin: "12px 0" }}>
                 <div className="mensajes__statcard stat"><div className="stat__v">{normalized.valid.length}</div><div className="stat__l">Válidas</div></div>
                 <div className="mensajes__statcard stat"><div className="stat__v">{normalized.invalid.length}</div><div className="stat__l">Inválidas</div></div>
-                <div className="mensajes__statcard stat"><div className="stat__v">{normalized.duplicatedInFile}</div><div className="stat__l">DNI repetidos</div></div>
+                <div className="mensajes__statcard stat"><div className="stat__v">{normalized.duplicatedInFile}</div><div className="stat__l">Celulares repetidos</div></div>
               </div>
 
               <div className="tablewrap density-compact">
                 <div className="tablewrap__scroll">
                   <table className="dtable mensajes__table-sm">
                     <thead>
-                      <tr><th>DNI</th><th>Nombre</th><th>Celular</th><th>Estado</th></tr>
+                      <tr><th>Celular</th><th>Nombre</th><th>DNI</th><th>Estado</th></tr>
                     </thead>
                     <tbody>
                       {normalized.valid.slice(0, 8).map((r) => (
-                        <tr key={`v-${r.docNumber}`}>
-                          <td className="mensajes__mono">{r.docNumber}</td>
-                          <td>{r.name}</td>
+                        <tr key={`v-${r.phone}`}>
                           <td className="mensajes__mono">{r.phone}</td>
+                          <td>{r.name || <span className="dtable__muted">—</span>}</td>
+                          <td className="mensajes__mono">{r.docNumber ?? <span className="dtable__muted">—</span>}</td>
                           <td><span className="badge badge--green">OK</span></td>
                         </tr>
                       ))}
                       {normalized.invalid.slice(0, 8).map((r) => (
                         <tr key={`i-${r.row}`}>
-                          <td className="mensajes__mono">{r.docNumber || "—"}</td>
-                          <td>{r.name || "—"}</td>
                           <td className="mensajes__mono">{r.phone || "—"}</td>
+                          <td>{r.name || "—"}</td>
+                          <td className="mensajes__mono">{r.docNumber || "—"}</td>
                           <td><span className="badge badge--red">Fila {r.row}: {r.reason}</span></td>
                         </tr>
                       ))}

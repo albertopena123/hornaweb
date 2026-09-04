@@ -222,7 +222,7 @@ export type ContactGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type ContactGroupByOutputType = {
   id: string
   docType: $Enums.DocumentType
-  docNumber: string
+  docNumber: string | null
   name: string
   phone: string
   district: $Enums.District | null
@@ -263,7 +263,7 @@ export type ContactWhereInput = {
   NOT?: Prisma.ContactWhereInput | Prisma.ContactWhereInput[]
   id?: Prisma.StringFilter<"Contact"> | string
   docType?: Prisma.EnumDocumentTypeFilter<"Contact"> | $Enums.DocumentType
-  docNumber?: Prisma.StringFilter<"Contact"> | string
+  docNumber?: Prisma.StringNullableFilter<"Contact"> | string | null
   name?: Prisma.StringFilter<"Contact"> | string
   phone?: Prisma.StringFilter<"Contact"> | string
   district?: Prisma.EnumDistrictNullableFilter<"Contact"> | $Enums.District | null
@@ -286,7 +286,7 @@ export type ContactWhereInput = {
 export type ContactOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   docType?: Prisma.SortOrder
-  docNumber?: Prisma.SortOrder
+  docNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   district?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -308,14 +308,14 @@ export type ContactOrderByWithRelationInput = {
 
 export type ContactWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  phone?: string
   docType_docNumber?: Prisma.ContactDocTypeDocNumberCompoundUniqueInput
   AND?: Prisma.ContactWhereInput | Prisma.ContactWhereInput[]
   OR?: Prisma.ContactWhereInput[]
   NOT?: Prisma.ContactWhereInput | Prisma.ContactWhereInput[]
   docType?: Prisma.EnumDocumentTypeFilter<"Contact"> | $Enums.DocumentType
-  docNumber?: Prisma.StringFilter<"Contact"> | string
+  docNumber?: Prisma.StringNullableFilter<"Contact"> | string | null
   name?: Prisma.StringFilter<"Contact"> | string
-  phone?: Prisma.StringFilter<"Contact"> | string
   district?: Prisma.EnumDistrictNullableFilter<"Contact"> | $Enums.District | null
   source?: Prisma.StringFilter<"Contact"> | string
   whatsappStatus?: Prisma.EnumWhatsappStatusFilter<"Contact"> | $Enums.WhatsappStatus
@@ -331,12 +331,12 @@ export type ContactWhereUniqueInput = Prisma.AtLeast<{
   import?: Prisma.XOR<Prisma.ContactImportNullableScalarRelationFilter, Prisma.ContactImportWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   recipients?: Prisma.CampaignRecipientListRelationFilter
-}, "id" | "docType_docNumber">
+}, "id" | "phone" | "docType_docNumber">
 
 export type ContactOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   docType?: Prisma.SortOrder
-  docNumber?: Prisma.SortOrder
+  docNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   district?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -362,7 +362,7 @@ export type ContactScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ContactScalarWhereWithAggregatesInput | Prisma.ContactScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Contact"> | string
   docType?: Prisma.EnumDocumentTypeWithAggregatesFilter<"Contact"> | $Enums.DocumentType
-  docNumber?: Prisma.StringWithAggregatesFilter<"Contact"> | string
+  docNumber?: Prisma.StringNullableWithAggregatesFilter<"Contact"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"Contact"> | string
   phone?: Prisma.StringWithAggregatesFilter<"Contact"> | string
   district?: Prisma.EnumDistrictNullableWithAggregatesFilter<"Contact"> | $Enums.District | null
@@ -382,8 +382,8 @@ export type ContactScalarWhereWithAggregatesInput = {
 export type ContactCreateInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -403,8 +403,8 @@ export type ContactCreateInput = {
 export type ContactUncheckedCreateInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -424,7 +424,7 @@ export type ContactUncheckedCreateInput = {
 export type ContactUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -445,7 +445,7 @@ export type ContactUpdateInput = {
 export type ContactUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -466,8 +466,8 @@ export type ContactUncheckedUpdateInput = {
 export type ContactCreateManyInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -486,7 +486,7 @@ export type ContactCreateManyInput = {
 export type ContactUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -504,7 +504,7 @@ export type ContactUpdateManyMutationInput = {
 export type ContactUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -706,8 +706,8 @@ export type ContactUpdateOneRequiredWithoutRecipientsNestedInput = {
 export type ContactCreateWithoutCreatedByInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -726,8 +726,8 @@ export type ContactCreateWithoutCreatedByInput = {
 export type ContactUncheckedCreateWithoutCreatedByInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -775,7 +775,7 @@ export type ContactScalarWhereInput = {
   NOT?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
   id?: Prisma.StringFilter<"Contact"> | string
   docType?: Prisma.EnumDocumentTypeFilter<"Contact"> | $Enums.DocumentType
-  docNumber?: Prisma.StringFilter<"Contact"> | string
+  docNumber?: Prisma.StringNullableFilter<"Contact"> | string | null
   name?: Prisma.StringFilter<"Contact"> | string
   phone?: Prisma.StringFilter<"Contact"> | string
   district?: Prisma.EnumDistrictNullableFilter<"Contact"> | $Enums.District | null
@@ -795,8 +795,8 @@ export type ContactScalarWhereInput = {
 export type ContactCreateWithoutImportInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -815,8 +815,8 @@ export type ContactCreateWithoutImportInput = {
 export type ContactUncheckedCreateWithoutImportInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -861,8 +861,8 @@ export type ContactUpdateManyWithWhereWithoutImportInput = {
 export type ContactCreateWithoutRecipientsInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -881,8 +881,8 @@ export type ContactCreateWithoutRecipientsInput = {
 export type ContactUncheckedCreateWithoutRecipientsInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -917,7 +917,7 @@ export type ContactUpdateToOneWithWhereWithoutRecipientsInput = {
 export type ContactUpdateWithoutRecipientsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -937,7 +937,7 @@ export type ContactUpdateWithoutRecipientsInput = {
 export type ContactUncheckedUpdateWithoutRecipientsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -957,8 +957,8 @@ export type ContactUncheckedUpdateWithoutRecipientsInput = {
 export type ContactCreateManyCreatedByInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -976,7 +976,7 @@ export type ContactCreateManyCreatedByInput = {
 export type ContactUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -996,7 +996,7 @@ export type ContactUpdateWithoutCreatedByInput = {
 export type ContactUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -1016,7 +1016,7 @@ export type ContactUncheckedUpdateWithoutCreatedByInput = {
 export type ContactUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -1035,8 +1035,8 @@ export type ContactUncheckedUpdateManyWithoutCreatedByInput = {
 export type ContactCreateManyImportInput = {
   id?: string
   docType?: $Enums.DocumentType
-  docNumber: string
-  name: string
+  docNumber?: string | null
+  name?: string
   phone: string
   district?: $Enums.District | null
   source: string
@@ -1054,7 +1054,7 @@ export type ContactCreateManyImportInput = {
 export type ContactUpdateWithoutImportInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -1074,7 +1074,7 @@ export type ContactUpdateWithoutImportInput = {
 export type ContactUncheckedUpdateWithoutImportInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -1094,7 +1094,7 @@ export type ContactUncheckedUpdateWithoutImportInput = {
 export type ContactUncheckedUpdateManyWithoutImportInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  docNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
@@ -1255,7 +1255,7 @@ export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     docType: $Enums.DocumentType
-    docNumber: string
+    docNumber: string | null
     name: string
     phone: string
     district: $Enums.District | null

@@ -102,51 +102,20 @@ export function ContactModal({ onClose, onCreated }: { onClose: () => void; onCr
             </div>
           )}
 
-          <label className="field">
-            <span className="field__label">DNI<span className="field__req">*</span></span>
-            <input
-              type="text"
-              inputMode="numeric"
-              autoFocus
-              maxLength={8}
-              placeholder="12345678"
-              value={docNumber}
-              onChange={(e) => setDocNumber(e.target.value)}
-              aria-invalid={!!fieldErrors.docNumber}
-            />
-            {fieldErrors.docNumber && <span className="mensajes__err">{fieldErrors.docNumber}</span>}
-          </label>
-
-          <label className="field">
-            <span className="field__label">Nombre completo<span className="field__req">*</span></span>
-            <input
-              type="text"
-              maxLength={120}
-              placeholder={dniLookup === "loading" ? "Buscando datos…" : "PEREZ GOMEZ JUAN CARLOS"}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              aria-invalid={!!fieldErrors.name}
-            />
-            {dniLookup === "loading" && <span className="mensajes__hint">Consultando DNI…</span>}
-            {dniLookup === "found" && <span className="mensajes__hint mensajes__hint--ok">✓ Datos encontrados con el DNI</span>}
-            {dniLookup === "notfound" && <span className="mensajes__hint">No encontramos el DNI, escribe el nombre.</span>}
-            {dniLookup === "error" && <span className="mensajes__hint">No se pudo consultar el DNI, escribe el nombre.</span>}
-            {fieldErrors.name && <span className="mensajes__err">{fieldErrors.name}</span>}
-          </label>
-
           <div className="mensajes__row">
             <label className="field">
               <span className="field__label">Celular<span className="field__req">*</span></span>
               <input
                 type="tel"
                 inputMode="tel"
+                autoFocus
                 maxLength={20}
                 placeholder="987654321"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 aria-invalid={!!fieldErrors.phone}
               />
-              <span className="mensajes__hint">Se guarda como +519XXXXXXXX.</span>
+              <span className="mensajes__hint">Es el único dato obligatorio. Se guarda como +519XXXXXXXX.</span>
               {fieldErrors.phone && <span className="mensajes__err">{fieldErrors.phone}</span>}
             </label>
             <label className="field">
@@ -161,6 +130,38 @@ export function ContactModal({ onClose, onCreated }: { onClose: () => void; onCr
               </select>
             </label>
           </div>
+
+          <label className="field">
+            <span className="field__label">Nombre completo (opcional)</span>
+            <input
+              type="text"
+              maxLength={120}
+              placeholder={dniLookup === "loading" ? "Buscando datos…" : "PEREZ GOMEZ JUAN CARLOS"}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              aria-invalid={!!fieldErrors.name}
+            />
+            {dniLookup === "loading" && <span className="mensajes__hint">Consultando DNI…</span>}
+            {dniLookup === "found" && <span className="mensajes__hint mensajes__hint--ok">✓ Datos encontrados con el DNI</span>}
+            {dniLookup === "notfound" && <span className="mensajes__hint">No encontramos el DNI; puedes escribir el nombre o dejarlo vacío.</span>}
+            {dniLookup === "error" && <span className="mensajes__hint">No se pudo consultar el DNI; puedes escribir el nombre o dejarlo vacío.</span>}
+            {fieldErrors.name && <span className="mensajes__err">{fieldErrors.name}</span>}
+          </label>
+
+          <label className="field">
+            <span className="field__label">DNI (opcional)</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={8}
+              placeholder="12345678"
+              value={docNumber}
+              onChange={(e) => setDocNumber(e.target.value)}
+              aria-invalid={!!fieldErrors.docNumber}
+            />
+            <span className="mensajes__hint">Si lo escribes, rellenamos el nombre automáticamente.</span>
+            {fieldErrors.docNumber && <span className="mensajes__err">{fieldErrors.docNumber}</span>}
+          </label>
 
           <label className="field">
             <span className="field__label">Origen<span className="field__req">*</span></span>

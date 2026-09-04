@@ -35,6 +35,8 @@ export type CampaignAvgAggregateOutputType = {
   totalRecipients: number | null
   sentCount: number | null
   failedCount: number | null
+  rotationBatch: number | null
+  cursorSent: number | null
 }
 
 export type CampaignSumAggregateOutputType = {
@@ -46,6 +48,8 @@ export type CampaignSumAggregateOutputType = {
   totalRecipients: number | null
   sentCount: number | null
   failedCount: number | null
+  rotationBatch: number | null
+  cursorSent: number | null
 }
 
 export type CampaignMinAggregateOutputType = {
@@ -66,6 +70,9 @@ export type CampaignMinAggregateOutputType = {
   failedCount: number | null
   lastError: string | null
   pausedReason: string | null
+  rotationBatch: number | null
+  cursorSessionId: string | null
+  cursorSent: number | null
   startedAt: Date | null
   finishedAt: Date | null
   createdById: string | null
@@ -91,6 +98,9 @@ export type CampaignMaxAggregateOutputType = {
   failedCount: number | null
   lastError: string | null
   pausedReason: string | null
+  rotationBatch: number | null
+  cursorSessionId: string | null
+  cursorSent: number | null
   startedAt: Date | null
   finishedAt: Date | null
   createdById: string | null
@@ -116,6 +126,9 @@ export type CampaignCountAggregateOutputType = {
   failedCount: number
   lastError: number
   pausedReason: number
+  rotationBatch: number
+  cursorSessionId: number
+  cursorSent: number
   startedAt: number
   finishedAt: number
   createdById: number
@@ -134,6 +147,8 @@ export type CampaignAvgAggregateInputType = {
   totalRecipients?: true
   sentCount?: true
   failedCount?: true
+  rotationBatch?: true
+  cursorSent?: true
 }
 
 export type CampaignSumAggregateInputType = {
@@ -145,6 +160,8 @@ export type CampaignSumAggregateInputType = {
   totalRecipients?: true
   sentCount?: true
   failedCount?: true
+  rotationBatch?: true
+  cursorSent?: true
 }
 
 export type CampaignMinAggregateInputType = {
@@ -165,6 +182,9 @@ export type CampaignMinAggregateInputType = {
   failedCount?: true
   lastError?: true
   pausedReason?: true
+  rotationBatch?: true
+  cursorSessionId?: true
+  cursorSent?: true
   startedAt?: true
   finishedAt?: true
   createdById?: true
@@ -190,6 +210,9 @@ export type CampaignMaxAggregateInputType = {
   failedCount?: true
   lastError?: true
   pausedReason?: true
+  rotationBatch?: true
+  cursorSessionId?: true
+  cursorSent?: true
   startedAt?: true
   finishedAt?: true
   createdById?: true
@@ -215,6 +238,9 @@ export type CampaignCountAggregateInputType = {
   failedCount?: true
   lastError?: true
   pausedReason?: true
+  rotationBatch?: true
+  cursorSessionId?: true
+  cursorSent?: true
   startedAt?: true
   finishedAt?: true
   createdById?: true
@@ -327,6 +353,9 @@ export type CampaignGroupByOutputType = {
   failedCount: number
   lastError: string | null
   pausedReason: string | null
+  rotationBatch: number
+  cursorSessionId: string | null
+  cursorSent: number
   startedAt: Date | null
   finishedAt: Date | null
   createdById: string | null
@@ -375,12 +404,16 @@ export type CampaignWhereInput = {
   failedCount?: Prisma.IntFilter<"Campaign"> | number
   lastError?: Prisma.StringNullableFilter<"Campaign"> | string | null
   pausedReason?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  rotationBatch?: Prisma.IntFilter<"Campaign"> | number
+  cursorSessionId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  cursorSent?: Prisma.IntFilter<"Campaign"> | number
   startedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   finishedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   createdById?: Prisma.StringNullableFilter<"Campaign"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  sessions?: Prisma.CampaignSessionListRelationFilter
   recipients?: Prisma.CampaignRecipientListRelationFilter
 }
 
@@ -402,12 +435,16 @@ export type CampaignOrderByWithRelationInput = {
   failedCount?: Prisma.SortOrder
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
   pausedReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  rotationBatch?: Prisma.SortOrder
+  cursorSessionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cursorSent?: Prisma.SortOrder
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   finishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.UserOrderByWithRelationInput
+  sessions?: Prisma.CampaignSessionOrderByRelationAggregateInput
   recipients?: Prisma.CampaignRecipientOrderByRelationAggregateInput
 }
 
@@ -432,12 +469,16 @@ export type CampaignWhereUniqueInput = Prisma.AtLeast<{
   failedCount?: Prisma.IntFilter<"Campaign"> | number
   lastError?: Prisma.StringNullableFilter<"Campaign"> | string | null
   pausedReason?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  rotationBatch?: Prisma.IntFilter<"Campaign"> | number
+  cursorSessionId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  cursorSent?: Prisma.IntFilter<"Campaign"> | number
   startedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   finishedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   createdById?: Prisma.StringNullableFilter<"Campaign"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  sessions?: Prisma.CampaignSessionListRelationFilter
   recipients?: Prisma.CampaignRecipientListRelationFilter
 }, "id">
 
@@ -459,6 +500,9 @@ export type CampaignOrderByWithAggregationInput = {
   failedCount?: Prisma.SortOrder
   lastError?: Prisma.SortOrderInput | Prisma.SortOrder
   pausedReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  rotationBatch?: Prisma.SortOrder
+  cursorSessionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cursorSent?: Prisma.SortOrder
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   finishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -492,6 +536,9 @@ export type CampaignScalarWhereWithAggregatesInput = {
   failedCount?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
   lastError?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
   pausedReason?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
+  rotationBatch?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
+  cursorSessionId?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
+  cursorSent?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
   startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
   finishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
   createdById?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
@@ -517,11 +564,15 @@ export type CampaignCreateInput = {
   failedCount?: number
   lastError?: string | null
   pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
   startedAt?: Date | string | null
   finishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCampaignsInput
+  sessions?: Prisma.CampaignSessionCreateNestedManyWithoutCampaignInput
   recipients?: Prisma.CampaignRecipientCreateNestedManyWithoutCampaignInput
 }
 
@@ -543,11 +594,15 @@ export type CampaignUncheckedCreateInput = {
   failedCount?: number
   lastError?: string | null
   pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
   startedAt?: Date | string | null
   finishedAt?: Date | string | null
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.CampaignSessionUncheckedCreateNestedManyWithoutCampaignInput
   recipients?: Prisma.CampaignRecipientUncheckedCreateNestedManyWithoutCampaignInput
 }
 
@@ -569,11 +624,15 @@ export type CampaignUpdateInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedCampaignsNestedInput
+  sessions?: Prisma.CampaignSessionUpdateManyWithoutCampaignNestedInput
   recipients?: Prisma.CampaignRecipientUpdateManyWithoutCampaignNestedInput
 }
 
@@ -595,11 +654,15 @@ export type CampaignUncheckedUpdateInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.CampaignSessionUncheckedUpdateManyWithoutCampaignNestedInput
   recipients?: Prisma.CampaignRecipientUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
@@ -621,6 +684,9 @@ export type CampaignCreateManyInput = {
   failedCount?: number
   lastError?: string | null
   pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
   startedAt?: Date | string | null
   finishedAt?: Date | string | null
   createdById?: string | null
@@ -646,6 +712,9 @@ export type CampaignUpdateManyMutationInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -670,6 +739,9 @@ export type CampaignUncheckedUpdateManyInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -705,6 +777,9 @@ export type CampaignCountOrderByAggregateInput = {
   failedCount?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
   pausedReason?: Prisma.SortOrder
+  rotationBatch?: Prisma.SortOrder
+  cursorSessionId?: Prisma.SortOrder
+  cursorSent?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   finishedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -721,6 +796,8 @@ export type CampaignAvgOrderByAggregateInput = {
   totalRecipients?: Prisma.SortOrder
   sentCount?: Prisma.SortOrder
   failedCount?: Prisma.SortOrder
+  rotationBatch?: Prisma.SortOrder
+  cursorSent?: Prisma.SortOrder
 }
 
 export type CampaignMaxOrderByAggregateInput = {
@@ -741,6 +818,9 @@ export type CampaignMaxOrderByAggregateInput = {
   failedCount?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
   pausedReason?: Prisma.SortOrder
+  rotationBatch?: Prisma.SortOrder
+  cursorSessionId?: Prisma.SortOrder
+  cursorSent?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   finishedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -766,6 +846,9 @@ export type CampaignMinOrderByAggregateInput = {
   failedCount?: Prisma.SortOrder
   lastError?: Prisma.SortOrder
   pausedReason?: Prisma.SortOrder
+  rotationBatch?: Prisma.SortOrder
+  cursorSessionId?: Prisma.SortOrder
+  cursorSent?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   finishedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -782,6 +865,8 @@ export type CampaignSumOrderByAggregateInput = {
   totalRecipients?: Prisma.SortOrder
   sentCount?: Prisma.SortOrder
   failedCount?: Prisma.SortOrder
+  rotationBatch?: Prisma.SortOrder
+  cursorSent?: Prisma.SortOrder
 }
 
 export type CampaignScalarRelationFilter = {
@@ -843,6 +928,20 @@ export type EnumCampaignStatusFieldUpdateOperationsInput = {
   set?: $Enums.CampaignStatus
 }
 
+export type CampaignCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutSessionsInput, Prisma.CampaignUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.CampaignWhereUniqueInput
+}
+
+export type CampaignUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutSessionsInput, Prisma.CampaignUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.CampaignUpsertWithoutSessionsInput
+  connect?: Prisma.CampaignWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CampaignUpdateToOneWithWhereWithoutSessionsInput, Prisma.CampaignUpdateWithoutSessionsInput>, Prisma.CampaignUncheckedUpdateWithoutSessionsInput>
+}
+
 export type CampaignCreateNestedOneWithoutRecipientsInput = {
   create?: Prisma.XOR<Prisma.CampaignCreateWithoutRecipientsInput, Prisma.CampaignUncheckedCreateWithoutRecipientsInput>
   connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutRecipientsInput
@@ -875,10 +974,14 @@ export type CampaignCreateWithoutCreatedByInput = {
   failedCount?: number
   lastError?: string | null
   pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
   startedAt?: Date | string | null
   finishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.CampaignSessionCreateNestedManyWithoutCampaignInput
   recipients?: Prisma.CampaignRecipientCreateNestedManyWithoutCampaignInput
 }
 
@@ -900,10 +1003,14 @@ export type CampaignUncheckedCreateWithoutCreatedByInput = {
   failedCount?: number
   lastError?: string | null
   pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
   startedAt?: Date | string | null
   finishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.CampaignSessionUncheckedCreateNestedManyWithoutCampaignInput
   recipients?: Prisma.CampaignRecipientUncheckedCreateNestedManyWithoutCampaignInput
 }
 
@@ -954,11 +1061,146 @@ export type CampaignScalarWhereInput = {
   failedCount?: Prisma.IntFilter<"Campaign"> | number
   lastError?: Prisma.StringNullableFilter<"Campaign"> | string | null
   pausedReason?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  rotationBatch?: Prisma.IntFilter<"Campaign"> | number
+  cursorSessionId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  cursorSent?: Prisma.IntFilter<"Campaign"> | number
   startedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   finishedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   createdById?: Prisma.StringNullableFilter<"Campaign"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
+}
+
+export type CampaignCreateWithoutSessionsInput = {
+  id?: string
+  name: string
+  channel?: $Enums.MessageChannel
+  messageTemplate: string
+  audience: $Enums.CampaignAudience
+  district?: $Enums.District | null
+  status?: $Enums.CampaignStatus
+  dailyCap?: number
+  minDelaySec?: number
+  maxDelaySec?: number
+  windowStart?: number
+  windowEnd?: number
+  totalRecipients?: number
+  sentCount?: number
+  failedCount?: number
+  lastError?: string | null
+  pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
+  startedAt?: Date | string | null
+  finishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCampaignsInput
+  recipients?: Prisma.CampaignRecipientCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  name: string
+  channel?: $Enums.MessageChannel
+  messageTemplate: string
+  audience: $Enums.CampaignAudience
+  district?: $Enums.District | null
+  status?: $Enums.CampaignStatus
+  dailyCap?: number
+  minDelaySec?: number
+  maxDelaySec?: number
+  windowStart?: number
+  windowEnd?: number
+  totalRecipients?: number
+  sentCount?: number
+  failedCount?: number
+  lastError?: string | null
+  pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
+  startedAt?: Date | string | null
+  finishedAt?: Date | string | null
+  createdById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipients?: Prisma.CampaignRecipientUncheckedCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutSessionsInput, Prisma.CampaignUncheckedCreateWithoutSessionsInput>
+}
+
+export type CampaignUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.CampaignUpdateWithoutSessionsInput, Prisma.CampaignUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutSessionsInput, Prisma.CampaignUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.CampaignWhereInput
+}
+
+export type CampaignUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.CampaignWhereInput
+  data: Prisma.XOR<Prisma.CampaignUpdateWithoutSessionsInput, Prisma.CampaignUncheckedUpdateWithoutSessionsInput>
+}
+
+export type CampaignUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
+  messageTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumCampaignAudienceFieldUpdateOperationsInput | $Enums.CampaignAudience
+  district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  dailyCap?: Prisma.IntFieldUpdateOperationsInput | number
+  minDelaySec?: Prisma.IntFieldUpdateOperationsInput | number
+  maxDelaySec?: Prisma.IntFieldUpdateOperationsInput | number
+  windowStart?: Prisma.IntFieldUpdateOperationsInput | number
+  windowEnd?: Prisma.IntFieldUpdateOperationsInput | number
+  totalRecipients?: Prisma.IntFieldUpdateOperationsInput | number
+  sentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  failedCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedCampaignsNestedInput
+  recipients?: Prisma.CampaignRecipientUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
+  messageTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumCampaignAudienceFieldUpdateOperationsInput | $Enums.CampaignAudience
+  district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  dailyCap?: Prisma.IntFieldUpdateOperationsInput | number
+  minDelaySec?: Prisma.IntFieldUpdateOperationsInput | number
+  maxDelaySec?: Prisma.IntFieldUpdateOperationsInput | number
+  windowStart?: Prisma.IntFieldUpdateOperationsInput | number
+  windowEnd?: Prisma.IntFieldUpdateOperationsInput | number
+  totalRecipients?: Prisma.IntFieldUpdateOperationsInput | number
+  sentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  failedCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipients?: Prisma.CampaignRecipientUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateWithoutRecipientsInput = {
@@ -979,11 +1221,15 @@ export type CampaignCreateWithoutRecipientsInput = {
   failedCount?: number
   lastError?: string | null
   pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
   startedAt?: Date | string | null
   finishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCampaignsInput
+  sessions?: Prisma.CampaignSessionCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateWithoutRecipientsInput = {
@@ -1004,11 +1250,15 @@ export type CampaignUncheckedCreateWithoutRecipientsInput = {
   failedCount?: number
   lastError?: string | null
   pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
   startedAt?: Date | string | null
   finishedAt?: Date | string | null
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.CampaignSessionUncheckedCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignCreateOrConnectWithoutRecipientsInput = {
@@ -1045,11 +1295,15 @@ export type CampaignUpdateWithoutRecipientsInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedCampaignsNestedInput
+  sessions?: Prisma.CampaignSessionUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutRecipientsInput = {
@@ -1070,11 +1324,15 @@ export type CampaignUncheckedUpdateWithoutRecipientsInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.CampaignSessionUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignCreateManyCreatedByInput = {
@@ -1095,6 +1353,9 @@ export type CampaignCreateManyCreatedByInput = {
   failedCount?: number
   lastError?: string | null
   pausedReason?: string | null
+  rotationBatch?: number
+  cursorSessionId?: string | null
+  cursorSent?: number
   startedAt?: Date | string | null
   finishedAt?: Date | string | null
   createdAt?: Date | string
@@ -1119,10 +1380,14 @@ export type CampaignUpdateWithoutCreatedByInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.CampaignSessionUpdateManyWithoutCampaignNestedInput
   recipients?: Prisma.CampaignRecipientUpdateManyWithoutCampaignNestedInput
 }
 
@@ -1144,10 +1409,14 @@ export type CampaignUncheckedUpdateWithoutCreatedByInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.CampaignSessionUncheckedUpdateManyWithoutCampaignNestedInput
   recipients?: Prisma.CampaignRecipientUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
@@ -1169,6 +1438,9 @@ export type CampaignUncheckedUpdateManyWithoutCreatedByInput = {
   failedCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pausedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rotationBatch?: Prisma.IntFieldUpdateOperationsInput | number
+  cursorSessionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cursorSent?: Prisma.IntFieldUpdateOperationsInput | number
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1181,10 +1453,12 @@ export type CampaignUncheckedUpdateManyWithoutCreatedByInput = {
  */
 
 export type CampaignCountOutputType = {
+  sessions: number
   recipients: number
 }
 
 export type CampaignCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  sessions?: boolean | CampaignCountOutputTypeCountSessionsArgs
   recipients?: boolean | CampaignCountOutputTypeCountRecipientsArgs
 }
 
@@ -1196,6 +1470,13 @@ export type CampaignCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the CampaignCountOutputType
    */
   select?: Prisma.CampaignCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CampaignCountOutputType without action
+ */
+export type CampaignCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CampaignSessionWhereInput
 }
 
 /**
@@ -1224,12 +1505,16 @@ export type CampaignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   failedCount?: boolean
   lastError?: boolean
   pausedReason?: boolean
+  rotationBatch?: boolean
+  cursorSessionId?: boolean
+  cursorSent?: boolean
   startedAt?: boolean
   finishedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean | Prisma.Campaign$createdByArgs<ExtArgs>
+  sessions?: boolean | Prisma.Campaign$sessionsArgs<ExtArgs>
   recipients?: boolean | Prisma.Campaign$recipientsArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
@@ -1252,6 +1537,9 @@ export type CampaignSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   failedCount?: boolean
   lastError?: boolean
   pausedReason?: boolean
+  rotationBatch?: boolean
+  cursorSessionId?: boolean
+  cursorSent?: boolean
   startedAt?: boolean
   finishedAt?: boolean
   createdById?: boolean
@@ -1278,6 +1566,9 @@ export type CampaignSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   failedCount?: boolean
   lastError?: boolean
   pausedReason?: boolean
+  rotationBatch?: boolean
+  cursorSessionId?: boolean
+  cursorSent?: boolean
   startedAt?: boolean
   finishedAt?: boolean
   createdById?: boolean
@@ -1304,6 +1595,9 @@ export type CampaignSelectScalar = {
   failedCount?: boolean
   lastError?: boolean
   pausedReason?: boolean
+  rotationBatch?: boolean
+  cursorSessionId?: boolean
+  cursorSent?: boolean
   startedAt?: boolean
   finishedAt?: boolean
   createdById?: boolean
@@ -1311,9 +1605,10 @@ export type CampaignSelectScalar = {
   updatedAt?: boolean
 }
 
-export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "channel" | "messageTemplate" | "audience" | "district" | "status" | "dailyCap" | "minDelaySec" | "maxDelaySec" | "windowStart" | "windowEnd" | "totalRecipients" | "sentCount" | "failedCount" | "lastError" | "pausedReason" | "startedAt" | "finishedAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["campaign"]>
+export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "channel" | "messageTemplate" | "audience" | "district" | "status" | "dailyCap" | "minDelaySec" | "maxDelaySec" | "windowStart" | "windowEnd" | "totalRecipients" | "sentCount" | "failedCount" | "lastError" | "pausedReason" | "rotationBatch" | "cursorSessionId" | "cursorSent" | "startedAt" | "finishedAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["campaign"]>
 export type CampaignInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.Campaign$createdByArgs<ExtArgs>
+  sessions?: boolean | Prisma.Campaign$sessionsArgs<ExtArgs>
   recipients?: boolean | Prisma.Campaign$recipientsArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1328,6 +1623,7 @@ export type $CampaignPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "Campaign"
   objects: {
     createdBy: Prisma.$UserPayload<ExtArgs> | null
+    sessions: Prisma.$CampaignSessionPayload<ExtArgs>[]
     recipients: Prisma.$CampaignRecipientPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1348,6 +1644,9 @@ export type $CampaignPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     failedCount: number
     lastError: string | null
     pausedReason: string | null
+    rotationBatch: number
+    cursorSessionId: string | null
+    cursorSent: number
     startedAt: Date | null
     finishedAt: Date | null
     createdById: string | null
@@ -1748,6 +2047,7 @@ readonly fields: CampaignFieldRefs;
 export interface Prisma__CampaignClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   createdBy<T extends Prisma.Campaign$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  sessions<T extends Prisma.Campaign$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recipients<T extends Prisma.Campaign$recipientsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$recipientsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1795,6 +2095,9 @@ export interface CampaignFieldRefs {
   readonly failedCount: Prisma.FieldRef<"Campaign", 'Int'>
   readonly lastError: Prisma.FieldRef<"Campaign", 'String'>
   readonly pausedReason: Prisma.FieldRef<"Campaign", 'String'>
+  readonly rotationBatch: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly cursorSessionId: Prisma.FieldRef<"Campaign", 'String'>
+  readonly cursorSent: Prisma.FieldRef<"Campaign", 'Int'>
   readonly startedAt: Prisma.FieldRef<"Campaign", 'DateTime'>
   readonly finishedAt: Prisma.FieldRef<"Campaign", 'DateTime'>
   readonly createdById: Prisma.FieldRef<"Campaign", 'String'>
@@ -2217,6 +2520,30 @@ export type Campaign$createdByArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Campaign.sessions
+ */
+export type Campaign$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CampaignSession
+   */
+  select?: Prisma.CampaignSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CampaignSession
+   */
+  omit?: Prisma.CampaignSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CampaignSessionInclude<ExtArgs> | null
+  where?: Prisma.CampaignSessionWhereInput
+  orderBy?: Prisma.CampaignSessionOrderByWithRelationInput | Prisma.CampaignSessionOrderByWithRelationInput[]
+  cursor?: Prisma.CampaignSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CampaignSessionScalarFieldEnum | Prisma.CampaignSessionScalarFieldEnum[]
 }
 
 /**

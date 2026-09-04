@@ -107,10 +107,20 @@ export type Contact = Prisma.ContactModel
  */
 export type ContactImport = Prisma.ContactImportModel
 /**
+ * Model WhatsappSession
+ * 
+ */
+export type WhatsappSession = Prisma.WhatsappSessionModel
+/**
  * Model Campaign
  * 
  */
 export type Campaign = Prisma.CampaignModel
+/**
+ * Model CampaignSession
+ * * Un número dentro del pool de una campaña, con lo que lleva enviado.
+ */
+export type CampaignSession = Prisma.CampaignSessionModel
 /**
  * Model CampaignRecipient
  * 

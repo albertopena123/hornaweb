@@ -81,34 +81,65 @@ export async function importContactsBatch(
     if (!imp || imp.finishedAt) return fail("Importación no encontrada o ya cerrada.");
 
     // Re-validación en servidor: nunca confiamos en lo que normalizó el navegador.
-    const byDoc = new Map<string, { docNumber: string; name: string; phone: string; district?: DistrictId }>();
+    // La clave del contacto es el celular; DNI y nombre son opcionales.
+    type Row = { phone: string; name: string; docNumber: string | null; district?: DistrictId };
+    const byPhone = new Map<string, Row>();
     for (const r of rows) {
-      const docNumber = normalizeDni(r?.docNumber);
       const phone = normalizePeruPhone(r?.phone);
+      if (!phone) continue;
       const name = normalizeName(r?.name);
-      if (!docNumber || !phone || !name) continue;
+      const docNumber = normalizeDni(r?.docNumber ?? null);
       const district = r.district && isDistrictId(r.district) ? r.district : undefined;
-      byDoc.set(docNumber, { docNumber, name, phone, district });
+      byPhone.set(phone, { phone, name, docNumber, district });
     }
-    if (byDoc.size === 0) return { ok: true, data: { inserted: 0, updated: 0 } };
+    if (byPhone.size === 0) return { ok: true, data: { inserted: 0, updated: 0 } };
 
-    const existing = await prisma.contact.findMany({
-      where: { docType: "dni", docNumber: { in: [...byDoc.keys()] } },
-      select: { id: true, docNumber: true, phone: true },
-    });
-    const existingByDoc = new Map(existing.map((e) => [e.docNumber, e]));
-    const all = [...byDoc.values()];
-    const toCreate = all.filter((c) => !existingByDoc.has(c.docNumber));
+    const all = [...byPhone.values()];
+    const dnis = all.map((c) => c.docNumber).filter((d): d is string => !!d);
+    const [existing, dniOwners] = await Promise.all([
+      prisma.contact.findMany({ where: { phone: { in: [...byPhone.keys()] } }, select: { id: true, phone: true } }),
+      dnis.length
+        ? prisma.contact.findMany({ where: { docType: "dni", docNumber: { in: dnis } }, select: { id: true, docNumber: true } })
+        : Promise.resolve([] as { id: string; docNumber: string | null }[]),
+    ]);
+    const existingByPhone = new Map(existing.map((e) => [e.phone, e]));
+    // Un DNI solo puede pertenecer a un contacto: si ya lo tiene otro celular (en la base o en
+    // este mismo lote), el contacto se guarda sin DNI en vez de romper la importación.
+    const dniOwner = new Map(dniOwners.map((o) => [o.docNumber!, o.id]));
+    const dniUsedInBatch = new Set<string>();
+    const dniFor = (c: Row, ownId: string | null): string | null => {
+      if (!c.docNumber) return null;
+      const owner = dniOwner.get(c.docNumber);
+      if ((owner && owner !== ownId) || dniUsedInBatch.has(c.docNumber)) return null;
+      dniUsedInBatch.add(c.docNumber);
+      return c.docNumber;
+    };
+    const toCreate = all.filter((c) => !existingByPhone.has(c.phone));
     const toUpdate = all
-      .filter((c) => existingByDoc.has(c.docNumber))
-      .map((c) => ({ c, ex: existingByDoc.get(c.docNumber)! }));
+      .filter((c) => existingByPhone.has(c.phone))
+      .map((c) => ({ c, ex: existingByPhone.get(c.phone)! }));
 
     await prisma.$transaction(async (tx) => {
+      // Primero las actualizaciones: así un DNI que ya es del propio contacto queda reservado antes de crear.
+      for (const { c, ex } of toUpdate) {
+        const docNumber = dniFor(c, ex.id);
+        await tx.contact.update({
+          where: { id: ex.id },
+          data: {
+            // No borramos datos que ya teníamos si la fila viene sin ellos.
+            ...(c.name ? { name: c.name } : {}),
+            ...(docNumber ? { docNumber } : {}),
+            ...(c.district ? { district: c.district } : {}),
+            source: imp.source,
+            importId,
+          },
+        });
+      }
       if (toCreate.length) {
         await tx.contact.createMany({
           data: toCreate.map((c) => ({
             docType: "dni" as const,
-            docNumber: c.docNumber,
+            docNumber: dniFor(c, null),
             name: c.name,
             phone: c.phone,
             district: c.district ?? null,
@@ -117,19 +148,6 @@ export async function importContactsBatch(
             createdById: me.id,
           })),
           skipDuplicates: true,
-        });
-      }
-      for (const { c, ex } of toUpdate) {
-        await tx.contact.update({
-          where: { id: ex.id },
-          data: {
-            name: c.name,
-            phone: c.phone,
-            ...(c.district ? { district: c.district } : {}),
-            source: imp.source,
-            importId,
-            ...(ex.phone !== c.phone ? { whatsappStatus: "unknown" as const, checkedAt: null } : {}),
-          },
         });
       }
       await tx.contactImport.update({
@@ -180,16 +198,22 @@ export async function createContact(
     const { data, fieldErrors } = validateManualContact(input);
     if (!data) return fail("Revisa los campos marcados.", fieldErrors);
 
-    // La base es única por DNI: no duplicamos ni pisamos en silencio un contacto ya
+    // La base es única por celular: no duplicamos ni pisamos en silencio un contacto ya
     // registrado (perderíamos el `source` de la importación que lo trajo).
-    const existing = await prisma.contact.findUnique({
-      where: { docType_docNumber: { docType: "dni", docNumber: data.docNumber } },
-      select: { name: true },
-    });
+    const existing = await prisma.contact.findUnique({ where: { phone: data.phone }, select: { name: true } });
     if (existing) {
       return fail("Revisa los campos marcados.", {
-        docNumber: `Ese DNI ya está registrado (${existing.name}). Búscalo en la tabla para editarlo o eliminarlo.`,
+        phone: `Ese celular ya está registrado (${existing.name || "sin nombre"}). Búscalo en la tabla para editarlo o eliminarlo.`,
       });
+    }
+    if (data.docNumber) {
+      const sameDni = await prisma.contact.findUnique({
+        where: { docType_docNumber: { docType: "dni", docNumber: data.docNumber } },
+        select: { phone: true },
+      });
+      if (sameDni) {
+        return fail("Revisa los campos marcados.", { docNumber: `Ese DNI ya está registrado con el celular ${sameDni.phone}.` });
+      }
     }
 
     const contact = await prisma.contact.create({
@@ -242,7 +266,26 @@ export async function setContactOptedOut(id: string, optedOut: boolean): Promise
 export async function deleteContact(id: string): Promise<ActionResult> {
   try {
     await authorize("mensajes.write");
-    await prisma.contact.delete({ where: { id } });
+    // Sus filas de CampaignRecipient caen en cascada: se descuentan de los contadores de cada
+    // campaña para que sigan cuadrando con los destinatarios que quedan.
+    await prisma.$transaction(async (tx) => {
+      const rows = await tx.campaignRecipient.findMany({ where: { contactId: id }, select: { campaignId: true, status: true } });
+      const porCampana = new Map<string, { total: number; sent: number; failed: number }>();
+      for (const r of rows) {
+        const k = porCampana.get(r.campaignId) ?? { total: 0, sent: 0, failed: 0 };
+        k.total += 1;
+        if (r.status === "sent" || r.status === "delivered" || r.status === "read") k.sent += 1;
+        if (r.status === "failed" || r.status === "no_whatsapp") k.failed += 1;
+        porCampana.set(r.campaignId, k);
+      }
+      for (const [campaignId, k] of porCampana) {
+        await tx.campaign.update({
+          where: { id: campaignId },
+          data: { totalRecipients: { decrement: k.total }, sentCount: { decrement: k.sent }, failedCount: { decrement: k.failed } },
+        });
+      }
+      await tx.contact.delete({ where: { id } });
+    });
     refresh();
     return { ok: true };
   } catch (e) {

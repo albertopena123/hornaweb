@@ -1,11 +1,53 @@
 import type { Metadata } from "next";
 import { THEME_INIT_SCRIPT } from "@/lib/ui/theme";
+import {
+  CANDIDATE,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Simón Horna Alpaca | Candidato Gobierno Regional Madre de Dios — Ahora Nación",
-  description:
-    "Simón Horna Alpaca — Candidato al Gobierno Regional de Madre de Dios 2027-2030. Ahora Nación: Todo el poder a las regiones para conquistar los mercados del mundo.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    // Las páginas internas (login, panel) heredan la firma del candidato.
+    template: `%s | ${CANDIDATE.name}`,
+  },
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  applicationName: "Ahora Nación Madre de Dios",
+  authors: [{ name: CANDIDATE.name, url: SITE_URL }],
+  creator: CANDIDATE.name,
+  publisher: "Ahora Nación",
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_PE",
+    url: SITE_URL,
+    siteName: SITE_TITLE,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  category: "politics",
   icons: {
     icon: "/assets/images/logo/logo-an.webp",
     shortcut: "/assets/images/logo/logo-an.webp",

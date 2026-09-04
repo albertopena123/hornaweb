@@ -58,7 +58,7 @@ export function ContactosClient({ rows, perms, initialQuery }: { rows: ContactRo
         (contacted === "" || (contacted === "yes") === !!r.lastMessagedAt) &&
         (term === "" ||
           foldText(r.name).includes(term) ||
-          r.docNumber.includes(term) ||
+          (r.docNumber ?? "").includes(term) ||
           (digits.length >= 4 && r.phone.replace(/\D/g, "").includes(digits))),
     );
   }, [rows, q, wa, baja, contacted]);
@@ -80,7 +80,7 @@ export function ContactosClient({ rows, perms, initialQuery }: { rows: ContactRo
       <header className="mensajes__head">
         <div>
           <h2>Contactos</h2>
-          <p className="mensajes__sub">Base única por DNI. Importar de nuevo un DNI actualiza sus datos, nunca lo duplica.</p>
+          <p className="mensajes__sub">Base única por celular. Importar de nuevo un celular actualiza sus datos, nunca lo duplica. Nombre y DNI son opcionales.</p>
         </div>
         {perms.canWrite && (
           <div className="mensajes__headactions">
@@ -146,14 +146,14 @@ export function ContactosClient({ rows, perms, initialQuery }: { rows: ContactRo
                 <tr>
                   <td colSpan={perms.canWrite ? 9 : 8} className="mensajes__empty">
                     <Icon name="users" size={22} />
-                    <span>{rows.length === 0 ? "Aún no hay contactos. Importa un Excel para empezar." : "No hay contactos con estos filtros."}</span>
+                    <span>{rows.length === 0 ? "Aún no hay contactos. Importa un Excel o crea uno con su celular." : "No hay contactos con estos filtros."}</span>
                   </td>
                 </tr>
               )}
               {slice.map((r) => (
                 <tr key={r.id}>
-                  <td className="mensajes__mono">{r.docNumber}</td>
-                  <td><div className="mensajes__name">{r.name}</div></td>
+                  <td className="mensajes__mono">{r.docNumber ?? <span className="dtable__muted">—</span>}</td>
+                  <td><div className="mensajes__name">{r.name || <span className="dtable__muted">Sin nombre</span>}</div></td>
                   <td className="mensajes__mono">{r.phone}</td>
                   <td>{r.district ? districtLabel(r.district as DistrictId) : <span className="dtable__muted">—</span>}</td>
                   <td>

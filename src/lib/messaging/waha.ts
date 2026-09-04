@@ -3,6 +3,10 @@ import "server-only";
 // Cliente mínimo de WAHA (https://waha.devlike.pro). Todas las llamadas llevan
 // X-Api-Key y un timeout de 15 s. Los errores HTTP se devuelven como WahaError;
 // los de red/timeout como Error normal (TypeError/AbortError).
+//
+// Multi-sesión: WAHA aguanta varias sesiones (varios números) a la vez, así que
+// el nombre de sesión es un parámetro de cada llamada, no una variable de entorno.
+// La lista de números vive en la tabla WhatsappSession.
 
 export type WahaSessionStatus = "STOPPED" | "STARTING" | "SCAN_QR_CODE" | "WORKING" | "FAILED" | "UNKNOWN";
 export type WahaSessionInfo = { status: WahaSessionStatus; me: { id: string; pushName: string } | null };
@@ -43,10 +47,14 @@ export function wahaConfig() {
   return {
     url: (process.env.WAHA_URL ?? "http://127.0.0.1:3001").replace(/\/+$/, ""),
     apiKey: process.env.WAHA_API_KEY ?? "",
-    session: process.env.WAHA_SESSION ?? "default",
     webhookUrl: process.env.WAHA_WEBHOOK_URL ?? "http://host.docker.internal:3000/api/waha/webhook",
     webhookSecret: process.env.WAHA_WEBHOOK_SECRET ?? "",
   };
+}
+
+/** Nombre de la primera sesión (la que existía antes de multi-número). Solo para migración/semilla. */
+export function legacySessionName(): string {
+  return process.env.WAHA_SESSION ?? "default";
 }
 
 async function wahaFetch(path: string, init?: { method?: string; body?: unknown; accept?: string }): Promise<Response> {
@@ -78,25 +86,43 @@ async function expectOk(res: Response): Promise<unknown> {
 
 const STATUSES: WahaSessionStatus[] = ["STOPPED", "STARTING", "SCAN_QR_CODE", "WORKING", "FAILED"];
 
-export async function getSession(): Promise<WahaSessionInfo> {
-  const { session } = wahaConfig();
+function toStatus(v: unknown): WahaSessionStatus {
+  return (STATUSES as string[]).includes(typeof v === "string" ? v : "") ? (v as WahaSessionStatus) : "UNKNOWN";
+}
+
+type RawSession = { name?: string; status?: string; me?: { id?: string; pushName?: string } | null };
+
+function toInfo(data: RawSession | null): WahaSessionInfo {
+  const me = data?.me && data.me.id ? { id: data.me.id, pushName: data.me.pushName ?? "" } : null;
+  return { status: toStatus(data?.status), me };
+}
+
+export async function getSession(session: string): Promise<WahaSessionInfo> {
   const res = await wahaFetch(`/api/sessions/${encodeURIComponent(session)}`);
   if (res.status === 404) {
     await res.text();
     return { status: "STOPPED", me: null };
   }
-  const data = (await expectOk(res)) as { status?: string; me?: { id?: string; pushName?: string } | null } | null;
-  const status = (STATUSES as string[]).includes(data?.status ?? "") ? (data!.status as WahaSessionStatus) : "UNKNOWN";
-  const me = data?.me && data.me.id ? { id: data.me.id, pushName: data.me.pushName ?? "" } : null;
-  return { status, me };
+  return toInfo((await expectOk(res)) as RawSession | null);
 }
 
-export async function startSession(): Promise<void> {
+/** Estado de todas las sesiones de WAHA (incluidas las paradas), indexado por nombre. */
+export async function listSessions(): Promise<Map<string, WahaSessionInfo>> {
+  const res = await wahaFetch(`/api/sessions?all=true`);
+  const data = (await expectOk(res)) as RawSession[] | null;
+  const out = new Map<string, WahaSessionInfo>();
+  for (const s of data ?? []) {
+    if (s?.name) out.set(s.name, toInfo(s));
+  }
+  return out;
+}
+
+function webhookConfig() {
   const cfg = wahaConfig();
   if (!cfg.webhookSecret) {
     throw new WahaConfigError("WAHA_WEBHOOK_SECRET no está configurado: el webhook quedaría sin firma y se perderían acks y bajas.");
   }
-  const webhooks = [
+  return [
     {
       url: cfg.webhookUrl,
       events: ["message", "message.ack", "session.status"],
@@ -104,17 +130,21 @@ export async function startSession(): Promise<void> {
       retries: { policy: "constant", delaySeconds: 2, attempts: 15 },
     },
   ];
-  const exists = await wahaFetch(`/api/sessions/${encodeURIComponent(cfg.session)}`);
+}
+
+export async function startSession(session: string): Promise<void> {
+  const webhooks = webhookConfig();
+  const exists = await wahaFetch(`/api/sessions/${encodeURIComponent(session)}`);
   await exists.text();
   if (exists.status === 404) {
-    const res = await wahaFetch(`/api/sessions`, { method: "POST", body: { name: cfg.session, start: true, config: { webhooks } } });
+    const res = await wahaFetch(`/api/sessions`, { method: "POST", body: { name: session, start: true, config: { webhooks } } });
     await expectOk(res);
     return;
   }
   // Existe: actualizamos config (webhooks) y arrancamos.
-  const upd = await wahaFetch(`/api/sessions/${encodeURIComponent(cfg.session)}`, { method: "PUT", body: { config: { webhooks } } });
+  const upd = await wahaFetch(`/api/sessions/${encodeURIComponent(session)}`, { method: "PUT", body: { config: { webhooks } } });
   await upd.text(); // si el PUT no está soportado por la versión, seguimos igualmente
-  const res = await wahaFetch(`/api/sessions/${encodeURIComponent(cfg.session)}/start`, { method: "POST" });
+  const res = await wahaFetch(`/api/sessions/${encodeURIComponent(session)}/start`, { method: "POST" });
   if (res.status === 422) {
     await res.text(); // ya estaba iniciada
     return;
@@ -122,8 +152,7 @@ export async function startSession(): Promise<void> {
   await expectOk(res);
 }
 
-export async function getQr(): Promise<{ mimetype: string; data: string } | null> {
-  const { session } = wahaConfig();
+export async function getQr(session: string): Promise<{ mimetype: string; data: string } | null> {
   const res = await wahaFetch(`/api/${encodeURIComponent(session)}/auth/qr`, { accept: "application/json" });
   if (res.status === 422 || res.status === 404) {
     await res.text();
@@ -134,23 +163,30 @@ export async function getQr(): Promise<{ mimetype: string; data: string } | null
   return { mimetype: data.mimetype ?? "image/png", data: data.data };
 }
 
-export async function logoutSession(): Promise<void> {
-  const { session } = wahaConfig();
+export async function logoutSession(session: string): Promise<void> {
   const res = await wahaFetch(`/api/sessions/${encodeURIComponent(session)}/logout`, { method: "POST" });
   await expectOk(res);
   // WAHA vuelve a arrancar la sesión tras el logout (queda en SCAN_QR_CODE). La detenemos para que
   // quede STOPPED ("Desconectado") y el usuario decida cuándo volver a vincular.
-  await stopSession();
+  await stopSession(session);
 }
 
-export async function stopSession(): Promise<void> {
-  const { session } = wahaConfig();
+export async function stopSession(session: string): Promise<void> {
   const res = await wahaFetch(`/api/sessions/${encodeURIComponent(session)}/stop`, { method: "POST" });
   await expectOk(res);
 }
 
-export async function checkExists(phoneE164: string): Promise<{ exists: boolean; chatId: string | null }> {
-  const { session } = wahaConfig();
+/** Borra la sesión de WAHA (credenciales incluidas). El registro en BD se borra aparte. */
+export async function deleteSession(session: string): Promise<void> {
+  const res = await wahaFetch(`/api/sessions/${encodeURIComponent(session)}`, { method: "DELETE" });
+  if (res.status === 404) {
+    await res.text();
+    return;
+  }
+  await expectOk(res);
+}
+
+export async function checkExists(session: string, phoneE164: string): Promise<{ exists: boolean; chatId: string | null }> {
   const phone = phoneE164.replace(/\D/g, "");
   const res = await wahaFetch(`/api/contacts/check-exists?phone=${encodeURIComponent(phone)}&session=${encodeURIComponent(session)}`);
   const data = (await expectOk(res)) as { numberExists?: boolean; chatId?: string | null } | null;
@@ -183,8 +219,7 @@ function extractMessageId(data: unknown, fallbackChatId: string): string | null 
 // previsualización con miniatura subida a WA), igual que al compartirla desde el teléfono.
 // Ojo: WhatsApp igual no hace clicable un enlace si el destinatario no tiene guardado el número
 // y nunca respondió (antispam); eso no se puede cambiar desde el envío.
-export async function sendText(chatId: string, text: string): Promise<{ id: string }> {
-  const { session } = wahaConfig();
+export async function sendText(session: string, chatId: string, text: string): Promise<{ id: string }> {
   const res = await wahaFetch(`/api/sendText`, {
     method: "POST",
     body: { session, chatId, text, linkPreview: true, linkPreviewHighQuality: true },

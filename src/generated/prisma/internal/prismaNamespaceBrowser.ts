@@ -64,7 +64,9 @@ export const ModelName = {
   Announcement: 'Announcement',
   Contact: 'Contact',
   ContactImport: 'ContactImport',
+  WhatsappSession: 'WhatsappSession',
   Campaign: 'Campaign',
+  CampaignSession: 'CampaignSession',
   CampaignRecipient: 'CampaignRecipient',
   MessagingDailyCounter: 'MessagingDailyCounter'
 } as const
@@ -288,6 +290,20 @@ export const ContactImportScalarFieldEnum = {
 export type ContactImportScalarFieldEnum = (typeof ContactImportScalarFieldEnum)[keyof typeof ContactImportScalarFieldEnum]
 
 
+export const WhatsappSessionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  label: 'label',
+  phone: 'phone',
+  active: 'active',
+  dailyCap: 'dailyCap',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WhatsappSessionScalarFieldEnum = (typeof WhatsappSessionScalarFieldEnum)[keyof typeof WhatsappSessionScalarFieldEnum]
+
+
 export const CampaignScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -306,6 +322,9 @@ export const CampaignScalarFieldEnum = {
   failedCount: 'failedCount',
   lastError: 'lastError',
   pausedReason: 'pausedReason',
+  rotationBatch: 'rotationBatch',
+  cursorSessionId: 'cursorSessionId',
+  cursorSent: 'cursorSent',
   startedAt: 'startedAt',
   finishedAt: 'finishedAt',
   createdById: 'createdById',
@@ -314,6 +333,16 @@ export const CampaignScalarFieldEnum = {
 } as const
 
 export type CampaignScalarFieldEnum = (typeof CampaignScalarFieldEnum)[keyof typeof CampaignScalarFieldEnum]
+
+
+export const CampaignSessionScalarFieldEnum = {
+  campaignId: 'campaignId',
+  sessionId: 'sessionId',
+  position: 'position',
+  sentCount: 'sentCount'
+} as const
+
+export type CampaignSessionScalarFieldEnum = (typeof CampaignSessionScalarFieldEnum)[keyof typeof CampaignSessionScalarFieldEnum]
 
 
 export const CampaignRecipientScalarFieldEnum = {
@@ -335,6 +364,7 @@ export type CampaignRecipientScalarFieldEnum = (typeof CampaignRecipientScalarFi
 
 export const MessagingDailyCounterScalarFieldEnum = {
   day: 'day',
+  sessionId: 'sessionId',
   count: 'count'
 } as const
 

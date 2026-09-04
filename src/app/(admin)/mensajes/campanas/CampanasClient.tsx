@@ -9,7 +9,7 @@ import { districtLabel, type DistrictId } from "@/lib/districts";
 import { formatDateOnly } from "@/lib/ui/dates";
 import { NewCampaignModal } from "./NewCampaignModal";
 import { createCampaign, deleteCampaign } from "./actions";
-import { CAMPAIGN_STATUS_LABEL, AUDIENCE_LABEL, PAUSED_REASON_LABEL, type CampaignRow, type PermFlags } from "../types";
+import { CAMPAIGN_STATUS_LABEL, AUDIENCE_LABEL, PAUSED_REASON_LABEL, type CampaignRow, type PermFlags, type SessionOption } from "../types";
 
 const STATUS_BADGE: Record<CampaignRow["status"], string> = {
   draft: "badge--neutral",
@@ -23,7 +23,7 @@ function fmtDate(iso: string | null): string {
   return iso ? formatDateOnly(iso) : "—";
 }
 
-export function CampanasClient({ rows, perms }: { rows: CampaignRow[]; perms: PermFlags }) {
+export function CampanasClient({ rows, sessions, perms }: { rows: CampaignRow[]; sessions: SessionOption[]; perms: PermFlags }) {
   const router = useRouter();
   const [creating, setCreating] = useState(false);
   const [toDelete, setToDelete] = useState<CampaignRow | null>(null);
@@ -41,7 +41,12 @@ export function CampanasClient({ rows, perms }: { rows: CampaignRow[]; perms: Pe
           <p className="mensajes__sub">Cada campaña congela su lista de destinatarios al crearse y se envía de forma pausada.</p>
         </div>
         {perms.canWrite && (
-          <button className="btn btn--primary" onClick={() => setCreating(true)}>
+          <button
+            className="btn btn--primary"
+            onClick={() => setCreating(true)}
+            disabled={sessions.length === 0}
+            title={sessions.length === 0 ? "Añade y conecta un número en la pestaña Conexión" : undefined}
+          >
             <Icon name="plus" size={16} /> Nueva campaña
           </button>
         )}
@@ -53,6 +58,7 @@ export function CampanasClient({ rows, perms }: { rows: CampaignRow[]; perms: Pe
             <thead>
               <tr>
                 <th>Nombre</th>
+                <th>Números</th>
                 <th>Estado</th>
                 <th>Audiencia</th>
                 <th>Destinatarios</th>
@@ -65,7 +71,7 @@ export function CampanasClient({ rows, perms }: { rows: CampaignRow[]; perms: Pe
             <tbody>
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={perms.canWrite ? 8 : 7} className="mensajes__empty">
+                  <td colSpan={perms.canWrite ? 9 : 8} className="mensajes__empty">
                     <Icon name="message" size={22} />
                     <span>Aún no hay campañas.</span>
                   </td>
@@ -77,6 +83,17 @@ export function CampanasClient({ rows, perms }: { rows: CampaignRow[]; perms: Pe
                     <div className="mensajes__name">{r.name}</div>
                     {r.pausedReason && r.status === "paused" && (
                       <div className="mensajes__muted">{PAUSED_REASON_LABEL[r.pausedReason] ?? r.pausedReason}</div>
+                    )}
+                  </td>
+                  <td>
+                    {r.sessions.map((m) => (
+                      <div key={m.id}>
+                        {m.label}
+                        {r.sessions.length > 1 && <span className="mensajes__muted"> · {m.sentCount}</span>}
+                      </div>
+                    ))}
+                    {r.sessions.length > 1 && (
+                      <div className="mensajes__muted">{r.rotationBatch > 0 ? `turnos de ${r.rotationBatch}` : "todos a la vez"}</div>
                     )}
                   </td>
                   <td><span className={`badge ${STATUS_BADGE[r.status]}`}>{CAMPAIGN_STATUS_LABEL[r.status]}</span></td>
@@ -114,6 +131,7 @@ export function CampanasClient({ rows, perms }: { rows: CampaignRow[]; perms: Pe
 
       {creating && (
         <NewCampaignModal
+          sessions={sessions}
           onClose={() => setCreating(false)}
           onSubmit={async (input) => {
             const res = await createCampaign(input);

@@ -1,14 +1,24 @@
 import type { Metadata } from "next";
 import LandingPage from "@/components/landing/LandingPage";
+import {
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_TITLE,
+  landingJsonLd,
+} from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title:
-    "Simón Horna Alpaca | Candidato Gobierno Regional Madre de Dios — Ahora Nación",
-  description:
-    "Simón Horna Alpaca — Candidato al Gobierno Regional de Madre de Dios 2027-2030. Ahora Nación: Todo el poder a las regiones para conquistar los mercados del mundo.",
-  keywords:
-    "Simón Horna Alpaca, Ahora Nación, Gobierno Regional, Madre de Dios, Perú, elecciones 2026, candidato regional, Puerto Maldonado",
-  robots: "INDEX,FOLLOW",
+  // `title.absolute` evita que la plantilla del layout duplique el nombre.
+  title: { absolute: SITE_TITLE },
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "profile",
+    url: "/",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
   icons: { icon: "/assets/images/logo/logo-an.webp" },
 };
 
@@ -25,6 +35,10 @@ const TEMPLATE_STYLES = [
 export default function Page() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(landingJsonLd()) }}
+      />
       {TEMPLATE_STYLES.map((href) => (
         // eslint-disable-next-line @next/next/no-css-tags
         <link key={href} rel="stylesheet" href={href} precedence="default" />

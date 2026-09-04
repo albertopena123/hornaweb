@@ -293,9 +293,9 @@ enum RecipientStatus {
 model Contact {
   id             String         @id @default(cuid())
   docType        DocumentType   @default(dni)
-  docNumber      String
-  name           String
-  phone          String // E.164: +519XXXXXXXX
+  docNumber      String? // opcional: la clave del contacto es el celular
+  name           String         @default("") // opcional
+  phone          String         @unique // E.164: +519XXXXXXXX — clave única del contacto
   district       District?
   source         String // origen de la lista (texto de la importación)
   whatsappStatus WhatsappStatus @default(unknown)
@@ -314,7 +314,6 @@ model Contact {
   recipients CampaignRecipient[]
 
   @@unique([docType, docNumber])
-  @@index([phone])
   @@index([optedOut])
   @@index([whatsappStatus])
   @@index([district])
@@ -328,14 +327,30 @@ model ContactImport {
   totalRows        Int
   inserted         Int      @default(0)
   updated          Int      @default(0)
-  invalid          Int // DNI/teléfono inválidos (no se importan)
-  duplicatedInFile Int // DNI repetidos dentro del archivo (se conserva la última fila)
+  invalid          Int // celular inválido (no se importan)
+  duplicatedInFile Int // celulares repetidos dentro del archivo (se conserva la última fila)
   finishedAt       DateTime?
   createdById      String?
   createdAt        DateTime @default(now())
 
   createdBy User?     @relation("ContactImportCreator", fields: [createdById], references: [id], onDelete: SetNull)
   contacts  Contact[]
+}
+
+model WhatsappSession {
+  id        String   @id @default(cuid())
+  name      String   @unique // nombre de la sesión en WAHA (a-zA-Z0-9-_)
+  label     String // nombre visible: "Número principal", "Número Tambopata"…
+  phone     String? // +51XXXXXXXXX; se rellena solo al vincular (me.id de WAHA)
+  active    Boolean  @default(true) // desactivada = el motor la ignora
+  dailyCap  Int      @default(500) // tope diario propio de este número
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  campaignSessions CampaignSession[]
+  counters         MessagingDailyCounter[]
+
+  @@index([active])
 }
 
 model Campaign {
@@ -356,6 +371,11 @@ model Campaign {
   failedCount     Int              @default(0) // failed+no_whatsapp
   lastError       String?
   pausedReason    String? // "session_down" | "manual" | "waha_error" | "veda"
+  // Rotación entre los números del pool: cada `rotationBatch` envíos pasa el turno al siguiente.
+  // 0 = sin turnos, todos los números envían a la vez (cada uno a su ritmo).
+  rotationBatch   Int              @default(20)
+  cursorSessionId String? // número al que le toca enviar (null = el primero del pool)
+  cursorSent      Int              @default(0) // envíos del turno en curso
   startedAt       DateTime?
   finishedAt      DateTime?
   createdById     String?
@@ -363,9 +383,24 @@ model Campaign {
   updatedAt       DateTime         @updatedAt
 
   createdBy  User?               @relation("CampaignCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  sessions   CampaignSession[] // números desde los que sale (pool)
   recipients CampaignRecipient[]
 
   @@index([status])
+}
+
+/** Un número dentro del pool de una campaña, con lo que lleva enviado. */
+model CampaignSession {
+  campaignId String
+  sessionId  String
+  position   Int // orden de turno dentro del pool
+  sentCount  Int @default(0)
+
+  campaign Campaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  session  WhatsappSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+
+  @@id([campaignId, sessionId])
+  @@index([sessionId])
 }
 
 model CampaignRecipient {
@@ -390,6 +425,11 @@ model CampaignRecipient {
 }
 
 model MessagingDailyCounter {
-  day   String @id // "YYYY-MM-DD" en hora Lima
-  count Int    @default(0)
+  day       String // "YYYY-MM-DD" en hora Lima
+  sessionId String
+  count     Int    @default(0)
+
+  session WhatsappSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@id([day, sessionId])
 }

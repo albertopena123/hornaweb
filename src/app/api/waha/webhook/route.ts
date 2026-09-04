@@ -3,16 +3,19 @@ import { prisma } from "@/lib/prisma";
 import { verifyWahaSignature } from "@/lib/messaging/webhook-signature";
 import { isOptOutText, jidToPhone } from "@/lib/messaging/normalize";
 import { sendText, wahaConfig } from "@/lib/messaging/waha";
+import { handleSessionDown, handleSessionUp } from "@/lib/messaging/sessions";
 
 export const dynamic = "force-dynamic";
 
 // POST /api/waha/webhook — eventos de WAHA (message.ack, message, session.status).
 // Público pero verificado por HMAC; responde siempre 200 tras procesar para que WAHA no reintente.
+// Multi-número: todas las sesiones apuntan a este mismo webhook, así que cada evento se
+// atribuye al número que lo generó (evt.session) y se ignora si ese número no está dado de alta.
 
 type WahaEvent = { id?: string; event?: string; session?: string; payload?: unknown };
 type AckPayload = { id?: string; ack?: number; ackName?: string };
 type MessagePayload = { id?: string; from?: string; fromMe?: boolean; body?: string; _data?: { key?: { remoteJidAlt?: string; senderPn?: string } } };
-type SessionPayload = { status?: string };
+type SessionPayload = { status?: string; me?: { id?: string } | null };
 
 const OPT_OUT_REPLY = "Listo, no recibirás más mensajes de la campaña de Simón Horna. Gracias.";
 
@@ -38,7 +41,12 @@ export async function POST(req: NextRequest) {
   } catch {
     return Response.json({ ok: false, error: "JSON inválido." }, { status: 400 });
   }
-  if (evt.session && evt.session !== wahaConfig().session) return Response.json({ ok: true, ignored: true });
+  // El evento pertenece a un número concreto: si no está registrado, no es asunto nuestro.
+  const sessionName = evt.session ?? "";
+  const session = sessionName
+    ? await prisma.whatsappSession.findUnique({ where: { name: sessionName }, select: { id: true, name: true } })
+    : null;
+  if (!session) return Response.json({ ok: true, ignored: true });
   if (evt.id && !remember(evt.id)) return Response.json({ ok: true, duplicate: true });
 
   try {
@@ -47,10 +55,10 @@ export async function POST(req: NextRequest) {
         await onAck((evt.payload ?? {}) as AckPayload);
         break;
       case "message":
-        await onMessage((evt.payload ?? {}) as MessagePayload);
+        await onMessage(session.name, (evt.payload ?? {}) as MessagePayload);
         break;
       case "session.status":
-        await onSessionStatus((evt.payload ?? {}) as SessionPayload);
+        await onSessionStatus(session.id, (evt.payload ?? {}) as SessionPayload);
         break;
     }
   } catch (e) {
@@ -84,7 +92,9 @@ async function onAck(p: AckPayload): Promise<void> {
   }
 }
 
-async function onMessage(p: MessagePayload): Promise<void> {
+// La baja ya no se anuncia en el pie del mensaje, pero sigue atendiéndose: quien responda
+// "BAJA", "no me escriban", 🔕, 🚫… deja de recibir en todas las campañas y se le confirma.
+async function onMessage(sessionName: string, p: MessagePayload): Promise<void> {
   if (p.fromMe || !p.from) return;
   const key = p._data?.key;
   // Chats con LID: `from` llega como `NNN@lid`; el número real viene en `_data.key.remoteJidAlt` (formato Baileys).
@@ -105,7 +115,8 @@ async function onMessage(p: MessagePayload): Promise<void> {
     prisma.campaignRecipient.updateMany({ where: { contactId: { in: ids }, status: "pending" }, data: { status: "opted_out" } }),
   ]);
   try {
-    await sendText(p.from, OPT_OUT_REPLY);
+    // Se responde por el mismo número que recibió el mensaje.
+    await sendText(sessionName, p.from, OPT_OUT_REPLY);
   } catch (e) {
     console.error("[waha webhook] respuesta BAJA", e);
   }
@@ -115,10 +126,28 @@ async function onMessage(p: MessagePayload): Promise<void> {
 // no pausa. Todo lo demás (STOPPED, SCAN_QR_CODE, FAILED, PASSKEY_*) requiere intervención humana.
 const TRANSIENT_STATUSES = new Set(["WORKING", "STARTING"]);
 
-async function onSessionStatus(p: SessionPayload): Promise<void> {
-  if (!p.status || TRANSIENT_STATUSES.has(p.status)) return;
-  await prisma.campaign.updateMany({
-    where: { status: "running" },
-    data: { status: "paused", pausedReason: "session_down" },
+// WORKING: el número acaba de vincularse → teléfono, etiqueta y reactivación automáticas.
+// FAILED: WhatsApp lo desvinculó (o caducó el QR) → limpieza automática y fuera de las campañas vivas.
+// Otros estados no transitorios (STOPPED…): solo se pausan las campañas que se quedan sin números.
+async function onSessionStatus(sessionId: string, p: SessionPayload): Promise<void> {
+  if (!p.status) return;
+  if (p.status === "WORKING") {
+    await handleSessionUp(sessionId, p.me?.id ?? null);
+    return;
+  }
+  if (TRANSIENT_STATUSES.has(p.status)) return;
+  if (p.status === "FAILED") {
+    await handleSessionDown(sessionId);
+    return;
+  }
+  const afectadas = await prisma.campaign.findMany({
+    where: { status: "running", sessions: { some: { sessionId } } },
+    select: { id: true, sessions: { select: { sessionId: true, session: { select: { active: true } } } } },
   });
+  for (const c of afectadas) {
+    const otros = c.sessions.filter((m) => m.sessionId !== sessionId && m.session.active);
+    if (otros.length === 0) {
+      await prisma.campaign.updateMany({ where: { id: c.id, status: "running" }, data: { status: "paused", pausedReason: "session_down" } });
+    }
+  }
 }

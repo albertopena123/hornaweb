@@ -397,7 +397,9 @@ export const ModelName = {
   Announcement: 'Announcement',
   Contact: 'Contact',
   ContactImport: 'ContactImport',
+  WhatsappSession: 'WhatsappSession',
   Campaign: 'Campaign',
+  CampaignSession: 'CampaignSession',
   CampaignRecipient: 'CampaignRecipient',
   MessagingDailyCounter: 'MessagingDailyCounter'
 } as const
@@ -415,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "userRole" | "rolePermission" | "session" | "supporter" | "local" | "personero" | "siteSetting" | "announcement" | "contact" | "contactImport" | "campaign" | "campaignRecipient" | "messagingDailyCounter"
+    modelProps: "user" | "role" | "permission" | "userRole" | "rolePermission" | "session" | "supporter" | "local" | "personero" | "siteSetting" | "announcement" | "contact" | "contactImport" | "whatsappSession" | "campaign" | "campaignSession" | "campaignRecipient" | "messagingDailyCounter"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1381,6 +1383,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WhatsappSession: {
+      payload: Prisma.$WhatsappSessionPayload<ExtArgs>
+      fields: Prisma.WhatsappSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WhatsappSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WhatsappSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.WhatsappSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WhatsappSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>
+        }
+        findMany: {
+          args: Prisma.WhatsappSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>[]
+        }
+        create: {
+          args: Prisma.WhatsappSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>
+        }
+        createMany: {
+          args: Prisma.WhatsappSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WhatsappSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.WhatsappSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>
+        }
+        update: {
+          args: Prisma.WhatsappSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.WhatsappSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WhatsappSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WhatsappSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.WhatsappSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WhatsappSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.WhatsappSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWhatsappSession>
+        }
+        groupBy: {
+          args: Prisma.WhatsappSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WhatsappSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WhatsappSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WhatsappSessionCountAggregateOutputType> | number
+        }
+      }
+    }
     Campaign: {
       payload: Prisma.$CampaignPayload<ExtArgs>
       fields: Prisma.CampaignFieldRefs
@@ -1452,6 +1528,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CampaignCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CampaignCountAggregateOutputType> | number
+        }
+      }
+    }
+    CampaignSession: {
+      payload: Prisma.$CampaignSessionPayload<ExtArgs>
+      fields: Prisma.CampaignSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CampaignSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CampaignSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.CampaignSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CampaignSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>
+        }
+        findMany: {
+          args: Prisma.CampaignSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>[]
+        }
+        create: {
+          args: Prisma.CampaignSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>
+        }
+        createMany: {
+          args: Prisma.CampaignSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CampaignSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.CampaignSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>
+        }
+        update: {
+          args: Prisma.CampaignSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.CampaignSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CampaignSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CampaignSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.CampaignSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CampaignSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.CampaignSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCampaignSession>
+        }
+        groupBy: {
+          args: Prisma.CampaignSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CampaignSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CampaignSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CampaignSessionCountAggregateOutputType> | number
         }
       }
     }
@@ -1845,6 +1995,20 @@ export const ContactImportScalarFieldEnum = {
 export type ContactImportScalarFieldEnum = (typeof ContactImportScalarFieldEnum)[keyof typeof ContactImportScalarFieldEnum]
 
 
+export const WhatsappSessionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  label: 'label',
+  phone: 'phone',
+  active: 'active',
+  dailyCap: 'dailyCap',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WhatsappSessionScalarFieldEnum = (typeof WhatsappSessionScalarFieldEnum)[keyof typeof WhatsappSessionScalarFieldEnum]
+
+
 export const CampaignScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1863,6 +2027,9 @@ export const CampaignScalarFieldEnum = {
   failedCount: 'failedCount',
   lastError: 'lastError',
   pausedReason: 'pausedReason',
+  rotationBatch: 'rotationBatch',
+  cursorSessionId: 'cursorSessionId',
+  cursorSent: 'cursorSent',
   startedAt: 'startedAt',
   finishedAt: 'finishedAt',
   createdById: 'createdById',
@@ -1871,6 +2038,16 @@ export const CampaignScalarFieldEnum = {
 } as const
 
 export type CampaignScalarFieldEnum = (typeof CampaignScalarFieldEnum)[keyof typeof CampaignScalarFieldEnum]
+
+
+export const CampaignSessionScalarFieldEnum = {
+  campaignId: 'campaignId',
+  sessionId: 'sessionId',
+  position: 'position',
+  sentCount: 'sentCount'
+} as const
+
+export type CampaignSessionScalarFieldEnum = (typeof CampaignSessionScalarFieldEnum)[keyof typeof CampaignSessionScalarFieldEnum]
 
 
 export const CampaignRecipientScalarFieldEnum = {
@@ -1892,6 +2069,7 @@ export type CampaignRecipientScalarFieldEnum = (typeof CampaignRecipientScalarFi
 
 export const MessagingDailyCounterScalarFieldEnum = {
   day: 'day',
+  sessionId: 'sessionId',
   count: 'count'
 } as const
 
@@ -2267,7 +2445,9 @@ export type GlobalOmitConfig = {
   announcement?: Prisma.AnnouncementOmit
   contact?: Prisma.ContactOmit
   contactImport?: Prisma.ContactImportOmit
+  whatsappSession?: Prisma.WhatsappSessionOmit
   campaign?: Prisma.CampaignOmit
+  campaignSession?: Prisma.CampaignSessionOmit
   campaignRecipient?: Prisma.CampaignRecipientOmit
   messagingDailyCounter?: Prisma.MessagingDailyCounterOmit
 }

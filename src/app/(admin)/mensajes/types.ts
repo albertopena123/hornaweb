@@ -1,4 +1,4 @@
-import type { SchedulerSnapshot } from "@/lib/messaging/types";
+import type { SchedulerReason, SchedulerSnapshot } from "@/lib/messaging/types";
 
 export type ActionResult<T = undefined> =
   | { ok: true; data?: T }
@@ -6,20 +6,54 @@ export type ActionResult<T = undefined> =
 
 export type PermFlags = { canRead: boolean; canWrite: boolean };
 
-// ── Conexión ──
+// ── Conexión (multi-número) ──
 export type SessionStatus = "STOPPED" | "STARTING" | "SCAN_QR_CODE" | "WORKING" | "FAILED" | "UNKNOWN";
-export type SessionInfo = {
+
+/** Un número de WhatsApp: lo que guarda la BD + su estado en vivo en WAHA. */
+export type SessionRow = {
+  id: string;
+  name: string; // nombre técnico de la sesión en WAHA
+  label: string; // nombre visible
+  phone: string | null; // +51…, conocido tras vincular
+  active: boolean;
+  dailyCap: number;
   status: SessionStatus;
   me: { id: string; pushName: string } | null;
-  error: string | null;
+  runningCampaigns: number; // campañas en curso que dependen de este número
+  campaigns: number; // campañas (en cualquier estado) que lo usan: mientras haya, no se puede eliminar
+};
+
+export type SessionsView = {
+  rows: SessionRow[];
+  error: string | null; // error global (WAHA caído, sin permiso…)
+};
+
+export type SessionInput = { label: string; dailyCap: number };
+
+/** Número elegible al crear una campaña. */
+export type SessionOption = { id: string; label: string; phone: string | null; dailyCap: number };
+
+/** Un número dentro del pool de una campaña, con su estado en vivo y lo que lleva enviado. */
+export type CampaignSessionRow = {
+  id: string;
+  label: string;
+  phone: string | null;
+  active: boolean;
+  dailyCap: number;
+  status: SessionStatus;
+  sentCount: number;
+  todayCount: number;
+  isCursor: boolean; // le toca enviar (solo con rotación por turnos)
+  reason: SchedulerReason | null; // diagnóstico del motor para este número
+  nextSendAt: string | null;
 };
 
 // ── Contactos ──
 export type WhatsappStatusKey = "unknown" | "yes" | "no";
 export type ContactRow = {
   id: string;
-  docNumber: string;
-  name: string;
+  docNumber: string | null; // opcional
+  name: string; // puede ir vacío
   phone: string; // +519XXXXXXXX
   district: string | null;
   source: string;
@@ -53,6 +87,8 @@ export type RecipientStatusKey =
 export type CampaignRow = {
   id: string;
   name: string;
+  sessions: { id: string; label: string; phone: string | null; sentCount: number }[]; // pool de números
+  rotationBatch: number; // 0 = todos a la vez
   status: CampaignStatusKey;
   audience: AudienceKey;
   district: string | null;
@@ -78,6 +114,8 @@ export type CampaignDetail = CampaignRow & {
 
 export type CampaignInput = {
   name: string;
+  sessionIds: string[]; // pool de números, en orden de turno
+  rotationBatch: number;
   messageTemplate: string;
   audience: AudienceKey;
   district?: string;
@@ -90,7 +128,7 @@ export type CampaignInput = {
 
 export type RecipientRow = {
   id: string;
-  docNumber: string;
+  docNumber: string | null;
   name: string;
   phone: string;
   status: RecipientStatusKey;
@@ -109,9 +147,11 @@ export type CampaignProgress = {
   sentCount: number;
   failedCount: number;
   counts: Record<RecipientStatusKey, number>;
-  todayCount: number;
-  dailyCap: number;
-  scheduler: SchedulerSnapshot;
+  todayCount: number; // suma de hoy en todos los números del pool
+  dailyCap: number; // suma de topes efectivos del pool (lo que como mucho sale hoy)
+  rotationBatch: number;
+  sessions: CampaignSessionRow[];
+  scheduler: SchedulerSnapshot; // del número que tiene el turno (o el primero)
 };
 
 export const CAMPAIGN_STATUS_LABEL: Record<CampaignStatusKey, string> = {
@@ -141,7 +181,7 @@ export const RECIPIENT_STATUS_LABEL: Record<RecipientStatusKey, string> = {
 
 export const PAUSED_REASON_LABEL: Record<string, string> = {
   manual: "Pausada manualmente",
-  session_down: "WhatsApp se desconectó: reconecta en Conexión y reanuda",
+  session_down: "El número se desconectó: reconéctalo en Conexión y reanuda",
   waha_error: "WAHA no responde: revisa el contenedor y reanuda",
   veda: "Veda electoral: no se permiten envíos",
 };
