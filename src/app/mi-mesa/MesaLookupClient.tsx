@@ -28,8 +28,11 @@ type Result = {
   localName: string;
   localAddress: string | null;
   mesa: string;
+  aula?: string | null;
+  role?: string;
   coordinatorName: string;
   coordinatorPhone: string;
+  token?: string;
 };
 
 function waLink(phone: string): string {
@@ -216,14 +219,39 @@ export default function MesaLookupClient() {
               <div className="mm__cred-name">{result.name}</div>
             </div>
 
-            {/* Número de Mesa Destacado */}
+            {/* Número de Mesa y Aula Destacados */}
             <div className="mm__cred-mesa-card">
               <div className="mm__cred-mesa-info">
                 <strong>Mesa de Votación</strong>
-                <span>Supervisión y cuidado de actas</span>
+                <span>{result.aula ? `Aula: ${result.aula}` : "Supervisión y cuidado de actas"}</span>
               </div>
               <div className="mm__cred-mesa-number">{result.mesa}</div>
             </div>
+
+            {result.token && (
+              <Link
+                href={`/credencial/${result.token}`}
+                className="mm__cred-btn-main"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  padding: "14px 20px",
+                  background: "linear-gradient(135deg, #b91c1c 0%, #dc2626 100%)",
+                  color: "#ffffff",
+                  borderRadius: "12px",
+                  fontWeight: 800,
+                  fontSize: "15px",
+                  textDecoration: "none",
+                  boxShadow: "0 4px 14px rgba(220, 38, 38, 0.4)",
+                  textAlign: "center",
+                  margin: "8px 0 16px",
+                }}
+              >
+                <FileCheck2 size={18} /> Ver y Descargar Mi Credencial Oficial de Personero
+              </Link>
+            )}
 
             {/* Grilla: Local y Coordinador */}
             <div className="mm__cred-grid">

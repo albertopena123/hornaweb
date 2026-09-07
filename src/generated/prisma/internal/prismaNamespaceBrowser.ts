@@ -60,6 +60,8 @@ export const ModelName = {
   Supporter: 'Supporter',
   Local: 'Local',
   Personero: 'Personero',
+  ElectoralLocal: 'ElectoralLocal',
+  ElectoralMesa: 'ElectoralMesa',
   SiteSetting: 'SiteSetting',
   Announcement: 'Announcement',
   Contact: 'Contact',
@@ -68,7 +70,10 @@ export const ModelName = {
   Campaign: 'Campaign',
   CampaignSession: 'CampaignSession',
   CampaignRecipient: 'CampaignRecipient',
-  MessagingDailyCounter: 'MessagingDailyCounter'
+  MessagingDailyCounter: 'MessagingDailyCounter',
+  Candidate: 'Candidate',
+  ActaElectoral: 'ActaElectoral',
+  ActaVoto: 'ActaVoto'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -208,10 +213,18 @@ export const PersoneroScalarFieldEnum = {
   localName: 'localName',
   localAddress: 'localAddress',
   mesa: 'mesa',
+  aula: 'aula',
+  role: 'role',
+  isSuplente: 'isSuplente',
   coordinatorName: 'coordinatorName',
   coordinatorPhone: 'coordinatorPhone',
   active: 'active',
   notes: 'notes',
+  whatsappNotifiedAt: 'whatsappNotifiedAt',
+  credentialToken: 'credentialToken',
+  isMesaMember: 'isMesaMember',
+  mesaMemberRole: 'mesaMemberRole',
+  experience: 'experience',
   createdById: 'createdById',
   updatedById: 'updatedById',
   createdAt: 'createdAt',
@@ -219,6 +232,40 @@ export const PersoneroScalarFieldEnum = {
 } as const
 
 export type PersoneroScalarFieldEnum = (typeof PersoneroScalarFieldEnum)[keyof typeof PersoneroScalarFieldEnum]
+
+
+export const ElectoralLocalScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  address: 'address',
+  district: 'district',
+  province: 'province',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  totalMesas: 'totalMesas',
+  coordinatorName: 'coordinatorName',
+  coordinatorPhone: 'coordinatorPhone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElectoralLocalScalarFieldEnum = (typeof ElectoralLocalScalarFieldEnum)[keyof typeof ElectoralLocalScalarFieldEnum]
+
+
+export const ElectoralMesaScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  localId: 'localId',
+  aula: 'aula',
+  onpePresidente: 'onpePresidente',
+  onpeSecretario: 'onpeSecretario',
+  onpeSuplentes: 'onpeSuplentes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElectoralMesaScalarFieldEnum = (typeof ElectoralMesaScalarFieldEnum)[keyof typeof ElectoralMesaScalarFieldEnum]
 
 
 export const SiteSettingScalarFieldEnum = {
@@ -369,6 +416,59 @@ export const MessagingDailyCounterScalarFieldEnum = {
 } as const
 
 export type MessagingDailyCounterScalarFieldEnum = (typeof MessagingDailyCounterScalarFieldEnum)[keyof typeof MessagingDailyCounterScalarFieldEnum]
+
+
+export const CandidateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  party: 'party',
+  partyLogo: 'partyLogo',
+  photoUrl: 'photoUrl',
+  cargo: 'cargo',
+  order: 'order',
+  color: 'color',
+  province: 'province',
+  district: 'district',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CandidateScalarFieldEnum = (typeof CandidateScalarFieldEnum)[keyof typeof CandidateScalarFieldEnum]
+
+
+export const ActaElectoralScalarFieldEnum = {
+  id: 'id',
+  mesaNumber: 'mesaNumber',
+  localId: 'localId',
+  personeroId: 'personeroId',
+  photoUrl: 'photoUrl',
+  status: 'status',
+  source: 'source',
+  electionType: 'electionType',
+  observationReason: 'observationReason',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  votosBlancos: 'votosBlancos',
+  votosNulos: 'votosNulos',
+  votosImpugnados: 'votosImpugnados',
+  totalVotos: 'totalVotos',
+  submittedAt: 'submittedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ActaElectoralScalarFieldEnum = (typeof ActaElectoralScalarFieldEnum)[keyof typeof ActaElectoralScalarFieldEnum]
+
+
+export const ActaVotoScalarFieldEnum = {
+  id: 'id',
+  actaId: 'actaId',
+  candidateId: 'candidateId',
+  votes: 'votes'
+} as const
+
+export type ActaVotoScalarFieldEnum = (typeof ActaVotoScalarFieldEnum)[keyof typeof ActaVotoScalarFieldEnum]
 
 
 export const SortOrder = {

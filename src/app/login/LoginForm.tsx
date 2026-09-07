@@ -44,11 +44,12 @@ export function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+      const resData = (await res.json().catch(() => null)) as
+        | { ok?: boolean; defaultRedirect?: string; error?: string }
+        | null;
+
       if (!res.ok) {
-        const data = (await res.json().catch(() => null)) as
-          | { error?: string }
-          | null;
-        setError(data?.error ?? "No se pudo iniciar sesión.");
+        setError(resData?.error ?? "No se pudo iniciar sesión.");
         setLoading(false);
         return;
       }
@@ -58,7 +59,8 @@ export function LoginForm() {
       } catch {
         // localStorage bloqueado: se ignora.
       }
-      router.replace(next);
+      const targetUrl = next && next !== "/usuarios" ? next : (resData?.defaultRedirect || "/personeros");
+      router.replace(targetUrl);
       router.refresh();
     } catch {
       setError("No se pudo conectar con el servidor.");
@@ -76,15 +78,14 @@ export function LoginForm() {
       )}
 
       <label className="field">
-        <span className="field__label">Correo electrónico</span>
+        <span className="field__label">DNI o Correo electrónico</span>
         <input
-          type="email"
-          inputMode="email"
+          type="text"
           autoComplete="username"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="correo@ejemplo.com"
+          placeholder="Ej. 41774094 o usuario@ahoranacion.pe"
           autoFocus
         />
       </label>

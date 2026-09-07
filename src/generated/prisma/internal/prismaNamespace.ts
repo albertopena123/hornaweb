@@ -393,6 +393,8 @@ export const ModelName = {
   Supporter: 'Supporter',
   Local: 'Local',
   Personero: 'Personero',
+  ElectoralLocal: 'ElectoralLocal',
+  ElectoralMesa: 'ElectoralMesa',
   SiteSetting: 'SiteSetting',
   Announcement: 'Announcement',
   Contact: 'Contact',
@@ -401,7 +403,10 @@ export const ModelName = {
   Campaign: 'Campaign',
   CampaignSession: 'CampaignSession',
   CampaignRecipient: 'CampaignRecipient',
-  MessagingDailyCounter: 'MessagingDailyCounter'
+  MessagingDailyCounter: 'MessagingDailyCounter',
+  Candidate: 'Candidate',
+  ActaElectoral: 'ActaElectoral',
+  ActaVoto: 'ActaVoto'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "userRole" | "rolePermission" | "session" | "supporter" | "local" | "personero" | "siteSetting" | "announcement" | "contact" | "contactImport" | "whatsappSession" | "campaign" | "campaignSession" | "campaignRecipient" | "messagingDailyCounter"
+    modelProps: "user" | "role" | "permission" | "userRole" | "rolePermission" | "session" | "supporter" | "local" | "personero" | "electoralLocal" | "electoralMesa" | "siteSetting" | "announcement" | "contact" | "contactImport" | "whatsappSession" | "campaign" | "campaignSession" | "campaignRecipient" | "messagingDailyCounter" | "candidate" | "actaElectoral" | "actaVoto"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1087,6 +1092,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ElectoralLocal: {
+      payload: Prisma.$ElectoralLocalPayload<ExtArgs>
+      fields: Prisma.ElectoralLocalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ElectoralLocalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ElectoralLocalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>
+        }
+        findFirst: {
+          args: Prisma.ElectoralLocalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ElectoralLocalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>
+        }
+        findMany: {
+          args: Prisma.ElectoralLocalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>[]
+        }
+        create: {
+          args: Prisma.ElectoralLocalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>
+        }
+        createMany: {
+          args: Prisma.ElectoralLocalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ElectoralLocalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>[]
+        }
+        delete: {
+          args: Prisma.ElectoralLocalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>
+        }
+        update: {
+          args: Prisma.ElectoralLocalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>
+        }
+        deleteMany: {
+          args: Prisma.ElectoralLocalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ElectoralLocalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ElectoralLocalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>[]
+        }
+        upsert: {
+          args: Prisma.ElectoralLocalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralLocalPayload>
+        }
+        aggregate: {
+          args: Prisma.ElectoralLocalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateElectoralLocal>
+        }
+        groupBy: {
+          args: Prisma.ElectoralLocalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElectoralLocalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ElectoralLocalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElectoralLocalCountAggregateOutputType> | number
+        }
+      }
+    }
+    ElectoralMesa: {
+      payload: Prisma.$ElectoralMesaPayload<ExtArgs>
+      fields: Prisma.ElectoralMesaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ElectoralMesaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ElectoralMesaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>
+        }
+        findFirst: {
+          args: Prisma.ElectoralMesaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ElectoralMesaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>
+        }
+        findMany: {
+          args: Prisma.ElectoralMesaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>[]
+        }
+        create: {
+          args: Prisma.ElectoralMesaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>
+        }
+        createMany: {
+          args: Prisma.ElectoralMesaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ElectoralMesaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>[]
+        }
+        delete: {
+          args: Prisma.ElectoralMesaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>
+        }
+        update: {
+          args: Prisma.ElectoralMesaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>
+        }
+        deleteMany: {
+          args: Prisma.ElectoralMesaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ElectoralMesaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ElectoralMesaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>[]
+        }
+        upsert: {
+          args: Prisma.ElectoralMesaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectoralMesaPayload>
+        }
+        aggregate: {
+          args: Prisma.ElectoralMesaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateElectoralMesa>
+        }
+        groupBy: {
+          args: Prisma.ElectoralMesaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElectoralMesaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ElectoralMesaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElectoralMesaCountAggregateOutputType> | number
+        }
+      }
+    }
     SiteSetting: {
       payload: Prisma.$SiteSettingPayload<ExtArgs>
       fields: Prisma.SiteSettingFieldRefs
@@ -1753,6 +1906,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Candidate: {
+      payload: Prisma.$CandidatePayload<ExtArgs>
+      fields: Prisma.CandidateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CandidateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CandidateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>
+        }
+        findFirst: {
+          args: Prisma.CandidateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CandidateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>
+        }
+        findMany: {
+          args: Prisma.CandidateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>[]
+        }
+        create: {
+          args: Prisma.CandidateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>
+        }
+        createMany: {
+          args: Prisma.CandidateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CandidateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>[]
+        }
+        delete: {
+          args: Prisma.CandidateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>
+        }
+        update: {
+          args: Prisma.CandidateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>
+        }
+        deleteMany: {
+          args: Prisma.CandidateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CandidateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CandidateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>[]
+        }
+        upsert: {
+          args: Prisma.CandidateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidatePayload>
+        }
+        aggregate: {
+          args: Prisma.CandidateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCandidate>
+        }
+        groupBy: {
+          args: Prisma.CandidateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CandidateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CandidateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CandidateCountAggregateOutputType> | number
+        }
+      }
+    }
+    ActaElectoral: {
+      payload: Prisma.$ActaElectoralPayload<ExtArgs>
+      fields: Prisma.ActaElectoralFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ActaElectoralFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ActaElectoralFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>
+        }
+        findFirst: {
+          args: Prisma.ActaElectoralFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ActaElectoralFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>
+        }
+        findMany: {
+          args: Prisma.ActaElectoralFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>[]
+        }
+        create: {
+          args: Prisma.ActaElectoralCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>
+        }
+        createMany: {
+          args: Prisma.ActaElectoralCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ActaElectoralCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>[]
+        }
+        delete: {
+          args: Prisma.ActaElectoralDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>
+        }
+        update: {
+          args: Prisma.ActaElectoralUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>
+        }
+        deleteMany: {
+          args: Prisma.ActaElectoralDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ActaElectoralUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ActaElectoralUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>[]
+        }
+        upsert: {
+          args: Prisma.ActaElectoralUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaElectoralPayload>
+        }
+        aggregate: {
+          args: Prisma.ActaElectoralAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateActaElectoral>
+        }
+        groupBy: {
+          args: Prisma.ActaElectoralGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActaElectoralGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ActaElectoralCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActaElectoralCountAggregateOutputType> | number
+        }
+      }
+    }
+    ActaVoto: {
+      payload: Prisma.$ActaVotoPayload<ExtArgs>
+      fields: Prisma.ActaVotoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ActaVotoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ActaVotoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>
+        }
+        findFirst: {
+          args: Prisma.ActaVotoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ActaVotoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>
+        }
+        findMany: {
+          args: Prisma.ActaVotoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>[]
+        }
+        create: {
+          args: Prisma.ActaVotoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>
+        }
+        createMany: {
+          args: Prisma.ActaVotoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ActaVotoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>[]
+        }
+        delete: {
+          args: Prisma.ActaVotoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>
+        }
+        update: {
+          args: Prisma.ActaVotoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>
+        }
+        deleteMany: {
+          args: Prisma.ActaVotoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ActaVotoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ActaVotoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>[]
+        }
+        upsert: {
+          args: Prisma.ActaVotoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ActaVotoPayload>
+        }
+        aggregate: {
+          args: Prisma.ActaVotoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateActaVoto>
+        }
+        groupBy: {
+          args: Prisma.ActaVotoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActaVotoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ActaVotoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ActaVotoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1913,10 +2288,18 @@ export const PersoneroScalarFieldEnum = {
   localName: 'localName',
   localAddress: 'localAddress',
   mesa: 'mesa',
+  aula: 'aula',
+  role: 'role',
+  isSuplente: 'isSuplente',
   coordinatorName: 'coordinatorName',
   coordinatorPhone: 'coordinatorPhone',
   active: 'active',
   notes: 'notes',
+  whatsappNotifiedAt: 'whatsappNotifiedAt',
+  credentialToken: 'credentialToken',
+  isMesaMember: 'isMesaMember',
+  mesaMemberRole: 'mesaMemberRole',
+  experience: 'experience',
   createdById: 'createdById',
   updatedById: 'updatedById',
   createdAt: 'createdAt',
@@ -1924,6 +2307,40 @@ export const PersoneroScalarFieldEnum = {
 } as const
 
 export type PersoneroScalarFieldEnum = (typeof PersoneroScalarFieldEnum)[keyof typeof PersoneroScalarFieldEnum]
+
+
+export const ElectoralLocalScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  address: 'address',
+  district: 'district',
+  province: 'province',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  totalMesas: 'totalMesas',
+  coordinatorName: 'coordinatorName',
+  coordinatorPhone: 'coordinatorPhone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElectoralLocalScalarFieldEnum = (typeof ElectoralLocalScalarFieldEnum)[keyof typeof ElectoralLocalScalarFieldEnum]
+
+
+export const ElectoralMesaScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  localId: 'localId',
+  aula: 'aula',
+  onpePresidente: 'onpePresidente',
+  onpeSecretario: 'onpeSecretario',
+  onpeSuplentes: 'onpeSuplentes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElectoralMesaScalarFieldEnum = (typeof ElectoralMesaScalarFieldEnum)[keyof typeof ElectoralMesaScalarFieldEnum]
 
 
 export const SiteSettingScalarFieldEnum = {
@@ -2074,6 +2491,59 @@ export const MessagingDailyCounterScalarFieldEnum = {
 } as const
 
 export type MessagingDailyCounterScalarFieldEnum = (typeof MessagingDailyCounterScalarFieldEnum)[keyof typeof MessagingDailyCounterScalarFieldEnum]
+
+
+export const CandidateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  party: 'party',
+  partyLogo: 'partyLogo',
+  photoUrl: 'photoUrl',
+  cargo: 'cargo',
+  order: 'order',
+  color: 'color',
+  province: 'province',
+  district: 'district',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CandidateScalarFieldEnum = (typeof CandidateScalarFieldEnum)[keyof typeof CandidateScalarFieldEnum]
+
+
+export const ActaElectoralScalarFieldEnum = {
+  id: 'id',
+  mesaNumber: 'mesaNumber',
+  localId: 'localId',
+  personeroId: 'personeroId',
+  photoUrl: 'photoUrl',
+  status: 'status',
+  source: 'source',
+  electionType: 'electionType',
+  observationReason: 'observationReason',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  votosBlancos: 'votosBlancos',
+  votosNulos: 'votosNulos',
+  votosImpugnados: 'votosImpugnados',
+  totalVotos: 'totalVotos',
+  submittedAt: 'submittedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ActaElectoralScalarFieldEnum = (typeof ActaElectoralScalarFieldEnum)[keyof typeof ActaElectoralScalarFieldEnum]
+
+
+export const ActaVotoScalarFieldEnum = {
+  id: 'id',
+  actaId: 'actaId',
+  candidateId: 'candidateId',
+  votes: 'votes'
+} as const
+
+export type ActaVotoScalarFieldEnum = (typeof ActaVotoScalarFieldEnum)[keyof typeof ActaVotoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2240,20 +2710,6 @@ export type ListEnumPersoneroSourceFieldRefInput<$PrismaModel> = FieldRefInputTy
 
 
 /**
- * Reference to a field of type 'WhatsappStatus'
- */
-export type EnumWhatsappStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WhatsappStatus'>
-    
-
-
-/**
- * Reference to a field of type 'WhatsappStatus[]'
- */
-export type ListEnumWhatsappStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WhatsappStatus[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -2264,6 +2720,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WhatsappStatus'
+ */
+export type EnumWhatsappStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WhatsappStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'WhatsappStatus[]'
+ */
+export type ListEnumWhatsappStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WhatsappStatus[]'>
     
 
 
@@ -2320,6 +2790,34 @@ export type EnumRecipientStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'RecipientStatus[]'
  */
 export type ListEnumRecipientStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CandidateCargo'
+ */
+export type EnumCandidateCargoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CandidateCargo'>
+    
+
+
+/**
+ * Reference to a field of type 'CandidateCargo[]'
+ */
+export type ListEnumCandidateCargoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CandidateCargo[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ActaStatus'
+ */
+export type EnumActaStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActaStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ActaStatus[]'
+ */
+export type ListEnumActaStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActaStatus[]'>
     
 
 /**
@@ -2441,6 +2939,8 @@ export type GlobalOmitConfig = {
   supporter?: Prisma.SupporterOmit
   local?: Prisma.LocalOmit
   personero?: Prisma.PersoneroOmit
+  electoralLocal?: Prisma.ElectoralLocalOmit
+  electoralMesa?: Prisma.ElectoralMesaOmit
   siteSetting?: Prisma.SiteSettingOmit
   announcement?: Prisma.AnnouncementOmit
   contact?: Prisma.ContactOmit
@@ -2450,6 +2950,9 @@ export type GlobalOmitConfig = {
   campaignSession?: Prisma.CampaignSessionOmit
   campaignRecipient?: Prisma.CampaignRecipientOmit
   messagingDailyCounter?: Prisma.MessagingDailyCounterOmit
+  candidate?: Prisma.CandidateOmit
+  actaElectoral?: Prisma.ActaElectoralOmit
+  actaVoto?: Prisma.ActaVotoOmit
 }
 
 /* Types for Logging */

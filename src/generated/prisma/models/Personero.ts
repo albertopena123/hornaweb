@@ -35,10 +35,18 @@ export type PersoneroMinAggregateOutputType = {
   localName: string | null
   localAddress: string | null
   mesa: string | null
+  aula: string | null
+  role: string | null
+  isSuplente: boolean | null
   coordinatorName: string | null
   coordinatorPhone: string | null
   active: boolean | null
   notes: string | null
+  whatsappNotifiedAt: Date | null
+  credentialToken: string | null
+  isMesaMember: boolean | null
+  mesaMemberRole: string | null
+  experience: boolean | null
   createdById: string | null
   updatedById: string | null
   createdAt: Date | null
@@ -56,10 +64,18 @@ export type PersoneroMaxAggregateOutputType = {
   localName: string | null
   localAddress: string | null
   mesa: string | null
+  aula: string | null
+  role: string | null
+  isSuplente: boolean | null
   coordinatorName: string | null
   coordinatorPhone: string | null
   active: boolean | null
   notes: string | null
+  whatsappNotifiedAt: Date | null
+  credentialToken: string | null
+  isMesaMember: boolean | null
+  mesaMemberRole: string | null
+  experience: boolean | null
   createdById: string | null
   updatedById: string | null
   createdAt: Date | null
@@ -77,10 +93,18 @@ export type PersoneroCountAggregateOutputType = {
   localName: number
   localAddress: number
   mesa: number
+  aula: number
+  role: number
+  isSuplente: number
   coordinatorName: number
   coordinatorPhone: number
   active: number
   notes: number
+  whatsappNotifiedAt: number
+  credentialToken: number
+  isMesaMember: number
+  mesaMemberRole: number
+  experience: number
   createdById: number
   updatedById: number
   createdAt: number
@@ -100,10 +124,18 @@ export type PersoneroMinAggregateInputType = {
   localName?: true
   localAddress?: true
   mesa?: true
+  aula?: true
+  role?: true
+  isSuplente?: true
   coordinatorName?: true
   coordinatorPhone?: true
   active?: true
   notes?: true
+  whatsappNotifiedAt?: true
+  credentialToken?: true
+  isMesaMember?: true
+  mesaMemberRole?: true
+  experience?: true
   createdById?: true
   updatedById?: true
   createdAt?: true
@@ -121,10 +153,18 @@ export type PersoneroMaxAggregateInputType = {
   localName?: true
   localAddress?: true
   mesa?: true
+  aula?: true
+  role?: true
+  isSuplente?: true
   coordinatorName?: true
   coordinatorPhone?: true
   active?: true
   notes?: true
+  whatsappNotifiedAt?: true
+  credentialToken?: true
+  isMesaMember?: true
+  mesaMemberRole?: true
+  experience?: true
   createdById?: true
   updatedById?: true
   createdAt?: true
@@ -142,10 +182,18 @@ export type PersoneroCountAggregateInputType = {
   localName?: true
   localAddress?: true
   mesa?: true
+  aula?: true
+  role?: true
+  isSuplente?: true
   coordinatorName?: true
   coordinatorPhone?: true
   active?: true
   notes?: true
+  whatsappNotifiedAt?: true
+  credentialToken?: true
+  isMesaMember?: true
+  mesaMemberRole?: true
+  experience?: true
   createdById?: true
   updatedById?: true
   createdAt?: true
@@ -236,10 +284,18 @@ export type PersoneroGroupByOutputType = {
   localName: string
   localAddress: string | null
   mesa: string
+  aula: string | null
+  role: string
+  isSuplente: boolean
   coordinatorName: string
   coordinatorPhone: string
   active: boolean
   notes: string | null
+  whatsappNotifiedAt: Date | null
+  credentialToken: string | null
+  isMesaMember: boolean
+  mesaMemberRole: string | null
+  experience: boolean | null
   createdById: string | null
   updatedById: string | null
   createdAt: Date
@@ -278,16 +334,25 @@ export type PersoneroWhereInput = {
   localName?: Prisma.StringFilter<"Personero"> | string
   localAddress?: Prisma.StringNullableFilter<"Personero"> | string | null
   mesa?: Prisma.StringFilter<"Personero"> | string
+  aula?: Prisma.StringNullableFilter<"Personero"> | string | null
+  role?: Prisma.StringFilter<"Personero"> | string
+  isSuplente?: Prisma.BoolFilter<"Personero"> | boolean
   coordinatorName?: Prisma.StringFilter<"Personero"> | string
   coordinatorPhone?: Prisma.StringFilter<"Personero"> | string
   active?: Prisma.BoolFilter<"Personero"> | boolean
   notes?: Prisma.StringNullableFilter<"Personero"> | string | null
+  whatsappNotifiedAt?: Prisma.DateTimeNullableFilter<"Personero"> | Date | string | null
+  credentialToken?: Prisma.StringNullableFilter<"Personero"> | string | null
+  isMesaMember?: Prisma.BoolFilter<"Personero"> | boolean
+  mesaMemberRole?: Prisma.StringNullableFilter<"Personero"> | string | null
+  experience?: Prisma.BoolNullableFilter<"Personero"> | boolean | null
   createdById?: Prisma.StringNullableFilter<"Personero"> | string | null
   updatedById?: Prisma.StringNullableFilter<"Personero"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Personero"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Personero"> | Date | string
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   updatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  actas?: Prisma.ActaElectoralListRelationFilter
 }
 
 export type PersoneroOrderByWithRelationInput = {
@@ -301,20 +366,30 @@ export type PersoneroOrderByWithRelationInput = {
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   mesa?: Prisma.SortOrder
+  aula?: Prisma.SortOrderInput | Prisma.SortOrder
+  role?: Prisma.SortOrder
+  isSuplente?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrder
   active?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsappNotifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  credentialToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  isMesaMember?: Prisma.SortOrder
+  mesaMemberRole?: Prisma.SortOrderInput | Prisma.SortOrder
+  experience?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.UserOrderByWithRelationInput
   updatedBy?: Prisma.UserOrderByWithRelationInput
+  actas?: Prisma.ActaElectoralOrderByRelationAggregateInput
 }
 
 export type PersoneroWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  credentialToken?: string
   docType_docNumber?: Prisma.PersoneroDocTypeDocNumberCompoundUniqueInput
   AND?: Prisma.PersoneroWhereInput | Prisma.PersoneroWhereInput[]
   OR?: Prisma.PersoneroWhereInput[]
@@ -328,17 +403,25 @@ export type PersoneroWhereUniqueInput = Prisma.AtLeast<{
   localName?: Prisma.StringFilter<"Personero"> | string
   localAddress?: Prisma.StringNullableFilter<"Personero"> | string | null
   mesa?: Prisma.StringFilter<"Personero"> | string
+  aula?: Prisma.StringNullableFilter<"Personero"> | string | null
+  role?: Prisma.StringFilter<"Personero"> | string
+  isSuplente?: Prisma.BoolFilter<"Personero"> | boolean
   coordinatorName?: Prisma.StringFilter<"Personero"> | string
   coordinatorPhone?: Prisma.StringFilter<"Personero"> | string
   active?: Prisma.BoolFilter<"Personero"> | boolean
   notes?: Prisma.StringNullableFilter<"Personero"> | string | null
+  whatsappNotifiedAt?: Prisma.DateTimeNullableFilter<"Personero"> | Date | string | null
+  isMesaMember?: Prisma.BoolFilter<"Personero"> | boolean
+  mesaMemberRole?: Prisma.StringNullableFilter<"Personero"> | string | null
+  experience?: Prisma.BoolNullableFilter<"Personero"> | boolean | null
   createdById?: Prisma.StringNullableFilter<"Personero"> | string | null
   updatedById?: Prisma.StringNullableFilter<"Personero"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Personero"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Personero"> | Date | string
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   updatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id" | "docType_docNumber">
+  actas?: Prisma.ActaElectoralListRelationFilter
+}, "id" | "credentialToken" | "docType_docNumber">
 
 export type PersoneroOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -351,10 +434,18 @@ export type PersoneroOrderByWithAggregationInput = {
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   mesa?: Prisma.SortOrder
+  aula?: Prisma.SortOrderInput | Prisma.SortOrder
+  role?: Prisma.SortOrder
+  isSuplente?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrder
   active?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsappNotifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  credentialToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  isMesaMember?: Prisma.SortOrder
+  mesaMemberRole?: Prisma.SortOrderInput | Prisma.SortOrder
+  experience?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -378,10 +469,18 @@ export type PersoneroScalarWhereWithAggregatesInput = {
   localName?: Prisma.StringWithAggregatesFilter<"Personero"> | string
   localAddress?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
   mesa?: Prisma.StringWithAggregatesFilter<"Personero"> | string
+  aula?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
+  role?: Prisma.StringWithAggregatesFilter<"Personero"> | string
+  isSuplente?: Prisma.BoolWithAggregatesFilter<"Personero"> | boolean
   coordinatorName?: Prisma.StringWithAggregatesFilter<"Personero"> | string
   coordinatorPhone?: Prisma.StringWithAggregatesFilter<"Personero"> | string
   active?: Prisma.BoolWithAggregatesFilter<"Personero"> | boolean
   notes?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
+  whatsappNotifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Personero"> | Date | string | null
+  credentialToken?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
+  isMesaMember?: Prisma.BoolWithAggregatesFilter<"Personero"> | boolean
+  mesaMemberRole?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
+  experience?: Prisma.BoolNullableWithAggregatesFilter<"Personero"> | boolean | null
   createdById?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
   updatedById?: Prisma.StringNullableWithAggregatesFilter<"Personero"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Personero"> | Date | string
@@ -399,14 +498,23 @@ export type PersoneroCreateInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPersonerosInput
   updatedBy?: Prisma.UserCreateNestedOneWithoutUpdatedPersonerosInput
+  actas?: Prisma.ActaElectoralCreateNestedManyWithoutPersoneroInput
 }
 
 export type PersoneroUncheckedCreateInput = {
@@ -420,14 +528,23 @@ export type PersoneroUncheckedCreateInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   createdById?: string | null
   updatedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  actas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutPersoneroInput
 }
 
 export type PersoneroUpdateInput = {
@@ -441,14 +558,23 @@ export type PersoneroUpdateInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPersonerosNestedInput
   updatedBy?: Prisma.UserUpdateOneWithoutUpdatedPersonerosNestedInput
+  actas?: Prisma.ActaElectoralUpdateManyWithoutPersoneroNestedInput
 }
 
 export type PersoneroUncheckedUpdateInput = {
@@ -462,14 +588,23 @@ export type PersoneroUncheckedUpdateInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutPersoneroNestedInput
 }
 
 export type PersoneroCreateManyInput = {
@@ -483,10 +618,18 @@ export type PersoneroCreateManyInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   createdById?: string | null
   updatedById?: string | null
   createdAt?: Date | string
@@ -504,10 +647,18 @@ export type PersoneroUpdateManyMutationInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -523,10 +674,18 @@ export type PersoneroUncheckedUpdateManyInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -559,10 +718,18 @@ export type PersoneroCountOrderByAggregateInput = {
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrder
   mesa?: Prisma.SortOrder
+  aula?: Prisma.SortOrder
+  role?: Prisma.SortOrder
+  isSuplente?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrder
   active?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  whatsappNotifiedAt?: Prisma.SortOrder
+  credentialToken?: Prisma.SortOrder
+  isMesaMember?: Prisma.SortOrder
+  mesaMemberRole?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   updatedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -580,10 +747,18 @@ export type PersoneroMaxOrderByAggregateInput = {
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrder
   mesa?: Prisma.SortOrder
+  aula?: Prisma.SortOrder
+  role?: Prisma.SortOrder
+  isSuplente?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrder
   active?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  whatsappNotifiedAt?: Prisma.SortOrder
+  credentialToken?: Prisma.SortOrder
+  isMesaMember?: Prisma.SortOrder
+  mesaMemberRole?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   updatedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -601,14 +776,27 @@ export type PersoneroMinOrderByAggregateInput = {
   localName?: Prisma.SortOrder
   localAddress?: Prisma.SortOrder
   mesa?: Prisma.SortOrder
+  aula?: Prisma.SortOrder
+  role?: Prisma.SortOrder
+  isSuplente?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrder
   active?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  whatsappNotifiedAt?: Prisma.SortOrder
+  credentialToken?: Prisma.SortOrder
+  isMesaMember?: Prisma.SortOrder
+  mesaMemberRole?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   updatedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type PersoneroNullableScalarRelationFilter = {
+  is?: Prisma.PersoneroWhereInput | null
+  isNot?: Prisma.PersoneroWhereInput | null
 }
 
 export type PersoneroCreateNestedManyWithoutCreatedByInput = {
@@ -703,6 +891,26 @@ export type NullableEnumDistrictFieldUpdateOperationsInput = {
   set?: $Enums.District | null
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
+export type PersoneroCreateNestedOneWithoutActasInput = {
+  create?: Prisma.XOR<Prisma.PersoneroCreateWithoutActasInput, Prisma.PersoneroUncheckedCreateWithoutActasInput>
+  connectOrCreate?: Prisma.PersoneroCreateOrConnectWithoutActasInput
+  connect?: Prisma.PersoneroWhereUniqueInput
+}
+
+export type PersoneroUpdateOneWithoutActasNestedInput = {
+  create?: Prisma.XOR<Prisma.PersoneroCreateWithoutActasInput, Prisma.PersoneroUncheckedCreateWithoutActasInput>
+  connectOrCreate?: Prisma.PersoneroCreateOrConnectWithoutActasInput
+  upsert?: Prisma.PersoneroUpsertWithoutActasInput
+  disconnect?: Prisma.PersoneroWhereInput | boolean
+  delete?: Prisma.PersoneroWhereInput | boolean
+  connect?: Prisma.PersoneroWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PersoneroUpdateToOneWithWhereWithoutActasInput, Prisma.PersoneroUpdateWithoutActasInput>, Prisma.PersoneroUncheckedUpdateWithoutActasInput>
+}
+
 export type PersoneroCreateWithoutCreatedByInput = {
   id?: string
   docType?: $Enums.DocumentType
@@ -714,13 +922,22 @@ export type PersoneroCreateWithoutCreatedByInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
   updatedBy?: Prisma.UserCreateNestedOneWithoutUpdatedPersonerosInput
+  actas?: Prisma.ActaElectoralCreateNestedManyWithoutPersoneroInput
 }
 
 export type PersoneroUncheckedCreateWithoutCreatedByInput = {
@@ -734,13 +951,22 @@ export type PersoneroUncheckedCreateWithoutCreatedByInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   updatedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  actas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutPersoneroInput
 }
 
 export type PersoneroCreateOrConnectWithoutCreatedByInput = {
@@ -764,13 +990,22 @@ export type PersoneroCreateWithoutUpdatedByInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPersonerosInput
+  actas?: Prisma.ActaElectoralCreateNestedManyWithoutPersoneroInput
 }
 
 export type PersoneroUncheckedCreateWithoutUpdatedByInput = {
@@ -784,13 +1019,22 @@ export type PersoneroUncheckedCreateWithoutUpdatedByInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  actas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutPersoneroInput
 }
 
 export type PersoneroCreateOrConnectWithoutUpdatedByInput = {
@@ -833,10 +1077,18 @@ export type PersoneroScalarWhereInput = {
   localName?: Prisma.StringFilter<"Personero"> | string
   localAddress?: Prisma.StringNullableFilter<"Personero"> | string | null
   mesa?: Prisma.StringFilter<"Personero"> | string
+  aula?: Prisma.StringNullableFilter<"Personero"> | string | null
+  role?: Prisma.StringFilter<"Personero"> | string
+  isSuplente?: Prisma.BoolFilter<"Personero"> | boolean
   coordinatorName?: Prisma.StringFilter<"Personero"> | string
   coordinatorPhone?: Prisma.StringFilter<"Personero"> | string
   active?: Prisma.BoolFilter<"Personero"> | boolean
   notes?: Prisma.StringNullableFilter<"Personero"> | string | null
+  whatsappNotifiedAt?: Prisma.DateTimeNullableFilter<"Personero"> | Date | string | null
+  credentialToken?: Prisma.StringNullableFilter<"Personero"> | string | null
+  isMesaMember?: Prisma.BoolFilter<"Personero"> | boolean
+  mesaMemberRole?: Prisma.StringNullableFilter<"Personero"> | string | null
+  experience?: Prisma.BoolNullableFilter<"Personero"> | boolean | null
   createdById?: Prisma.StringNullableFilter<"Personero"> | string | null
   updatedById?: Prisma.StringNullableFilter<"Personero"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Personero"> | Date | string
@@ -859,6 +1111,138 @@ export type PersoneroUpdateManyWithWhereWithoutUpdatedByInput = {
   data: Prisma.XOR<Prisma.PersoneroUpdateManyMutationInput, Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByInput>
 }
 
+export type PersoneroCreateWithoutActasInput = {
+  id?: string
+  docType?: $Enums.DocumentType
+  docNumber: string
+  name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
+  district?: $Enums.District | null
+  localName: string
+  localAddress?: string | null
+  mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
+  coordinatorName: string
+  coordinatorPhone: string
+  active?: boolean
+  notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedPersonerosInput
+  updatedBy?: Prisma.UserCreateNestedOneWithoutUpdatedPersonerosInput
+}
+
+export type PersoneroUncheckedCreateWithoutActasInput = {
+  id?: string
+  docType?: $Enums.DocumentType
+  docNumber: string
+  name: string
+  phone?: string | null
+  source?: $Enums.PersoneroSource
+  district?: $Enums.District | null
+  localName: string
+  localAddress?: string | null
+  mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
+  coordinatorName: string
+  coordinatorPhone: string
+  active?: boolean
+  notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
+  createdById?: string | null
+  updatedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PersoneroCreateOrConnectWithoutActasInput = {
+  where: Prisma.PersoneroWhereUniqueInput
+  create: Prisma.XOR<Prisma.PersoneroCreateWithoutActasInput, Prisma.PersoneroUncheckedCreateWithoutActasInput>
+}
+
+export type PersoneroUpsertWithoutActasInput = {
+  update: Prisma.XOR<Prisma.PersoneroUpdateWithoutActasInput, Prisma.PersoneroUncheckedUpdateWithoutActasInput>
+  create: Prisma.XOR<Prisma.PersoneroCreateWithoutActasInput, Prisma.PersoneroUncheckedCreateWithoutActasInput>
+  where?: Prisma.PersoneroWhereInput
+}
+
+export type PersoneroUpdateToOneWithWhereWithoutActasInput = {
+  where?: Prisma.PersoneroWhereInput
+  data: Prisma.XOR<Prisma.PersoneroUpdateWithoutActasInput, Prisma.PersoneroUncheckedUpdateWithoutActasInput>
+}
+
+export type PersoneroUpdateWithoutActasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
+  district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  localName?: Prisma.StringFieldUpdateOperationsInput | string
+  localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedPersonerosNestedInput
+  updatedBy?: Prisma.UserUpdateOneWithoutUpdatedPersonerosNestedInput
+}
+
+export type PersoneroUncheckedUpdateWithoutActasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  docType?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+  docNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumPersoneroSourceFieldUpdateOperationsInput | $Enums.PersoneroSource
+  district?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  localName?: Prisma.StringFieldUpdateOperationsInput | string
+  localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type PersoneroCreateManyCreatedByInput = {
   id?: string
   docType?: $Enums.DocumentType
@@ -870,10 +1254,18 @@ export type PersoneroCreateManyCreatedByInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   updatedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -890,10 +1282,18 @@ export type PersoneroCreateManyUpdatedByInput = {
   localName: string
   localAddress?: string | null
   mesa: string
+  aula?: string | null
+  role?: string
+  isSuplente?: boolean
   coordinatorName: string
   coordinatorPhone: string
   active?: boolean
   notes?: string | null
+  whatsappNotifiedAt?: Date | string | null
+  credentialToken?: string | null
+  isMesaMember?: boolean
+  mesaMemberRole?: string | null
+  experience?: boolean | null
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -910,13 +1310,22 @@ export type PersoneroUpdateWithoutCreatedByInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedBy?: Prisma.UserUpdateOneWithoutUpdatedPersonerosNestedInput
+  actas?: Prisma.ActaElectoralUpdateManyWithoutPersoneroNestedInput
 }
 
 export type PersoneroUncheckedUpdateWithoutCreatedByInput = {
@@ -930,13 +1339,22 @@ export type PersoneroUncheckedUpdateWithoutCreatedByInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   updatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutPersoneroNestedInput
 }
 
 export type PersoneroUncheckedUpdateManyWithoutCreatedByInput = {
@@ -950,10 +1368,18 @@ export type PersoneroUncheckedUpdateManyWithoutCreatedByInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   updatedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -970,13 +1396,22 @@ export type PersoneroUpdateWithoutUpdatedByInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedPersonerosNestedInput
+  actas?: Prisma.ActaElectoralUpdateManyWithoutPersoneroNestedInput
 }
 
 export type PersoneroUncheckedUpdateWithoutUpdatedByInput = {
@@ -990,13 +1425,22 @@ export type PersoneroUncheckedUpdateWithoutUpdatedByInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutPersoneroNestedInput
 }
 
 export type PersoneroUncheckedUpdateManyWithoutUpdatedByInput = {
@@ -1010,15 +1454,52 @@ export type PersoneroUncheckedUpdateManyWithoutUpdatedByInput = {
   localName?: Prisma.StringFieldUpdateOperationsInput | string
   localAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mesa?: Prisma.StringFieldUpdateOperationsInput | string
+  aula?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  isSuplente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   coordinatorName?: Prisma.StringFieldUpdateOperationsInput | string
   coordinatorPhone?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  credentialToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isMesaMember?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mesaMemberRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  experience?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type PersoneroCountOutputType
+ */
+
+export type PersoneroCountOutputType = {
+  actas: number
+}
+
+export type PersoneroCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  actas?: boolean | PersoneroCountOutputTypeCountActasArgs
+}
+
+/**
+ * PersoneroCountOutputType without action
+ */
+export type PersoneroCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PersoneroCountOutputType
+   */
+  select?: Prisma.PersoneroCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PersoneroCountOutputType without action
+ */
+export type PersoneroCountOutputTypeCountActasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActaElectoralWhereInput
+}
 
 
 export type PersoneroSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1032,16 +1513,26 @@ export type PersoneroSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   localName?: boolean
   localAddress?: boolean
   mesa?: boolean
+  aula?: boolean
+  role?: boolean
+  isSuplente?: boolean
   coordinatorName?: boolean
   coordinatorPhone?: boolean
   active?: boolean
   notes?: boolean
+  whatsappNotifiedAt?: boolean
+  credentialToken?: boolean
+  isMesaMember?: boolean
+  mesaMemberRole?: boolean
+  experience?: boolean
   createdById?: boolean
   updatedById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean | Prisma.Personero$createdByArgs<ExtArgs>
   updatedBy?: boolean | Prisma.Personero$updatedByArgs<ExtArgs>
+  actas?: boolean | Prisma.Personero$actasArgs<ExtArgs>
+  _count?: boolean | Prisma.PersoneroCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["personero"]>
 
 export type PersoneroSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1055,10 +1546,18 @@ export type PersoneroSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   localName?: boolean
   localAddress?: boolean
   mesa?: boolean
+  aula?: boolean
+  role?: boolean
+  isSuplente?: boolean
   coordinatorName?: boolean
   coordinatorPhone?: boolean
   active?: boolean
   notes?: boolean
+  whatsappNotifiedAt?: boolean
+  credentialToken?: boolean
+  isMesaMember?: boolean
+  mesaMemberRole?: boolean
+  experience?: boolean
   createdById?: boolean
   updatedById?: boolean
   createdAt?: boolean
@@ -1078,10 +1577,18 @@ export type PersoneroSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   localName?: boolean
   localAddress?: boolean
   mesa?: boolean
+  aula?: boolean
+  role?: boolean
+  isSuplente?: boolean
   coordinatorName?: boolean
   coordinatorPhone?: boolean
   active?: boolean
   notes?: boolean
+  whatsappNotifiedAt?: boolean
+  credentialToken?: boolean
+  isMesaMember?: boolean
+  mesaMemberRole?: boolean
+  experience?: boolean
   createdById?: boolean
   updatedById?: boolean
   createdAt?: boolean
@@ -1101,20 +1608,30 @@ export type PersoneroSelectScalar = {
   localName?: boolean
   localAddress?: boolean
   mesa?: boolean
+  aula?: boolean
+  role?: boolean
+  isSuplente?: boolean
   coordinatorName?: boolean
   coordinatorPhone?: boolean
   active?: boolean
   notes?: boolean
+  whatsappNotifiedAt?: boolean
+  credentialToken?: boolean
+  isMesaMember?: boolean
+  mesaMemberRole?: boolean
+  experience?: boolean
   createdById?: boolean
   updatedById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PersoneroOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "docType" | "docNumber" | "name" | "phone" | "source" | "district" | "localName" | "localAddress" | "mesa" | "coordinatorName" | "coordinatorPhone" | "active" | "notes" | "createdById" | "updatedById" | "createdAt" | "updatedAt", ExtArgs["result"]["personero"]>
+export type PersoneroOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "docType" | "docNumber" | "name" | "phone" | "source" | "district" | "localName" | "localAddress" | "mesa" | "aula" | "role" | "isSuplente" | "coordinatorName" | "coordinatorPhone" | "active" | "notes" | "whatsappNotifiedAt" | "credentialToken" | "isMesaMember" | "mesaMemberRole" | "experience" | "createdById" | "updatedById" | "createdAt" | "updatedAt", ExtArgs["result"]["personero"]>
 export type PersoneroInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.Personero$createdByArgs<ExtArgs>
   updatedBy?: boolean | Prisma.Personero$updatedByArgs<ExtArgs>
+  actas?: boolean | Prisma.Personero$actasArgs<ExtArgs>
+  _count?: boolean | Prisma.PersoneroCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PersoneroIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.Personero$createdByArgs<ExtArgs>
@@ -1130,6 +1647,7 @@ export type $PersoneroPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     createdBy: Prisma.$UserPayload<ExtArgs> | null
     updatedBy: Prisma.$UserPayload<ExtArgs> | null
+    actas: Prisma.$ActaElectoralPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1142,10 +1660,18 @@ export type $PersoneroPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     localName: string
     localAddress: string | null
     mesa: string
+    aula: string | null
+    role: string
+    isSuplente: boolean
     coordinatorName: string
     coordinatorPhone: string
     active: boolean
     notes: string | null
+    whatsappNotifiedAt: Date | null
+    credentialToken: string | null
+    isMesaMember: boolean
+    mesaMemberRole: string | null
+    experience: boolean | null
     createdById: string | null
     updatedById: string | null
     createdAt: Date
@@ -1546,6 +2072,7 @@ export interface Prisma__PersoneroClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   createdBy<T extends Prisma.Personero$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Personero$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   updatedBy<T extends Prisma.Personero$updatedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Personero$updatedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  actas<T extends Prisma.Personero$actasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Personero$actasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActaElectoralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1585,10 +2112,18 @@ export interface PersoneroFieldRefs {
   readonly localName: Prisma.FieldRef<"Personero", 'String'>
   readonly localAddress: Prisma.FieldRef<"Personero", 'String'>
   readonly mesa: Prisma.FieldRef<"Personero", 'String'>
+  readonly aula: Prisma.FieldRef<"Personero", 'String'>
+  readonly role: Prisma.FieldRef<"Personero", 'String'>
+  readonly isSuplente: Prisma.FieldRef<"Personero", 'Boolean'>
   readonly coordinatorName: Prisma.FieldRef<"Personero", 'String'>
   readonly coordinatorPhone: Prisma.FieldRef<"Personero", 'String'>
   readonly active: Prisma.FieldRef<"Personero", 'Boolean'>
   readonly notes: Prisma.FieldRef<"Personero", 'String'>
+  readonly whatsappNotifiedAt: Prisma.FieldRef<"Personero", 'DateTime'>
+  readonly credentialToken: Prisma.FieldRef<"Personero", 'String'>
+  readonly isMesaMember: Prisma.FieldRef<"Personero", 'Boolean'>
+  readonly mesaMemberRole: Prisma.FieldRef<"Personero", 'String'>
+  readonly experience: Prisma.FieldRef<"Personero", 'Boolean'>
   readonly createdById: Prisma.FieldRef<"Personero", 'String'>
   readonly updatedById: Prisma.FieldRef<"Personero", 'String'>
   readonly createdAt: Prisma.FieldRef<"Personero", 'DateTime'>
@@ -2029,6 +2564,30 @@ export type Personero$updatedByArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Personero.actas
+ */
+export type Personero$actasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActaElectoral
+   */
+  select?: Prisma.ActaElectoralSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActaElectoral
+   */
+  omit?: Prisma.ActaElectoralOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActaElectoralInclude<ExtArgs> | null
+  where?: Prisma.ActaElectoralWhereInput
+  orderBy?: Prisma.ActaElectoralOrderByWithRelationInput | Prisma.ActaElectoralOrderByWithRelationInput[]
+  cursor?: Prisma.ActaElectoralWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActaElectoralScalarFieldEnum | Prisma.ActaElectoralScalarFieldEnum[]
 }
 
 /**

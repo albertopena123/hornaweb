@@ -116,3 +116,24 @@ export const RecipientStatus = {
 } as const
 
 export type RecipientStatus = (typeof RecipientStatus)[keyof typeof RecipientStatus]
+
+
+export const CandidateCargo = {
+  gobernador: 'gobernador',
+  provincial: 'provincial',
+  distrital: 'distrital'
+} as const
+
+export type CandidateCargo = (typeof CandidateCargo)[keyof typeof CandidateCargo]
+
+
+export const ActaStatus = {
+  draft: 'draft',
+  enviada: 'enviada',
+  en_revision: 'en_revision',
+  aprobada: 'aprobada',
+  observada: 'observada',
+  anulada: 'anulada'
+} as const
+
+export type ActaStatus = (typeof ActaStatus)[keyof typeof ActaStatus]

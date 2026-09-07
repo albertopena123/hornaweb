@@ -217,6 +217,7 @@ export type UserWhereInput = {
   createdContacts?: Prisma.ContactListRelationFilter
   createdContactImports?: Prisma.ContactImportListRelationFilter
   createdCampaigns?: Prisma.CampaignListRelationFilter
+  reviewedActas?: Prisma.ActaElectoralListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -239,6 +240,7 @@ export type UserOrderByWithRelationInput = {
   createdContacts?: Prisma.ContactOrderByRelationAggregateInput
   createdContactImports?: Prisma.ContactImportOrderByRelationAggregateInput
   createdCampaigns?: Prisma.CampaignOrderByRelationAggregateInput
+  reviewedActas?: Prisma.ActaElectoralOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -264,6 +266,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdContacts?: Prisma.ContactListRelationFilter
   createdContactImports?: Prisma.ContactImportListRelationFilter
   createdCampaigns?: Prisma.CampaignListRelationFilter
+  reviewedActas?: Prisma.ActaElectoralListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -314,6 +317,7 @@ export type UserCreateInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -336,6 +340,7 @@ export type UserUncheckedCreateInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUpdateInput = {
@@ -358,6 +363,7 @@ export type UserUpdateInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -380,6 +386,7 @@ export type UserUncheckedUpdateInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -646,6 +653,22 @@ export type UserUpdateOneWithoutCreatedCampaignsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedCampaignsInput, Prisma.UserUpdateWithoutCreatedCampaignsInput>, Prisma.UserUncheckedUpdateWithoutCreatedCampaignsInput>
 }
 
+export type UserCreateNestedOneWithoutReviewedActasInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedActasInput, Prisma.UserUncheckedCreateWithoutReviewedActasInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedActasInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutReviewedActasNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedActasInput, Prisma.UserUncheckedCreateWithoutReviewedActasInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedActasInput
+  upsert?: Prisma.UserUpsertWithoutReviewedActasInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedActasInput, Prisma.UserUpdateWithoutReviewedActasInput>, Prisma.UserUncheckedUpdateWithoutReviewedActasInput>
+}
+
 export type UserCreateWithoutRolesInput = {
   id?: string
   email: string
@@ -665,6 +688,7 @@ export type UserCreateWithoutRolesInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutRolesInput = {
@@ -686,6 +710,7 @@ export type UserUncheckedCreateWithoutRolesInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutRolesInput = {
@@ -723,6 +748,7 @@ export type UserUpdateWithoutRolesInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRolesInput = {
@@ -744,6 +770,7 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -765,6 +792,7 @@ export type UserCreateWithoutSessionsInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -786,6 +814,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -823,6 +852,7 @@ export type UserUpdateWithoutSessionsInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -844,6 +874,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutCreatedSupportersInput = {
@@ -865,6 +896,7 @@ export type UserCreateWithoutCreatedSupportersInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSupportersInput = {
@@ -886,6 +918,7 @@ export type UserUncheckedCreateWithoutCreatedSupportersInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSupportersInput = {
@@ -912,6 +945,7 @@ export type UserCreateWithoutReviewedSupportersInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutReviewedSupportersInput = {
@@ -933,6 +967,7 @@ export type UserUncheckedCreateWithoutReviewedSupportersInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutReviewedSupportersInput = {
@@ -970,6 +1005,7 @@ export type UserUpdateWithoutCreatedSupportersInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSupportersInput = {
@@ -991,6 +1027,7 @@ export type UserUncheckedUpdateWithoutCreatedSupportersInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUpsertWithoutReviewedSupportersInput = {
@@ -1023,6 +1060,7 @@ export type UserUpdateWithoutReviewedSupportersInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedSupportersInput = {
@@ -1044,6 +1082,7 @@ export type UserUncheckedUpdateWithoutReviewedSupportersInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutCreatedPersonerosInput = {
@@ -1065,6 +1104,7 @@ export type UserCreateWithoutCreatedPersonerosInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedPersonerosInput = {
@@ -1086,6 +1126,7 @@ export type UserUncheckedCreateWithoutCreatedPersonerosInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedPersonerosInput = {
@@ -1112,6 +1153,7 @@ export type UserCreateWithoutUpdatedPersonerosInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutUpdatedPersonerosInput = {
@@ -1133,6 +1175,7 @@ export type UserUncheckedCreateWithoutUpdatedPersonerosInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutUpdatedPersonerosInput = {
@@ -1170,6 +1213,7 @@ export type UserUpdateWithoutCreatedPersonerosInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedPersonerosInput = {
@@ -1191,6 +1235,7 @@ export type UserUncheckedUpdateWithoutCreatedPersonerosInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUpsertWithoutUpdatedPersonerosInput = {
@@ -1223,6 +1268,7 @@ export type UserUpdateWithoutUpdatedPersonerosInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUpdatedPersonerosInput = {
@@ -1244,6 +1290,7 @@ export type UserUncheckedUpdateWithoutUpdatedPersonerosInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutCreatedAnnouncementsInput = {
@@ -1265,6 +1312,7 @@ export type UserCreateWithoutCreatedAnnouncementsInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedAnnouncementsInput = {
@@ -1286,6 +1334,7 @@ export type UserUncheckedCreateWithoutCreatedAnnouncementsInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedAnnouncementsInput = {
@@ -1312,6 +1361,7 @@ export type UserCreateWithoutUpdatedAnnouncementsInput = {
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutUpdatedAnnouncementsInput = {
@@ -1333,6 +1383,7 @@ export type UserUncheckedCreateWithoutUpdatedAnnouncementsInput = {
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutUpdatedAnnouncementsInput = {
@@ -1370,6 +1421,7 @@ export type UserUpdateWithoutCreatedAnnouncementsInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedAnnouncementsInput = {
@@ -1391,6 +1443,7 @@ export type UserUncheckedUpdateWithoutCreatedAnnouncementsInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUpsertWithoutUpdatedAnnouncementsInput = {
@@ -1423,6 +1476,7 @@ export type UserUpdateWithoutUpdatedAnnouncementsInput = {
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUpdatedAnnouncementsInput = {
@@ -1444,6 +1498,7 @@ export type UserUncheckedUpdateWithoutUpdatedAnnouncementsInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutCreatedContactsInput = {
@@ -1465,6 +1520,7 @@ export type UserCreateWithoutCreatedContactsInput = {
   updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedContactsInput = {
@@ -1486,6 +1542,7 @@ export type UserUncheckedCreateWithoutCreatedContactsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedContactsInput = {
@@ -1523,6 +1580,7 @@ export type UserUpdateWithoutCreatedContactsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedContactsInput = {
@@ -1544,6 +1602,7 @@ export type UserUncheckedUpdateWithoutCreatedContactsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutCreatedContactImportsInput = {
@@ -1565,6 +1624,7 @@ export type UserCreateWithoutCreatedContactImportsInput = {
   updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedContactImportsInput = {
@@ -1586,6 +1646,7 @@ export type UserUncheckedCreateWithoutCreatedContactImportsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedContactImportsInput = {
@@ -1623,6 +1684,7 @@ export type UserUpdateWithoutCreatedContactImportsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedContactImportsInput = {
@@ -1644,6 +1706,7 @@ export type UserUncheckedUpdateWithoutCreatedContactImportsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutCreatedCampaignsInput = {
@@ -1665,6 +1728,7 @@ export type UserCreateWithoutCreatedCampaignsInput = {
   updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
   createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedCampaignsInput = {
@@ -1686,6 +1750,7 @@ export type UserUncheckedCreateWithoutCreatedCampaignsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
   createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
   createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedCampaignsInput = {
@@ -1723,6 +1788,7 @@ export type UserUpdateWithoutCreatedCampaignsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
   createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedCampaignsInput = {
@@ -1744,6 +1810,111 @@ export type UserUncheckedUpdateWithoutCreatedCampaignsInput = {
   updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
+}
+
+export type UserCreateWithoutReviewedActasInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
+  reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
+  createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
+  updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
+  createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
+  createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutReviewedActasInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
+  createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
+  createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutReviewedActasInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedActasInput, Prisma.UserUncheckedCreateWithoutReviewedActasInput>
+}
+
+export type UserUpsertWithoutReviewedActasInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewedActasInput, Prisma.UserUncheckedUpdateWithoutReviewedActasInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedActasInput, Prisma.UserUncheckedCreateWithoutReviewedActasInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewedActasInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewedActasInput, Prisma.UserUncheckedUpdateWithoutReviewedActasInput>
+}
+
+export type UserUpdateWithoutReviewedActasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
+  reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
+  createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
+  updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
+  createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
+  createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewedActasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
+  createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -1763,6 +1934,7 @@ export type UserCountOutputType = {
   createdContacts: number
   createdContactImports: number
   createdCampaigns: number
+  reviewedActas: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1777,6 +1949,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   createdContacts?: boolean | UserCountOutputTypeCountCreatedContactsArgs
   createdContactImports?: boolean | UserCountOutputTypeCountCreatedContactImportsArgs
   createdCampaigns?: boolean | UserCountOutputTypeCountCreatedCampaignsArgs
+  reviewedActas?: boolean | UserCountOutputTypeCountReviewedActasArgs
 }
 
 /**
@@ -1866,6 +2039,13 @@ export type UserCountOutputTypeCountCreatedCampaignsArgs<ExtArgs extends runtime
   where?: Prisma.CampaignWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReviewedActasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActaElectoralWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1887,6 +2067,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdContacts?: boolean | Prisma.User$createdContactsArgs<ExtArgs>
   createdContactImports?: boolean | Prisma.User$createdContactImportsArgs<ExtArgs>
   createdCampaigns?: boolean | Prisma.User$createdCampaignsArgs<ExtArgs>
+  reviewedActas?: boolean | Prisma.User$reviewedActasArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1936,6 +2117,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdContacts?: boolean | Prisma.User$createdContactsArgs<ExtArgs>
   createdContactImports?: boolean | Prisma.User$createdContactImportsArgs<ExtArgs>
   createdCampaigns?: boolean | Prisma.User$createdCampaignsArgs<ExtArgs>
+  reviewedActas?: boolean | Prisma.User$reviewedActasArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1955,6 +2137,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdContacts: Prisma.$ContactPayload<ExtArgs>[]
     createdContactImports: Prisma.$ContactImportPayload<ExtArgs>[]
     createdCampaigns: Prisma.$CampaignPayload<ExtArgs>[]
+    reviewedActas: Prisma.$ActaElectoralPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2370,6 +2553,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   createdContacts<T extends Prisma.User$createdContactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdContactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdContactImports<T extends Prisma.User$createdContactImportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdContactImportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactImportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdCampaigns<T extends Prisma.User$createdCampaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewedActas<T extends Prisma.User$reviewedActasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedActasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActaElectoralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3061,6 +3245,30 @@ export type User$createdCampaignsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.CampaignScalarFieldEnum | Prisma.CampaignScalarFieldEnum[]
+}
+
+/**
+ * User.reviewedActas
+ */
+export type User$reviewedActasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActaElectoral
+   */
+  select?: Prisma.ActaElectoralSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActaElectoral
+   */
+  omit?: Prisma.ActaElectoralOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActaElectoralInclude<ExtArgs> | null
+  where?: Prisma.ActaElectoralWhereInput
+  orderBy?: Prisma.ActaElectoralOrderByWithRelationInput | Prisma.ActaElectoralOrderByWithRelationInput[]
+  cursor?: Prisma.ActaElectoralWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActaElectoralScalarFieldEnum | Prisma.ActaElectoralScalarFieldEnum[]
 }
 
 /**

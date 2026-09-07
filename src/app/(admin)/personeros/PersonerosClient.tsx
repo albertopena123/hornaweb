@@ -13,8 +13,38 @@ import {
   deletePersonero,
   setPersoneroActive,
   setPublicRegistration,
+  notifyPersoneroWhatsApp,
+  notifyAllPendingWhatsApp,
+  assignPersoneroToMesa,
 } from "./actions";
-import type { PersoneroRow, PersoneroInput, PermFlags, ActionResult, LocalOption } from "./types";
+import type {
+  PersoneroRow,
+  PersoneroInput,
+  PermFlags,
+  ActionResult,
+  LocalOption,
+  ElectoralLocalData,
+} from "./types";
+import { CoverageMap } from "./CoverageMap";
+import { MesasView } from "./MesasView";
+import Link from "next/link";
+import {
+  Map,
+  Vote,
+  Users,
+  Send,
+  ExternalLink,
+  Phone,
+  CheckCircle2,
+  AlertTriangle,
+  Building2,
+  Check,
+  Sparkles,
+  Tv,
+  CheckCheck,
+  FileText,
+  UserCheck,
+} from "lucide-react";
 
 const DOC_TYPES = [
   { id: "dni", label: "DNI" },
@@ -32,21 +62,36 @@ export function PersonerosClient({
   rows,
   perms,
   locales,
+  electoralLocales,
   publicRegistration,
 }: {
   rows: PersoneroRow[];
   perms: PermFlags;
   locales: LocalOption[];
+  electoralLocales: ElectoralLocalData[];
   publicRegistration: boolean;
 }) {
+  const [activeTab, setActiveTab] = useState<"map" | "mesas" | "list">("map");
   const [q, setQ] = useState("");
   const [district, setDistrict] = useState<string>("");
-  const [modal, setModal] = useState<null | { mode: "create" } | { mode: "edit"; row: PersoneroRow }>(null);
+  const [roleFilter, setRoleFilter] = useState<string>("");
+  const [modal, setModal] = useState<
+    | null
+    | { mode: "create"; prefillMesa?: string; prefillLocal?: string; prefillRole?: "titular" | "suplente" }
+    | { mode: "edit"; row: PersoneroRow }
+  >(null);
   const [toDelete, setToDelete] = useState<PersoneroRow | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
-  // Switch "Inscripción pública": abre la pestaña Personero del formulario flotante del landing.
   const [pubReg, setPubReg] = useState(publicRegistration);
   const [pubBusy, setPubBusy] = useState(false);
+  const [notifyingId, setNotifyingId] = useState<string | null>(null);
+  const [massNotifying, setMassNotifying] = useState(false);
+
+  const [pending, startTransition] = useTransition();
+
+  function toast(kind: Toast["kind"], message: string) {
+    setToasts((t) => [...t, { id: Date.now() + Math.random(), kind, message }]);
+  }
 
   async function togglePublic() {
     const next = !pubReg;
@@ -60,22 +105,71 @@ export function PersonerosClient({
     }
     setPubBusy(false);
   }
-  const [pending, startTransition] = useTransition();
 
-  function toast(kind: Toast["kind"], message: string) {
-    setToasts((t) => [...t, { id: Date.now() + Math.random(), kind, message }]);
+  const [localList, setLocalList] = useState<ElectoralLocalData[]>(electoralLocales);
+  const [personeroList, setPersoneroList] = useState<PersoneroRow[]>(rows);
+
+  useEffect(() => {
+    setLocalList(electoralLocales);
+  }, [electoralLocales]);
+
+  useEffect(() => {
+    setPersoneroList(rows);
+  }, [rows]);
+
+  function handleCoordinatorUpdated(localId: string, name: string, phone: string) {
+    const targetLocal = localList.find((l) => l.id === localId);
+    setLocalList((prev) =>
+      prev.map((l) => (l.id === localId ? { ...l, coordinatorName: name, coordinatorPhone: phone } : l))
+    );
+    if (targetLocal) {
+      setPersoneroList((prev) =>
+        prev.map((p) =>
+          p.localName.toLowerCase().includes(targetLocal.name.toLowerCase()) ||
+          targetLocal.name.toLowerCase().includes(p.localName.toLowerCase())
+            ? { ...p, coordinatorName: name, coordinatorPhone: phone }
+            : p
+        )
+      );
+    }
+    toast("success", `Coordinador actualizado: ${name}`);
   }
+
+  // KPIs
+  const totalMesasRegion = 511;
+  const mesasCubiertas = useMemo(() => {
+    let count = 0;
+    localList.forEach((l) => (count += l.cubiertasCount));
+    return count;
+  }, [localList]);
+
+  const colegiosConCoord = useMemo(
+    () => localList.filter((l) => !!l.coordinatorName).length,
+    [localList]
+  );
+
+  const pctCubiertas = Math.round((mesasCubiertas / totalMesasRegion) * 100);
+  const notificadosCount = useMemo(() => personeroList.filter((r) => r.whatsappNotifiedAt !== null).length, [personeroList]);
 
   const visible = useMemo(() => {
     const term = q.trim().toLowerCase();
-    return rows.filter(
-      (r) =>
-        (district === "" || r.district === district) &&
-        (term === "" ||
-          r.name.toLowerCase().includes(term) ||
-          r.docNumber.toLowerCase().includes(term)),
-    );
-  }, [rows, q, district]);
+    return personeroList.filter((r) => {
+      const matchesDistrict = district === "" || r.district === district;
+      const matchesRole =
+        roleFilter === "" ||
+        (roleFilter === "titular" && !r.isSuplente && r.role !== "general") ||
+        (roleFilter === "suplente" && (r.isSuplente || r.role === "suplente")) ||
+        (roleFilter === "general" && r.role === "general");
+      const matchesTerm =
+        term === "" ||
+        r.name.toLowerCase().includes(term) ||
+        r.docNumber.toLowerCase().includes(term) ||
+        r.mesa.includes(term) ||
+        r.localName.toLowerCase().includes(term);
+
+      return matchesDistrict && matchesRole && matchesTerm;
+    });
+  }, [personeroList, q, district, roleFilter]);
 
   function run(action: () => Promise<ActionResult<unknown>>, okMsg: string) {
     startTransition(async () => {
@@ -85,170 +179,440 @@ export function PersonerosClient({
     });
   }
 
+  async function handleSendWhatsApp(personeroId: string, name: string) {
+    setNotifyingId(personeroId);
+    const origin = window.location.origin;
+    const res = await notifyPersoneroWhatsApp(personeroId, origin);
+    if (res.ok) {
+      toast("success", `Notificación entregada por WhatsApp a ${name}.`);
+    } else {
+      toast("error", res.error);
+    }
+    setNotifyingId(null);
+  }
+
+  async function handleMassWhatsApp() {
+    if (!confirm("¿Deseas enviar WhatsApp con su credencial a todos los personeros asignados pendientes de notificación?")) {
+      return;
+    }
+    setMassNotifying(true);
+    const origin = window.location.origin;
+    const res = await notifyAllPendingWhatsApp(origin);
+    if (res.ok) {
+      toast(
+        "success",
+        `Envío masivo completado: ${res.data?.sentCount} enviados, ${res.data?.failCount} fallidos.`
+      );
+    } else {
+      toast("error", res.error);
+    }
+    setMassNotifying(false);
+  }
+
+  function handleAssignFromMesaOrMap(mesaNum: string, localName: string, role?: "titular" | "suplente") {
+    setModal({
+      mode: "create",
+      prefillMesa: mesaNum,
+      prefillLocal: localName,
+      prefillRole: role || "titular",
+    });
+  }
+
+  function handleLocalUpdated(updated: ElectoralLocalData) {
+    setLocalList((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
+    toast("success", `Datos del colegio actualizados: ${updated.name}`);
+  }
+
   return (
     <div className="personeros">
+      {/* Header Principal */}
       <header className="personeros__head">
-        <div>
-          <h1>Personeros</h1>
-          <p className="personeros__sub">Asignaciones de mesa para el día de la elección</p>
+        <div className="personeros__title-wrap">
+          <h1>Módulo de Personeros</h1>
+          <p className="personeros__sub">
+            Gestión electoral integral · Cobertura de 511 mesas y 51 colegios en Madre de Dios
+          </p>
         </div>
-        {perms.canWrite && (
-          <button className="btn btn--primary" onClick={() => setModal({ mode: "create" })}>
-            <Icon name="plus" size={16} /> Registrar personero
-          </button>
-        )}
+        <div className="personeros__head-actions">
+          {perms.canWrite && (
+            <>
+              <button
+                type="button"
+                className="btn btn--secondary"
+                onClick={handleMassWhatsApp}
+                disabled={massNotifying}
+              >
+                <Send size={15} /> {massNotifying ? "Enviando..." : "Notificar WhatsApp"}
+              </button>
+              <button
+                type="button"
+                className="btn btn--primary"
+                onClick={() => setModal({ mode: "create" })}
+              >
+                <Icon name="plus" size={16} /> Registrar personero
+              </button>
+            </>
+          )}
+        </div>
       </header>
 
-      <div className="personeros__toggle">
-        <div>
-          <div className="personeros__toggle-label">Inscripción pública en la web</div>
-          <div className="personeros__toggle-sub">
-            {pubReg
-              ? "El formulario flotante del landing muestra la pestaña «Personero». Las inscripciones entran como inactivas para que las revises y asignes."
-              : "Desactivado: el landing solo muestra el registro de simpatizantes."}
+      {/* Tarjetas de Resumen KPI */}
+      <div className="personeros-kpis">
+        <div className="kpi-card">
+          <div className="kpi-icon-wrap kpi-icon--blue">
+            <Vote size={20} />
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Total Mesas MDD</span>
+            <span className="kpi-value">{totalMesasRegion}</span>
+            <span className="kpi-hint">51 Colegios Región</span>
           </div>
         </div>
-        <button
-          type="button"
-          role="switch"
-          aria-checked={pubReg}
-          aria-label="Activar inscripción pública de personeros"
-          className={`personeros__switch ${pubReg ? "is-on" : ""}`}
-          disabled={!perms.canWrite || pubBusy}
-          onClick={togglePublic}
-        />
+
+        <div className="kpi-card">
+          <div className="kpi-icon-wrap kpi-icon--green">
+            <CheckCircle2 size={20} />
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Mesas Cubiertas</span>
+            <span className="kpi-value">
+              {mesasCubiertas} <span style={{ fontSize: "13px", fontWeight: 600, color: "#10b981" }}>({pctCubiertas}%)</span>
+            </span>
+            <span className="kpi-hint">Personero Asignado</span>
+          </div>
+        </div>
+
+        <div className="kpi-card">
+          <div className="kpi-icon-wrap kpi-icon--red">
+            <AlertTriangle size={20} />
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Mesas Faltantes</span>
+            <span className="kpi-value">{Math.max(0, totalMesasRegion - mesasCubiertas)}</span>
+            <span className="kpi-hint">Por cubrir en región</span>
+          </div>
+        </div>
+
+        <div className="kpi-card">
+          <div className="kpi-icon-wrap kpi-icon--purple">
+            <Users size={20} />
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Registrados</span>
+            <span className="kpi-value">{personeroList.length}</span>
+            <span className="kpi-hint">{notificadosCount} con WhatsApp</span>
+          </div>
+        </div>
+
+        <div className="kpi-card kpi-card--wide">
+          <div className="kpi-icon-wrap kpi-icon--amber">
+            <UserCheck size={20} />
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Coordinadores de Colegio</span>
+            <span className="kpi-value">
+              {colegiosConCoord} / {localList.length} colegios
+            </span>
+            <span className="kpi-hint">
+              {localList.length - colegiosConCoord > 0
+                ? `${localList.length - colegiosConCoord} colegios pendientes de asignar coordinador`
+                : "100% de colegios asignados con coordinador"}
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div className="personeros__filters">
-        <input
-          className="personeros__search"
-          placeholder="Buscar por nombre o documento…"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-        <select
-          className="personeros__district"
-          value={district}
-          onChange={(e) => setDistrict(e.target.value)}
-        >
-          <option value="">Todos los distritos</option>
-          {DISTRICTS.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* Pestañas de Navegación de Submódulos */}
+      <nav className="personeros-subnav">
+        <div className="subnav-tabs">
+          <button
+            type="button"
+            className={`subnav-tab ${activeTab === "map" ? "subnav-tab--active" : ""}`}
+            onClick={() => setActiveTab("map")}
+          >
+            <Map size={16} /> Mapa de Cobertura
+            <span className="subnav-counter">{localList.length}</span>
+          </button>
+          <button
+            type="button"
+            className={`subnav-tab ${activeTab === "mesas" ? "subnav-tab--active" : ""}`}
+            onClick={() => setActiveTab("mesas")}
+          >
+            <Vote size={16} /> Padrón de Mesas
+            <span className="subnav-counter">{totalMesasRegion}</span>
+          </button>
+          <button
+            type="button"
+            className={`subnav-tab ${activeTab === "list" ? "subnav-tab--active" : ""}`}
+            onClick={() => setActiveTab("list")}
+          >
+            <Users size={16} /> Directorio
+            <span className="subnav-counter">{personeroList.length}</span>
+          </button>
+        </div>
 
-      <div className="tablewrap density-comfy">
-        <div className="tablewrap__scroll">
-          <table className="dtable">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Documento</th>
-                <th>Distrito</th>
-                <th>Local</th>
-                <th>Mesa</th>
-                <th>Coordinador</th>
-                <th>Estado</th>
-                {perms.canWrite && <th></th>}
-              </tr>
-            </thead>
-            <tbody>
-              {visible.length === 0 && (
-                <tr>
-                  <td colSpan={perms.canWrite ? 8 : 7} className="personeros__empty">
-                    <Icon name="id-card" size={22} />
-                    <span>No hay personeros con estos filtros.</span>
-                  </td>
-                </tr>
-              )}
-              {visible.map((r) => (
-                <tr key={r.id}>
-                  <td>
-                    <div className="personeros__name-row">
-                      <span className="personeros__name">{r.name}</span>
-                      {r.source === "public" && (
-                        <span className="badge badge--neutral" title="Inscrito desde el formulario del landing">
-                          Web
-                        </span>
-                      )}
-                    </div>
-                    {r.phone && <div className="personeros__notes">{r.phone}</div>}
-                    {r.notes && <div className="personeros__notes">{r.notes}</div>}
-                  </td>
-                  <td>
-                    <span className="personeros__doc">
-                      <span className="badge badge--neutral">{DOC_LABEL[r.docType]}</span>
-                      <span className="personeros__doc-num">{r.docNumber}</span>
-                    </span>
-                  </td>
-                  <td>{r.district ? districtLabel(r.district as DistrictId) : <span className="dtable__muted">—</span>}</td>
-                  <td>
-                    <div>{r.localName}</div>
-                    {r.localAddress && <div className="personeros__notes">{r.localAddress}</div>}
-                  </td>
-                  <td className="personeros__mesa">{r.mesa}</td>
-                  <td>
-                    <div>{r.coordinatorName}</div>
-                    <div className="personeros__notes">{r.coordinatorPhone}</div>
-                  </td>
-                  <td>
-                    <span className={`badge ${r.active ? "badge--green" : "badge--red"}`}>
-                      {r.active ? "Activo" : "Inactivo"}
-                    </span>
-                  </td>
-                  {perms.canWrite && (
-                    <td>
-                      <div className="personeros__actions">
-                        <button
-                          className="btn btn--ghost btn--sm"
-                          disabled={pending}
-                          onClick={() =>
-                            run(
-                              () => setPersoneroActive(r.id, !r.active),
-                              r.active ? "Personero desactivado." : "Personero activado.",
-                            )
-                          }
-                        >
-                          {r.active ? "Desactivar" : "Activar"}
-                        </button>
-                        <button
-                          className="iconbtn"
-                          title="Editar"
-                          onClick={() => setModal({ mode: "edit", row: r })}
-                        >
-                          <Icon name="settings" size={16} />
-                        </button>
-                        <button className="iconbtn" title="Eliminar" onClick={() => setToDelete(r)}>
-                          <Icon name="trash" size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  )}
-                </tr>
+        <div className="subnav-actions">
+          <Link
+            href="/verificacion"
+            className="btn btn--sm btn--primary"
+            title="Estación de Cotejo y Aprobación de Actas"
+          >
+            <CheckCheck size={14} /> Verificación
+          </Link>
+
+          <Link
+            href="/visor-envivo"
+            target="_blank"
+            className="btn btn--sm btn--tv-live"
+            title="Pantalla Gigante de Cómputo Electoral en Vivo"
+          >
+            <Tv size={14} className="text-red animate-pulse" /> Pantalla TV <ExternalLink size={12} />
+          </Link>
+
+          <Link
+            href="/candidatos"
+            className="btn btn--sm btn--secondary"
+            title="Padrón y Edición Oficial de Candidatos"
+          >
+            <Vote size={13} /> Candidatos
+          </Link>
+
+          <Link
+            href="/personero/acta"
+            className="btn btn--sm btn--secondary"
+            title="Módulo de Registro y Subida de Acta de Escrutinio"
+          >
+            <FileText size={13} /> Subir Acta
+          </Link>
+
+          <div className="pub-reg-toggle-wrap">
+            <span className="pub-reg-label">Inscripción:</span>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={pubReg}
+              aria-label="Activar inscripción pública de personeros"
+              className={`personeros__switch ${pubReg ? "is-on" : ""}`}
+              disabled={!perms.canWrite || pubBusy}
+              onClick={togglePublic}
+            />
+          </div>
+        </div>
+      </nav>
+
+      {/* Submódulo 1: Mapa Interactivo de Cobertura */}
+      {activeTab === "map" && (
+        <CoverageMap
+          locales={localList}
+          personeros={personeroList}
+          onAssignMesa={handleAssignFromMesaOrMap}
+          onCoordinatorUpdated={handleCoordinatorUpdated}
+          onLocalUpdated={handleLocalUpdated}
+        />
+      )}
+
+      {/* Submódulo 2: Mesas por Colegio */}
+      {activeTab === "mesas" && (
+        <MesasView
+          locales={localList}
+          personeros={personeroList}
+          onAssignMesa={handleAssignFromMesaOrMap}
+          onCoordinatorUpdated={handleCoordinatorUpdated}
+          onLocalUpdated={handleLocalUpdated}
+        />
+      )}
+
+      {/* Submódulo 3: Directorio Tabular de Personeros */}
+      {activeTab === "list" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+          <div className="personeros__filters">
+            <input
+              className="personeros__search"
+              placeholder="Buscar por nombre, DNI, mesa o colegio…"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+            <select
+              className="personeros__district"
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+            >
+              <option value="">Todos los cargos</option>
+              <option value="titular">Personeros Titulares</option>
+              <option value="suplente">Personeros Suplentes</option>
+              <option value="general">Personeros Generales</option>
+            </select>
+            <select
+              className="personeros__district"
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
+            >
+              <option value="">Todos los distritos</option>
+              {DISTRICTS.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.label}
+                </option>
               ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="tablefoot">
-          <span>
-            {visible.length} de {rows.length} personero{rows.length === 1 ? "" : "s"}
-          </span>
-        </div>
-      </div>
+            </select>
+          </div>
 
+          <div className="tablewrap density-comfy">
+            <div className="tablewrap__scroll">
+              <table className="dtable">
+                <thead>
+                  <tr>
+                    <th>Nombre / DNI</th>
+                    <th>Cargo</th>
+                    <th>Colegio / Local</th>
+                    <th>Mesa y Aula</th>
+                    <th>Celular</th>
+                    <th>Notificación WhatsApp</th>
+                    <th>Credencial</th>
+                    {perms.canWrite && <th>Acciones</th>}
+                  </tr>
+                </thead>
+                <tbody>
+                  {visible.length === 0 && (
+                    <tr>
+                      <td colSpan={perms.canWrite ? 8 : 7} className="personeros__empty">
+                        <Icon name="id-card" size={22} />
+                        <span>No hay personeros con estos filtros.</span>
+                      </td>
+                    </tr>
+                  )}
+                  {visible.map((r) => {
+                    const credUrl = `/credencial/${r.credentialToken || r.id}`;
+                    return (
+                      <tr key={r.id}>
+                        <td>
+                          <div className="personeros__name-row">
+                            <span className="personeros__name">{r.name}</span>
+                            {r.isMesaMember && (
+                              <span className="badge badge--amber" title="Seleccionado por ONPE como miembro de mesa">
+                                Miembro ONPE
+                              </span>
+                            )}
+                          </div>
+                          <span className="personeros__doc">
+                            <span className="badge badge--neutral">{DOC_LABEL[r.docType]}</span>
+                            <span className="personeros__doc-num">{r.docNumber}</span>
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            className={`badge ${
+                              r.role === "general"
+                                ? "badge--purple"
+                                : r.isSuplente || r.role === "suplente"
+                                ? "badge--amber"
+                                : "badge--green"
+                            }`}
+                          >
+                            {r.role === "general"
+                              ? "General de Local"
+                              : r.isSuplente || r.role === "suplente"
+                              ? "Suplente de Mesa"
+                              : "Titular de Mesa"}
+                          </span>
+                        </td>
+                        <td>
+                          <div><strong>{r.localName}</strong></div>
+                          {r.localAddress && <div className="personeros__notes">{r.localAddress}</div>}
+                        </td>
+                        <td>
+                          {r.mesa ? (
+                            <div>
+                              <span className="personeros__mesa">Mesa {r.mesa}</span>
+                              <div className="personeros__notes">Aula: {r.aula || "—"}</div>
+                            </div>
+                          ) : (
+                            <span className="badge badge--red">Sin mesa</span>
+                          )}
+                        </td>
+                        <td>
+                          {r.phone ? (
+                            <span style={{ fontFamily: "monospace", fontWeight: 600 }}>{r.phone}</span>
+                          ) : (
+                            <span className="dtable__muted">—</span>
+                          )}
+                        </td>
+                        <td>
+                          {r.whatsappNotifiedAt ? (
+                            <span className="wa-status-tag">
+                              <CheckCircle2 size={13} /> Notificado
+                            </span>
+                          ) : (
+                            <span className="wa-status-tag wa-status-tag--pending">Pendiente</span>
+                          )}
+                        </td>
+                        <td>
+                          <a
+                            href={credUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-cred-link"
+                            title="Ver Credencial Oficial con QR"
+                          >
+                            <ExternalLink size={12} /> Ver Credencial
+                          </a>
+                        </td>
+                        {perms.canWrite && (
+                          <td>
+                            <div className="personeros__actions">
+                              {r.phone && r.mesa && (
+                                <button
+                                  type="button"
+                                  className="btn-wa-notify"
+                                  disabled={notifyingId === r.id}
+                                  onClick={() => handleSendWhatsApp(r.id, r.name)}
+                                  title="Enviar datos y credencial por WhatsApp"
+                                >
+                                  <Send size={12} /> {notifyingId === r.id ? "..." : "WhatsApp"}
+                                </button>
+                              )}
+                              <button
+                                className="iconbtn"
+                                title="Editar datos o asignación"
+                                onClick={() => setModal({ mode: "edit", row: r })}
+                              >
+                                <Icon name="settings" size={16} />
+                              </button>
+                              <button className="iconbtn" title="Eliminar" onClick={() => setToDelete(r)}>
+                                <Icon name="trash" size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="tablefoot">
+              <span>
+                Mostrando {visible.length} de {rows.length} personeros registrados
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Registro / Edición */}
       {modal && (
         <PersoneroModal
           initial={modal.mode === "edit" ? modal.row : null}
+          prefillMesa={modal.mode === "create" ? modal.prefillMesa : undefined}
+          prefillLocal={modal.mode === "create" ? modal.prefillLocal : undefined}
+          prefillRole={modal.mode === "create" ? modal.prefillRole : undefined}
           locales={locales}
           onClose={() => setModal(null)}
           onSubmit={async (input) => {
+            const origin = window.location.origin;
             const res =
               modal.mode === "edit"
-                ? await updatePersonero(modal.row.id, input)
-                : await createPersonero(input);
+                ? await updatePersonero(modal.row.id, input, origin)
+                : await createPersonero(input, origin);
             if (res.ok) {
               toast("success", modal.mode === "edit" ? "Personero actualizado." : "Personero registrado.");
               setModal(null);
@@ -258,12 +622,13 @@ export function PersonerosClient({
         />
       )}
 
+      {/* Modal de Confirmación de Eliminación */}
       {toDelete && (
         <ConfirmDialog
           title="Eliminar personero"
           description={
             <>
-              Se eliminará <strong>{toDelete.name}</strong>. Esta acción no se puede deshacer.
+              Se eliminará a <strong>{toDelete.name}</strong> de la lista de personeros. Esta acción no se puede deshacer.
             </>
           }
           confirmLabel="Eliminar"
@@ -290,11 +655,17 @@ function fold(s: string): string {
 
 function PersoneroModal({
   initial,
+  prefillMesa,
+  prefillLocal,
+  prefillRole,
   locales,
   onClose,
   onSubmit,
 }: {
   initial: PersoneroRow | null;
+  prefillMesa?: string;
+  prefillLocal?: string;
+  prefillRole?: "titular" | "suplente";
   locales: LocalOption[];
   onClose: () => void;
   onSubmit: (input: PersoneroInput) => Promise<ActionResult<unknown>>;
@@ -304,11 +675,22 @@ function PersoneroModal({
   const [name, setName] = useState(initial?.name ?? "");
   const [phone, setPhone] = useState(initial?.phone ?? "");
   const [district, setDistrict] = useState(initial?.district ?? "");
-  const [localName, setLocalName] = useState(initial?.localName ?? "");
+  const [localName, setLocalName] = useState(initial?.localName ?? prefillLocal ?? "");
   const [localAddress, setLocalAddress] = useState(initial?.localAddress ?? "");
-  const [mesa, setMesa] = useState(initial?.mesa ?? "");
-  const [coordinatorName, setCoordinatorName] = useState(initial?.coordinatorName ?? "");
-  const [coordinatorPhone, setCoordinatorPhone] = useState(initial?.coordinatorPhone ?? "");
+  const [mesa, setMesa] = useState(initial?.mesa ?? prefillMesa ?? "");
+  const [aula, setAula] = useState(initial?.aula ?? "");
+  const [role, setRole] = useState<string>(
+    initial
+      ? initial.role === "general"
+        ? "general"
+        : initial.isSuplente || initial.role === "suplente"
+        ? "suplente"
+        : "titular"
+      : prefillRole || "titular"
+  );
+  const [coordinatorName, setCoordinatorName] = useState(initial?.coordinatorName ?? "Coordinación Central Ahora Nación");
+  const [coordinatorPhone, setCoordinatorPhone] = useState(initial?.coordinatorPhone ?? "982136949");
+  const [sendWhatsApp, setSendWhatsApp] = useState(false);
   const [active, setActive] = useState(initial?.active ?? true);
   const [notes, setNotes] = useState(initial?.notes ?? "");
   const [busy, setBusy] = useState(false);
@@ -316,8 +698,6 @@ function PersoneroModal({
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
   useEscClose(true, onClose, busy);
 
-  // Combobox de local: sugiere colegios del padrón MINEDU y autorrellena
-  // dirección y distrito al elegir. Sigue aceptando texto libre.
   const [localOpen, setLocalOpen] = useState(false);
   const [localIdx, setLocalIdx] = useState(-1);
 
@@ -338,28 +718,16 @@ function PersoneroModal({
     setLocalIdx(-1);
   }
 
-  const errStyle = { color: "#b91c1c", fontSize: 12, marginTop: 4 } as const;
-  const hintMuted = { color: "#7a8699", fontSize: 12, marginTop: 4 } as const;
-  const hintOk = { color: "#15803d", fontSize: 12, marginTop: 4 } as const;
-
-  // Autorellenado por DNI (solo al registrar): al completar 8 dígitos consulta
-  // /api/dni/:dni (proxy propio) y llena el nombre completo. No sobreescribe un
-  // nombre escrito a mano; solo actualiza si está vacío o fue autorellenado.
-  const [dniLookup, setDniLookup] = useState<
-    "idle" | "loading" | "found" | "notfound" | "error"
-  >("idle");
+  // Autocompletado de DNI
+  const [dniLookup, setDniLookup] = useState<"idle" | "loading" | "found" | "notfound" | "error">("idle");
   const autoNameRef = useRef<string | null>(null);
 
   useEffect(() => {
     const doc = docNumber.trim();
     const eligible = !initial && docType === "dni" && /^\d{8}$/.test(doc);
     const ctrl = new AbortController();
-    // Todas las actualizaciones de estado ocurren dentro del callback diferido
-    // (nunca de forma síncrona en el cuerpo del efecto).
+
     const t = setTimeout(async () => {
-      // Al cambiar el DNI, limpia el nombre si fue autorellenado antes (no toca
-      // lo que el usuario escribió a mano), para no arrastrar datos del DNI
-      // anterior cuando el nuevo no resuelva.
       const auto = autoNameRef.current;
       setName((prev) => (auto !== null && prev === auto ? "" : prev));
       autoNameRef.current = null;
@@ -395,6 +763,8 @@ function PersoneroModal({
     setBusy(true);
     setTopError(null);
     setFieldErrors({});
+
+    const isSupl = role === "suplente";
     const res = await onSubmit({
       docType,
       docNumber,
@@ -404,11 +774,16 @@ function PersoneroModal({
       localName,
       localAddress: localAddress || undefined,
       mesa,
+      aula: aula || undefined,
+      role: role === "general" ? "general" : role,
+      isSuplente: isSupl,
       coordinatorName,
       coordinatorPhone,
       active,
       notes: notes || undefined,
+      sendWhatsAppImmediately: sendWhatsApp,
     });
+
     if (!res.ok) {
       setTopError(res.error);
       setFieldErrors(res.fieldErrors ?? {});
@@ -418,13 +793,14 @@ function PersoneroModal({
 
   return (
     <div className="modal-backdrop" onClick={() => !busy && onClose()}>
-      <form className="modal" onClick={(e) => e.stopPropagation()} onSubmit={submit}>
+      <form className="modal" style={{ maxWidth: "620px" }} onClick={(e) => e.stopPropagation()} onSubmit={submit}>
         <header className="modal__head">
-          <h2>{initial ? "Editar personero" : "Registrar personero"}</h2>
+          <h2>{initial ? "Editar asignación de personero" : "Registrar nuevo personero"}</h2>
           <button type="button" className="iconbtn" onClick={onClose} aria-label="Cerrar">
             <Icon name="close" size={20} />
           </button>
         </header>
+
         <div className="modal__body">
           {topError && (
             <div className="login__error" role="alert" style={{ marginBottom: 16 }}>
@@ -444,195 +820,166 @@ function PersoneroModal({
                 ))}
               </select>
             </label>
+
             <label className="field">
               <span className="field__label">
                 N° de documento<span className="field__req">*</span>
               </span>
               <input
                 type="text"
-                inputMode={docType === "dni" ? "numeric" : "text"}
-                maxLength={docType === "dni" ? 8 : 12}
+                maxLength={12}
                 value={docNumber}
                 onChange={(e) => setDocNumber(e.target.value)}
-                aria-invalid={!!fieldErrors.docNumber}
+                placeholder={docType === "dni" ? "8 dígitos" : "N° de documento"}
+                required
               />
-              {fieldErrors.docNumber && <span style={errStyle}>{fieldErrors.docNumber}</span>}
+              {dniLookup === "loading" && <span style={{ fontSize: "11px", color: "#2563eb" }}>Consultando padrón...</span>}
+              {fieldErrors.docNumber && <span style={{ color: "#b91c1c", fontSize: "11px" }}>{fieldErrors.docNumber}</span>}
             </label>
           </div>
-
-          <label className="field">
-            <span className="field__label">
-              Nombre completo<span className="field__req">*</span>
-            </span>
-            <input
-              type="text"
-              autoFocus
-              value={name}
-              maxLength={120}
-              placeholder={dniLookup === "loading" ? "Buscando datos…" : undefined}
-              onChange={(e) => setName(e.target.value)}
-              aria-invalid={!!fieldErrors.name}
-            />
-            {dniLookup === "loading" && <span style={hintMuted}>Consultando DNI…</span>}
-            {dniLookup === "found" && <span style={hintOk}>✓ Datos encontrados con el DNI</span>}
-            {dniLookup === "notfound" && (
-              <span style={hintMuted}>No encontramos el DNI, escribe el nombre.</span>
-            )}
-            {dniLookup === "error" && (
-              <span style={hintMuted}>No se pudo consultar el DNI, escribe el nombre.</span>
-            )}
-            {fieldErrors.name && <span style={errStyle}>{fieldErrors.name}</span>}
-          </label>
-
-          <label className="field">
-            <span className="field__label">Celular del personero</span>
-            <input
-              type="tel"
-              inputMode="tel"
-              value={phone}
-              maxLength={15}
-              placeholder="987 654 321"
-              onChange={(e) => setPhone(e.target.value)}
-              aria-invalid={!!fieldErrors.phone}
-            />
-            {fieldErrors.phone && <span style={errStyle}>{fieldErrors.phone}</span>}
-          </label>
-
-          <label className="field">
-            <span className="field__label">Distrito</span>
-            <select value={district} onChange={(e) => setDistrict(e.target.value)} aria-invalid={!!fieldErrors.district}>
-              <option value="">Sin distrito</option>
-              {DISTRICTS.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.label} ({d.province})
-                </option>
-              ))}
-            </select>
-            {fieldErrors.district && <span style={errStyle}>{fieldErrors.district}</span>}
-          </label>
-
-          <div className="field">
-            <span className="field__label">
-              Local / Colegio<span className="field__req">*</span>
-            </span>
-            <div className="combo">
-              <input
-                type="text"
-                role="combobox"
-                aria-expanded={localOpen && localSuggestions.length > 0}
-                aria-autocomplete="list"
-                aria-controls="local-listbox"
-                placeholder="Escribe para buscar en el padrón…"
-                value={localName}
-                maxLength={120}
-                onChange={(e) => {
-                  setLocalName(e.target.value);
-                  setLocalOpen(true);
-                  setLocalIdx(-1);
-                }}
-                onFocus={() => setLocalOpen(true)}
-                onBlur={() => {
-                  // Deja pasar el click en una opción antes de cerrar.
-                  setTimeout(() => setLocalOpen(false), 150);
-                }}
-                onKeyDown={(e) => {
-                  if (!localOpen || localSuggestions.length === 0) return;
-                  if (e.key === "ArrowDown") {
-                    e.preventDefault();
-                    setLocalIdx((i) => (i + 1) % localSuggestions.length);
-                  } else if (e.key === "ArrowUp") {
-                    e.preventDefault();
-                    setLocalIdx((i) => (i <= 0 ? localSuggestions.length - 1 : i - 1));
-                  } else if (e.key === "Enter" && localIdx >= 0) {
-                    e.preventDefault();
-                    pickLocal(localSuggestions[localIdx]);
-                  } else if (e.key === "Escape") {
-                    setLocalOpen(false);
-                  }
-                }}
-                aria-invalid={!!fieldErrors.localName}
-              />
-              {localOpen && localSuggestions.length > 0 && (
-                <ul className="combo__list" id="local-listbox" role="listbox">
-                  {localSuggestions.map((l, i) => (
-                    <li
-                      key={l.id}
-                      role="option"
-                      aria-selected={i === localIdx}
-                      className={`combo__opt${i === localIdx ? " is-active" : ""}`}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        pickLocal(l);
-                      }}
-                      onMouseEnter={() => setLocalIdx(i)}
-                    >
-                      <span className="combo__name">{l.name}</span>
-                      <span className="combo__meta">
-                        {districtLabel(l.district as DistrictId)}
-                        {l.locality ? ` · ${l.locality}` : ""}
-                        {l.address ? ` · ${l.address}` : ""}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <span style={hintMuted}>
-              Elige un colegio del padrón (autorrellena dirección y distrito) o escribe otro local.
-            </span>
-            {fieldErrors.localName && <span style={errStyle}>{fieldErrors.localName}</span>}
-          </div>
-
-          <label className="field">
-            <span className="field__label">Dirección del local</span>
-            <input type="text" value={localAddress} maxLength={200} onChange={(e) => setLocalAddress(e.target.value)} />
-          </label>
-
-          <label className="field">
-            <span className="field__label">
-              Número de mesa<span className="field__req">*</span>
-            </span>
-            <input type="text" value={mesa} maxLength={10} onChange={(e) => setMesa(e.target.value)} aria-invalid={!!fieldErrors.mesa} />
-            {fieldErrors.mesa && <span style={errStyle}>{fieldErrors.mesa}</span>}
-          </label>
 
           <div className="personeros__row">
             <label className="field">
               <span className="field__label">
-                Coordinador de local<span className="field__req">*</span>
+                Nombres completos<span className="field__req">*</span>
               </span>
-              <input type="text" value={coordinatorName} maxLength={120} onChange={(e) => setCoordinatorName(e.target.value)} aria-invalid={!!fieldErrors.coordinatorName} />
-              {fieldErrors.coordinatorName && <span style={errStyle}>{fieldErrors.coordinatorName}</span>}
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nombre y apellidos"
+                required
+              />
             </label>
+
             <label className="field">
-              <span className="field__label">
-                Teléfono coordinador<span className="field__req">*</span>
-              </span>
-              <input type="tel" inputMode="tel" value={coordinatorPhone} maxLength={15} onChange={(e) => setCoordinatorPhone(e.target.value)} aria-invalid={!!fieldErrors.coordinatorPhone} />
-              {fieldErrors.coordinatorPhone && <span style={errStyle}>{fieldErrors.coordinatorPhone}</span>}
+              <span className="field__label">Celular WhatsApp</span>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="9 dígitos para notificación"
+              />
             </label>
           </div>
 
-          <label className="field field--check">
-            <input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} />
-            <span>Activo (visible en la consulta pública)</span>
-          </label>
+          <div className="personeros__row">
+            <label className="field">
+              <span className="field__label">Distrito</span>
+              <select value={district} onChange={(e) => setDistrict(e.target.value)}>
+                <option value="">Seleccionar distrito</option>
+                {DISTRICTS.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          <label className="field">
-            <span className="field__label">Notas (internas)</span>
-            <textarea value={notes} maxLength={500} rows={2} onChange={(e) => setNotes(e.target.value)} />
+            <label className="field">
+              <span className="field__label">Cargo Electoral</span>
+              <select value={role} onChange={(e) => setRole(e.target.value)}>
+                <option value="titular">Personero Titular de Mesa</option>
+                <option value="suplente">Personero Suplente de Mesa</option>
+                <option value="general">Personero General de Local</option>
+              </select>
+            </label>
+          </div>
+
+          {/* Local de Votación con Combobox */}
+          <div className="field combo">
+            <span className="field__label">
+              Colegio / Local de Votación<span className="field__req">*</span>
+            </span>
+            <input
+              type="text"
+              value={localName}
+              onChange={(e) => {
+                setLocalName(e.target.value);
+                setLocalOpen(true);
+              }}
+              onFocus={() => setLocalOpen(true)}
+              placeholder="Escribe el nombre del colegio..."
+              required
+            />
+            {localOpen && localSuggestions.length > 0 && (
+              <ul className="combo__list">
+                {localSuggestions.map((l) => (
+                  <li key={l.id} className="combo__item" onClick={() => pickLocal(l)}>
+                    <strong>{l.name}</strong>
+                    {l.address && <div style={{ fontSize: "11px", color: "#64748b" }}>{l.address}</div>}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* Asignación de Mesa y Aula */}
+          <div className="personeros__row" style={{ background: "#f8fafc", padding: "12px", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
+            <label className="field">
+              <span className="field__label">
+                N° de Mesa Oficial<span className="field__req">*</span>
+              </span>
+              <input
+                type="text"
+                value={mesa}
+                onChange={(e) => setMesa(e.target.value)}
+                placeholder="Ej. 067000"
+                style={{ fontWeight: 800, fontSize: "15px", color: "#b91c1c" }}
+                required
+              />
+            </label>
+
+            <label className="field">
+              <span className="field__label">Aula / Pabellón asignado</span>
+              <input
+                type="text"
+                value={aula}
+                onChange={(e) => setAula(e.target.value)}
+                placeholder="Ej. Aula 102 - 1er Piso"
+              />
+            </label>
+          </div>
+
+          <div className="personeros__row">
+            <label className="field">
+              <span className="field__label">Coordinador de Local</span>
+              <input
+                type="text"
+                value={coordinatorName}
+                onChange={(e) => setCoordinatorName(e.target.value)}
+              />
+            </label>
+
+            <label className="field">
+              <span className="field__label">Teléfono Coordinador</span>
+              <input
+                type="tel"
+                value={coordinatorPhone}
+                onChange={(e) => setCoordinatorPhone(e.target.value)}
+              />
+            </label>
+          </div>
+
+          {/* Opción de WhatsApp Inmediato */}
+          <label className="field field--check" style={{ marginTop: "8px", background: "#f0fdf4", padding: "10px 14px", borderRadius: "8px", border: "1px solid #bbf7d0" }}>
+            <input
+              type="checkbox"
+              checked={sendWhatsApp}
+              onChange={(e) => setSendWhatsApp(e.target.checked)}
+            />
+            <span style={{ fontSize: "13px", fontWeight: 700, color: "#166534" }}>
+              📲 Enviar notificación por WhatsApp al personero inmediatamente con su credencial
+            </span>
           </label>
         </div>
+
         <footer className="modal__foot">
-          <button type="button" className="btn btn--ghost" onClick={onClose} disabled={busy}>
+          <button type="button" className="btn btn--secondary" onClick={onClose} disabled={busy}>
             Cancelar
           </button>
-          <button
-            type="submit"
-            className="btn btn--primary"
-            disabled={busy || name.trim().length < 2 || localName.trim().length < 2 || mesa.trim() === "" || coordinatorName.trim().length < 2 || coordinatorPhone.trim() === "" || docNumber.trim() === ""}
-          >
-            {busy ? "Guardando…" : initial ? "Guardar cambios" : "Registrar"}
+          <button type="submit" className="btn btn--primary" disabled={busy}>
+            {busy ? "Guardando..." : initial ? "Guardar cambios" : "Registrar y asignar"}
           </button>
         </footer>
       </form>

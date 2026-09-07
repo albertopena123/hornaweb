@@ -87,6 +87,16 @@ export type Local = Prisma.LocalModel
  */
 export type Personero = Prisma.PersoneroModel
 /**
+ * Model ElectoralLocal
+ * 
+ */
+export type ElectoralLocal = Prisma.ElectoralLocalModel
+/**
+ * Model ElectoralMesa
+ * 
+ */
+export type ElectoralMesa = Prisma.ElectoralMesaModel
+/**
  * Model SiteSetting
  * 
  */
@@ -131,3 +141,18 @@ export type CampaignRecipient = Prisma.CampaignRecipientModel
  * 
  */
 export type MessagingDailyCounter = Prisma.MessagingDailyCounterModel
+/**
+ * Model Candidate
+ * 
+ */
+export type Candidate = Prisma.CandidateModel
+/**
+ * Model ActaElectoral
+ * 
+ */
+export type ActaElectoral = Prisma.ActaElectoralModel
+/**
+ * Model ActaVoto
+ * 
+ */
+export type ActaVoto = Prisma.ActaVotoModel

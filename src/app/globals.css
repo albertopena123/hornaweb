@@ -112,20 +112,37 @@ a:hover {
 }
 
 /* ─────────── Shell ─────────── */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
 .shell {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 .shell__body {
   display: flex;
   flex: 1;
   min-height: 0;
+  width: 100%;
+  max-width: 100vw;
+  min-width: 0;
+  overflow-x: hidden;
 }
 .main {
   flex: 1;
   min-width: 0;
+  max-width: 100vw;
   background: var(--bg);
+  overflow-x: hidden;
 }
 
 /* ─────────── TopBar ─────────── */
@@ -133,6 +150,7 @@ a:hover {
   height: var(--topbar-h);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
   padding: 0 16px 0 8px;
   background: var(--bg);
@@ -214,6 +232,39 @@ a:hover {
 .topbar__search-clear:hover {
   background: rgba(0, 0, 0, 0.06);
 }
+
+.topbar__search-trigger-mobile {
+  display: none;
+}
+.mobile-search-close {
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .topbar__search-trigger-mobile {
+    display: inline-flex;
+  }
+  .topbar__search-wrap:not(.is-mobile-open) {
+    display: none;
+  }
+  .topbar__search-wrap.is-mobile-open {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+  }
+  .topbar__search-wrap.is-mobile-open .topbar__search {
+    max-width: 100%;
+    width: 100%;
+    height: 42px;
+  }
+}
+
 .topbar__right {
   display: flex;
   align-items: center;
@@ -2004,11 +2055,19 @@ html[data-theme="dark"] .badge--red {
 /* Very narrow phones */
 @media (max-width: 480px) {
   .topbar {
-    padding: 0 8px 0 4px;
+    padding: 0 10px;
     gap: 8px;
+    height: 56px;
   }
-  .topbar__right .iconbtn:not(:last-child):not([aria-label="Notificaciones"]) {
-    display: none;
+  .topbar__left {
+    gap: 2px;
+  }
+  .topbar__right {
+    gap: 2px;
+  }
+  .topbar__brand {
+    padding: 0 4px;
+    gap: 6px;
   }
   .page__title {
     flex-direction: column;

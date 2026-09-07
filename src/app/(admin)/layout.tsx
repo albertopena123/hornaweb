@@ -71,5 +71,23 @@ async function buildNotifications(
     }
   }
 
+  if (userHas(user, "actas.verify") || userHas(user, "users.write")) {
+    const pendingActas = await prisma.actaElectoral.findMany({
+      where: { status: { in: ["enviada", "en_revision"] } },
+      orderBy: { submittedAt: "desc" },
+      take: 4,
+      select: { id: true, mesaNumber: true, local: { select: { name: true } } },
+    });
+    for (const a of pendingActas) {
+      out.push({
+        id: `acta-${a.id}`,
+        title: `Acta Mesa N° ${a.mesaNumber} por verificar`,
+        sub: a.local.name,
+        icon: "check",
+        href: "/verificacion",
+      });
+    }
+  }
+
   return out.slice(0, 8);
 }

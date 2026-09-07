@@ -122,9 +122,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  const normalizedEmail = email.trim().toLowerCase();
+  let normalizedEmail = email.trim().toLowerCase();
   if (!normalizedEmail || !password) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
+  }
+
+  // Permitir ingresar directamente con DNI
+  if (/^\d{8}$/.test(normalizedEmail)) {
+    normalizedEmail = `${normalizedEmail}@personeros.ahoranacion.pe`;
   }
 
   // Per-account throttle: cannot be bypassed by rotating the forwarded IP.
@@ -143,6 +148,7 @@ export async function POST(request: Request) {
 
   const user = await prisma.user.findUnique({
     where: { email: normalizedEmail },
+    include: { roles: { include: { role: true } } },
   });
 
   // C2: equalize timing — always run a scrypt verify, even when the email
@@ -174,17 +180,27 @@ export async function POST(request: Request) {
     data: { lastLoginAt: new Date() },
   });
 
+  const roleKeys = user.roles.map((ur) => ur.role.key);
+  let defaultRedirect = "/personeros";
+  if (roleKeys.includes("personero")) {
+    defaultRedirect = "/personero/acta";
+  } else if (roleKeys.includes("verificador")) {
+    defaultRedirect = "/verificacion";
+  }
+
   if (isMobile && session) {
     return NextResponse.json({
       ok: true,
       token: session.token,
       expiresAt: session.expiresAt.toISOString(),
+      defaultRedirect,
       user: {
         id: user.id,
         email: user.email,
         name: user.name,
+        roles: roleKeys,
       },
     });
   }
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, defaultRedirect });
 }

@@ -95,6 +95,60 @@ export const PERMISSIONS: PermissionDef[] = [
       "Importar contactos, crear y controlar campañas, conectar WhatsApp y dar de baja contactos",
     category: "Mensajería",
   },
+  {
+    key: "candidatos.read",
+    name: "Ver candidatos",
+    description: "Consultar el listado de candidatos, partidos y fotos oficiales",
+    category: "Candidatos",
+  },
+  {
+    key: "candidatos.write",
+    name: "Gestionar candidatos",
+    description: "Crear, editar nombres, fotos, logos, colores y activar/desactivar candidatos",
+    category: "Candidatos",
+  },
+  {
+    key: "locales.read",
+    name: "Ver locales de votación",
+    description: "Consultar colegios y locales de votación en mapa y padrón",
+    category: "Locales y Mesas",
+  },
+  {
+    key: "locales.write",
+    name: "Gestionar locales de votación",
+    description: "Editar nombres, códigos, direcciones y coordenadas GPS de colegios",
+    category: "Locales y Mesas",
+  },
+  {
+    key: "mesas.read",
+    name: "Ver mesas de sufragio",
+    description: "Consultar las 511 mesas de sufragio y su estado de cobertura",
+    category: "Locales y Mesas",
+  },
+  {
+    key: "mesas.write",
+    name: "Gestionar mesas y asignaciones",
+    description: "Asignar y reasignar personeros titulares y suplentes, y editar aulas",
+    category: "Locales y Mesas",
+  },
+  {
+    key: "actas.read",
+    name: "Ver actas y cómputo",
+    description: "Consultar actas electorales y resultados en tiempo real",
+    category: "Cómputo Electoral",
+  },
+  {
+    key: "actas.write",
+    name: "Registrar actas",
+    description: "Subir fotografías y registrar votos de actas de escrutinio",
+    category: "Cómputo Electoral",
+  },
+  {
+    key: "actas.verify",
+    name: "Verificar y aprobar actas",
+    description: "Revisar, cotejar lado a lado y aprobar u observar actas electorales",
+    category: "Cómputo Electoral",
+  },
 ];
 
 export type PermissionKey = (typeof PERMISSIONS)[number]["key"];
@@ -110,7 +164,7 @@ export const ROLE_DEFS = [
   {
     key: "admin",
     name: "Administrador",
-    description: "Gestiona usuarios, roles y simpatizantes del sistema.",
+    description: "Gestiona todos los módulos electorales, usuarios, roles y actas.",
     system: true,
     permissions: [
       "users.read",
@@ -125,12 +179,44 @@ export const ROLE_DEFS = [
       "anuncios.write",
       "mensajes.read",
       "mensajes.write",
+      "candidatos.read",
+      "candidatos.write",
+      "locales.read",
+      "locales.write",
+      "mesas.read",
+      "mesas.write",
+      "actas.read",
+      "actas.write",
+      "actas.verify",
+    ],
+  },
+  {
+    key: "verificador",
+    name: "Verificador de Cómputo",
+    description: "Operador del centro de cómputo para validar, contrastar y aprobar actas de escrutinio.",
+    system: true,
+    permissions: [
+      "actas.read",
+      "actas.verify",
+      "candidatos.read",
+      "locales.read",
+      "personeros.read",
+    ],
+  },
+  {
+    key: "personero",
+    name: "Personero de Mesa",
+    description: "Acceso para personeros acreditados para subir y consultar actas de escrutinio.",
+    system: true,
+    permissions: [
+      "actas.read",
+      "actas.write",
     ],
   },
   {
     key: "viewer",
     name: "Consulta",
-    description: "Solo lectura sobre usuarios, roles y simpatizantes.",
+    description: "Solo lectura sobre usuarios, roles, personeros y resultados.",
     system: true,
     permissions: [
       "users.read",
@@ -139,6 +225,7 @@ export const ROLE_DEFS = [
       "personeros.read",
       "anuncios.read",
       "mensajes.read",
+      "actas.read",
     ],
   },
 ] as const;

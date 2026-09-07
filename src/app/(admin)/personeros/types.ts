@@ -8,15 +8,21 @@ export type PersoneroRow = {
   docNumber: string;
   name: string;
   phone: string | null;
-  source: "admin" | "public"; // public = inscrito desde el formulario del landing
+  source: "admin" | "public";
   district: string | null;
   localName: string;
   localAddress: string | null;
   mesa: string;
+  aula: string | null;
+  role: string; // "titular" | "suplente" | "general"
+  isSuplente: boolean;
   coordinatorName: string;
   coordinatorPhone: string;
   active: boolean;
   notes: string | null;
+  whatsappNotifiedAt: string | null;
+  credentialToken: string | null;
+  isMesaMember: boolean;
   createdAt: string; // ISO
   createdByName: string | null;
 };
@@ -30,19 +36,62 @@ export type PersoneroInput = {
   localName: string;
   localAddress?: string;
   mesa: string;
+  aula?: string;
+  role?: string;
+  isSuplente?: boolean;
   coordinatorName: string;
   coordinatorPhone: string;
   active: boolean;
   notes?: string;
+  sendWhatsAppImmediately?: boolean;
 };
 
 export type PermFlags = { canRead: boolean; canWrite: boolean };
 
-// Local educativo del padrón MINEDU, para autocompletar el local de votación.
 export type LocalOption = {
   id: string;
   name: string;
   address: string | null;
   locality: string | null;
   district: string;
+};
+
+export type PersoneroMini = {
+  id: string;
+  name: string;
+  phone: string | null;
+  aula: string | null;
+  role: string;
+  isSuplente?: boolean;
+  whatsappNotifiedAt: string | null;
+};
+
+export type ElectoralMesaData = {
+  id: string;
+  number: string;
+  localId: string;
+  aula: string | null;
+  onpePresidente: string | null;
+  onpeSecretario: string | null;
+  onpeSuplentes: string | null;
+  titular?: PersoneroMini | null;
+  suplente?: PersoneroMini | null;
+  personero?: PersoneroMini | null; // For backwards compatibility
+};
+
+export type ElectoralLocalData = {
+  id: string;
+  code: string;
+  name: string;
+  address: string | null;
+  district: string;
+  province: string;
+  latitude: number | null;
+  longitude: number | null;
+  totalMesas: number;
+  coordinatorName: string | null;
+  coordinatorPhone: string | null;
+  mesas: ElectoralMesaData[];
+  cubiertasCount: number;
+  cubiertasSuplenteCount?: number;
 };

@@ -19,6 +19,7 @@ const PUBLIC_PATHS = new Set<string>([
   "/robots.txt",
   "/sitemap.xml",
   "/manifest.webmanifest",
+  "/visor-envivo",
 ]);
 
 export async function proxy(request: NextRequest) {
@@ -26,10 +27,13 @@ export async function proxy(request: NextRequest) {
 
   const isPublic =
     PUBLIC_PATHS.has(pathname) ||
+    pathname.startsWith("/credencial/") ||
     pathname.startsWith("/api/auth/") ||
     pathname.startsWith("/api/apoyos") ||
     pathname.startsWith("/api/dni/") ||
     pathname.startsWith("/api/personeros/") ||
+    pathname.startsWith("/api/actas/") ||
+    pathname.startsWith("/api/ia/") ||
     pathname.startsWith("/api/waha/") ||
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/assets/") ||

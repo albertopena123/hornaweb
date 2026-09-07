@@ -274,6 +274,11 @@ export type EnumDistrictNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumDistrictNullableFilter<$PrismaModel> | $Enums.District | null
 }
 
+export type BoolNullableFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedBoolNullableFilter<$PrismaModel> | boolean | null
+}
+
 export type EnumPersoneroSourceWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.PersoneroSource | Prisma.EnumPersoneroSourceFieldRefInput<$PrismaModel>
   in?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
@@ -294,21 +299,12 @@ export type EnumDistrictNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumDistrictNullableFilter<$PrismaModel>
 }
 
-export type EnumWhatsappStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.WhatsappStatus | Prisma.EnumWhatsappStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel> | $Enums.WhatsappStatus
-}
-
-export type EnumWhatsappStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.WhatsappStatus | Prisma.EnumWhatsappStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumWhatsappStatusWithAggregatesFilter<$PrismaModel> | $Enums.WhatsappStatus
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel>
+export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
 export type IntFilter<$PrismaModel = never> = {
@@ -336,6 +332,23 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedIntFilter<$PrismaModel>
   _max?: Prisma.NestedIntFilter<$PrismaModel>
+}
+
+export type EnumWhatsappStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.WhatsappStatus | Prisma.EnumWhatsappStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel> | $Enums.WhatsappStatus
+}
+
+export type EnumWhatsappStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.WhatsappStatus | Prisma.EnumWhatsappStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumWhatsappStatusWithAggregatesFilter<$PrismaModel> | $Enums.WhatsappStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel>
 }
 
 export type EnumMessageChannelFilter<$PrismaModel = never> = {
@@ -404,6 +417,40 @@ export type EnumRecipientStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRecipientStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRecipientStatusFilter<$PrismaModel>
+}
+
+export type EnumCandidateCargoFilter<$PrismaModel = never> = {
+  equals?: $Enums.CandidateCargo | Prisma.EnumCandidateCargoFieldRefInput<$PrismaModel>
+  in?: $Enums.CandidateCargo[] | Prisma.ListEnumCandidateCargoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CandidateCargo[] | Prisma.ListEnumCandidateCargoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCandidateCargoFilter<$PrismaModel> | $Enums.CandidateCargo
+}
+
+export type EnumCandidateCargoWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CandidateCargo | Prisma.EnumCandidateCargoFieldRefInput<$PrismaModel>
+  in?: $Enums.CandidateCargo[] | Prisma.ListEnumCandidateCargoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CandidateCargo[] | Prisma.ListEnumCandidateCargoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCandidateCargoWithAggregatesFilter<$PrismaModel> | $Enums.CandidateCargo
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCandidateCargoFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCandidateCargoFilter<$PrismaModel>
+}
+
+export type EnumActaStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ActaStatus | Prisma.EnumActaStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ActaStatus[] | Prisma.ListEnumActaStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ActaStatus[] | Prisma.ListEnumActaStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumActaStatusFilter<$PrismaModel> | $Enums.ActaStatus
+}
+
+export type EnumActaStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ActaStatus | Prisma.EnumActaStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ActaStatus[] | Prisma.ListEnumActaStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ActaStatus[] | Prisma.ListEnumActaStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumActaStatusWithAggregatesFilter<$PrismaModel> | $Enums.ActaStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumActaStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumActaStatusFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -679,6 +726,11 @@ export type NestedEnumDistrictNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumDistrictNullableFilter<$PrismaModel> | $Enums.District | null
 }
 
+export type NestedBoolNullableFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedBoolNullableFilter<$PrismaModel> | boolean | null
+}
+
 export type NestedEnumPersoneroSourceWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.PersoneroSource | Prisma.EnumPersoneroSourceFieldRefInput<$PrismaModel>
   in?: $Enums.PersoneroSource[] | Prisma.ListEnumPersoneroSourceFieldRefInput<$PrismaModel>
@@ -699,21 +751,12 @@ export type NestedEnumDistrictNullableWithAggregatesFilter<$PrismaModel = never>
   _max?: Prisma.NestedEnumDistrictNullableFilter<$PrismaModel>
 }
 
-export type NestedEnumWhatsappStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.WhatsappStatus | Prisma.EnumWhatsappStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel> | $Enums.WhatsappStatus
-}
-
-export type NestedEnumWhatsappStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.WhatsappStatus | Prisma.EnumWhatsappStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumWhatsappStatusWithAggregatesFilter<$PrismaModel> | $Enums.WhatsappStatus
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel>
+export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
 export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -741,6 +784,23 @@ export type NestedFloatFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type NestedEnumWhatsappStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.WhatsappStatus | Prisma.EnumWhatsappStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel> | $Enums.WhatsappStatus
+}
+
+export type NestedEnumWhatsappStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.WhatsappStatus | Prisma.EnumWhatsappStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.WhatsappStatus[] | Prisma.ListEnumWhatsappStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumWhatsappStatusWithAggregatesFilter<$PrismaModel> | $Enums.WhatsappStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumWhatsappStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumMessageChannelFilter<$PrismaModel = never> = {
@@ -809,6 +869,40 @@ export type NestedEnumRecipientStatusWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRecipientStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRecipientStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumCandidateCargoFilter<$PrismaModel = never> = {
+  equals?: $Enums.CandidateCargo | Prisma.EnumCandidateCargoFieldRefInput<$PrismaModel>
+  in?: $Enums.CandidateCargo[] | Prisma.ListEnumCandidateCargoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CandidateCargo[] | Prisma.ListEnumCandidateCargoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCandidateCargoFilter<$PrismaModel> | $Enums.CandidateCargo
+}
+
+export type NestedEnumCandidateCargoWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CandidateCargo | Prisma.EnumCandidateCargoFieldRefInput<$PrismaModel>
+  in?: $Enums.CandidateCargo[] | Prisma.ListEnumCandidateCargoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CandidateCargo[] | Prisma.ListEnumCandidateCargoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCandidateCargoWithAggregatesFilter<$PrismaModel> | $Enums.CandidateCargo
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCandidateCargoFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCandidateCargoFilter<$PrismaModel>
+}
+
+export type NestedEnumActaStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ActaStatus | Prisma.EnumActaStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ActaStatus[] | Prisma.ListEnumActaStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ActaStatus[] | Prisma.ListEnumActaStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumActaStatusFilter<$PrismaModel> | $Enums.ActaStatus
+}
+
+export type NestedEnumActaStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ActaStatus | Prisma.EnumActaStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ActaStatus[] | Prisma.ListEnumActaStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ActaStatus[] | Prisma.ListEnumActaStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumActaStatusWithAggregatesFilter<$PrismaModel> | $Enums.ActaStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumActaStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumActaStatusFilter<$PrismaModel>
 }
 
 

@@ -36,6 +36,8 @@ model User {
   createdContactImports ContactImport[] @relation("ContactImportCreator")
   createdCampaigns      Campaign[]      @relation("CampaignCreator")
 
+  reviewedActas         ActaElectoral[] @relation("ActaReviewer")
+
   @@index([active])
 }
 
@@ -197,31 +199,81 @@ enum PersoneroSource {
 }
 
 model Personero {
-  id               String          @id @default(cuid())
-  docType          DocumentType    @default(dni)
-  docNumber        String
-  name             String
-  phone            String?         // celular del personero (opcional; obligatorio en la inscripción web)
-  source           PersoneroSource @default(admin)
-  district         District?
-  localName        String       // colegio / local de votación
-  localAddress     String?
-  mesa             String       // número de mesa (string: permite ceros a la izquierda)
-  coordinatorName  String
-  coordinatorPhone String
-  active           Boolean      @default(true)
-  notes            String?
-  createdById      String?
-  updatedById      String?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
+  id                 String          @id @default(cuid())
+  docType            DocumentType    @default(dni)
+  docNumber          String
+  name               String
+  phone              String?         // celular del personero
+  source             PersoneroSource @default(admin)
+  district           District?
+  localName          String          // colegio / local de votación
+  localAddress       String?
+  mesa               String          // número de mesa (string: permite ceros a la izquierda)
+  aula               String?         // aula asignada (ej. "Aula 04 - 1er Piso")
+  role               String          @default("titular") // "titular" | "suplente" | "general"
+  isSuplente         Boolean         @default(false)
+  coordinatorName    String
+  coordinatorPhone   String
+  active             Boolean         @default(true)
+  notes              String?
+  whatsappNotifiedAt DateTime?       // fecha y hora de la última notificación enviada
+  credentialToken    String?         @unique // token único para acceso público directo a la credencial digital
+  isMesaMember       Boolean         @default(false) // si fue designado miembro/suplente de mesa por ONPE
+  mesaMemberRole     String?         // cargo de miembro de mesa ONPE si aplica
+  experience         Boolean?        // si tiene experiencia previa como personero
+  createdById        String?
+  updatedById        String?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
 
   createdBy User? @relation("PersoneroCreator", fields: [createdById], references: [id], onDelete: SetNull)
   updatedBy User? @relation("PersoneroUpdater", fields: [updatedById], references: [id], onDelete: SetNull)
+  actas     ActaElectoral[]
 
   @@unique([docType, docNumber])
   @@index([district])
   @@index([active])
+  @@index([mesa])
+}
+
+// Locales de votación oficiales ONPE Elecciones Regionales y Municipales 2026
+model ElectoralLocal {
+  id               String   @id @default(cuid())
+  code             String   @unique // correlativo o código de local
+  name             String   // nombre oficial del colegio/local (ej. "IEBR FAUSTINO MALDONADO")
+  address          String?  // dirección oficial
+  district         District
+  province         String   // Tambopata, Manu, Tahuamanu
+  latitude         Float?
+  longitude        Float?
+  totalMesas       Int      @default(0)
+  coordinatorName  String?  // coordinador asignado al local
+  coordinatorPhone String?  // teléfono del coordinador
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  mesas ElectoralMesa[]
+  actas ActaElectoral[]
+
+  @@index([district])
+  @@index([province])
+}
+
+// Mesas de sufragio oficiales ONPE (511 mesas en Madre de Dios)
+model ElectoralMesa {
+  id             String   @id @default(cuid())
+  number         String   @unique // número oficial de mesa de 6 dígitos
+  localId        String
+  aula           String?  // aula o pabellón
+  onpePresidente String?  // nombre del Presidente de Mesa ONPE
+  onpeSecretario String?  // nombre del Secretario de Mesa ONPE
+  onpeSuplentes  String?  // suplentes ONPE
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  local ElectoralLocal @relation(fields: [localId], references: [id], onDelete: Cascade)
+
+  @@index([localId])
 }
 
 // Ajustes globales clave/valor (p. ej. si la inscripción pública de personeros está abierta).
@@ -433,3 +485,86 @@ model MessagingDailyCounter {
 
   @@id([day, sessionId])
 }
+
+// ─────────────────────────── Control y Monitoreo Electoral ───────────────────────────
+
+enum CandidateCargo {
+  gobernador
+  provincial
+  distrital
+}
+
+model Candidate {
+  id         String         @id @default(cuid())
+  name       String         // Nombre completo del candidato (ej. SIMON PEDRO HORNA ALPACA)
+  party      String         // Partido político (ej. AHORA NACION - AN)
+  partyLogo  String?        // URL del logo del partido
+  photoUrl   String?        // URL de la foto oficial del candidato
+  cargo      CandidateCargo @default(gobernador)
+  order      Int            @default(1) // Orden en la cédula / acta de escrutinio
+  color      String         @default("#dc2626") // Color hexadecimal para gráficos
+  province   String?        // Tambopata, Manu, Tahuamanu
+  district   District?
+  active     Boolean        @default(true)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  actaVotos  ActaVoto[]
+
+  @@index([cargo, active])
+  @@index([order])
+}
+
+enum ActaStatus {
+  draft
+  enviada
+  en_revision
+  aprobada
+  observada
+  anulada
+}
+
+model ActaElectoral {
+  id                String       @id @default(cuid())
+  mesaNumber        String       // Número oficial de mesa de 6 dígitos
+  localId           String       // Local de votación donde está la mesa
+  personeroId       String?      // Personero que subió el acta
+  photoUrl          String       // URL o base64 de la fotografía del acta de escrutinio
+  status            ActaStatus   @default(enviada)
+  source            String       @default("manual") // "manual" | "ia"
+  electionType      String       @default("gobernador") // "gobernador" | "provincial"
+  observationReason String?      // Motivo en caso de ser observada por el verificador
+  reviewedById      String?      // Operador / verificador que revisó
+  reviewedAt        DateTime?
+  votosBlancos      Int          @default(0)
+  votosNulos        Int          @default(0)
+  votosImpugnados   Int          @default(0)
+  totalVotos        Int          @default(0)
+  submittedAt       DateTime     @default(now())
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  local      ElectoralLocal @relation(fields: [localId], references: [id], onDelete: Cascade)
+  personero  Personero?     @relation(fields: [personeroId], references: [id], onDelete: SetNull)
+  reviewedBy User?          @relation("ActaReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  votos      ActaVoto[]
+
+  @@unique([mesaNumber, electionType])
+  @@index([status])
+  @@index([electionType])
+  @@index([localId])
+}
+
+model ActaVoto {
+  id          String        @id @default(cuid())
+  actaId      String
+  candidateId String
+  votes       Int           @default(0)
+
+  acta      ActaElectoral @relation(fields: [actaId], references: [id], onDelete: Cascade)
+  candidate Candidate     @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@unique([actaId, candidateId])
+  @@index([candidateId])
+}
+

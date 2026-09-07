@@ -46,7 +46,10 @@ export async function GET(
     localName: p.localName,
     localAddress: p.localAddress,
     mesa: p.mesa,
+    aula: p.aula,
+    role: p.role,
     coordinatorName: p.coordinatorName,
     coordinatorPhone: p.coordinatorPhone,
+    token: p.credentialToken || p.id,
   });
 }

@@ -128,6 +128,9 @@ export function TopBar({ onMenuClick, user, notifications }: Props) {
     router.refresh();
   };
 
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
   const showResults =
     focused && search.trim().length >= 2 && (results.length > 0 || !searching);
 
@@ -143,12 +146,26 @@ export function TopBar({ onMenuClick, user, notifications }: Props) {
         </div>
       </div>
 
-      <div className="topbar__search-wrap" ref={searchRef}>
+      <div
+        className={`topbar__search-wrap ${mobileSearchOpen ? "is-mobile-open" : ""}`}
+        ref={searchRef}
+      >
+        {mobileSearchOpen && (
+          <button
+            type="button"
+            className="iconbtn mobile-search-close"
+            onClick={() => setMobileSearchOpen(false)}
+            aria-label="Cerrar búsqueda"
+          >
+            <Icon name="close" size={20} />
+          </button>
+        )}
         <div className={`topbar__search ${focused ? "is-focused" : ""}`}>
           <Icon name="search" size={20} className="topbar__search-icon" />
           <input
+            ref={searchInputRef}
             type="text"
-            placeholder="Buscar usuarios, roles o simpatizantes"
+            placeholder="Buscar..."
             value={search}
             onChange={onSearchChange}
             onFocus={() => setFocused(true)}
@@ -178,7 +195,10 @@ export function TopBar({ onMenuClick, user, notifications }: Props) {
                     <button
                       key={it.id}
                       className="search-item"
-                      onClick={() => goTo(it.href)}
+                      onClick={() => {
+                        setMobileSearchOpen(false);
+                        goTo(it.href);
+                      }}
                     >
                       <span className="search-item__icon">
                         <Icon name={it.icon as IconName} size={18} />
@@ -197,6 +217,18 @@ export function TopBar({ onMenuClick, user, notifications }: Props) {
       </div>
 
       <div className="topbar__right">
+        <button
+          type="button"
+          className="iconbtn topbar__search-trigger-mobile"
+          onClick={() => {
+            setMobileSearchOpen(true);
+            setTimeout(() => searchInputRef.current?.focus(), 100);
+          }}
+          aria-label="Buscar"
+        >
+          <Icon name="search" size={20} />
+        </button>
+
         <ThemeToggle />
 
         <div className="topbar__action-wrap" ref={notifRef}>
