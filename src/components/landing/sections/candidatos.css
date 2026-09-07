@@ -1,0 +1,264 @@
+/* Sección Candidatos — misma paleta editorial que #apoyo (oro → selva),
+   para que el bloque de rostros y el mapa se lean como una sola unidad. */
+
+#candidatos {
+  --cd-paper: #faf6ec;
+  --cd-card: #ffffff;
+  --cd-ink: #1f2a1a;
+  --cd-ink-soft: #66705c;
+  --cd-line: #e7e0ce;
+  --cd-selva: #1e5b2e;
+  --cd-oro: #c9a227;
+  --cd-oro-ink: #8f7212;
+
+  background: var(--cd-paper);
+}
+
+/* ── Encabezado ── */
+#candidatos .cd-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--cd-selva);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+#candidatos .cd-eyebrow::before,
+#candidatos .cd-eyebrow::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--cd-oro);
+  transform: rotate(45deg);
+  display: inline-block;
+}
+
+#candidatos .cd-title {
+  color: var(--cd-ink);
+  margin-bottom: 12px;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.15;
+}
+
+#candidatos .cd-sub {
+  color: var(--cd-ink-soft);
+  max-width: 620px;
+  margin: 0 auto 20px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Firma visual: la franja diagonal de la bandera de Madre de Dios */
+#candidatos .cd-flag-stripe {
+  display: block;
+  width: 84px;
+  height: 8px;
+  border-radius: 4px;
+  margin: 0 auto;
+  background: linear-gradient(
+    115deg,
+    var(--cd-selva) 0%,
+    var(--cd-selva) 38%,
+    var(--cd-oro) 38%,
+    var(--cd-oro) 62%,
+    var(--cd-selva) 62%,
+    var(--cd-selva) 100%
+  );
+}
+
+/* ── Retrato (compartido) ── */
+#candidatos .cd-foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  display: block;
+  background: #eee9dd;
+  transition: transform 0.5s ease;
+}
+
+/* ── Destacado: el gobernador ── */
+#candidatos .cd-destacado {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  align-items: center;
+  gap: 32px;
+  margin: 48px auto 40px;
+  max-width: 780px;
+  background: var(--cd-card);
+  border: 1px solid var(--cd-line);
+  border-radius: 22px;
+  padding: 26px;
+  box-shadow: 0 14px 38px rgba(31, 42, 26, 0.09);
+}
+
+#candidatos .cd-destacado-foto {
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 3px solid var(--cd-oro);
+}
+
+#candidatos .cd-destacado-nombre {
+  color: var(--cd-ink);
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.15;
+  margin: 12px 0 6px;
+}
+
+#candidatos .cd-destacado-ambito {
+  color: var(--cd-selva);
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  margin-bottom: 14px;
+}
+
+#candidatos .cd-destacado-lema {
+  color: var(--cd-ink-soft);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0;
+  padding-left: 14px;
+  border-left: 3px solid var(--cd-oro);
+}
+
+/* ── Chips de cargo ── */
+#candidatos .cd-chip {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--cd-selva);
+  background: rgba(30, 91, 46, 0.09);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+#candidatos .cd-chip-oro {
+  color: var(--cd-oro-ink);
+  background: rgba(201, 162, 39, 0.16);
+}
+
+/* ── Grilla del resto del equipo ── */
+#candidatos .cd-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+#candidatos .cd-card {
+  background: var(--cd-card);
+  border: 1px solid var(--cd-line);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(31, 42, 26, 0.07);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+#candidatos .cd-card:hover,
+#candidatos .cd-card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(31, 42, 26, 0.14);
+}
+
+#candidatos .cd-card:hover .cd-foto {
+  transform: scale(1.04);
+}
+
+#candidatos .cd-card-foto {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-bottom: 4px solid var(--cd-selva);
+}
+
+#candidatos .cd-card-info {
+  padding: 16px 18px 20px;
+}
+
+#candidatos .cd-card-nombre {
+  color: var(--cd-ink);
+  font-size: 19px;
+  line-height: 1.25;
+  margin: 10px 0 4px;
+}
+
+#candidatos .cd-card-ambito {
+  color: var(--cd-ink-soft);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991px) {
+  #candidatos .cd-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  #candidatos .cd-destacado {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 22px;
+    padding: 22px;
+  }
+
+  #candidatos .cd-destacado-foto {
+    width: 200px;
+  }
+
+  #candidatos .cd-destacado-lema {
+    padding-left: 0;
+    padding-top: 12px;
+    border-left: 0;
+    border-top: 3px solid var(--cd-oro);
+    display: inline-block;
+  }
+}
+
+@media (max-width: 575px) {
+  #candidatos .cd-grid {
+    gap: 14px;
+  }
+
+  #candidatos .cd-card-info {
+    padding: 12px 12px 16px;
+  }
+
+  #candidatos .cd-card-nombre {
+    font-size: 16px;
+  }
+
+  #candidatos .cd-card-ambito {
+    font-size: 13px;
+  }
+}
+
+/* Respeta la preferencia del sistema: sin desplazamientos ni zoom. */
+@media (prefers-reduced-motion: reduce) {
+  #candidatos .cd-card,
+  #candidatos .cd-foto {
+    transition: none;
+  }
+
+  #candidatos .cd-card:hover {
+    transform: none;
+  }
+
+  #candidatos .cd-card:hover .cd-foto {
+    transform: none;
+  }
+}

@@ -10,6 +10,7 @@ import AnnouncementModal from "./ui/AnnouncementModal";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import Hero from "./sections/Hero";
+import Candidatos from "./sections/Candidatos";
 import Apoyo from "./sections/Apoyo";
 
 // La plantilla Politicly depende de scripts globales con orden estricto de
@@ -141,6 +142,7 @@ export default function LandingPage() {
 
       <main>
         <Hero />
+        <Candidatos />
         <Apoyo />
         <Footer />
       </main>
