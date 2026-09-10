@@ -56,3 +56,6 @@ next-env.d.ts
 
 # Sesiones de WhatsApp de WAHA (credenciales del número)
 /.waha/
+
+# Backups de base de datos
+/backups/
