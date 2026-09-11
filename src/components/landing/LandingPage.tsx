@@ -5,7 +5,6 @@ import "./landing.css";
 
 import Preloader from "./ui/Preloader";
 import ScrollToTop from "./ui/ScrollToTop";
-import FloatingRegister from "./ui/FloatingRegister";
 import AnnouncementModal from "./ui/AnnouncementModal";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
@@ -130,8 +129,6 @@ export default function LandingPage() {
       <div id="toast-container"></div>
       {/* Scroll to top */}
       <ScrollToTop />
-      {/* Registro flotante de simpatizantes */}
-      <FloatingRegister />
       {/* Modal del aviso vigente */}
       <AnnouncementModal />
       {/* Custom Cursor */}

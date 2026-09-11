@@ -588,6 +588,7 @@ export default function PhotoFrameClient() {
           <Link href="/#apoyo" className="mf__nav-link">Apoyo</Link>
           <Link href="/mi-mesa" className="mf__nav-link">Consultor de Mesa</Link>
           <Link href="/mi-foto" className="mf__nav-link is-active">Foto con Marco</Link>
+          <Link href="/aprende-a-votar" className="mf__nav-link">Aprende a Votar</Link>
           <Link href="/unete" className="mf__nav-link">Únete</Link>
         </nav>
 

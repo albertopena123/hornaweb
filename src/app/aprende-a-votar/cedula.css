@@ -66,13 +66,12 @@
 }
 
 .mm__logo img {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  background: transparent;
-  padding: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--red);
+  padding: 5px;
   object-fit: contain;
-  flex-shrink: 0;
 }
 
 .mm__logo strong {
@@ -95,7 +94,7 @@
 .mm__nav {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
   background: rgba(255, 255, 255, 0.06);
   padding: 8px 22px;
   border-radius: 999px;
@@ -109,7 +108,7 @@
   font-weight: 500;
   text-decoration: none;
   transition: color 0.15s, opacity 0.15s;
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-radius: 6px;
 }
 
@@ -120,9 +119,7 @@
 .mm__nav-link.is-active {
   color: #ffffff;
   font-weight: 700;
-  background: rgba(233, 3, 5, 0.25);
-  border-radius: 999px;
-  padding: 4px 14px;
+  border-bottom: 2px solid var(--red);
 }
 
 .mm__top-actions {

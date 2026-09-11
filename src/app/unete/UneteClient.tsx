@@ -345,6 +345,9 @@ export default function UneteClient() {
           <Link href="/mi-foto" className="uc__nav-link">
             Foto con Marco
           </Link>
+          <Link href="/aprende-a-votar" className="uc__nav-link">
+            Aprende a Votar
+          </Link>
           <Link href="/unete" className="uc__nav-link is-active">
             Únete
           </Link>
