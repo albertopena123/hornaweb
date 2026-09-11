@@ -59,3 +59,6 @@ next-env.d.ts
 
 # Backups de base de datos
 /backups/
+
+# Modelos locales de IA
+*.onnx
