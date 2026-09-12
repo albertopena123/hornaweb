@@ -539,20 +539,17 @@ export default function Candidatos() {
                     <span>Candidatura Oficial inscrita ante el JNE · Madre de Dios 2026</span>
                   </div>
 
-                  <button
-                    type="button"
+                  <a
+                    href="/unete"
                     className="cd-modal-btn-action"
-                    onClick={() => {
-                      setCandidatoModal(null);
-                      const el = document.getElementById("apoyo");
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
-                    }}
+                    style={{ textDecoration: "none" }}
+                    onClick={() => setCandidatoModal(null)}
                   >
                     <span>Sumarme al Apoyo</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

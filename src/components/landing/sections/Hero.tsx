@@ -1257,7 +1257,7 @@ export default function Hero() {
                   <ArrowRight size={16} strokeWidth={2.2} />
                 </button>
 
-                <a href="#apoyo" className="h-btn-secondary">
+                <a href="/unete" className="h-btn-secondary">
                   <Users size={16} strokeWidth={2} />
                   <span>Sumarme al Apoyo</span>
                 </a>
@@ -1468,7 +1468,7 @@ export default function Hero() {
                     🛡️ Candidatura Oficial inscrita ante el JNE · Madre de Dios 2026
                   </span>
                   <a
-                    href="#apoyo"
+                    href="/unete"
                     onClick={() => setCandidatoModal(null)}
                     style={{
                       background: "#E90305",

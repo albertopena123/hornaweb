@@ -58,6 +58,8 @@ next-env.d.ts
 /.waha/
 
 # Backups de base de datos
+/scratch/
+
 /backups/
 
 # Modelos locales de IA

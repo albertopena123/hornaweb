@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import {
   Vote,
   Search,
@@ -16,8 +17,9 @@ import {
   Save,
   Trash2,
   ExternalLink,
+  Camera,
 } from "lucide-react";
-import type { ElectoralLocalData, PersoneroRow } from "./types";
+import type { ElectoralLocalData, PersoneroRow, PermFlags } from "./types";
 import { DISTRICTS, districtLabel } from "@/lib/districts";
 import {
   updateLocalCoordinator,
@@ -30,9 +32,10 @@ import { parseCoordinates, getGoogleMapsUrl } from "@/lib/geo";
 type Props = {
   locales: ElectoralLocalData[];
   personeros: PersoneroRow[];
-  onAssignMesa: (mesaNum: string, localName: string, role?: "titular" | "suplente") => void;
+  onAssignMesa?: (mesaNum: string, localName: string, role?: "titular" | "suplente") => void;
   onCoordinatorUpdated?: (localId: string, name: string, phone: string) => void;
   onLocalUpdated?: (local: ElectoralLocalData) => void;
+  perms?: PermFlags;
 };
 
 export function MesasView({
@@ -41,6 +44,7 @@ export function MesasView({
   onAssignMesa,
   onCoordinatorUpdated,
   onLocalUpdated,
+  perms,
 }: Props) {
   const [localItems, setLocalItems] = useState<ElectoralLocalData[]>(locales);
   useEffect(() => {
@@ -320,13 +324,87 @@ export function MesasView({
       .filter(Boolean) as (ElectoralLocalData & { displayMesas: any[] })[];
   }, [localItems, q, district, province, filterStatus, coordFilter]);
 
-  // Contadores generales
-  const totalMesas = 511;
-  const cubiertasTotal = useMemo(() => {
-    let count = 0;
-    localItems.forEach((l) => (count += l.cubiertasCount));
-    return count;
+  // Provincias únicas ordenadas
+  const availableProvincias = useMemo(() => {
+    const set = new Set<string>();
+    localItems.forEach((l) => {
+      if (l.province) set.add(l.province);
+    });
+    return Array.from(set).sort();
   }, [localItems]);
+
+  // Distritos filtrados según la provincia seleccionada
+  const availableDistritos = useMemo(() => {
+    return DISTRICTS.filter((d) => !province || d.province === province);
+  }, [province]);
+
+  // Conteo de locales por distrito
+  const localCountByDistrict = useMemo(() => {
+    const map = new Map<string, number>();
+    localItems.forEach((l) => {
+      map.set(l.district, (map.get(l.district) || 0) + 1);
+    });
+    return map;
+  }, [localItems]);
+
+  // Total de locales en el ámbito actual
+  const totalLocalesInScope = useMemo(() => {
+    return localItems.filter((l) => !province || l.province === province).length;
+  }, [localItems, province]);
+
+  // Estadísticas dinámicas de mesas dentro del ámbito seleccionado
+  const mesaStats = useMemo(() => {
+    let total = 0;
+    let sinTitular = 0;
+    let faltaSuplente = 0;
+    let completas = 0;
+
+    localItems.forEach((loc) => {
+      if (province && loc.province !== province) return;
+      if (district && loc.district !== district) return;
+
+      loc.mesas.forEach((m) => {
+        total++;
+        const hasTitular = !!(m.titular || (m.personero && !m.personero.isSuplente ? m.personero : null));
+        const hasSuplente = !!(m.suplente || (m.personero && m.personero.isSuplente ? m.personero : null));
+
+        if (!hasTitular) {
+          sinTitular++;
+        } else if (!hasSuplente) {
+          faltaSuplente++;
+        } else {
+          completas++;
+        }
+      });
+    });
+
+    return { total, sinTitular, faltaSuplente, completas };
+  }, [localItems, province, district]);
+
+  // Estadísticas dinámicas de colegios dentro del ámbito seleccionado
+  const colegioStats = useMemo(() => {
+    const inScope = localItems.filter((loc) => {
+      if (province && loc.province !== province) return false;
+      if (district && loc.district !== district) return false;
+      return true;
+    });
+    const withCoord = inScope.filter((l) => !!l.coordinatorName).length;
+    return {
+      total: inScope.length,
+      withCoord,
+      withoutCoord: inScope.length - withCoord,
+    };
+  }, [localItems, province, district]);
+
+  const hasActiveFilters = q || district || province || filterStatus !== "all" || coordFilter !== "all";
+
+  function clearFilters() {
+    setQ("");
+    setDistrict("");
+    setProvince("");
+    setFilterStatus("all");
+    setCoordFilter("all");
+  }
 
   return (
     <div className="mesas-matrix-container">
@@ -344,13 +422,25 @@ export function MesasView({
 
         <select
           value={province}
-          onChange={(e) => setProvince(e.target.value)}
+          onChange={(e) => {
+            const nextProv = e.target.value;
+            setProvince(nextProv);
+            if (nextProv && district) {
+              const d = DISTRICTS.find((item) => item.id === district);
+              if (d && d.province !== nextProv) setDistrict("");
+            }
+          }}
           className="filter-select"
         >
-          <option value="">Todas las Provincias</option>
-          <option value="Tambopata">Tambopata</option>
-          <option value="Manu">Manu</option>
-          <option value="Tahuamanu">Tahuamanu</option>
+          <option value="">Todas las Provincias ({availableProvincias.length})</option>
+          {availableProvincias.map((p) => {
+            const count = localItems.filter((l) => l.province === p).length;
+            return (
+              <option key={p} value={p}>
+                {p} ({count} {count === 1 ? "local" : "locales"})
+              </option>
+            );
+          })}
         </select>
 
         <select
@@ -358,12 +448,15 @@ export function MesasView({
           onChange={(e) => setDistrict(e.target.value)}
           className="filter-select"
         >
-          <option value="">Todos los Distritos ({localItems.length} locales)</option>
-          {DISTRICTS.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.label}
-            </option>
-          ))}
+          <option value="">Todos los Distritos ({totalLocalesInScope} locales)</option>
+          {availableDistritos.map((d) => {
+            const count = localCountByDistrict.get(d.id) || 0;
+            return (
+              <option key={d.id} value={d.id}>
+                {d.label} ({count} {count === 1 ? "local" : "locales"})
+              </option>
+            );
+          })}
         </select>
 
         <div className="status-pills">
@@ -372,141 +465,191 @@ export function MesasView({
             className={`status-pill ${filterStatus === "all" ? "status-pill--active" : ""}`}
             onClick={() => setFilterStatus("all")}
           >
-            Todas ({totalMesas})
+            Todas ({mesaStats.total})
           </button>
           <button
             type="button"
             className={`status-pill status-pill--red ${filterStatus === "empty" ? "status-pill--active" : ""}`}
             onClick={() => setFilterStatus("empty")}
           >
-            Sin Titular ({totalMesas - cubiertasTotal})
+            Sin Titular ({mesaStats.sinTitular})
           </button>
           <button
             type="button"
             className={`status-pill status-pill--yellow ${filterStatus === "without-suplente" ? "status-pill--active" : ""}`}
             onClick={() => setFilterStatus("without-suplente")}
           >
-            Falta Suplente
+            Falta Suplente ({mesaStats.faltaSuplente})
           </button>
           <button
             type="button"
             className={`status-pill status-pill--green ${filterStatus === "full" ? "status-pill--active" : ""}`}
             onClick={() => setFilterStatus("full")}
           >
-            100% Completas (Tit + Sup)
+            100% Completas ({mesaStats.completas})
           </button>
         </div>
 
         {/* Filtro de Coordinadores de Colegio */}
-        <div className="status-pills" style={{ borderLeft: "1px solid #cbd5e1", paddingLeft: "8px" }}>
+        <div className="status-pills status-pills--coords" style={{ borderLeft: "1px solid var(--border, #cbd5e1)", paddingLeft: "8px" }}>
           <button
             type="button"
             className={`status-pill ${coordFilter === "all" ? "status-pill--active" : ""}`}
             onClick={() => setCoordFilter("all")}
           >
-            Colegios ({localItems.length})
+            Colegios ({colegioStats.total})
           </button>
           <button
             type="button"
             className={`status-pill status-pill--green ${coordFilter === "with" ? "status-pill--active" : ""}`}
             onClick={() => setCoordFilter("with")}
           >
-            Con Coord. ({localItems.filter((l) => !!l.coordinatorName).length})
+            Con Coord. ({colegioStats.withCoord})
           </button>
           <button
             type="button"
             className={`status-pill status-pill--yellow ${coordFilter === "without" ? "status-pill--active" : ""}`}
             onClick={() => setCoordFilter("without")}
           >
-            Sin Coord. ({localItems.filter((l) => !l.coordinatorName).length})
+            Sin Coord. ({colegioStats.withoutCoord})
           </button>
         </div>
+
+        {hasActiveFilters && (
+          <button
+            type="button"
+            className="btn btn--xs btn--outline"
+            onClick={clearFilters}
+            style={{ fontSize: "11px" }}
+          >
+            Limpiar filtros
+          </button>
+        )}
       </div>
 
       {/* Cuadrícula de Colegios y sus Mesas */}
-      <div className="locales-cards-grid">
-        {filteredLocales.map((loc) => {
-          const pct = loc.totalMesas > 0 ? Math.round((loc.cubiertasCount / loc.totalMesas) * 100) : 0;
-          return (
-            <div key={loc.id} className="local-card">
-              <div className="local-card__head">
-                <div>
-                  <span className="local-card__district">
-                    {loc.province} · {districtLabel(loc.district as any)}
-                  </span>
-                  <h3 className="local-card__name">{loc.name}</h3>
-                </div>
-                <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                  <button
-                    type="button"
-                    className="btn btn--xs btn--outline"
-                    onClick={() => openEditLocalModal(loc)}
-                    title="Editar nombre, dirección o coordenadas GPS"
-                  >
-                    <Edit2 size={11} /> Editar
-                  </button>
-                  <span
-                    className={`badge ${
-                      pct === 100 ? "badge--green" : pct > 0 ? "badge--amber" : "badge--red"
-                    }`}
-                  >
-                    {loc.cubiertasCount}/{loc.totalMesas} mesas ({pct}%)
-                  </span>
-                </div>
-              </div>
-
-              {loc.address && (
-                <div style={{ fontSize: "12px", color: "#64748b", display: "flex", gap: "4px", alignItems: "center" }}>
-                  <MapPin size={13} /> {loc.address}
-                  {loc.latitude && loc.longitude && (
-                    <a
-                      href={getGoogleMapsUrl(loc.latitude, loc.longitude)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="coord-wa-link"
-                      style={{ fontSize: "11px", marginLeft: "6px" }}
-                    >
-                      <ExternalLink size={10} /> Maps
-                    </a>
-                  )}
-                </div>
-              )}
-
-              {/* Fila del Coordinador del Colegio */}
-              <div className="local-card__coord-bar">
-                <div className="local-card__coord-info">
-                  <UserCheck size={13} className={loc.coordinatorName ? "text-green" : "text-amber"} />
-                  {loc.coordinatorName ? (
-                    <span className="coord-text">
-                      Coord: <strong>{loc.coordinatorName}</strong>
-                      {loc.coordinatorPhone && (
-                        <a
-                          href={`https://wa.me/51${loc.coordinatorPhone.replace(/\D/g, "")}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="coord-phone-link"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          ({loc.coordinatorPhone})
-                        </a>
-                      )}
+      {filteredLocales.length === 0 ? (
+        <div
+          className="personeros__empty"
+          style={{
+            padding: "48px 16px",
+            background: "var(--surface, #fff)",
+            borderRadius: "14px",
+            border: "1px dashed var(--border, #cbd5e1)",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+          }}
+        >
+          <Building2 size={36} style={{ color: "var(--text-muted, #94a3b8)" }} />
+          <h4 style={{ margin: "0", fontSize: "16px", fontWeight: 700, color: "var(--text, #0f172a)" }}>
+            No se encontraron colegios ni mesas
+          </h4>
+          <p style={{ margin: "0", fontSize: "13px", color: "var(--text-muted, #64748b)", maxWidth: "380px" }}>
+            No hay locales que coincidan con los filtros de búsqueda o ubicación seleccionados.
+          </p>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              className="btn btn--sm btn--primary"
+              onClick={clearFilters}
+              style={{ marginTop: "8px" }}
+            >
+              Restablecer filtros
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="locales-cards-grid">
+          {filteredLocales.map((loc) => {
+            const pct = loc.totalMesas > 0 ? Math.round((loc.cubiertasCount / loc.totalMesas) * 100) : 0;
+            return (
+              <div key={loc.id} className="local-card">
+                <div className="local-card__head">
+                  <div>
+                    <span className="local-card__district">
+                      {loc.province} · {districtLabel(loc.district as any)}
                     </span>
-                  ) : (
-                    <span className="coord-text coord-text--missing">Sin coordinador asignado</span>
+                    <h3 className="local-card__name">{loc.name}</h3>
+                  </div>
+                  <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                    {perms?.canWriteLocales !== false && (
+                      <button
+                        type="button"
+                        className="btn btn--xs btn--outline"
+                        onClick={() => openEditLocalModal(loc)}
+                        title="Editar nombre, dirección o coordenadas GPS"
+                      >
+                        <Edit2 size={11} /> Editar
+                      </button>
+                    )}
+                    <span
+                      className={`badge ${
+                        pct === 100 ? "badge--green" : pct > 0 ? "badge--amber" : "badge--red"
+                      }`}
+                    >
+                      {loc.cubiertasCount}/{loc.totalMesas} mesas ({pct}%)
+                    </span>
+                  </div>
+                </div>
+
+                {loc.address && (
+                  <div style={{ fontSize: "12px", color: "#64748b", display: "flex", gap: "4px", alignItems: "center" }}>
+                    <MapPin size={13} /> {loc.address}
+                    {loc.latitude && loc.longitude && (
+                      <a
+                        href={getGoogleMapsUrl(loc.latitude, loc.longitude)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="coord-wa-link"
+                        style={{ fontSize: "11px", marginLeft: "6px" }}
+                      >
+                        <ExternalLink size={10} /> Maps
+                      </a>
+                    )}
+                  </div>
+                )}
+
+                {/* Fila del Coordinador del Colegio */}
+                <div className="local-card__coord-bar">
+                  <div className="local-card__coord-info">
+                    <UserCheck size={13} className={loc.coordinatorName ? "text-green" : "text-amber"} />
+                    {loc.coordinatorName ? (
+                      <span className="coord-text">
+                        Coord: <strong>{loc.coordinatorName}</strong>
+                        {loc.coordinatorPhone && (
+                          <a
+                            href={`https://wa.me/51${loc.coordinatorPhone.replace(/\D/g, "")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="coord-phone-link"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            ({loc.coordinatorPhone})
+                          </a>
+                        )}
+                      </span>
+                    ) : (
+                      <span className="coord-text coord-text--missing">Sin coordinador asignado</span>
+                    )}
+                  </div>
+                  {perms?.canWriteLocales !== false && (
+                    <button
+                      type="button"
+                      className="btn btn--xs btn--outline"
+                      onClick={() => openCoordModal(loc)}
+                      title="Asignar o modificar el coordinador de este colegio"
+                    >
+                      {loc.coordinatorName ? "Editar Coord." : "+ Asignar Coord."}
+                    </button>
                   )}
                 </div>
-                <button
-                  type="button"
-                  className="btn btn--xs btn--outline"
-                  onClick={() => openCoordModal(loc)}
-                  title="Asignar o modificar el coordinador de este colegio"
-                >
-                  {loc.coordinatorName ? "Editar Coord." : "+ Asignar Coord."}
-                </button>
-              </div>
 
-              {/* Mini-cuadrícula de mesas de este colegio */}
-              <div className="mesas-mini-grid">
+                {/* Mini-cuadrícula de mesas de este colegio */}
+                <div className="mesas-mini-grid">
                 {loc.displayMesas.map((m) => {
                   const titular = m.titular || (m.personero && !m.personero.isSuplente ? m.personero : null);
                   const suplente = m.suplente || (m.personero && m.personero.isSuplente ? m.personero : null);
@@ -543,6 +686,7 @@ export function MesasView({
           );
         })}
       </div>
+      )}
 
       {/* Modal de Detalle de Mesa seleccionada (Titular + Suplente + Aula + ONPE) */}
       {selectedMesa && (
@@ -576,7 +720,7 @@ export function MesasView({
                   <div style={{ background: "#f8fafc", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <span className="badge badge--green">Personero Titular</span>
-                      {titular && (
+                      {titular && perms?.canWriteMesas !== false && (
                         <button
                           type="button"
                           className="btn-link-danger"
@@ -603,35 +747,39 @@ export function MesasView({
                             </a>
                           </div>
                         )}
-                        <button
-                          type="button"
-                          className="btn btn--xs btn--outline"
-                          style={{ marginTop: "8px" }}
-                          onClick={() => {
-                            const mNum = selectedMesa.mesa.number;
-                            const lName = selectedMesa.localName;
-                            setSelectedMesa(null);
-                            onAssignMesa(mNum, lName, "titular");
-                          }}
-                        >
-                          Cambiar Titular
-                        </button>
+                        {perms?.canWriteMesas !== false && (
+                          <button
+                            type="button"
+                            className="btn btn--xs btn--outline"
+                            style={{ marginTop: "8px" }}
+                            onClick={() => {
+                              const mNum = selectedMesa.mesa.number;
+                              const lName = selectedMesa.localName;
+                              setSelectedMesa(null);
+                              onAssignMesa?.(mNum, lName, "titular");
+                            }}
+                          >
+                            Cambiar Titular
+                          </button>
+                        )}
                       </div>
                     ) : (
                       <div style={{ marginTop: "8px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <span style={{ fontSize: "13px", color: "#64748b" }}>Sin personero titular</span>
-                        <button
-                          type="button"
-                          className="btn btn--xs btn--primary"
-                          onClick={() => {
-                            const mNum = selectedMesa.mesa.number;
-                            const lName = selectedMesa.localName;
-                            setSelectedMesa(null);
-                            onAssignMesa(mNum, lName, "titular");
-                          }}
-                        >
-                          <Plus size={11} /> Asignar Titular
-                        </button>
+                        {perms?.canWriteMesas !== false && (
+                          <button
+                            type="button"
+                            className="btn btn--xs btn--primary"
+                            onClick={() => {
+                              const mNum = selectedMesa.mesa.number;
+                              const lName = selectedMesa.localName;
+                              setSelectedMesa(null);
+                              onAssignMesa?.(mNum, lName, "titular");
+                            }}
+                          >
+                            <Plus size={11} /> Asignar Titular
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -650,7 +798,7 @@ export function MesasView({
                   <div style={{ background: "#f8fafc", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <span className="badge badge--amber">Personero Suplente</span>
-                      {suplente && (
+                      {suplente && perms?.canWriteMesas !== false && (
                         <button
                           type="button"
                           className="btn-link-danger"
@@ -677,35 +825,39 @@ export function MesasView({
                             </a>
                           </div>
                         )}
-                        <button
-                          type="button"
-                          className="btn btn--xs btn--outline"
-                          style={{ marginTop: "8px" }}
-                          onClick={() => {
-                            const mNum = selectedMesa.mesa.number;
-                            const lName = selectedMesa.localName;
-                            setSelectedMesa(null);
-                            onAssignMesa(mNum, lName, "suplente");
-                          }}
-                        >
-                          Cambiar Suplente
-                        </button>
+                        {perms?.canWriteMesas !== false && (
+                          <button
+                            type="button"
+                            className="btn btn--xs btn--outline"
+                            style={{ marginTop: "8px" }}
+                            onClick={() => {
+                              const mNum = selectedMesa.mesa.number;
+                              const lName = selectedMesa.localName;
+                              setSelectedMesa(null);
+                              onAssignMesa?.(mNum, lName, "suplente");
+                            }}
+                          >
+                            Cambiar Suplente
+                          </button>
+                        )}
                       </div>
                     ) : (
                       <div style={{ marginTop: "8px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <span style={{ fontSize: "13px", color: "#64748b" }}>Sin personero suplente</span>
-                        <button
-                          type="button"
-                          className="btn btn--xs btn--secondary"
-                          onClick={() => {
-                            const mNum = selectedMesa.mesa.number;
-                            const lName = selectedMesa.localName;
-                            setSelectedMesa(null);
-                            onAssignMesa(mNum, lName, "suplente");
-                          }}
-                        >
-                          <Plus size={11} /> Asignar Suplente
-                        </button>
+                        {perms?.canWriteMesas !== false && (
+                          <button
+                            type="button"
+                            className="btn btn--xs btn--secondary"
+                            onClick={() => {
+                              const mNum = selectedMesa.mesa.number;
+                              const lName = selectedMesa.localName;
+                              setSelectedMesa(null);
+                              onAssignMesa?.(mNum, lName, "suplente");
+                            }}
+                          >
+                            <Plus size={11} /> Asignar Suplente
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -718,7 +870,7 @@ export function MesasView({
                   <span style={{ fontSize: "11px", fontWeight: 700, color: "#475569", textTransform: "uppercase" }}>
                     Ubicación y Autoridades ONPE
                   </span>
-                  {!editingMesaInline && (
+                  {!editingMesaInline && perms?.canWriteMesas !== false && (
                     <button
                       type="button"
                       className="btn btn--xs btn--outline"
@@ -820,7 +972,14 @@ export function MesasView({
               </div>
             </div>
 
-            <footer className="modal__foot">
+            <footer className="modal__foot" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <Link
+                href={`/personeros/acta?mesa=${selectedMesa.mesa.number}`}
+                className="btn btn--primary"
+                style={{ display: "inline-flex", alignItems: "center", gap: 6, textDecoration: "none" }}
+              >
+                <Camera size={14} /> Subir Acta Mesa {selectedMesa.mesa.number}
+              </Link>
               <button
                 type="button"
                 className="btn btn--secondary"

@@ -46,7 +46,20 @@ export type PersoneroInput = {
   sendWhatsAppImmediately?: boolean;
 };
 
-export type PermFlags = { canRead: boolean; canWrite: boolean };
+export type PermFlags = {
+  canRead: boolean;
+  canWrite: boolean;
+  canReadPersoneros: boolean;
+  canWritePersoneros: boolean;
+  canReadLocales: boolean;
+  canWriteLocales: boolean;
+  canReadMesas: boolean;
+  canWriteMesas: boolean;
+  canReadActas: boolean;
+  canWriteActas: boolean;
+  canVerifyActas: boolean;
+  canReadCandidatos: boolean;
+};
 
 export type LocalOption = {
   id: string;

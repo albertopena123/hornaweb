@@ -21,6 +21,8 @@ export default async function AdminLayout({
         name: user.name,
         email: user.email,
         roles: user.roles.map((r) => r.name),
+        roleKeys: user.roles.map((r) => r.key),
+        permissions: Array.from(user.permissions),
       }}
       notifications={notifications}
     >

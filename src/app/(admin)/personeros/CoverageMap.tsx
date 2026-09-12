@@ -23,7 +23,7 @@ import {
   Save,
   Check,
 } from "lucide-react";
-import type { ElectoralLocalData, PersoneroRow } from "./types";
+import type { ElectoralLocalData, PersoneroRow, PermFlags } from "./types";
 import { DISTRICTS, districtLabel } from "@/lib/districts";
 import {
   updateLocal,
@@ -37,9 +37,10 @@ import { parseCoordinates, getGoogleMapsUrl } from "@/lib/geo";
 type Props = {
   locales: ElectoralLocalData[];
   personeros: PersoneroRow[];
-  onAssignMesa: (mesaNum: string, localName: string, role?: "titular" | "suplente") => void;
+  onAssignMesa?: (mesaNum: string, localName: string, role?: "titular" | "suplente") => void;
   onCoordinatorUpdated?: (localId: string, name: string, phone: string) => void;
   onLocalUpdated?: (local: ElectoralLocalData) => void;
+  perms?: PermFlags;
 };
 
 export function CoverageMap({
@@ -48,6 +49,7 @@ export function CoverageMap({
   onAssignMesa,
   onCoordinatorUpdated,
   onLocalUpdated,
+  perms,
 }: Props) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -60,6 +62,7 @@ export function CoverageMap({
   }, [locales]);
 
   const [selectedLocalId, setSelectedLocalId] = useState<string | null>(null);
+  const [provinceFilter, setProvinceFilter] = useState<string>("");
   const [districtFilter, setDistrictFilter] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<"all" | "full" | "partial" | "empty">("all");
   const [search, setSearch] = useState("");
@@ -310,10 +313,60 @@ export function CoverageMap({
     setSavingMesa(false);
   }
 
+  // Provincias únicas ordenadas
+  const availableProvincias = useMemo(() => {
+    const set = new Set<string>();
+    localItems.forEach((l) => {
+      if (l.province) set.add(l.province);
+    });
+    return Array.from(set).sort();
+  }, [localItems]);
+
+  // Distritos filtrados según provincia
+  const availableDistritos = useMemo(() => {
+    return DISTRICTS.filter((d) => !provinceFilter || d.province === provinceFilter);
+  }, [provinceFilter]);
+
+  // Conteo de locales por distrito
+  const localCountByDistrict = useMemo(() => {
+    const map = new Map<string, number>();
+    localItems.forEach((l) => {
+      map.set(l.district, (map.get(l.district) || 0) + 1);
+    });
+    return map;
+  }, [localItems]);
+
+  const totalLocalesInScope = useMemo(() => {
+    return localItems.filter((l) => !provinceFilter || l.province === provinceFilter).length;
+  }, [localItems, provinceFilter]);
+
+  // Conteo de estados dinámicos dentro del ámbito de provincia/distrito
+  const statusCounts = useMemo(() => {
+    let all = 0;
+    let empty = 0;
+    let partial = 0;
+    let full = 0;
+
+    localItems.forEach((l) => {
+      if (provinceFilter && l.province !== provinceFilter) return;
+      if (districtFilter && l.district !== districtFilter) return;
+
+      all++;
+      const isFull = l.cubiertasCount >= l.totalMesas && l.totalMesas > 0;
+      const isEmpty = l.cubiertasCount === 0;
+      if (isEmpty) empty++;
+      else if (isFull) full++;
+      else partial++;
+    });
+
+    return { all, empty, partial, full };
+  }, [localItems, provinceFilter, districtFilter]);
+
   // Filtrado de locales
   const filteredLocales = useMemo(() => {
     const q = search.trim().toLowerCase();
     return localItems.filter((l) => {
+      const matchProvince = provinceFilter === "" || l.province === provinceFilter;
       const matchDistrict = districtFilter === "" || l.district === districtFilter;
       const matchSearch = q === "" || l.name.toLowerCase().includes(q) || (l.address && l.address.toLowerCase().includes(q));
 
@@ -327,9 +380,9 @@ export function CoverageMap({
         (statusFilter === "partial" && isPartial) ||
         (statusFilter === "empty" && isEmpty);
 
-      return matchDistrict && matchSearch && matchStatus;
+      return matchProvince && matchDistrict && matchSearch && matchStatus;
     });
-  }, [localItems, search, districtFilter, statusFilter]);
+  }, [localItems, search, provinceFilter, districtFilter, statusFilter]);
 
   // Inicializar Leaflet
   useEffect(() => {
@@ -491,16 +544,42 @@ export function CoverageMap({
         </div>
 
         <select
+          value={provinceFilter}
+          onChange={(e) => {
+            const nextProv = e.target.value;
+            setProvinceFilter(nextProv);
+            if (nextProv && districtFilter) {
+              const d = DISTRICTS.find((item) => item.id === districtFilter);
+              if (d && d.province !== nextProv) setDistrictFilter("");
+            }
+          }}
+          className="filter-select"
+        >
+          <option value="">Todas las Provincias ({availableProvincias.length})</option>
+          {availableProvincias.map((p) => {
+            const count = localItems.filter((l) => l.province === p).length;
+            return (
+              <option key={p} value={p}>
+                {p} ({count} {count === 1 ? "local" : "locales"})
+              </option>
+            );
+          })}
+        </select>
+
+        <select
           value={districtFilter}
           onChange={(e) => setDistrictFilter(e.target.value)}
           className="filter-select"
         >
-          <option value="">Todos los Distritos ({localItems.length} locales)</option>
-          {DISTRICTS.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.label}
-            </option>
-          ))}
+          <option value="">Todos los Distritos ({totalLocalesInScope} locales)</option>
+          {availableDistritos.map((d) => {
+            const count = localCountByDistrict.get(d.id) || 0;
+            return (
+              <option key={d.id} value={d.id}>
+                {d.label} ({count} {count === 1 ? "local" : "locales"})
+              </option>
+            );
+          })}
         </select>
 
         <div className="status-pills">
@@ -509,30 +588,46 @@ export function CoverageMap({
             className={`status-pill ${statusFilter === "all" ? "status-pill--active" : ""}`}
             onClick={() => setStatusFilter("all")}
           >
-            Todos
+            Todos ({statusCounts.all})
           </button>
           <button
             type="button"
             className={`status-pill status-pill--red ${statusFilter === "empty" ? "status-pill--active" : ""}`}
             onClick={() => setStatusFilter("empty")}
           >
-            Sin personeros
+            Sin personeros ({statusCounts.empty})
           </button>
           <button
             type="button"
             className={`status-pill status-pill--yellow ${statusFilter === "partial" ? "status-pill--active" : ""}`}
             onClick={() => setStatusFilter("partial")}
           >
-            Parciales
+            Parciales ({statusCounts.partial})
           </button>
           <button
             type="button"
             className={`status-pill status-pill--green ${statusFilter === "full" ? "status-pill--active" : ""}`}
             onClick={() => setStatusFilter("full")}
           >
-            100% Cubiertos
+            100% Cubiertos ({statusCounts.full})
           </button>
         </div>
+
+        {(search || provinceFilter || districtFilter || statusFilter !== "all") && (
+          <button
+            type="button"
+            className="btn btn--xs btn--outline"
+            onClick={() => {
+              setSearch("");
+              setProvinceFilter("");
+              setDistrictFilter("");
+              setStatusFilter("all");
+            }}
+            style={{ fontSize: "11px" }}
+          >
+            Limpiar filtros
+          </button>
+        )}
 
         <div className="coverage-counter-badge">
           Mostrando <strong>{filteredLocales.length}</strong> de {localItems.length} locales
@@ -597,14 +692,16 @@ export function CoverageMap({
               </div>
 
               <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                <button
-                  type="button"
-                  className="btn btn--xs btn--outline"
-                  onClick={() => handleOpenEditLocal(selectedLocal)}
-                  title="Editar nombre, dirección y coordenadas GPS del colegio"
-                >
-                  <Edit2 size={12} /> Editar Colegio
-                </button>
+                {perms?.canWriteLocales !== false && (
+                  <button
+                    type="button"
+                    className="btn btn--xs btn--outline"
+                    onClick={() => handleOpenEditLocal(selectedLocal)}
+                    title="Editar nombre, dirección y coordenadas GPS del colegio"
+                  >
+                    <Edit2 size={12} /> Editar Colegio
+                  </button>
+                )}
                 <button
                   type="button"
                   className="btn-icon"
@@ -651,7 +748,7 @@ export function CoverageMap({
                   <UserCheck size={16} className="text-brand-accent" />
                   <span>Coordinador de Colegio</span>
                 </div>
-                {!editingCoord && (
+                {!editingCoord && perms?.canWriteLocales !== false && (
                   <button
                     type="button"
                     className="btn btn--xs btn--outline"
@@ -813,7 +910,7 @@ export function CoverageMap({
                     <div className="mesa-role-box mesa-role-box--titular">
                       <div className="mesa-role-header">
                         <span className="role-tag role-tag--titular">Personero Titular</span>
-                        {titular && (
+                        {titular && perms?.canWriteMesas !== false && (
                           <button
                             type="button"
                             className="btn-link-danger"
@@ -844,13 +941,15 @@ export function CoverageMap({
                       ) : (
                         <div className="empty-role-action">
                           <span>Vacante</span>
-                          <button
-                            type="button"
-                            className="btn btn--xs btn--primary"
-                            onClick={() => onAssignMesa(mesa.number, selectedLocal.name, "titular")}
-                          >
-                            <Plus size={11} /> Asignar Titular
-                          </button>
+                          {perms?.canWriteMesas !== false && (
+                            <button
+                              type="button"
+                              className="btn btn--xs btn--primary"
+                              onClick={() => onAssignMesa?.(mesa.number, selectedLocal.name, "titular")}
+                            >
+                              <Plus size={11} /> Asignar Titular
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>
@@ -859,7 +958,7 @@ export function CoverageMap({
                     <div className="mesa-role-box mesa-role-box--suplente">
                       <div className="mesa-role-header">
                         <span className="role-tag role-tag--suplente">Personero Suplente</span>
-                        {suplente && (
+                        {suplente && perms?.canWriteMesas !== false && (
                           <button
                             type="button"
                             className="btn-link-danger"
@@ -890,13 +989,15 @@ export function CoverageMap({
                       ) : (
                         <div className="empty-role-action">
                           <span>Vacante</span>
-                          <button
-                            type="button"
-                            className="btn btn--xs btn--secondary"
-                            onClick={() => onAssignMesa(mesa.number, selectedLocal.name, "suplente")}
-                          >
-                            <Plus size={11} /> Asignar Suplente
-                          </button>
+                          {perms?.canWriteMesas !== false && (
+                            <button
+                              type="button"
+                              className="btn btn--xs btn--secondary"
+                              onClick={() => onAssignMesa?.(mesa.number, selectedLocal.name, "suplente")}
+                            >
+                              <Plus size={11} /> Asignar Suplente
+                            </button>
+                          )}
                         </div>
                       )}
                     </div>

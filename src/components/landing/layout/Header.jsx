@@ -277,7 +277,7 @@ const Header = () => {
               </a>
               {/* CTA Button */}
               <div className="header-button d-none d-sm-block" style={{ flexShrink: 0 }}>
-                <a className="tw-hover-btn bg-main-600 text-white fw-bold d-inline-flex align-items-center justify-content-center" href="#apoyo" style={{ whiteSpace: 'nowrap', fontSize: '13px', borderRadius: '10px', padding: '10px 20px', lineHeight: '1' }}>
+                <a className="tw-hover-btn bg-main-600 text-white fw-bold d-inline-flex align-items-center justify-content-center" href="/unete" style={{ whiteSpace: 'nowrap', fontSize: '13px', borderRadius: '10px', padding: '10px 20px', lineHeight: '1' }}>
                   Apoya la Campaña
                   <span className="tw-hover-btn-circle-dot bg-black"></span>
                 </a>

@@ -51,8 +51,8 @@ export async function getLiveResultsData(
     prisma.actaElectoral.count({ where: { ...baseWhereActa, status: "observada" } }),
   ]);
 
-  // 4. Obtener Candidatos
-  const candidates = await prisma.candidate.findMany({
+  // 4. Obtener Candidatos (con auto-inicialización si la BD está vacía)
+  let candidates = await prisma.candidate.findMany({
     where: {
       cargo: isProvincial ? "provincial" : "gobernador",
       ...(isProvincial
@@ -62,6 +62,114 @@ export async function getLiveResultsData(
     },
     orderBy: { order: "asc" },
   });
+
+  if (candidates.length === 0) {
+    const totalCount = await prisma.candidate.count();
+    if (totalCount === 0) {
+      await prisma.candidate.createMany({
+        data: [
+          // Gobernación Regional Madre de Dios
+          {
+            name: "SIMÓN PEDRO HORNA ALPACA",
+            party: "AHORA NACIÓN",
+            partyLogo: "/assets/images/logo/logo-an.webp",
+            photoUrl: "/assets/images/candidatos/simon-horna.webp",
+            cargo: "gobernador",
+            order: 1,
+            color: "#E90305",
+            active: true,
+          },
+          {
+            name: "CANDIDATO SOMOS PERÚ",
+            party: "PARTIDO DEMOCRÁTICO SOMOS PERÚ",
+            cargo: "gobernador",
+            order: 2,
+            color: "#0284c7",
+            active: true,
+          },
+          {
+            name: "CANDIDATO ALIANZA PARA EL PROGRESO",
+            party: "ALIANZA PARA EL PROGRESO",
+            cargo: "gobernador",
+            order: 3,
+            color: "#1d4ed8",
+            active: true,
+          },
+          {
+            name: "CANDIDATO AMOR POR MADRE DE DIOS",
+            party: "MOVIMIENTO AMOR POR MADRE DE DIOS",
+            cargo: "gobernador",
+            order: 4,
+            color: "#16a34a",
+            active: true,
+          },
+          {
+            name: "CANDIDATO AVANZA PAÍS",
+            party: "AVANZA PAÍS",
+            cargo: "gobernador",
+            order: 5,
+            color: "#f97316",
+            active: true,
+          },
+          // Alcaldía Tambopata
+          {
+            name: "JUAN TICONA QUISPE",
+            party: "AHORA NACIÓN",
+            partyLogo: "/assets/images/logo/logo-an.webp",
+            photoUrl: "/assets/images/candidatos/juan-ticona.webp",
+            cargo: "provincial",
+            province: "Tambopata",
+            order: 1,
+            color: "#E90305",
+            active: true,
+          },
+          {
+            name: "LISTA PROVINCIAL 2",
+            party: "SOMOS PERÚ",
+            cargo: "provincial",
+            province: "Tambopata",
+            order: 2,
+            color: "#0284c7",
+            active: true,
+          },
+          // Alcaldía Manu
+          {
+            name: "YILMER GONZALES KHAN",
+            party: "AHORA NACIÓN",
+            partyLogo: "/assets/images/logo/logo-an.webp",
+            photoUrl: "/assets/images/candidatos/yilmer-gonzales.webp",
+            cargo: "provincial",
+            province: "Manu",
+            order: 1,
+            color: "#E90305",
+            active: true,
+          },
+          // Alcaldía Tahuamanu
+          {
+            name: "CANDIDATO AHORA NACIÓN TAHUAMANU",
+            party: "AHORA NACIÓN",
+            partyLogo: "/assets/images/logo/logo-an.webp",
+            cargo: "provincial",
+            province: "Tahuamanu",
+            order: 1,
+            color: "#E90305",
+            active: true,
+          },
+        ],
+      });
+
+      candidates = await prisma.candidate.findMany({
+        where: {
+          cargo: isProvincial ? "provincial" : "gobernador",
+          ...(isProvincial
+            ? { province: { equals: targetProvince, mode: "insensitive" } }
+            : {}),
+          active: true,
+        },
+        orderBy: { order: "asc" },
+      });
+    }
+  }
 
   // 5. Actas Aprobadas
   const actasAprobadas = await prisma.actaElectoral.findMany({

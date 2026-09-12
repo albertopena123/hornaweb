@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   useEffect,
@@ -140,10 +141,19 @@ export function TopBar({ onMenuClick, user, notifications }: Props) {
         <button className="iconbtn" onClick={onMenuClick} aria-label="Menú">
           <Icon name="menu" size={22} />
         </button>
-        <div className="topbar__brand">
-          <Icon name="logo" size={28} />
-          <span className="topbar__brand-text">Admin</span>
-        </div>
+        <Link href="/inicio" className="topbar__brand">
+          <img
+            src="/assets/images/logo/logo-an.webp"
+            alt="Ahora Nación"
+            width={32}
+            height={32}
+            className="topbar__brand-img"
+          />
+          <div className="topbar__brand-info">
+            <span className="topbar__brand-text">Ahora Nación</span>
+            <span className="topbar__brand-badge">Admin</span>
+          </div>
+        </Link>
       </div>
 
       <div

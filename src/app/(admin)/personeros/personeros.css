@@ -170,6 +170,14 @@
     font-size: 10px;
   }
 }
+@media (max-width: 400px) {
+  .personeros-kpis {
+    grid-template-columns: 1fr;
+  }
+  .kpi-card--wide {
+    grid-column: span 1;
+  }
+}
 
 /* Barra de Pestañas de Submódulos */
 .personeros-subnav {
@@ -380,18 +388,43 @@ html[data-theme="dark"] .kpi-icon--amber { background: rgba(217, 119, 6, 0.2); c
   color: var(--text, #0f172a);
 }
 .status-pill--active {
-  background: #0f172a !important;
+  background: var(--accent) !important;
   color: #ffffff !important;
-  border-color: #0f172a !important;
+  border-color: var(--accent) !important;
+}
+html[data-theme="dark"] .status-pill {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+html[data-theme="dark"] .status-pill:hover {
+  background: var(--bg-soft);
+  color: var(--text);
 }
 html[data-theme="dark"] .status-pill--active {
-  background: #f8fafc !important;
-  color: #0f172a !important;
-  border-color: #f8fafc !important;
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
 }
 .status-pill--red.status-pill--active { background: #ef4444 !important; border-color: #ef4444 !important; color: #ffffff !important; }
 .status-pill--yellow.status-pill--active { background: #f59e0b !important; border-color: #f59e0b !important; color: #ffffff !important; }
 .status-pill--green.status-pill--active { background: #10b981 !important; border-color: #10b981 !important; color: #ffffff !important; }
+
+html[data-theme="dark"] .status-pill--red.status-pill--active {
+  background: rgba(239, 68, 68, 0.22) !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  color: #fca5a5 !important;
+}
+html[data-theme="dark"] .status-pill--yellow.status-pill--active {
+  background: rgba(245, 158, 11, 0.22) !important;
+  border-color: rgba(245, 158, 11, 0.5) !important;
+  color: #fcd34d !important;
+}
+html[data-theme="dark"] .status-pill--green.status-pill--active {
+  background: rgba(16, 185, 129, 0.22) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  color: #6ee7b7 !important;
+}
 
 .coverage-counter-badge {
   font-size: 12px;
@@ -735,17 +768,39 @@ html[data-theme="dark"] .status-pill--active {
   transition: transform 0.1s;
 }
 .mesa-mini-pill:hover {
-  transform: scale(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 .mesa-mini-pill--covered {
   background: #ecfdf5;
   color: #065f46;
   border-color: #a7f3d0;
 }
+.mesa-mini-pill--partial {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
 .mesa-mini-pill--empty {
   background: #fef2f2;
   color: #991b1b;
   border-color: #fecaca;
+}
+
+html[data-theme="dark"] .mesa-mini-pill--covered {
+  background: rgba(16, 185, 129, 0.16) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+html[data-theme="dark"] .mesa-mini-pill--partial {
+  background: rgba(245, 158, 11, 0.16) !important;
+  color: #fcd34d !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+html[data-theme="dark"] .mesa-mini-pill--empty {
+  background: rgba(239, 68, 68, 0.14) !important;
+  color: #fca5a5 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
 /* Acciones en la tabla de personeros */
@@ -1222,6 +1277,23 @@ html[data-theme="dark"] .status-pill--active {
   .mesas-filter-bar > * {
     width: 100% !important;
   }
+  .mesas-filter-bar .status-pills {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding-bottom: 3px;
+  }
+  .mesas-filter-bar .status-pills::-webkit-scrollbar {
+    display: none;
+  }
+  .mesas-filter-bar .status-pills--coords {
+    border-left: none !important;
+    padding-left: 0 !important;
+    border-top: 1px solid var(--border, #cbd5e1);
+    padding-top: 6px;
+  }
 
   /* Grilla de colegios en MesasView */
   .locales-cards-grid {
@@ -1243,7 +1315,7 @@ html[data-theme="dark"] .status-pill--active {
     box-sizing: border-box;
   }
 
-  /* Tabla de Personeros con scroll horizontal táctil suave */
+  /* Tabla de Personeros con scroll horizontal táctil suave y primera columna sticky */
   .tablewrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -1255,7 +1327,20 @@ html[data-theme="dark"] .status-pill--active {
     -webkit-overflow-scrolling: touch;
   }
   .dtable {
-    min-width: 650px;
+    min-width: 680px;
+  }
+  .personeros .dtable th:first-child,
+  .personeros .dtable td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--surface, #ffffff);
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.06);
+  }
+  html[data-theme="dark"] .personeros .dtable th:first-child,
+  html[data-theme="dark"] .personeros .dtable td:first-child {
+    background: var(--surface, #1e293b);
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.35);
   }
 
   /* Modal interactivo de Editar Colegio */
@@ -1296,3 +1381,68 @@ html[data-theme="dark"] .status-pill--active {
   }
 }
 
+/* ─────────── Integración Plantilla Admin y Modo Oscuro ─────────── */
+.kpi__icon--red {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+html[data-theme="dark"] .kpi__icon--red {
+  background: rgba(239, 68, 68, 0.22);
+  color: #fca5a5;
+}
+
+/* Mapa Leaflet elegante en modo oscuro */
+html[data-theme="dark"] .leaflet-tile-pane {
+  filter: brightness(0.68) invert(1) contrast(1.25) hue-rotate(200deg) saturate(0.35);
+}
+html[data-theme="dark"] .leaflet-container {
+  background: #111315 !important;
+}
+
+/* Local drawer y modals en modo oscuro */
+html[data-theme="dark"] .local-drawer {
+  background: var(--surface);
+  border-left-color: var(--border);
+  color: var(--text);
+  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.5);
+}
+html[data-theme="dark"] .local-drawer__head {
+  border-bottom-color: var(--border);
+}
+html[data-theme="dark"] .local-drawer__coord-card {
+  background: var(--bg-soft);
+  border-color: var(--border);
+}
+html[data-theme="dark"] .local-drawer__coord-card strong {
+  color: var(--text);
+}
+html[data-theme="dark"] .local-card {
+  background: var(--surface);
+  border-color: var(--border);
+}
+html[data-theme="dark"] .local-card:hover {
+  border-color: var(--border-strong);
+}
+html[data-theme="dark"] .local-card__coord-bar {
+  background: var(--bg-soft);
+  border-color: var(--border);
+}
+html[data-theme="dark"] .mesas-filter-bar,
+html[data-theme="dark"] .directorio-filter-bar {
+  background: var(--surface);
+  border-color: var(--border);
+}
+html[data-theme="dark"] .mesas-search-input,
+html[data-theme="dark"] .mesas-select,
+html[data-theme="dark"] .personeros__search,
+html[data-theme="dark"] .personeros__district {
+  background: var(--bg-soft);
+  border-color: var(--border);
+  color: var(--text);
+}
+html[data-theme="dark"] .mesas-search-input:focus,
+html[data-theme="dark"] .mesas-select:focus,
+html[data-theme="dark"] .personeros__search:focus,
+html[data-theme="dark"] .personeros__district:focus {
+  border-color: var(--accent);
+}

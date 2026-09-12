@@ -8,7 +8,13 @@ import { Sidebar } from "./Sidebar";
 import type { AdminNotification } from "./data";
 
 type Props = {
-  user: { name: string; email: string; roles: string[] };
+  user: {
+    name: string;
+    email: string;
+    roles: string[];
+    roleKeys?: string[];
+    permissions?: string[];
+  };
   notifications: AdminNotification[];
   children: ReactNode;
 };
@@ -68,6 +74,7 @@ export function AdminShell({ user, notifications, children }: Props) {
         <Sidebar
           collapsed={sidebarCollapsed && !isMobile}
           mobileOpen={isMobile && mobileOpen}
+          user={user}
         />
         <main className="main">{children}</main>
       </div>

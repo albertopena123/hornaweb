@@ -108,6 +108,12 @@ const Apoyo = () => {
   return (
     <section id="apoyo" className="py-120 position-relative z-1">
       <div className="container">
+        <div className="section-heading text-center mb-40" data-aos="fade-up">
+          <span className="ap-eyebrow">Mapa de Respaldo Regional</span>
+          <h2 className="ap-title">Madre de Dios Unido por el Cambio</h2>
+          <div className="ap-flag-stripe"></div>
+        </div>
+
         <div className="row justify-content-center" data-aos="fade-up" data-aos-duration="800">
           <div className="col-12">
             <div className="ap-card ap-card-mapa" onMouseLeave={() => setHover(null)}>
@@ -160,6 +166,32 @@ const Apoyo = () => {
                 <span className="ap-leyenda-nota">
                   Posición referencial dentro de cada distrito · ★ distrito líder
                 </span>
+              </div>
+
+              {/* Botón CTA hacia Únete */}
+              <div style={{ textAlign: "center", marginTop: "24px", paddingTop: "18px", borderTop: "1px solid var(--ap-line, #e7e0ce)" }}>
+                <a
+                  href="/unete"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    background: "#E90305",
+                    color: "#ffffff",
+                    fontWeight: 700,
+                    fontSize: "15px",
+                    padding: "13px 32px",
+                    borderRadius: "999px",
+                    textDecoration: "none",
+                    boxShadow: "0 6px 20px rgba(233, 3, 5, 0.28)",
+                    transition: "all 0.25s ease",
+                  }}
+                >
+                  <span>¡Súmate al Apoyo en tu Distrito!</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
