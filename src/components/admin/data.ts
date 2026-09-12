@@ -81,6 +81,7 @@ export const SIDEBAR_SECTIONS: NavSection[] = [
           { id: "personeros/mesas", label: "Padrón de Mesas", href: "/personeros/mesas", permission: "mesas.read" },
           { id: "personeros/mapa", label: "Mapa de Cobertura", href: "/personeros/mapa", permission: "locales.read" },
           { id: "personeros/directorio", label: "Directorio", href: "/personeros/directorio", permission: "personeros.read" },
+          { id: "personeros/coordinadores", label: "Coordinadores", href: "/personeros/coordinadores", permission: "locales.read" },
         ],
       },
       {

@@ -1,30 +1,45 @@
-/* Estilos para la Credencial Oficial de Personero */
+/* ==========================================================================
+   Fotocheck Digital Oficial de Personero 2026
+   Partido Político Ahora Nación - Madre de Dios
+   Soporte completo para Modo Claro (light) y Modo Oscuro (dark)
+   ========================================================================== */
+
 .cred-page {
   min-height: 100vh;
-  background: radial-gradient(circle at 50% 10%, #1f2937 0%, #0f172a 100%);
+  background: radial-gradient(circle at 50% 10%, #1e293b 0%, #090d16 100%);
   color: #f8fafc;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 2rem 1rem 4rem;
-  font-family: inherit;
+  padding: 1.5rem 1rem 4rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  transition: background 0.25s, color 0.25s;
+}
+
+html[data-theme="light"] .cred-page {
+  background: radial-gradient(circle at 50% 10%, #f8fafc 0%, #e2e8f0 100%);
+  color: #0f172a;
 }
 
 .cred-container {
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  margin: 0 auto;
 }
 
-/* Acciones superiores */
+/* --------------------------------------------------------------------------
+   BARRA SUPERIOR DE ACCIONES Y VALIDACIÓN EN VIVO
+   -------------------------------------------------------------------------- */
 .cred-actions-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .cred-back-link {
@@ -32,49 +47,88 @@
   align-items: center;
   gap: 0.5rem;
   color: #94a3b8;
-  font-size: 0.875rem;
+  font-size: 0.825rem;
+  font-weight: 600;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.15s;
+}
+
+html[data-theme="light"] .cred-back-link {
+  color: #475569;
 }
 
 .cred-back-link:hover {
   color: #ffffff;
 }
 
+html[data-theme="light"] .cred-back-link:hover {
+  color: #0f172a;
+}
+
 .cred-badge-status {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  border: 1px solid rgba(16, 185, 129, 0.4);
   color: #34d399;
   font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.65rem;
+  font-weight: 800;
+  padding: 0.3rem 0.75rem;
   border-radius: 9999px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
 }
 
-/* La tarjeta carnet principal */
+html[data-theme="light"] .cred-badge-status {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #059669;
+  box-shadow: none;
+}
+
+.cred-badge-status__pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: credPulse 2s infinite;
+}
+
+@keyframes credPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+/* --------------------------------------------------------------------------
+   TARJETA FOTOCHECK DIGITAL (CARNET OFICIAL)
+   -------------------------------------------------------------------------- */
 .cred-card {
   position: relative;
-  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  background: #ffffff;
   color: #0f172a;
   border-radius: 1.25rem;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  border: 2px solid #dc2626;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 2px solid #b91c1c;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Header del carnet */
+html[data-theme="light"] .cred-card {
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Header Oficial del Fotocheck */
 .cred-header {
-  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 50%, #991b1b 100%);
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 55%, #991b1b 100%);
   color: #ffffff;
   padding: 1.25rem 1rem 1rem;
   text-align: center;
   position: relative;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
 }
 
 .cred-header::after {
@@ -84,42 +138,84 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 50%, #fbbf24 100%);
+  background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 50%, #f59e0b 100%);
+}
+
+.cred-header-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.cred-header-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2px;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .cred-party-title {
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  font-weight: 800;
-  color: #fef08a;
+  font-weight: 900;
+  color: #ffffff;
   margin: 0;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.cred-party-sub {
+  font-size: 0.65rem;
+  color: #fef08a;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 1px 0 0;
+  text-align: left;
+}
+
+.cred-badge-doc-banner {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  padding: 4px 12px;
+  margin-top: 6px;
+  display: inline-block;
 }
 
 .cred-badge-doc {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 900;
-  letter-spacing: 0.02em;
-  margin: 0.25rem 0 0;
+  letter-spacing: 0.05em;
+  margin: 0;
   text-transform: uppercase;
+  color: #ffffff;
 }
 
 .cred-sub-campaign {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
-  margin-top: 0.2rem;
+  font-size: 0.725rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  margin-top: 0.35rem;
 }
 
-/* Cuerpo de la credencial */
+/* Cuerpo del Fotocheck */
 .cred-body {
-  padding: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
+  background: #ffffff;
 }
 
-/* Personaje / Nombre */
+/* Personero Profile / Hero */
 .cred-person-hero {
   display: flex;
   align-items: center;
@@ -129,19 +225,36 @@
 }
 
 .cred-avatar {
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
-  font-weight: 800;
-  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
+  font-size: 1.6rem;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
   flex-shrink: 0;
+  border: 3px solid #ffffff;
+  position: relative;
+}
+
+.cred-avatar-check {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #10b981;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 2px solid #ffffff;
+  font-size: 10px;
 }
 
 .cred-person-meta {
@@ -151,21 +264,33 @@
 
 .cred-role-pill {
   display: inline-block;
+  padding: 0.2rem 0.6rem;
   background: #fef2f2;
-  border: 1px solid #fecaca;
+  border: 1px solid #dc2626;
   color: #b91c1c;
   font-size: 0.7rem;
-  font-weight: 800;
-  padding: 0.15rem 0.5rem;
-  border-radius: 6px;
+  font-weight: 900;
+  border-radius: 4px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+
+.cred-role-pill--suplente {
+  background: #eff6ff;
+  border-color: #2563eb;
+  color: #1e40af;
+}
+
+.cred-role-pill--general {
+  background: #fdf4ff;
+  border-color: #a855f7;
+  color: #7e22ce;
 }
 
 .cred-person-name {
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 900;
   color: #0f172a;
   margin: 0;
   line-height: 1.25;
@@ -173,306 +298,333 @@
 }
 
 .cred-person-dni {
-  font-size: 0.875rem;
-  color: #64748b;
-  font-weight: 600;
-  margin-top: 0.2rem;
+  font-size: 0.85rem;
+  color: #475569;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Cuadro destacado de Mesa y Aula */
+.cred-person-dni strong {
+  color: #0f172a;
+  font-family: monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+}
+
+/* Casillero Destacado de Mesa Electoral */
 .cred-mesa-box {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 2px solid #e2e8f0;
-  border-radius: 1rem;
-  padding: 1rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  background: #fef2f2;
+  border: 2px solid #dc2626;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
   text-align: center;
-}
-
-.cred-mesa-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.cred-mesa-item:first-child {
-  border-right: 1px solid #cbd5e1;
-}
-
 .cred-mesa-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  display: block;
+  margin-bottom: 0.2rem;
 }
 
 .cred-mesa-value {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 900;
   color: #b91c1c;
-  font-family: ui-monospace, SFMono-Regular, monospace;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
 }
 
-.cred-aula-value {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #0f172a;
+.cred-mesa-value--pending {
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  color: #dc2626;
+  font-family: inherit;
 }
 
-/* Detalles del Local de Votación */
+/* Lista de Información */
 .cred-info-list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
-  padding: 0.85rem 1rem;
+  gap: 0.75rem;
 }
 
 .cred-info-row {
   display: flex;
   align-items: flex-start;
-  gap: 0.65rem;
-  font-size: 0.825rem;
+  gap: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
 }
 
 .cred-info-icon {
   color: #dc2626;
-  margin-top: 0.15rem;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .cred-info-content {
   flex: 1;
+  min-width: 0;
 }
 
 .cred-info-label {
-  color: #64748b;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
+  color: #64748b;
   display: block;
+  margin-bottom: 0.15rem;
 }
 
 .cred-info-val {
-  color: #1e293b;
-  font-weight: 700;
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.3;
 }
 
-/* Coordinador del Colegio en Credencial */
+/* Bloque del Coordinador */
 .cred-coordinator-box {
-  margin-top: 0.5rem;
-  padding: 0.85rem;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  border: 1.5px solid #bfdbfe;
-  border-radius: 0.75rem;
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .cred-coordinator-box__head {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 0.35rem;
-}
-
-.cred-coordinator-icon {
-  color: #1d4ed8;
-}
-
-.cred-coordinator-tag {
-  font-size: 0.68rem;
+  gap: 6px;
+  background: #dcfce7;
+  padding: 6px 10px;
+  font-size: 0.75rem;
   font-weight: 800;
-  color: #1e40af;
+  color: #166534;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
+.cred-coordinator-box__body {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .cred-coordinator-name {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #14532d;
 }
 
 .cred-coordinator-desc {
-  font-size: 0.72rem;
-  color: #475569;
-  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  color: #166534;
   line-height: 1.3;
 }
 
 .cred-coordinator-wa-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
-  background: #25d366;
+  justify-content: center;
+  gap: 6px;
+  background: #16a34a;
   color: #ffffff;
-  font-size: 0.78rem;
-  font-weight: 700;
-  padding: 0.45rem 0.75rem;
-  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: 6px;
   text-decoration: none;
-  transition: background 0.15s ease, transform 0.1s ease;
-  box-shadow: 0 2px 4px rgba(37, 211, 102, 0.25);
+  transition: background 0.15s;
 }
 
 .cred-coordinator-wa-btn:hover {
-  background: #1eb956;
-  transform: translateY(-1px);
+  background: #15803d;
 }
 
-/* Pie con QR de Verificación */
+/* Pie con QR dinámico y Sello de Seguridad */
 .cred-footer-qr {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   padding-top: 0.75rem;
   border-top: 1px dashed #cbd5e1;
 }
 
 .cred-qr-img {
-  width: 88px;
-  height: 88px;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
-  padding: 4px;
+  width: 70px;
+  height: 70px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 2px;
   background: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .cred-stamp {
   flex: 1;
-  text-align: right;
 }
 
 .cred-stamp-title {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 800;
   text-transform: uppercase;
-  color: #64748b;
-  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #0f172a;
+  display: block;
 }
 
 .cred-stamp-role {
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: #0f172a;
+  font-size: 0.7rem;
+  color: #b91c1c;
+  font-weight: 700;
+  margin-top: 1px;
 }
 
 .cred-security-code {
-  font-family: monospace;
   font-size: 0.65rem;
-  color: #94a3b8;
-  margin-top: 0.25rem;
+  color: #64748b;
+  font-family: monospace;
+  margin-top: 3px;
 }
 
-/* Botonera de acciones */
+/* --------------------------------------------------------------------------
+   BOTONES DE ACCIÓN PRINCIPALES
+   -------------------------------------------------------------------------- */
 .cred-buttons {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.cred-btn-primary {
-  display: flex;
+.cred-btn-download-a4 {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  background: #2563eb;
+  gap: 8px;
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
   color: #ffffff;
-  padding: 0.85rem 1.25rem;
-  border-radius: 0.75rem;
-  font-weight: 700;
   font-size: 0.95rem;
+  font-weight: 800;
+  padding: 0.85rem 1.25rem;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
-.cred-btn-primary:hover {
-  background: #1d4ed8;
+.cred-btn-download-a4:hover {
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
 }
 
-.cred-btn-secondary {
-  display: flex;
+.cred-btn-download-a4:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.cred-btn-share {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 8px;
   background: #16a34a;
   color: #ffffff;
-  padding: 0.85rem 1.25rem;
-  border-radius: 0.75rem;
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+  transition: background 0.15s;
 }
 
-.cred-btn-secondary:hover {
+.cred-btn-share:hover {
   background: #15803d;
-  transform: translateY(-1px);
 }
 
 .cred-btn-outline {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 8px;
   background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  padding: 0.75rem 1.25rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.7rem 1.25rem;
+  border-radius: 10px;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+html[data-theme="light"] .cred-btn-outline {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #cbd5e1;
 }
 
 .cred-btn-outline:hover {
   background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
 }
 
-/* Reglas de impresión (@media print) */
-@media print {
-  body {
-    background: #ffffff !important;
-    color: #000000 !important;
-    padding: 0 !important;
-  }
+html[data-theme="light"] .cred-btn-outline:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
 
-  .cred-page {
-    background: #ffffff !important;
-    padding: 0 !important;
-  }
+/* Botón Fotocheck PDF */
+.cred-btn-download-fc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 0.85rem 1.25rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
 
-  .cred-actions-top,
-  .cred-buttons {
-    display: none !important;
-  }
+.cred-btn-download-fc:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+}
 
-  .cred-container {
-    max-width: 400px !important;
-    margin: 0 auto !important;
-  }
+.cred-btn-download-fc:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
 
-  .cred-card {
-    box-shadow: none !important;
-    border: 2px solid #b91c1c !important;
-    page-break-inside: avoid;
-  }
+/* Contenedor Oculto para Generación de PDF (A4 y Fotocheck) */
+.cred-a4-hidden-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 794px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -99999;
 }

@@ -2,13 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Vote, Map, Users, Camera } from "lucide-react";
+import { Vote, Map, Users, Camera, ShieldCheck } from "lucide-react";
 
 type Props = {
   stats?: {
     mesas: number;
     locales: number;
     personeros: number;
+    coordinadores?: {
+      assigned: number;
+      total: number;
+    };
   };
 };
 
@@ -19,20 +23,28 @@ export function PersonerosTabs({ stats }: Props) {
     {
       href: "/personeros/mesas",
       label: "Padrón de Mesas",
-      count: stats?.mesas ?? 511,
+      count: stats?.mesas !== undefined ? String(stats.mesas) : "511",
       icon: Vote,
     },
     {
       href: "/personeros/mapa",
       label: "Mapa de Cobertura",
-      count: stats?.locales ?? 51,
+      count: stats?.locales !== undefined ? String(stats.locales) : "51",
       icon: Map,
     },
     {
       href: "/personeros/directorio",
       label: "Directorio",
-      count: stats?.personeros ?? 61,
+      count: stats?.personeros !== undefined ? String(stats.personeros) : "61",
       icon: Users,
+    },
+    {
+      href: "/personeros/coordinadores",
+      label: "Coordinadores",
+      count: stats?.coordinadores
+        ? `${stats.coordinadores.assigned}/${stats.coordinadores.total}`
+        : "1/51",
+      icon: ShieldCheck,
     },
     {
       href: "/actas",

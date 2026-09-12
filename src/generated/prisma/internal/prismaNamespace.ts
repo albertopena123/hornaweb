@@ -2321,6 +2321,7 @@ export const ElectoralLocalScalarFieldEnum = {
   totalMesas: 'totalMesas',
   coordinatorName: 'coordinatorName',
   coordinatorPhone: 'coordinatorPhone',
+  coordinatorDni: 'coordinatorDni',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

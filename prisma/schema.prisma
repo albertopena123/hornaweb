@@ -249,6 +249,7 @@ model ElectoralLocal {
   totalMesas       Int      @default(0)
   coordinatorName  String?  // coordinador asignado al local
   coordinatorPhone String?  // teléfono del coordinador
+  coordinatorDni   String?  // DNI del coordinador
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

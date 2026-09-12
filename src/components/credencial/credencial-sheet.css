@@ -1,0 +1,931 @@
+/* ==========================================================================
+   credencial-sheet.css
+   Estilos unificados y autónomos para:
+   1) Hoja Oficial A4 Vertical (210mm x 297mm: Original + Copia ONPE)
+   2) Fotocheck Oficial de Personero (Frente y Reverso con QR y Firma)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1) HOJA A4 VERTICAL REAL (210mm x 297mm)
+   -------------------------------------------------------------------------- */
+.cred-a4-vertical-sheet {
+  width: 794px;
+  height: 1123px;
+  min-height: 1123px;
+  max-height: 1123px;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  color-scheme: light !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  user-select: text;
+  margin: 0 auto;
+}
+
+.cred-a4-vertical-sheet * {
+  box-sizing: border-box;
+  color-scheme: light !important;
+}
+
+/* Cada Mitad A5 (Original arriba / Copia abajo) */
+.cred-v-half {
+  height: 520px;
+  min-height: 520px;
+  max-height: 520px;
+  border: 2.5px solid #b91c1c;
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ffffff !important;
+  box-sizing: border-box;
+}
+
+.cred-v-half--copia {
+  border-color: #1e3a8a;
+}
+
+/* Cabecera de la Tarjeta */
+.cred-v-head {
+  border-bottom: 2px solid #b91c1c;
+  padding-bottom: 7px;
+}
+
+.cred-v-half--copia .cred-v-head {
+  border-bottom-color: #1e3a8a;
+}
+
+.cred-v-head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cred-v-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cred-party-logo-img {
+  width: 50px !important;
+  height: 50px !important;
+  max-width: 50px !important;
+  max-height: 50px !important;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1.5px solid #dc2626;
+  background: #ffffff;
+  padding: 2px;
+  display: block;
+}
+
+.cred-party-logo-img--copia {
+  border-color: #2563eb;
+}
+
+.cred-v-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.cred-v-party-title {
+  font-size: 14px;
+  font-weight: 900;
+  color: #b91c1c !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.cred-v-election-sub {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #0f172a !important;
+  margin: 2px 0 0;
+  line-height: 1.2;
+}
+
+.cred-v-candidate-sub {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #475569 !important;
+  margin: 1px 0 0;
+  line-height: 1.2;
+}
+
+.cred-v-copy-badge {
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 10.5px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: right;
+  line-height: 1.25;
+}
+
+.cred-v-copy-badge--original {
+  background: #fef2f2 !important;
+  border: 1.5px solid #dc2626;
+  color: #991b1b !important;
+}
+
+.cred-v-copy-badge--copia {
+  background: #eff6ff !important;
+  border: 1.5px solid #2563eb;
+  color: #1e40af !important;
+}
+
+.cred-v-title-banner {
+  background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+  color: #ffffff !important;
+  text-align: center;
+  padding: 4px 10px;
+  border-radius: 3px;
+  margin-top: 6px;
+}
+
+.cred-v-half--copia .cred-v-title-banner {
+  background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%);
+}
+
+.cred-v-title-banner h2 {
+  font-size: 12.5px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+  color: #ffffff !important;
+}
+
+/* Cuadrícula de Datos Técnicos Oficiales */
+.cred-v-data-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 5px 0;
+}
+
+.cred-v-row-1 {
+  display: grid;
+  grid-template-columns: 1fr 190px;
+  gap: 10px;
+}
+
+.cred-v-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 190px;
+  gap: 10px;
+}
+
+.cred-v-row-3 {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 10px;
+}
+
+.cred-v-field {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cred-v-field-label {
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #475569 !important;
+  letter-spacing: 0.05em;
+  display: block;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.cred-v-field-val {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #0f172a !important;
+  line-height: 1.25;
+}
+
+.cred-v-field-val--name {
+  font-size: 13px;
+  font-weight: 900;
+  color: #0f172a !important;
+  letter-spacing: 0.02em;
+}
+
+.cred-v-field-val--doc {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #0f172a !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Casillero Destacado de Mesa Electoral */
+.cred-v-mesa-box {
+  background: #fef2f2 !important;
+  border: 1.5px solid #dc2626;
+  border-radius: 4px;
+  padding: 4px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cred-v-half--copia .cred-v-mesa-box {
+  background: #eff6ff !important;
+  border-color: #2563eb;
+}
+
+.cred-v-mesa-num {
+  font-size: 19px;
+  font-weight: 900;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+  color: #b91c1c !important;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+}
+
+.cred-v-mesa-num--pending {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-family: inherit;
+  color: #dc2626 !important;
+}
+
+.cred-v-half--copia .cred-v-mesa-num {
+  color: #1e40af !important;
+}
+
+.cred-v-half--copia .cred-v-mesa-num--pending {
+  color: #2563eb !important;
+}
+
+/* Base Legal Sintetizada */
+.cred-v-legal {
+  font-size: 8px;
+  line-height: 1.38;
+  color: #334155 !important;
+  text-align: left;
+  background: #f8fafc !important;
+  border-left: 3px solid #94a3b8;
+  padding: 5px 8px;
+  margin: 3px 0;
+}
+
+.cred-v-legal strong {
+  color: #0f172a !important;
+}
+
+/* Zona de Firmas, Sello y Huella */
+.cred-v-signatures {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr 66px;
+  gap: 12px;
+  align-items: flex-end;
+  margin-top: 4px;
+  padding-top: 5px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cred-v-sig-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cred-v-sig-box--grow {
+  flex: 1;
+}
+
+.cred-v-sig-space {
+  height: 38px;
+}
+
+.cred-v-sig-line {
+  width: 92%;
+  border-top: 1.5px solid #0f172a;
+  margin-bottom: 4px;
+}
+
+.cred-v-sig-title {
+  font-size: 8.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #0f172a !important;
+  line-height: 1.15;
+}
+
+.cred-v-sig-sub {
+  font-size: 7.5px;
+  color: #475569 !important;
+  line-height: 1.2;
+}
+
+.cred-v-sig-personero-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+
+.cred-v-huella-box {
+  width: 44px;
+  height: 52px;
+  border: 1.5px dashed #64748b;
+  border-radius: 4px;
+  background: #f8fafc !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-align: center;
+  padding: 2px;
+}
+
+.cred-v-huella-tag {
+  font-size: 7px;
+  font-weight: 800;
+  color: #475569 !important;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.cred-v-huella-sub {
+  font-size: 6px;
+  color: #64748b !important;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+/* QR Digital */
+.cred-v-qr-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cred-v-qr-img {
+  width: 60px !important;
+  height: 60px !important;
+  max-width: 60px !important;
+  max-height: 60px !important;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 1px;
+  background: #ffffff;
+  display: block;
+}
+
+.cred-v-qr-placeholder {
+  width: 60px;
+  height: 60px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+}
+
+.cred-v-qr-label {
+  font-size: 6.5px;
+  color: #64748b !important;
+  text-align: center;
+  margin-top: 1px;
+}
+
+/* Casillero Recepción Mesa ONPE */
+.cred-v-onpe-cargo {
+  margin-top: 5px;
+  padding: 4px 10px;
+  border: 1px dashed #475569;
+  border-radius: 4px;
+  background: #f8fafc !important;
+  color: #334155 !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8px;
+}
+
+.cred-v-onpe-cargo strong {
+  color: #0f172a !important;
+}
+
+/* Divisor Horizontal con Tijeras */
+.cred-cut-divider-h {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0;
+  position: relative;
+  height: 20px;
+}
+
+.cred-cut-line-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1.5px dashed #94a3b8;
+}
+
+.cred-cut-tag-h {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 2px 12px;
+  font-size: 8.5px;
+  font-weight: 800;
+  color: #475569 !important;
+  letter-spacing: 0.08em;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   2) FOTOCHECK OFICIAL DE PERSONERO (FRENTE Y REVERSO)
+   ========================================================================== */
+.fc-pair-wrapper {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.fc-card {
+  width: 310px;
+  height: 492px;
+  min-width: 310px;
+  min-height: 492px;
+  max-width: 310px;
+  max-height: 492px;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 12px;
+  border: 1.5px solid #dc2626;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin: 0 auto;
+}
+
+.fc-card * {
+  box-sizing: border-box;
+}
+
+.fc-card--back {
+  border-color: #1e3a8a;
+}
+
+/* Header Anverso */
+.fc-head {
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 55%, #991b1b 100%);
+  color: #ffffff !important;
+  padding: 10px 12px 8px;
+  position: relative;
+  text-align: left;
+}
+
+.fc-head::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 50%, #f59e0b 100%);
+}
+
+.fc-head--back {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #1e40af 100%);
+  padding: 10px 12px 8px;
+  text-align: center;
+}
+
+.fc-head--back::after {
+  background: linear-gradient(90deg, #38bdf8 0%, #60a5fa 50%, #38bdf8 100%);
+}
+
+.fc-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc-logo-img {
+  width: 36px !important;
+  height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 2px;
+  display: block;
+}
+
+.fc-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.fc-party-title {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff !important;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.fc-party-sub {
+  font-size: 7.5px;
+  font-weight: 800;
+  color: #fef08a !important;
+  letter-spacing: 0.04em;
+  margin: 1px 0 0;
+  line-height: 1.1;
+}
+
+.fc-campaign-sub {
+  font-size: 6.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin: 1px 0 0;
+  line-height: 1.1;
+}
+
+.fc-banner-title {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.fc-banner-title span {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  display: block;
+}
+
+/* Cuerpo Anverso */
+.fc-body {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  background: #ffffff;
+  justify-content: space-between;
+}
+
+/* Identidad Personero */
+.fc-person-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.fc-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  color: #ffffff !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+  flex-shrink: 0;
+}
+
+.fc-person-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.fc-role-badge {
+  display: inline-block;
+  background: #fef2f2;
+  border: 1px solid #dc2626;
+  color: #b91c1c !important;
+  font-size: 7.5px;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.fc-role-badge--suplente {
+  background: #eff6ff;
+  border-color: #2563eb;
+  color: #1e40af !important;
+}
+
+.fc-role-badge--general {
+  background: #fdf4ff;
+  border-color: #9333ea;
+  color: #7e22ce !important;
+}
+
+.fc-name {
+  font-size: 11px;
+  font-weight: 900;
+  color: #0f172a !important;
+  margin: 0 0 3px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+.fc-dni {
+  font-size: 9px;
+  color: #475569 !important;
+  line-height: 1.2;
+}
+
+.fc-dni strong {
+  color: #0f172a !important;
+  font-family: monospace;
+  font-size: 9.5px;
+}
+
+/* Mesa Box */
+.fc-mesa-box {
+  background: #fef2f2;
+  border: 1.5px solid #dc2626;
+  border-radius: 6px;
+  padding: 5px 8px;
+  text-align: center;
+}
+
+.fc-mesa-label {
+  font-size: 7px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #64748b !important;
+  letter-spacing: 0.05em;
+  display: block;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.fc-mesa-num {
+  font-size: 18px;
+  font-weight: 900;
+  color: #b91c1c !important;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+}
+
+.fc-mesa-num--pending {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: #dc2626 !important;
+  font-family: inherit;
+}
+
+/* Local Box */
+.fc-local-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  padding: 6px 9px;
+}
+
+.fc-local-label {
+  font-size: 6.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #64748b !important;
+  letter-spacing: 0.05em;
+  display: block;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.fc-local-name {
+  font-size: 9px;
+  font-weight: 800;
+  color: #0f172a !important;
+  line-height: 1.35;
+  word-break: break-word;
+  overflow: visible;
+}
+
+.fc-local-dist {
+  font-size: 7.5px;
+  font-weight: 700;
+  color: #64748b !important;
+  margin-top: 3px;
+}
+
+/* Footer Bar */
+.fc-foot-bar {
+  background: #0f172a;
+  color: #f8fafc !important;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 6.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.fc-foot-bar span {
+  color: #f8fafc !important;
+}
+
+.fc-foot-bar--back {
+  background: #1e3a8a;
+}
+
+/* Cuerpo Reverso */
+.fc-back-body {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  background: #ffffff;
+  gap: 6px;
+}
+
+.fc-qr-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed #cbd5e1;
+}
+
+.fc-qr-img {
+  width: 60px !important;
+  height: 60px !important;
+  max-width: 60px !important;
+  max-height: 60px !important;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 1px;
+  background: #ffffff;
+  display: block;
+}
+
+.fc-qr-info {
+  flex: 1;
+}
+
+.fc-qr-title {
+  font-size: 8px;
+  font-weight: 900;
+  color: #0f172a !important;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.fc-qr-desc {
+  font-size: 6.5px;
+  color: #475569 !important;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.fc-qr-token {
+  font-size: 6px;
+  font-family: monospace;
+  color: #64748b !important;
+  margin-top: 2px;
+}
+
+.fc-legal {
+  font-size: 6.5px;
+  line-height: 1.3;
+  color: #334155 !important;
+  background: #f8fafc;
+  border-left: 2px solid #94a3b8;
+  padding: 4px 6px;
+}
+
+.fc-sig-row {
+  display: grid;
+  grid-template-columns: 1.2fr 48px;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.fc-sig-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.fc-sig-space {
+  height: 24px;
+}
+
+.fc-sig-line {
+  width: 100%;
+  border-top: 1px solid #0f172a;
+  margin-bottom: 2px;
+}
+
+.fc-sig-label {
+  font-size: 6.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #0f172a !important;
+  line-height: 1.1;
+}
+
+.fc-sig-sub {
+  font-size: 5.5px;
+  color: #64748b !important;
+  line-height: 1.1;
+}
+
+.fc-huella-box {
+  width: 44px;
+  height: 48px;
+  border: 1px dashed #64748b;
+  border-radius: 4px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1px;
+}
+
+.fc-huella-tag {
+  font-size: 6px;
+  font-weight: 800;
+  color: #475569 !important;
+  line-height: 1;
+}
+
+.fc-huella-sub {
+  font-size: 5px;
+  color: #64748b !important;
+  line-height: 1.1;
+  margin-top: 1px;
+}
+
+.fc-coord-bar {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 6.5px;
+  color: #166534 !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

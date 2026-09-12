@@ -140,6 +140,7 @@ export async function getPersonerosData() {
       totalMesas: loc.mesas.length,
       coordinatorName: loc.coordinatorName,
       coordinatorPhone: loc.coordinatorPhone,
+      coordinatorDni: loc.coordinatorDni ?? null,
       mesas: mesasData,
       cubiertasCount,
       cubiertasSuplenteCount,

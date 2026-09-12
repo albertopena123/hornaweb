@@ -33,6 +33,7 @@ import {
   unassignPersoneroFromMesa,
 } from "./actions";
 import { parseCoordinates, getGoogleMapsUrl } from "@/lib/geo";
+import { confirmAction, toastSuccess, toastError } from "@/lib/alerts";
 
 type Props = {
   locales: ElectoralLocalData[];
@@ -256,26 +257,39 @@ export function CoverageMap({
   }
 
   async function handleUnassign(personeroId: string, mesaNum: string, isSupl: boolean) {
-    if (!confirm("¿Deseas desasignar a este personero de la mesa?")) return;
+    const roleLabel = isSupl ? "personero suplente" : "personero titular";
+    const confirmed = await confirmAction({
+      title: "¿Desasignar personero?",
+      text: `¿Estás seguro de retirar al ${roleLabel} de la mesa ${mesaNum}?`,
+      confirmButtonText: "Sí, desasignar",
+      isDanger: true,
+    });
+    if (!confirmed) return;
+
     const res = await unassignPersoneroFromMesa(personeroId);
-    if (res.ok && selectedLocal) {
-      // Actualizar estado local
-      setLocalItems((prev) =>
-        prev.map((loc) => {
-          if (loc.id !== selectedLocal.id) return loc;
-          const updatedMesas = loc.mesas.map((m) => {
-            if (m.number !== mesaNum) return m;
-            return {
-              ...m,
-              titular: isSupl ? m.titular : null,
-              suplente: isSupl ? null : m.suplente,
-              personero: isSupl ? (m.titular || null) : (m.suplente || null),
-            };
-          });
-          const cubiertas = updatedMesas.filter((m) => !!m.titular || (!m.titular && !!m.suplente)).length;
-          return { ...loc, mesas: updatedMesas, cubiertasCount: cubiertas };
-        })
-      );
+    if (res.ok) {
+      toastSuccess("Personero desasignado correctamente");
+      if (selectedLocal) {
+        // Actualizar estado local
+        setLocalItems((prev) =>
+          prev.map((loc) => {
+            if (loc.id !== selectedLocal.id) return loc;
+            const updatedMesas = loc.mesas.map((m) => {
+              if (m.number !== mesaNum) return m;
+              return {
+                ...m,
+                titular: isSupl ? m.titular : null,
+                suplente: isSupl ? null : m.suplente,
+                personero: isSupl ? (m.titular || null) : (m.suplente || null),
+              };
+            });
+            const cubiertas = updatedMesas.filter((m) => !!m.titular || (!m.titular && !!m.suplente)).length;
+            return { ...loc, mesas: updatedMesas, cubiertasCount: cubiertas };
+          })
+        );
+      }
+    } else {
+      toastError(res.error || "No se pudo desasignar al personero");
     }
   }
 
@@ -518,8 +532,8 @@ export function CoverageMap({
           </div>
           <div className="picker-banner-coords">
             {editLat && editLng ? (
-              <span className="badge badge--green">
-                📍 {parseFloat(editLat).toFixed(5)}, {parseFloat(editLng).toFixed(5)}
+              <span className="badge badge--green" style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                <MapPin size={12} /> {parseFloat(editLat).toFixed(5)}, {parseFloat(editLng).toFixed(5)}
               </span>
             ) : (
               <span className="badge badge--amber">Esperando clic en el mapa...</span>
@@ -685,8 +699,8 @@ export function CoverageMap({
                     </a>
                   </div>
                 ) : (
-                  <span className="badge badge--amber" style={{ marginTop: "4px", fontSize: "10px" }}>
-                    ⚠️ Sin coordenadas GPS registradas
+                  <span className="badge badge--amber" style={{ marginTop: "4px", fontSize: "10px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                    <AlertCircle size={11} /> Sin coordenadas GPS registradas
                   </span>
                 )}
               </div>

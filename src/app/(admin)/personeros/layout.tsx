@@ -109,6 +109,10 @@ export default async function PersonerosLayout({ children }: { children: ReactNo
           mesas: stats.totalMesas,
           locales: stats.colegiosTotal,
           personeros: stats.totalPersoneros,
+          coordinadores: {
+            assigned: stats.colegiosConCoord,
+            total: stats.colegiosTotal,
+          },
         }}
       />
 

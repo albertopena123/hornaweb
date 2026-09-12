@@ -29,7 +29,9 @@ import {
   AlertTriangle,
   Download,
   X,
+  Printer,
 } from "lucide-react";
+import { CredentialA4Modal } from "./CredentialA4Modal";
 
 type Props = {
   rows: PersoneroRow[];
@@ -58,6 +60,7 @@ export function DirectorioView({ rows, perms, locales }: Props) {
     | { mode: "edit"; row: PersoneroRow }
     | null
   >(null);
+  const [selectedCredPersonero, setSelectedCredPersonero] = useState<PersoneroRow | null>(null);
 
   const [toDelete, setToDelete] = useState<PersoneroRow | null>(null);
   const [waModal, setWaModal] = useState(false);
@@ -256,7 +259,7 @@ export function DirectorioView({ rows, perms, locales }: Props) {
                 <th>Nombre / DNI</th>
                 <th>Cargo</th>
                 <th>Colegio / Local</th>
-                <th>Mesa y Aula</th>
+                <th>Mesa de Sufragio</th>
                 <th>Celular</th>
                 <th>WhatsApp</th>
                 <th>Credencial</th>
@@ -313,10 +316,7 @@ export function DirectorioView({ rows, perms, locales }: Props) {
                     </td>
                     <td>
                       {r.mesa ? (
-                        <div>
-                          <span className="personeros__mesa" style={{ fontWeight: 700, color: "var(--accent)" }}>Mesa {r.mesa}</span>
-                          <div className="personeros__notes" style={{ fontSize: 12, color: "var(--text-muted)" }}>Aula: {r.aula || "—"}</div>
-                        </div>
+                        <span className="personeros__mesa" style={{ fontWeight: 700, color: "var(--accent)" }}>Mesa {r.mesa}</span>
                       ) : (
                         <span className="badge badge--red">Sin mesa</span>
                       )}
@@ -338,15 +338,15 @@ export function DirectorioView({ rows, perms, locales }: Props) {
                       )}
                     </td>
                     <td>
-                      <a
-                        href={credUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-cred-link"
-                        title="Ver Credencial Oficial con código QR"
+                      <button
+                        type="button"
+                        onClick={() => setSelectedCredPersonero(r)}
+                        className="btn btn--xs btn--primary"
+                        style={{ display: "inline-flex", alignItems: "center", gap: "5px", cursor: "pointer" }}
+                        title="Ver y descargar credencial oficial A4 vertical en PDF (1 Hoja completa)"
                       >
-                        <ExternalLink size={12} /> Ver Credencial
-                      </a>
+                        <Download size={12} /> Credencial A4 (PDF)
+                      </button>
                     </td>
                     {perms.canWritePersoneros && (
                       <td>
@@ -474,6 +474,14 @@ export function DirectorioView({ rows, perms, locales }: Props) {
             setToDelete(null);
           }}
           onClose={() => setToDelete(null)}
+        />
+      )}
+
+      {/* Modal de Credencial Oficial A4 Vertical (2 en 1: Original + Copia) */}
+      {selectedCredPersonero && (
+        <CredentialA4Modal
+          personero={selectedCredPersonero}
+          onClose={() => setSelectedCredPersonero(null)}
         />
       )}
 
@@ -739,16 +747,6 @@ function PersoneroModal({
                 <option value="suplente">Personero Suplente de Mesa</option>
                 <option value="general">Personero General de Colegio</option>
               </select>
-            </label>
-
-            <label className="field">
-              <span className="field__label">N° de Aula / Pabellón</span>
-              <input
-                value={aula}
-                onChange={(e) => setAula(e.target.value)}
-                placeholder="Ej. Aula 102, 2do piso"
-                disabled={busy}
-              />
             </label>
           </div>
 

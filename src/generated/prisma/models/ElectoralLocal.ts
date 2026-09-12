@@ -50,6 +50,7 @@ export type ElectoralLocalMinAggregateOutputType = {
   totalMesas: number | null
   coordinatorName: string | null
   coordinatorPhone: string | null
+  coordinatorDni: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +67,7 @@ export type ElectoralLocalMaxAggregateOutputType = {
   totalMesas: number | null
   coordinatorName: string | null
   coordinatorPhone: string | null
+  coordinatorDni: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -82,6 +84,7 @@ export type ElectoralLocalCountAggregateOutputType = {
   totalMesas: number
   coordinatorName: number
   coordinatorPhone: number
+  coordinatorDni: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -112,6 +115,7 @@ export type ElectoralLocalMinAggregateInputType = {
   totalMesas?: true
   coordinatorName?: true
   coordinatorPhone?: true
+  coordinatorDni?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -128,6 +132,7 @@ export type ElectoralLocalMaxAggregateInputType = {
   totalMesas?: true
   coordinatorName?: true
   coordinatorPhone?: true
+  coordinatorDni?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -144,6 +149,7 @@ export type ElectoralLocalCountAggregateInputType = {
   totalMesas?: true
   coordinatorName?: true
   coordinatorPhone?: true
+  coordinatorDni?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -247,6 +253,7 @@ export type ElectoralLocalGroupByOutputType = {
   totalMesas: number
   coordinatorName: string | null
   coordinatorPhone: string | null
+  coordinatorDni: string | null
   createdAt: Date
   updatedAt: Date
   _count: ElectoralLocalCountAggregateOutputType | null
@@ -286,6 +293,7 @@ export type ElectoralLocalWhereInput = {
   totalMesas?: Prisma.IntFilter<"ElectoralLocal"> | number
   coordinatorName?: Prisma.StringNullableFilter<"ElectoralLocal"> | string | null
   coordinatorPhone?: Prisma.StringNullableFilter<"ElectoralLocal"> | string | null
+  coordinatorDni?: Prisma.StringNullableFilter<"ElectoralLocal"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ElectoralLocal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ElectoralLocal"> | Date | string
   mesas?: Prisma.ElectoralMesaListRelationFilter
@@ -304,6 +312,7 @@ export type ElectoralLocalOrderByWithRelationInput = {
   totalMesas?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrderInput | Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  coordinatorDni?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   mesas?: Prisma.ElectoralMesaOrderByRelationAggregateInput
@@ -325,6 +334,7 @@ export type ElectoralLocalWhereUniqueInput = Prisma.AtLeast<{
   totalMesas?: Prisma.IntFilter<"ElectoralLocal"> | number
   coordinatorName?: Prisma.StringNullableFilter<"ElectoralLocal"> | string | null
   coordinatorPhone?: Prisma.StringNullableFilter<"ElectoralLocal"> | string | null
+  coordinatorDni?: Prisma.StringNullableFilter<"ElectoralLocal"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ElectoralLocal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ElectoralLocal"> | Date | string
   mesas?: Prisma.ElectoralMesaListRelationFilter
@@ -343,6 +353,7 @@ export type ElectoralLocalOrderByWithAggregationInput = {
   totalMesas?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrderInput | Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrderInput | Prisma.SortOrder
+  coordinatorDni?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ElectoralLocalCountOrderByAggregateInput
@@ -367,6 +378,7 @@ export type ElectoralLocalScalarWhereWithAggregatesInput = {
   totalMesas?: Prisma.IntWithAggregatesFilter<"ElectoralLocal"> | number
   coordinatorName?: Prisma.StringNullableWithAggregatesFilter<"ElectoralLocal"> | string | null
   coordinatorPhone?: Prisma.StringNullableWithAggregatesFilter<"ElectoralLocal"> | string | null
+  coordinatorDni?: Prisma.StringNullableWithAggregatesFilter<"ElectoralLocal"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ElectoralLocal"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ElectoralLocal"> | Date | string
 }
@@ -383,6 +395,7 @@ export type ElectoralLocalCreateInput = {
   totalMesas?: number
   coordinatorName?: string | null
   coordinatorPhone?: string | null
+  coordinatorDni?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mesas?: Prisma.ElectoralMesaCreateNestedManyWithoutLocalInput
@@ -401,6 +414,7 @@ export type ElectoralLocalUncheckedCreateInput = {
   totalMesas?: number
   coordinatorName?: string | null
   coordinatorPhone?: string | null
+  coordinatorDni?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mesas?: Prisma.ElectoralMesaUncheckedCreateNestedManyWithoutLocalInput
@@ -419,6 +433,7 @@ export type ElectoralLocalUpdateInput = {
   totalMesas?: Prisma.IntFieldUpdateOperationsInput | number
   coordinatorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coordinatorPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coordinatorDni?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mesas?: Prisma.ElectoralMesaUpdateManyWithoutLocalNestedInput
@@ -437,6 +452,7 @@ export type ElectoralLocalUncheckedUpdateInput = {
   totalMesas?: Prisma.IntFieldUpdateOperationsInput | number
   coordinatorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coordinatorPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coordinatorDni?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mesas?: Prisma.ElectoralMesaUncheckedUpdateManyWithoutLocalNestedInput
@@ -455,6 +471,7 @@ export type ElectoralLocalCreateManyInput = {
   totalMesas?: number
   coordinatorName?: string | null
   coordinatorPhone?: string | null
+  coordinatorDni?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -471,6 +488,7 @@ export type ElectoralLocalUpdateManyMutationInput = {
   totalMesas?: Prisma.IntFieldUpdateOperationsInput | number
   coordinatorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coordinatorPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coordinatorDni?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -487,6 +505,7 @@ export type ElectoralLocalUncheckedUpdateManyInput = {
   totalMesas?: Prisma.IntFieldUpdateOperationsInput | number
   coordinatorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coordinatorPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coordinatorDni?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -503,6 +522,7 @@ export type ElectoralLocalCountOrderByAggregateInput = {
   totalMesas?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrder
+  coordinatorDni?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -525,6 +545,7 @@ export type ElectoralLocalMaxOrderByAggregateInput = {
   totalMesas?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrder
+  coordinatorDni?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -541,6 +562,7 @@ export type ElectoralLocalMinOrderByAggregateInput = {
   totalMesas?: Prisma.SortOrder
   coordinatorName?: Prisma.SortOrder
   coordinatorPhone?: Prisma.SortOrder
+  coordinatorDni?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -604,6 +626,7 @@ export type ElectoralLocalCreateWithoutMesasInput = {
   totalMesas?: number
   coordinatorName?: string | null
   coordinatorPhone?: string | null
+  coordinatorDni?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   actas?: Prisma.ActaElectoralCreateNestedManyWithoutLocalInput
@@ -621,6 +644,7 @@ export type ElectoralLocalUncheckedCreateWithoutMesasInput = {
   totalMesas?: number
   coordinatorName?: string | null
   coordinatorPhone?: string | null
+  coordinatorDni?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   actas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutLocalInput
@@ -654,6 +678,7 @@ export type ElectoralLocalUpdateWithoutMesasInput = {
   totalMesas?: Prisma.IntFieldUpdateOperationsInput | number
   coordinatorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coordinatorPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coordinatorDni?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actas?: Prisma.ActaElectoralUpdateManyWithoutLocalNestedInput
@@ -671,6 +696,7 @@ export type ElectoralLocalUncheckedUpdateWithoutMesasInput = {
   totalMesas?: Prisma.IntFieldUpdateOperationsInput | number
   coordinatorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coordinatorPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coordinatorDni?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutLocalNestedInput
@@ -688,6 +714,7 @@ export type ElectoralLocalCreateWithoutActasInput = {
   totalMesas?: number
   coordinatorName?: string | null
   coordinatorPhone?: string | null
+  coordinatorDni?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mesas?: Prisma.ElectoralMesaCreateNestedManyWithoutLocalInput
@@ -705,6 +732,7 @@ export type ElectoralLocalUncheckedCreateWithoutActasInput = {
   totalMesas?: number
   coordinatorName?: string | null
   coordinatorPhone?: string | null
+  coordinatorDni?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   mesas?: Prisma.ElectoralMesaUncheckedCreateNestedManyWithoutLocalInput
@@ -738,6 +766,7 @@ export type ElectoralLocalUpdateWithoutActasInput = {
   totalMesas?: Prisma.IntFieldUpdateOperationsInput | number
   coordinatorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coordinatorPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coordinatorDni?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mesas?: Prisma.ElectoralMesaUpdateManyWithoutLocalNestedInput
@@ -755,6 +784,7 @@ export type ElectoralLocalUncheckedUpdateWithoutActasInput = {
   totalMesas?: Prisma.IntFieldUpdateOperationsInput | number
   coordinatorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coordinatorPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coordinatorDni?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mesas?: Prisma.ElectoralMesaUncheckedUpdateManyWithoutLocalNestedInput
@@ -812,6 +842,7 @@ export type ElectoralLocalSelect<ExtArgs extends runtime.Types.Extensions.Intern
   totalMesas?: boolean
   coordinatorName?: boolean
   coordinatorPhone?: boolean
+  coordinatorDni?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   mesas?: boolean | Prisma.ElectoralLocal$mesasArgs<ExtArgs>
@@ -831,6 +862,7 @@ export type ElectoralLocalSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   totalMesas?: boolean
   coordinatorName?: boolean
   coordinatorPhone?: boolean
+  coordinatorDni?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["electoralLocal"]>
@@ -847,6 +879,7 @@ export type ElectoralLocalSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   totalMesas?: boolean
   coordinatorName?: boolean
   coordinatorPhone?: boolean
+  coordinatorDni?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["electoralLocal"]>
@@ -863,11 +896,12 @@ export type ElectoralLocalSelectScalar = {
   totalMesas?: boolean
   coordinatorName?: boolean
   coordinatorPhone?: boolean
+  coordinatorDni?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ElectoralLocalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "address" | "district" | "province" | "latitude" | "longitude" | "totalMesas" | "coordinatorName" | "coordinatorPhone" | "createdAt" | "updatedAt", ExtArgs["result"]["electoralLocal"]>
+export type ElectoralLocalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "name" | "address" | "district" | "province" | "latitude" | "longitude" | "totalMesas" | "coordinatorName" | "coordinatorPhone" | "coordinatorDni" | "createdAt" | "updatedAt", ExtArgs["result"]["electoralLocal"]>
 export type ElectoralLocalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mesas?: boolean | Prisma.ElectoralLocal$mesasArgs<ExtArgs>
   actas?: boolean | Prisma.ElectoralLocal$actasArgs<ExtArgs>
@@ -894,6 +928,7 @@ export type $ElectoralLocalPayload<ExtArgs extends runtime.Types.Extensions.Inte
     totalMesas: number
     coordinatorName: string | null
     coordinatorPhone: string | null
+    coordinatorDni: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["electoralLocal"]>
@@ -1332,6 +1367,7 @@ export interface ElectoralLocalFieldRefs {
   readonly totalMesas: Prisma.FieldRef<"ElectoralLocal", 'Int'>
   readonly coordinatorName: Prisma.FieldRef<"ElectoralLocal", 'String'>
   readonly coordinatorPhone: Prisma.FieldRef<"ElectoralLocal", 'String'>
+  readonly coordinatorDni: Prisma.FieldRef<"ElectoralLocal", 'String'>
   readonly createdAt: Prisma.FieldRef<"ElectoralLocal", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ElectoralLocal", 'DateTime'>
 }

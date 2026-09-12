@@ -26,8 +26,9 @@ function build(): PrismaClient {
   return new PrismaClient({ adapter });
 }
 
-export const prisma: PrismaClient = global.__prisma ?? build();
+// Force re-instantiating PrismaClient so newly generated schema fields (like coordinatorDni) are recognized
+export const prisma: PrismaClient =
+  process.env.NODE_ENV !== "production"
+    ? (global.__prisma = build())
+    : (global.__prisma ?? build());
 
-if (process.env.NODE_ENV !== "production") {
-  global.__prisma = prisma;
-}

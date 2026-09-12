@@ -104,6 +104,7 @@ export type ElectoralLocalData = {
   totalMesas: number;
   coordinatorName: string | null;
   coordinatorPhone: string | null;
+  coordinatorDni?: string | null;
   mesas: ElectoralMesaData[];
   cubiertasCount: number;
   cubiertasSuplenteCount?: number;

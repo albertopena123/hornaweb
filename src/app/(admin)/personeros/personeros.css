@@ -715,92 +715,653 @@ html[data-theme="dark"] .status-pill--green.status-pill--active {
   gap: 16px;
 }
 
+/* ==========================================================================
+   TARJETAS DE COLEGIOS Y MESAS (MesasView)
+   ========================================================================== */
+
 .local-card {
   background: var(--surface, #ffffff);
   border: 1px solid var(--border, #e2e8f0);
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  position: relative;
 }
 
+.local-card:hover {
+  box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+  z-index: 20;
+}
+
+.local-card--complete {
+  border-color: #a7f3d0;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.08);
+}
+
+/* Cabecera del Colegio */
 .local-card__head {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 12px;
 }
+
+.local-card__identity {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+.local-card__icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.1);
+}
+
+.local-card__titles {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.local-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 .local-card__district {
   font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.local-card__code {
+  font-size: 10px;
+  font-weight: 800;
+  background: #f1f5f9;
+  color: #475569;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.local-card__name {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--text, #0f172a);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.local-card__head-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.local-card__edit-btn {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+}
+
+/* Dirección y Mapa */
+.local-card__address {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+  flex-wrap: wrap;
+  margin-top: -2px;
+}
+
+.local-card__address-icon {
+  flex-shrink: 0;
+  color: #94a3b8;
+}
+
+.local-card__address-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 75%;
+}
+
+.local-card__maps-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  padding: 2px 7px;
+  border-radius: 5px;
+  text-decoration: none;
+  border: 1px solid #dbeafe;
+  transition: background 0.15s, color 0.15s;
+}
+
+.local-card__maps-link:hover {
+  background: #dbeafe;
+}
+
+/* Barra de Salud y Cobertura */
+.local-card__health {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg-soft, #f8fafc);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.local-card__health-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.local-card__health-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11.5px;
+  color: var(--text-muted, #64748b);
+  flex-wrap: wrap;
+}
+
+.health-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.health-stat--titular {
+  color: #1e40af;
+}
+
+.health-stat--suplente {
+  color: #92400e;
+}
+
+.local-card__meter-track {
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.local-card__meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.local-card__meter-fill--complete {
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.local-card__meter-fill--partial {
+  background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+}
+
+.local-card__meter-fill--empty {
+  background: #fca5a5;
+}
+
+/* Coordinador del Colegio */
+.local-card__coord-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.local-card__coord-bar--missing {
+  background: #fffbeb;
+  border-color: #fef3c7;
+}
+
+.local-card__coord-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.coord-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.coord-avatar--active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.coord-avatar--empty {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.coord-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.coord-label {
+  font-size: 10px;
   font-weight: 700;
   color: #64748b;
   text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
-.local-card__name {
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--text, #0f172a);
-  margin: 2px 0 0;
-}
-.local-card__progress {
+
+.coord-name-wrap {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 1px;
+}
+
+.coord-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text, #0f172a);
+}
+
+.coord-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #15803d;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid #bbf7d0;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.coord-wa-btn:hover {
+  background: #bbf7d0;
+}
+
+.coord-missing-text {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: 12px;
-  color: var(--text-muted, #64748b);
+  font-weight: 600;
+  color: #b45309;
+}
+
+.coord-action-btn {
+  flex-shrink: 0;
+}
+
+/* Mesas de Votación */
+.local-card__mesas-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.local-card__mesas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mesas-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text, #334155);
+}
+
+.mesas-legend-dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  color: #64748b;
+}
+
+.dot-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot--green {
+  background: #10b981;
+}
+
+.legend-dot--yellow {
+  background: #f59e0b;
+}
+
+.legend-dot--red {
+  background: #ef4444;
 }
 
 .mesas-mini-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 8px;
 }
 
+/* Píldora individual de Mesa */
 .mesa-mini-pill {
-  padding: 6px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 800;
+  position: relative;
+  padding: 7px 8px;
+  border-radius: 8px;
   text-align: center;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease, border-color 0.15s ease;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
 }
+
 .mesa-mini-pill:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
+
+.mesa-pill__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.mesa-pill__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.mesa-pill__num {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.mesa-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.mesa-dot--green {
+  background: #10b981;
+  box-shadow: 0 0 5px rgba(16, 185, 129, 0.6);
+}
+
+.mesa-dot--yellow {
+  background: #f59e0b;
+}
+
+.mesa-dot--red {
+  background: #ef4444;
+}
+
+.mesa-dot--purple {
+  background: #8b5cf6;
+}
+
+.mesa-pill__aula {
+  font-size: 9.5px;
+  font-weight: 700;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+.mesa-pill__role-hint {
+  font-size: 9px;
+  font-weight: 600;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+/* Colores de Píldoras según cobertura */
 .mesa-mini-pill--covered {
   background: #ecfdf5;
   color: #065f46;
   border-color: #a7f3d0;
 }
+
 .mesa-mini-pill--partial {
-  background: #fffbeb;
-  color: #92400e;
-  border-color: #fde68a;
+  background: #eff6ff;
+  color: #1e40af;
+  border-color: #bfdbfe;
 }
+
+.mesa-mini-pill--suplente-only {
+  background: #faf5ff;
+  color: #6b21a8;
+  border-color: #e9d5ff;
+}
+
 .mesa-mini-pill--empty {
   background: #fef2f2;
   color: #991b1b;
   border-color: #fecaca;
 }
 
-html[data-theme="dark"] .mesa-mini-pill--covered {
-  background: rgba(16, 185, 129, 0.16) !important;
-  color: #6ee7b7 !important;
-  border-color: rgba(16, 185, 129, 0.35) !important;
+/* Tooltip Flotante Interactivo al Hover */
+.mesa-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: 220px;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  border: 1px solid #334155;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+  z-index: 100;
+  font-size: 11px;
+  text-align: left;
 }
-html[data-theme="dark"] .mesa-mini-pill--partial {
-  background: rgba(245, 158, 11, 0.16) !important;
-  color: #fcd34d !important;
-  border-color: rgba(245, 158, 11, 0.35) !important;
+
+.mesa-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #0f172a transparent transparent transparent;
 }
-html[data-theme="dark"] .mesa-mini-pill--empty {
-  background: rgba(239, 68, 68, 0.14) !important;
-  color: #fca5a5 !important;
-  border-color: rgba(239, 68, 68, 0.3) !important;
+
+.mesa-mini-pill:hover .mesa-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.mesa-tooltip__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.mesa-tooltip__badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.mesa-tooltip__badge.mesa-dot--green {
+  background: #065f46;
+  color: #a7f3d0;
+}
+
+.mesa-tooltip__badge.mesa-dot--yellow {
+  background: #78350f;
+  color: #fde68a;
+}
+
+.mesa-tooltip__badge.mesa-dot--red {
+  background: #7f1d1d;
+  color: #fecaca;
+}
+
+.mesa-tooltip__badge.mesa-dot--purple {
+  background: #581c87;
+  color: #e9d5ff;
+}
+
+.mesa-tooltip__meta {
+  font-size: 10.5px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.mesa-tooltip__divider {
+  height: 1px;
+  background: #334155;
+  margin: 5px 0;
+}
+
+.mesa-tooltip__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  line-height: 1.4;
+  margin-bottom: 2px;
+}
+
+.tooltip-role {
+  color: #94a3b8;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.tooltip-val {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 145px;
+  text-align: right;
+}
+
+.tooltip-val--active {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.tooltip-val--vacant {
+  color: #f87171;
+  font-weight: 600;
+}
+
+.mesa-tooltip__footer {
+  margin-top: 6px;
+  font-size: 9.5px;
+  color: #94a3b8;
+  text-align: center;
+  border-top: 1px dashed #334155;
+  padding-top: 5px;
+  font-weight: 600;
+}
+
+/* SweetAlert2 Custom Modern Styling */
+.swal2-modern-popup {
+  border-radius: 16px !important;
+  font-family: inherit !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid var(--border, #e2e8f0) !important;
+}
+
+.swal2-modern-confirm {
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  padding: 9px 20px !important;
+  font-size: 13.5px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swal2-modern-cancel {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 9px 20px !important;
+  font-size: 13.5px !important;
 }
 
 /* Acciones en la tabla de personeros */
@@ -1446,3 +2007,730 @@ html[data-theme="dark"] .personeros__search:focus,
 html[data-theme="dark"] .personeros__district:focus {
   border-color: var(--accent);
 }
+
+/* Dark mode for school cards & interactive mesas */
+html[data-theme="dark"] .local-card__icon-badge {
+  background: rgba(37, 99, 235, 0.16);
+  color: #93c5fd;
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+html[data-theme="dark"] .local-card__code {
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .local-card__maps-link {
+  background: rgba(37, 99, 235, 0.15);
+  color: #93c5fd;
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+html[data-theme="dark"] .local-card__health {
+  background: var(--bg-soft);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .health-stat--titular {
+  color: #93c5fd;
+}
+
+html[data-theme="dark"] .health-stat--suplente {
+  color: #fcd34d;
+}
+
+html[data-theme="dark"] .local-card__meter-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .local-card__coord-bar {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .local-card__coord-bar--missing {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+html[data-theme="dark"] .coord-wa-btn {
+  background: rgba(22, 163, 74, 0.18);
+  color: #86efac;
+  border-color: rgba(22, 163, 74, 0.35);
+}
+
+html[data-theme="dark"] .mesa-mini-pill--covered {
+  background: rgba(16, 185, 129, 0.16) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+html[data-theme="dark"] .mesa-mini-pill--partial {
+  background: rgba(59, 130, 246, 0.16) !important;
+  color: #93c5fd !important;
+  border-color: rgba(59, 130, 246, 0.35) !important;
+}
+
+html[data-theme="dark"] .mesa-mini-pill--suplente-only {
+  background: rgba(168, 85, 247, 0.16) !important;
+  color: #d8b4fe !important;
+  border-color: rgba(168, 85, 247, 0.35) !important;
+}
+
+html[data-theme="dark"] .mesa-mini-pill--empty {
+  background: rgba(239, 68, 68, 0.14) !important;
+  color: #fca5a5 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+/* ========================================================= */
+/* MODAL DETAILS & DARK MODE FIXES                           */
+/* ========================================================= */
+
+.mesa-detail-card {
+  background: var(--bg-soft, #f8fafc);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+}
+
+html[data-theme="dark"] .mesa-detail-card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: var(--border, #2d3034) !important;
+}
+
+.mesa-detail-card__name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text, #0f172a);
+}
+
+html[data-theme="dark"] .mesa-detail-card__name {
+  color: #f1f5f9 !important;
+}
+
+.mesa-detail-card__empty {
+  font-size: 13px;
+  color: var(--text-muted, #64748b);
+}
+
+html[data-theme="dark"] .mesa-detail-card__empty {
+  color: #94a3b8 !important;
+}
+
+.mesa-detail-card--onpe {
+  background: var(--bg-sunken, #f1f5f9);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+html[data-theme="dark"] .mesa-detail-card--onpe {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: var(--border, #2d3034) !important;
+}
+
+.onpe-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted, #475569);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+html[data-theme="dark"] .onpe-section-title {
+  color: #94a3b8 !important;
+}
+
+.onpe-info-row {
+  font-size: 12.5px;
+  color: var(--text, #334155);
+  line-height: 1.5;
+}
+
+html[data-theme="dark"] .onpe-info-row {
+  color: #cbd5e1 !important;
+}
+
+.onpe-info-label {
+  color: var(--text-muted, #64748b);
+  font-weight: 600;
+}
+
+html[data-theme="dark"] .onpe-info-label {
+  color: #94a3b8 !important;
+}
+
+.coord-modal-desc {
+  font-size: 13px;
+  color: var(--text-muted, #475569);
+  line-height: 1.5;
+  margin: 0;
+}
+
+html[data-theme="dark"] .coord-modal-desc {
+  color: #cbd5e1 !important;
+}
+
+.assign-candidate-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: var(--surface, #ffffff);
+  transition: all 0.15s ease;
+}
+
+html[data-theme="dark"] .assign-candidate-card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: var(--border, #2d3034) !important;
+}
+
+.assign-candidate-card--current {
+  background: var(--accent-light, #eff6ff);
+}
+
+html[data-theme="dark"] .assign-candidate-card--current {
+  background: rgba(37, 99, 235, 0.18) !important;
+  border-color: rgba(37, 99, 235, 0.4) !important;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================================= */
+/* SUBMÓDULO COORDINADORES DE COLEGIO                        */
+/* ========================================================= */
+
+.coord-header-card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="dark"] .coord-header-card {
+  background: var(--surface, #1e2024);
+  border-color: var(--border, #2d3034);
+}
+
+.coord-header-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.coord-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+html[data-theme="dark"] .coord-icon-badge {
+  background: rgba(37, 99, 235, 0.16);
+  color: #93c5fd;
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.coord-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.coord-stat-box {
+  background: var(--bg-soft, #f8fafc);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+html[data-theme="dark"] .coord-stat-box {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border, #2d3034);
+}
+
+.coord-stat-box--success {
+  border-left: 3px solid #16a34a;
+}
+
+.coord-stat-box--danger {
+  border-left: 3px solid #dc2626;
+}
+
+.coord-stat-box__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted, #64748b);
+  letter-spacing: 0.3px;
+}
+
+.coord-stat-box__val {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text, #0f172a);
+  line-height: 1.2;
+}
+
+.coord-stat-box__sub {
+  font-size: 11px;
+  color: var(--text-muted, #64748b);
+  margin-top: 2px;
+}
+
+.coord-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pill-tab {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--border, #e2e8f0);
+  background: var(--surface, #ffffff);
+  color: var(--text-muted, #64748b);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill-tab:hover {
+  background: var(--bg-soft, #f1f5f9);
+  color: var(--text, #0f172a);
+}
+
+.pill-tab--active {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #0f172a !important;
+}
+
+html[data-theme="dark"] .pill-tab--active {
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+
+.pill-tab--alert-active {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+
+.pill-tab--success-active {
+  background: #16a34a !important;
+  color: #ffffff !important;
+  border-color: #16a34a !important;
+}
+
+.coord-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 16px;
+}
+
+.coord-card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  overflow: hidden;
+}
+
+.coord-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="dark"] .coord-card {
+  background: var(--surface, #1e2024);
+  border-color: var(--border, #2d3034);
+}
+
+.coord-card--assigned {
+  border-top: 3px solid #16a34a;
+}
+
+.coord-card--missing {
+  border-top: 3px solid #f59e0b;
+}
+
+.coord-card__head {
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid var(--border, #f1f5f9);
+}
+
+html[data-theme="dark"] .coord-card__head {
+  border-bottom-color: var(--border, #2d3034);
+}
+
+.coord-card__head-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.coord-card__badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.coord-card__code {
+  font-size: 10px;
+  font-weight: 800;
+  background: #f1f5f9;
+  color: #475569;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+html[data-theme="dark"] .coord-card__code {
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+}
+
+.coord-card__location {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+}
+
+.coord-card__mesas-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  border: 1px solid #dbeafe;
+}
+
+html[data-theme="dark"] .coord-card__mesas-badge {
+  background: rgba(37, 99, 235, 0.16);
+  color: #93c5fd;
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.coord-card__name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text, #0f172a);
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  line-height: 1.3;
+}
+
+.coord-card__school-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--text-muted, #64748b);
+}
+
+.coord-card__address {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-muted, #64748b);
+}
+
+.coord-card__pin-icon {
+  flex-shrink: 0;
+}
+
+.coord-card__address-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.coord-card__map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #2563eb;
+  text-decoration: none;
+  background: #eff6ff;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+html[data-theme="dark"] .coord-card__map-link {
+  background: rgba(37, 99, 235, 0.15);
+  color: #93c5fd;
+}
+
+.coord-card__body {
+  padding: 14px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.coord-assigned-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+html[data-theme="dark"] .coord-assigned-box {
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.28);
+}
+
+.coord-assigned-box__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.coord-avatar-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #16a34a;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.coord-badge {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.coord-badge--success {
+  color: #15803d;
+}
+
+html[data-theme="dark"] .coord-badge--success {
+  color: #86efac;
+}
+
+.coord-person-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text, #0f172a);
+}
+
+.btn-icon-subtle {
+  background: transparent;
+  border: none;
+  color: var(--text-muted, #64748b);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.btn-icon-subtle:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--text, #0f172a);
+}
+
+.btn-icon-subtle--danger:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+html[data-theme="dark"] .btn-icon-subtle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+}
+
+html[data-theme="dark"] .btn-icon-subtle--danger:hover {
+  background: rgba(220, 38, 38, 0.25);
+  color: #fca5a5;
+}
+
+.coord-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.coord-btn-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #16a34a;
+  color: #ffffff !important;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.coord-btn-wa:hover {
+  background: #15803d;
+}
+
+.coord-btn-call {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text, #0f172a);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border, #e2e8f0);
+}
+
+.coord-btn-call:hover {
+  background: var(--bg-soft, #f1f5f9);
+}
+
+.coord-missing-box {
+  background: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+html[data-theme="dark"] .coord-missing-box {
+  background: rgba(245, 158, 11, 0.07);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.coord-missing-alert {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 12px;
+  color: #92400e;
+}
+
+html[data-theme="dark"] .coord-missing-alert {
+  color: #fcd34d;
+}
+
+.coord-missing-alert strong {
+  display: block;
+  font-size: 13px;
+  color: #b45309;
+}
+
+html[data-theme="dark"] .coord-missing-alert strong {
+  color: #fde68a;
+}
+
+.coord-missing-alert p {
+  margin: 2px 0 0;
+  font-size: 11px;
+}
+
+.coord-assign-trigger {
+  width: 100%;
+  justify-content: center;
+  font-size: 12.5px !important;
+}
+
+.coord-card__foot {
+  padding: 8px 16px;
+  border-top: 1px solid var(--border, #f1f5f9);
+  background: var(--bg-soft, #f8fafc);
+}
+
+html[data-theme="dark"] .coord-card__foot {
+  border-top-color: var(--border, #2d3034);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.coord-card__mesas-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent, #2563eb);
+  text-decoration: none;
+}
+
+.coord-card__mesas-link:hover {
+  text-decoration: underline;
+}
+
+.coord-empty-state {
+  grid-column: 1 / -1;
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+}
+
+
