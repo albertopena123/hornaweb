@@ -64,3 +64,8 @@ next-env.d.ts
 
 # Modelos locales de IA
 *.onnx
+
+# Deploy scripts temporales
+scripts/askpass.bat
+scripts/ssh-exec.js
+

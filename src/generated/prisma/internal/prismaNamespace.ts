@@ -406,7 +406,8 @@ export const ModelName = {
   MessagingDailyCounter: 'MessagingDailyCounter',
   Candidate: 'Candidate',
   ActaElectoral: 'ActaElectoral',
-  ActaVoto: 'ActaVoto'
+  ActaVoto: 'ActaVoto',
+  ElectorConsulta: 'ElectorConsulta'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "userRole" | "rolePermission" | "session" | "supporter" | "local" | "personero" | "electoralLocal" | "electoralMesa" | "siteSetting" | "announcement" | "contact" | "contactImport" | "whatsappSession" | "campaign" | "campaignSession" | "campaignRecipient" | "messagingDailyCounter" | "candidate" | "actaElectoral" | "actaVoto"
+    modelProps: "user" | "role" | "permission" | "userRole" | "rolePermission" | "session" | "supporter" | "local" | "personero" | "electoralLocal" | "electoralMesa" | "siteSetting" | "announcement" | "contact" | "contactImport" | "whatsappSession" | "campaign" | "campaignSession" | "campaignRecipient" | "messagingDailyCounter" | "candidate" | "actaElectoral" | "actaVoto" | "electorConsulta"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2128,6 +2129,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ElectorConsulta: {
+      payload: Prisma.$ElectorConsultaPayload<ExtArgs>
+      fields: Prisma.ElectorConsultaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ElectorConsultaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ElectorConsultaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>
+        }
+        findFirst: {
+          args: Prisma.ElectorConsultaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ElectorConsultaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>
+        }
+        findMany: {
+          args: Prisma.ElectorConsultaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>[]
+        }
+        create: {
+          args: Prisma.ElectorConsultaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>
+        }
+        createMany: {
+          args: Prisma.ElectorConsultaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ElectorConsultaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>[]
+        }
+        delete: {
+          args: Prisma.ElectorConsultaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>
+        }
+        update: {
+          args: Prisma.ElectorConsultaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>
+        }
+        deleteMany: {
+          args: Prisma.ElectorConsultaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ElectorConsultaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ElectorConsultaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>[]
+        }
+        upsert: {
+          args: Prisma.ElectorConsultaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ElectorConsultaPayload>
+        }
+        aggregate: {
+          args: Prisma.ElectorConsultaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateElectorConsulta>
+        }
+        groupBy: {
+          args: Prisma.ElectorConsultaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElectorConsultaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ElectorConsultaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ElectorConsultaCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2547,12 +2622,44 @@ export const ActaVotoScalarFieldEnum = {
 export type ActaVotoScalarFieldEnum = (typeof ActaVotoScalarFieldEnum)[keyof typeof ActaVotoScalarFieldEnum]
 
 
+export const ElectorConsultaScalarFieldEnum = {
+  dni: 'dni',
+  nombres: 'nombres',
+  apellidos: 'apellidos',
+  miembroMesa: 'miembroMesa',
+  cargo: 'cargo',
+  localVotacion: 'localVotacion',
+  direccion: 'direccion',
+  referencia: 'referencia',
+  ubigeo: 'ubigeo',
+  mesaSufragio: 'mesaSufragio',
+  orden: 'orden',
+  tipoVoto: 'tipoVoto',
+  localLatitud: 'localLatitud',
+  localLongitud: 'localLongitud',
+  codigoLocal: 'codigoLocal',
+  rawPayload: 'rawPayload',
+  consultedAt: 'consultedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ElectorConsultaScalarFieldEnum = (typeof ElectorConsultaScalarFieldEnum)[keyof typeof ElectorConsultaScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -2569,6 +2676,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -2821,6 +2937,20 @@ export type EnumActaStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
 export type ListEnumActaStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActaStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2954,6 +3084,7 @@ export type GlobalOmitConfig = {
   candidate?: Prisma.CandidateOmit
   actaElectoral?: Prisma.ActaElectoralOmit
   actaVoto?: Prisma.ActaVotoOmit
+  electorConsulta?: Prisma.ElectorConsultaOmit
 }
 
 /* Types for Logging */

@@ -134,10 +134,9 @@ export async function getLiveResultsData(
           },
           // Alcaldía Manu
           {
-            name: "YILMER GONZALES KHAN",
+            name: "CANDIDATO AHORA NACIÓN MANU",
             party: "AHORA NACIÓN",
             partyLogo: "/assets/images/logo/logo-an.webp",
-            photoUrl: "/assets/images/candidatos/yilmer-gonzales.webp",
             cargo: "provincial",
             province: "Manu",
             order: 1,
@@ -146,9 +145,10 @@ export async function getLiveResultsData(
           },
           // Alcaldía Tahuamanu
           {
-            name: "CANDIDATO AHORA NACIÓN TAHUAMANU",
+            name: "YILMER GONZALES KHAN",
             party: "AHORA NACIÓN",
             partyLogo: "/assets/images/logo/logo-an.webp",
+            photoUrl: "/assets/images/candidatos/yilmer-gonzales.webp",
             cargo: "provincial",
             province: "Tahuamanu",
             order: 1,

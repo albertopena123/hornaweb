@@ -51,13 +51,13 @@ const CANDIDATOS_LISTA: CandidatoEquipo[] = [
     nombre: "Yilmer Gonzales Khan",
     cargo: "Alcalde Provincial",
     tipo: "provincial",
-    ambito: "Manu",
-    lema: "Conectividad integral fluvial y terrestre, impulso al ecoturismo sostenible y valor a nuestras comunidades originarias.",
+    ambito: "Tahuamanu",
+    lema: "Conectividad integral vial y fronteriza, impulso al desarrollo productivo sostenible y valor a nuestras comunidades originarias.",
     propuestas: [
-      "Conectividad fluvial y terrestre segura los 365 días del año en toda la cuenca del Manu.",
-      "Fomento al ecoturismo vivencial y conservación de la biodiversidad generando empleo para los jóvenes locales.",
-      "Acceso a energía solar limpia, agua tratada y telecomunicaciones en comunidades nativas.",
-      "Apoyo y crédito directo para pequeños productores de plátano, cacao y frutales amazónicos."
+      "Conectividad vial y terrestre segura los 365 días del año en toda la provincia de Tahuamanu.",
+      "Fomento al desarrollo agroforestal, castañero y ecoturismo vivencial generando empleo para los jóvenes locales.",
+      "Acceso a energía solar limpia, agua tratada y telecomunicaciones en comunidades nativas y centros poblados.",
+      "Apoyo y crédito directo para pequeños productores agropecuarios, castañeros y forestales sostenibles."
     ],
   },
   {

@@ -31,6 +31,7 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/auth/") ||
     pathname.startsWith("/api/apoyos") ||
     pathname.startsWith("/api/dni/") ||
+    pathname.startsWith("/api/donde-votar/") ||
     pathname.startsWith("/api/personeros/") ||
     pathname.startsWith("/api/actas/") ||
     pathname.startsWith("/api/ia/") ||

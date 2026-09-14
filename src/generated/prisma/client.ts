@@ -156,3 +156,8 @@ export type ActaElectoral = Prisma.ActaElectoralModel
  * 
  */
 export type ActaVoto = Prisma.ActaVotoModel
+/**
+ * Model ElectorConsulta
+ * 
+ */
+export type ElectorConsulta = Prisma.ElectorConsultaModel

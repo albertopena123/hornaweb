@@ -569,3 +569,27 @@ model ActaVoto {
   @@index([candidateId])
 }
 
+model ElectorConsulta {
+  dni           String   @id
+  nombres       String
+  apellidos     String
+  miembroMesa   Boolean  @default(false)
+  cargo         String?
+  localVotacion String?
+  direccion     String?
+  referencia    String?
+  ubigeo        String?
+  mesaSufragio  String?
+  orden         String?
+  tipoVoto      String?
+  localLatitud  String?
+  localLongitud String?
+  codigoLocal   String?
+  rawPayload    Json?
+  consultedAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([mesaSufragio])
+  @@index([ubigeo])
+}
+

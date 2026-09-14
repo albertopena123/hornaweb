@@ -126,8 +126,8 @@ const Header = () => {
                 )
               })}
               <li className="nav-menu__item" style={{ borderBottom: '1px solid #f0f0f0' }}>
-                <a href="/mi-mesa" onClick={() => setMobileOpen(false)} className="nav-menu__link text-heading d-block py-3 px-3" style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500, borderRadius: '6px', textDecoration: 'none' }}>
-                  Consultor de Mesa
+                <a href="/mi-mesa" onClick={() => setMobileOpen(false)} className="nav-menu__link text-heading d-block py-3 px-3" style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 600, borderRadius: '6px', textDecoration: 'none' }}>
+                  🗳️ ¿Dónde Voto?
                 </a>
               </li>
               <li className="nav-menu__item" style={{ borderBottom: '1px solid #f0f0f0' }}>
@@ -230,8 +230,8 @@ const Header = () => {
                   )
                 })}
                 <li className="nav-menu__item" style={{ flexShrink: 0 }}>
-                  <a href="/mi-mesa" className="nav-menu__link text-heading" style={{ whiteSpace: 'nowrap', fontSize: '14px', padding: '8px 12px', color: '#222', fontWeight: 500, textDecoration: 'none' }}>
-                    Consultor de Mesa
+                  <a href="/mi-mesa" className="nav-menu__link text-heading" style={{ whiteSpace: 'nowrap', fontSize: '14px', padding: '8px 12px', color: '#222', fontWeight: 600, textDecoration: 'none' }}>
+                    🗳️ ¿Dónde Voto?
                   </a>
                 </li>
                 <li className="nav-menu__item" style={{ flexShrink: 0 }}>

@@ -668,18 +668,18 @@ export const CANDIDATOS_PROVINCIALES: Record<string, Candidato[]> = {
   Tahuamanu: [
     {
       id: 'prov-tah-1',
-      nombre: "WILBER NINA CALLA",
+      nombre: "YILMER GONZALES KHAN",
       profesion: 'Candidato a Alcalde Provincial',
       partido: "AHORA NACION - AN",
       partidoLogo: getJneBlobLogoUrl('2980'),
-      fotoUrl: getJneFotoCandidatoUrl('44966241.jpg'),
+      fotoUrl: '/assets/images/candidatos/yilmer-gonzales.webp',
       cargo: 'AlcaldeProvincial',
       provincia: 'Tahuamanu',
-      propuestaPrincipal: 'Integración Fronteriza, Desarrollo Agroforestal y Servicios Públicos en Tahuamanu',
+      propuestaPrincipal: 'Integración Fronteriza, Desarrollo Agroforestal y Conectividad Vial en Tahuamanu',
       propuestasSecundarias: [
         'Número de regidores en lista: 6',
-        'Fomento del comercio fronterizo sostenible.',
-        'Apoyo a la producción forestal y castañera.'
+        'Fomento del comercio fronterizo sostenible y transitabilidad todo el año.',
+        'Apoyo a la producción forestal, castañera y agrícola.'
       ],
       hojaDeVidaUrl: 'https://votoinformado.jne.gob.pe/candidatos/hoja-vida/dfnehj3sK5IGpPdVhQBjo1X9b8NCKOUK',
       planDeGobiernoUrl: JNE_AZURE_BLOB_BASE.VOTO_INFORMADO_CANDIDATOS,
@@ -790,7 +790,7 @@ export const CANDIDATOS_PROVINCIALES: Record<string, Candidato[]> = {
   Manu: [
     {
       id: 'prov-man-1',
-      nombre: "YILMER GONZALES KHAN",
+      nombre: "CANDIDATO AHORA NACIÓN MANU",
       profesion: 'Candidato a Alcalde Provincial',
       partido: "AHORA NACION - AN",
       partidoLogo: getJneBlobLogoUrl('2980'),
