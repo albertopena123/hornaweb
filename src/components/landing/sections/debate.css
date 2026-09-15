@@ -1,0 +1,350 @@
+/* ─────────────────────────────────────────────────────────────
+   DebateSection — Marco Cinematográfico para Transmisión en Público
+   ───────────────────────────────────────────────────────────── */
+
+.debate-section {
+  position: relative;
+  background: radial-gradient(circle at 50% 20%, #1e131d 0%, #0c0e14 70%, #06070a 100%);
+  color: #f8fafc;
+  padding: 80px 20px 90px;
+  overflow: hidden;
+  border-top: 1px solid rgba(220, 38, 38, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Luces ambientales traseras */
+.debate-section__glow-1 {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 750px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(220, 38, 38, 0.22) 0%, rgba(220, 38, 38, 0) 70%);
+  pointer-events: none;
+  filter: blur(50px);
+}
+
+.debate-section__glow-2 {
+  position: absolute;
+  bottom: -50px;
+  right: 10%;
+  width: 450px;
+  height: 350px;
+  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0) 70%);
+  pointer-events: none;
+  filter: blur(60px);
+}
+
+.debate-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Encabezado de la Sección */
+.debate-header {
+  text-align: center;
+  margin-bottom: 34px;
+}
+
+.debate-header__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(220, 38, 38, 0.16);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #fca5a5;
+  margin-bottom: 14px;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
+}
+
+.debate-header__title {
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #ffffff;
+  margin: 0 0 10px;
+  letter-spacing: -0.5px;
+}
+
+@media (max-width: 768px) {
+  .debate-header__title {
+    font-size: 27px;
+  }
+}
+
+.debate-header__title span {
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.debate-header__desc {
+  font-size: 16px;
+  color: #94a3b8;
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Marco de Transmisión "Cinema Frame"
+   ───────────────────────────────────────────────────────────── */
+
+.cinema-frame {
+  background: #0d121d;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7),
+              0 0 40px rgba(220, 38, 38, 0.15);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.cinema-frame:hover {
+  box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.8),
+              0 0 50px rgba(220, 38, 38, 0.22);
+}
+
+/* Barra Superior del Marco */
+.cinema-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 22px;
+  background: linear-gradient(90deg, #131b29 0%, #0f1520 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cinema-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Badge EN VIVO pulsante */
+.cinema-badge--live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.6);
+}
+
+.cinema-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: white;
+  animation: cinema-pulse 1.3s infinite;
+}
+
+@keyframes cinema-pulse {
+  0% { transform: scale(0.9); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.4; }
+  100% { transform: scale(0.9); opacity: 1; }
+}
+
+.cinema-badge--upcoming {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #d97706;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.cinema-badge--recorded {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.cinema-region-pill {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #f1f5f9;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.cinema-topbar__source {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Área de Video 16:9 */
+.cinema-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cinema-screen iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Pantalla de Espera / Standby */
+.cinema-standby {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  gap: 16px;
+  max-width: 600px;
+}
+
+.cinema-standby__icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.15);
+  border: 2px solid rgba(220, 38, 38, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: #f87171;
+  box-shadow: 0 0 25px rgba(220, 38, 38, 0.3);
+  animation: pulse-red 2s infinite;
+}
+
+.cinema-standby__title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.cinema-standby__text {
+  font-size: 14.5px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Barra Inferior y Botones de Acción */
+.cinema-bottombar {
+  padding: 20px 24px;
+  background: #0a0e17;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.cinema-info h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.cinema-info p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.cinema-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cinema-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.cinema-btn--whatsapp {
+  background: #25d366;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 2px 10px rgba(37, 211, 102, 0.3);
+}
+
+.cinema-btn--whatsapp:hover {
+  background: #20ba59;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+  color: #ffffff;
+}
+
+.cinema-btn--outline {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.cinema-btn--outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+/* Mensaje personalizado de aliento */
+.cinema-banner-msg {
+  margin-top: 14px;
+  padding: 12px 18px;
+  background: rgba(220, 38, 38, 0.08);
+  border-left: 4px solid #dc2626;
+  border-radius: 0 8px 8px 0;
+  font-size: 13.5px;
+  color: #fecaca;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

@@ -20,6 +20,7 @@ const PUBLIC_PATHS = new Set<string>([
   "/sitemap.xml",
   "/manifest.webmanifest",
   "/visor-envivo",
+  "/debate",
 ]);
 
 export async function proxy(request: NextRequest) {

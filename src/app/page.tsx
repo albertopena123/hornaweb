@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LandingPage from "@/components/landing/LandingPage";
+import { getBroadcastConfig } from "@/lib/broadcast";
 import {
   SITE_DESCRIPTION,
   SITE_KEYWORDS,
@@ -32,7 +33,9 @@ const TEMPLATE_STYLES = [
   "/assets/css/main.css",
 ];
 
-export default function Page() {
+export default async function Page() {
+  const broadcast = await getBroadcastConfig();
+
   return (
     <>
       <script
@@ -43,7 +46,7 @@ export default function Page() {
         // eslint-disable-next-line @next/next/no-css-tags
         <link key={href} rel="stylesheet" href={href} precedence="default" />
       ))}
-      <LandingPage />
+      <LandingPage broadcast={broadcast} />
     </>
   );
 }

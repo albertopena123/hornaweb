@@ -11,6 +11,8 @@ import Footer from "./layout/Footer";
 import Hero from "./sections/Hero";
 import Candidatos from "./sections/Candidatos";
 import Apoyo from "./sections/Apoyo";
+import DebateSection from "./sections/DebateSection";
+import type { BroadcastConfig } from "@/lib/broadcast";
 
 // La plantilla Politicly depende de scripts globales con orden estricto de
 // dependencia (jQuery antes que sus plugins, gsap antes que sus plugins,
@@ -63,7 +65,11 @@ declare global {
   }
 }
 
-export default function LandingPage() {
+export default function LandingPage({
+  broadcast,
+}: {
+  broadcast?: BroadcastConfig;
+}) {
   useEffect(() => {
     let cancelled = false;
 
@@ -139,6 +145,9 @@ export default function LandingPage() {
 
       <main>
         <Hero />
+        {broadcast && broadcast.enabled && broadcast.showOnHome && (
+          <DebateSection broadcast={broadcast} />
+        )}
         <Candidatos />
         <Apoyo />
         <Footer />

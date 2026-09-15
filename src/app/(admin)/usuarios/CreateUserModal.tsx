@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { Icon } from "@/components/admin/Icon";
 import { useEscClose } from "@/lib/ui/useEscClose";
 import { RolePicker } from "./RolePicker";
@@ -17,34 +17,72 @@ type Props = {
   }) => Promise<ActionResult<{ id: string }>>;
 };
 
-function slugify(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, ".")
-    .replace(/^\.|\.$/g, "")
-    .slice(0, 40);
-}
+const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
+  const [dni, setDni] = useState("");
   const [name, setName] = useState("");
-  const [emailLocal, setEmailLocal] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [roleIds, setRoleIds] = useState<string[]>([]);
-  const [touchedEmail, setTouchedEmail] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<
-    Partial<Record<string, string>>
-  >({});
+  const [dniStatus, setDniStatus] = useState<"idle" | "loading" | "found" | "notfound" | "error">("idle");
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
   const [topError, setTopError] = useState<string | null>(null);
+
+  const autoFilledNameRef = useRef<string>("");
 
   useEscClose(true, onClose, submitting);
 
+  // Consulta automática de DNI al ingresar 8 dígitos
+  useEffect(() => {
+    const cleanDni = dni.trim().replace(/\D/g, "");
+    if (cleanDni.length !== 8) {
+      setDniStatus("idle");
+      return;
+    }
+
+    const ctrl = new AbortController();
+    const timer = setTimeout(async () => {
+      setDniStatus("loading");
+      try {
+        const res = await fetch(`/api/dni/${cleanDni}`, { signal: ctrl.signal });
+        const json = await res.json().catch(() => null);
+
+        if (res.ok && json?.ok && typeof json.name === "string" && json.name) {
+          const resolvedName = json.name;
+          setDniStatus("found");
+          // Si el nombre no ha sido editado manualmente, auto-llenarlo
+          setName((prev) => (!prev.trim() || prev === autoFilledNameRef.current ? resolvedName : prev));
+          autoFilledNameRef.current = resolvedName;
+
+          // Sugerir la contraseña predeterminada como el DNI si aún no se ha escrito una
+          setPassword((prev) => (!prev.trim() ? cleanDni : prev));
+
+          // Si el correo está vacío, sugerir correo predeterminado del DNI
+          setEmail((prev) => (!prev.trim() ? `${cleanDni}@ahoranacion.pe` : prev));
+        } else if (res.status === 404) {
+          setDniStatus("notfound");
+        } else {
+          setDniStatus("error");
+        }
+      } catch (err: unknown) {
+        if (!ctrl.signal.aborted) {
+          setDniStatus("error");
+        }
+      }
+    }, 350);
+
+    return () => {
+      clearTimeout(timer);
+      ctrl.abort();
+    };
+  }, [dni]);
+
   const valid =
     name.trim().length >= 2 &&
-    /^[a-zA-Z0-9._-]+$/.test(emailLocal) &&
+    EMAIL_RE.test(email.trim().toLowerCase()) &&
     password.length >= 6;
 
   const onSubmitForm = async (e: FormEvent) => {
@@ -53,12 +91,14 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
     setSubmitting(true);
     setTopError(null);
     setFieldErrors({});
+
     const res = await onSubmit({
       name: name.trim(),
-      email: `${emailLocal.trim().toLowerCase()}@unamad.edu.pe`,
+      email: email.trim().toLowerCase(),
       password,
       roleIds,
     });
+
     if (!res.ok) {
       setTopError(res.error ?? "No se pudo crear el usuario.");
       setFieldErrors(res.fieldErrors ?? {});
@@ -84,8 +124,7 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
         </header>
         <div className="modal__body">
           <p className="modal__intro">
-            Se enviará un correo de bienvenida con instrucciones para activar el
-            acceso. La contraseña inicial puede ser cambiada por el usuario.
+            Ingresa los datos del usuario. Puedes buscarlo por su DNI para autocompletar su nombre, y asignar cualquier correo electrónico personal o institucional.
           </p>
 
           {topError && (
@@ -99,47 +138,75 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
             </div>
           )}
 
+          {/* Campo DNI con consulta en tiempo real */}
+          <label className="field">
+            <span
+              className="field__label"
+              style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+            >
+              <span>DNI (8 dígitos) — Consulta rápida</span>
+              {dniStatus === "loading" && (
+                <span style={{ fontSize: 12, color: "var(--accent)", display: "flex", alignItems: "center", gap: 4 }}>
+                  Consultando padrón…
+                </span>
+              )}
+              {dniStatus === "found" && (
+                <span style={{ fontSize: 12, color: "#15803d", fontWeight: 500, display: "flex", alignItems: "center", gap: 4 }}>
+                  <Icon name="check" size={14} /> Persona identificada
+                </span>
+              )}
+              {dniStatus === "notfound" && (
+                <span style={{ fontSize: 12, color: "#b45309" }}>
+                  DNI no encontrado en padrón
+                </span>
+              )}
+              {dniStatus === "error" && (
+                <span style={{ fontSize: 12, color: "#b91c1c" }}>
+                  Servicio de DNI no disponible
+                </span>
+              )}
+            </span>
+            <input
+              type="text"
+              autoFocus
+              maxLength={8}
+              value={dni}
+              onChange={(e) => setDni(e.target.value.replace(/\D/g, "").slice(0, 8))}
+              placeholder="Ingresa 8 dígitos para autocompletar el nombre"
+            />
+          </label>
+
+          {/* Campo Nombre completo */}
           <label className="field">
             <span className="field__label">
               Nombre completo<span className="field__req">*</span>
             </span>
             <input
               type="text"
-              autoFocus
               value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                if (!touchedEmail) setEmailLocal(slugify(e.target.value));
-              }}
+              onChange={(e) => setName(e.target.value)}
               placeholder="p. ej. María Salas Yáñez"
               aria-invalid={!!fieldErrors.name}
             />
             {fieldErrors.name && (
-              <span
-                style={{ color: "#b91c1c", fontSize: 12, marginTop: 4 }}
-              >
+              <span style={{ color: "#b91c1c", fontSize: 12, marginTop: 4 }}>
                 {fieldErrors.name}
               </span>
             )}
           </label>
 
+          {/* Campo Correo electrónico libre */}
           <label className="field">
             <span className="field__label">
-              Correo institucional<span className="field__req">*</span>
+              Correo electrónico<span className="field__req">*</span>
             </span>
-            <div className="input-suffix">
-              <input
-                type="text"
-                value={emailLocal}
-                onChange={(e) => {
-                  setEmailLocal(e.target.value);
-                  setTouchedEmail(true);
-                }}
-                placeholder="m.salas"
-                aria-invalid={!!fieldErrors.email}
-              />
-              <span>@unamad.edu.pe</span>
-            </div>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="p. ej. persona@gmail.com o maria@ahoranacion.pe"
+              aria-invalid={!!fieldErrors.email}
+            />
             {fieldErrors.email && (
               <span style={{ color: "#b91c1c", fontSize: 12, marginTop: 4 }}>
                 {fieldErrors.email}
@@ -147,6 +214,7 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
             )}
           </label>
 
+          {/* Campo Contraseña inicial */}
           <label className="field">
             <span
               className="field__label"
@@ -183,6 +251,7 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
             )}
           </label>
 
+          {/* Selector de Roles */}
           <div style={{ marginTop: 8 }}>
             <div className="field__label" style={{ marginBottom: 8 }}>
               Roles asignados

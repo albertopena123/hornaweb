@@ -144,6 +144,12 @@ export const SIDEBAR_SECTIONS: NavSection[] = [
         href: "/anuncios",
         permission: "anuncios.read",
       },
+      {
+        id: "transmision",
+        label: "Transmisión / Debate",
+        icon: "device",
+        href: "/transmision",
+      },
     ],
   },
 ];

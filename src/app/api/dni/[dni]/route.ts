@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { ok, fail } from "@/app/api/v1/_lib/response";
+import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rate-limit";
 import { toTitleCase } from "@/lib/text";
 
@@ -11,7 +12,7 @@ const API_BASE = "https://apidatos.unamad.edu.pe/api/consulta";
 // El token vive solo en el entorno (.env, fuera de git). Este route corre en el
 // servidor, asi que nunca llega al navegador: el cliente pega a /api/dni/:dni.
 const API_TOKEN = process.env.DNI_API_TOKEN ?? "";
-const MAX_PER_IP = 15;
+const MAX_PER_IP = 30;
 const WINDOW_MS = 10 * 60 * 1000; // 10 minutos
 
 function clientIp(req: NextRequest): string {
@@ -27,6 +28,30 @@ export async function GET(
   const { dni } = await params;
   if (!/^\d{8}$/.test(dni)) {
     return fail("DNI inválido.", 400);
+  }
+
+  // 1. Comprobar primero en la base de datos local (instantáneo)
+  try {
+    const localElector = await prisma.electorConsulta.findUnique({
+      where: { dni },
+      select: { nombres: true, apellidos: true },
+    });
+    if (localElector) {
+      const fullName = `${localElector.nombres} ${localElector.apellidos}`.trim();
+      if (fullName) {
+        return ok({ name: toTitleCase(fullName) });
+      }
+    }
+
+    const localPersonero = await prisma.personero.findFirst({
+      where: { docType: "dni", docNumber: dni },
+      select: { name: true },
+    });
+    if (localPersonero?.name) {
+      return ok({ name: toTitleCase(localPersonero.name) });
+    }
+  } catch (err) {
+    console.warn("dni-lookup: error consultando BD local, continuando a API externa", err);
   }
 
   const rl = rateLimit("dni-lookup", clientIp(req), MAX_PER_IP, WINDOW_MS);

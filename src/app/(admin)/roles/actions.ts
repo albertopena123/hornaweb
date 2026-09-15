@@ -228,8 +228,10 @@ export async function setRolePermissions(
 
     const target = await prisma.role.findUnique({ where: { id: roleId } });
     if (!target) return fail("Rol no encontrado.");
-    if (target.system) {
-      return fail("Los permisos de los roles del sistema no se pueden modificar.");
+
+    // Salvaguarda: no permitir dejar al Superadministrador sin permisos para evitar bloqueos
+    if (target.key === "superadmin" && permissionKeys.length === 0) {
+      return fail("El rol Superadministrador no puede quedarse sin permisos.");
     }
 
     const keys = dedupePerms(permissionKeys) as PermissionKey[];

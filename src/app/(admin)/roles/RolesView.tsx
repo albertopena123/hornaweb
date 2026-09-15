@@ -188,28 +188,8 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
     return new Set(active.permissions.map((p) => p.key));
   }, [active, pendingPerms]);
 
-  // Track which system role already got the "duplicate first" warning so we
-  // don't spam the toast stack when the user clicks multiple read-only perms.
-  const systemWarningShownFor = useRef<string | null>(null);
-  useEffect(() => {
-    systemWarningShownFor.current = null;
-  }, [active?.id]);
-
-  const warnSystemReadonly = useCallback(() => {
-    if (!active || systemWarningShownFor.current === active.id) return;
-    systemWarningShownFor.current = active.id;
-    pushToast(
-      "error",
-      `"${active.name}" es un rol del sistema. Duplícalo para editar permisos.`,
-    );
-  }, [active, pushToast]);
-
   const togglePerm = (key: string) => {
-    if (!active) return;
-    if (active.system) {
-      warnSystemReadonly();
-      return;
-    }
+    if (!active || !perms.canWrite) return;
     setPendingPerms((prev) => {
       const current = prev ?? new Set(active.permissions.map((p) => p.key));
       const next = new Set(current);
@@ -220,11 +200,7 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
   };
 
   const toggleCategory = (cat: string) => {
-    if (!active) return;
-    if (active.system) {
-      warnSystemReadonly();
-      return;
-    }
+    if (!active || !perms.canWrite) return;
     const items = groupedAvailable.find((g) => g.category === cat)?.items ?? [];
     const visibleItems = items.filter(filterPerm);
     if (visibleItems.length === 0) return;
@@ -625,27 +601,12 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
                   {active.system && (
                     <div className="banner" style={{ marginBottom: 16 }}>
                       <Icon
-                        name="info"
+                        name="shield"
                         size={16}
                         className="banner__icon"
                       />
                       <p>
-                        Este es un rol del sistema. Sus permisos no se pueden
-                        modificar desde la interfaz.
-                        {perms.canWrite && (
-                          <>
-                            {" "}
-                            <button
-                              type="button"
-                              className="linkbtn"
-                              onClick={onDuplicate}
-                              style={{ padding: "0 4px", verticalAlign: "baseline" }}
-                            >
-                              Duplicar como personalizado
-                            </button>{" "}
-                            para crear una versión editable.
-                          </>
-                        )}
+                        <strong>Rol del sistema ({active.name}):</strong> Puedes marcar o desmarcar sus permisos dinámicamente y pulsar <em>Guardar permisos</em> para aplicar los cambios a todos sus usuarios.
                       </p>
                     </div>
                   )}
@@ -690,7 +651,7 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
                             type="button"
                             className="roles-perm-cat__toggle"
                             onClick={() => toggleCategory(category)}
-                            disabled={active.system || !perms.canWrite}
+                            disabled={!perms.canWrite}
                           >
                             <span
                               className={`checkbox__box ${
@@ -724,7 +685,7 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
                                 key={p.key}
                                 className={`roles-perm-cat__item ${
                                   isOn ? "is-on" : ""
-                                } ${active.system ? "is-readonly" : ""}`}
+                                } ${!perms.canWrite ? "is-readonly" : ""}`}
                                 onClick={() => togglePerm(p.key)}
                               >
                                 <span
