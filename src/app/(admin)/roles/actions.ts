@@ -182,9 +182,6 @@ export async function updateRole(
 
     const target = await prisma.role.findUnique({ where: { id: roleId } });
     if (!target) return fail("Rol no encontrado.");
-    if (target.system) {
-      return fail("Los roles del sistema no se pueden modificar.");
-    }
 
     const data: { name?: string; description?: string | null } = {};
     if (typeof input.name === "string") {

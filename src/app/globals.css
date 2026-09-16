@@ -796,6 +796,21 @@ html[data-theme="dark"] .chip button:hover {
   background: #b91c1c;
   box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
 }
+.btn--danger-outline {
+  background: transparent;
+  color: #dc2626 !important;
+  border: 1px solid rgba(220, 38, 38, 0.35);
+}
+.btn--danger-outline:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: #dc2626;
+}
+.btn--danger-outline:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: var(--border);
+  color: var(--text-muted) !important;
+}
 .btn--sm {
   height: 30px;
   padding: 0 12px;
@@ -1388,6 +1403,22 @@ html[data-theme="dark"] .sidebar__subitem:hover {
   background: #fee2e2;
   color: #991b1b;
 }
+.badge--blue {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.badge--purple {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+.badge--indigo {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+.badge--teal {
+  background: #ccfbf1;
+  color: #115e59;
+}
 html[data-theme="dark"] .badge--amber {
   background: rgba(245, 158, 11, 0.18);
   color: #fcd34d;
@@ -1399,6 +1430,22 @@ html[data-theme="dark"] .badge--green {
 html[data-theme="dark"] .badge--red {
   background: rgba(239, 68, 68, 0.18);
   color: #fca5a5;
+}
+html[data-theme="dark"] .badge--blue {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+}
+html[data-theme="dark"] .badge--purple {
+  background: rgba(139, 92, 246, 0.18);
+  color: #c4b5fd;
+}
+html[data-theme="dark"] .badge--indigo {
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+}
+html[data-theme="dark"] .badge--teal {
+  background: rgba(20, 184, 166, 0.18);
+  color: #5eead4;
 }
 
 .tablefoot {

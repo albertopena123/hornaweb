@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Icon } from "@/components/admin/Icon";
+import { Icon, type IconName } from "@/components/admin/Icon";
 import { avatarColor, initialsFor } from "@/lib/ui/avatar";
 import { formatDateOnly, formatFullDate } from "@/lib/ui/dates";
 import { ConfirmDialog } from "../usuarios/ConfirmDialog";
@@ -25,6 +25,112 @@ import "./roles.css";
 
 type Tab = "permisos" | "usuarios" | "detalles";
 type ListFilter = "all" | "system" | "custom";
+
+function getRoleVisual(key: string, system: boolean): {
+  icon: IconName;
+  color: string;
+  bg: string;
+  badgeLabel: string;
+  badgeClass: string;
+} {
+  if (key === "superadmin") {
+    return {
+      icon: "shield",
+      color: "#e11d48",
+      bg: "rgba(225, 29, 72, 0.12)",
+      badgeLabel: "Superadmin",
+      badgeClass: "badge badge--red",
+    };
+  }
+  if (key === "admin") {
+    return {
+      icon: "settings",
+      color: "#d97706",
+      bg: "rgba(217, 119, 6, 0.12)",
+      badgeLabel: "Administrador",
+      badgeClass: "badge badge--amber",
+    };
+  }
+  if (key === "coordinador_local_1") {
+    return {
+      icon: "home",
+      color: "#059669",
+      bg: "rgba(5, 150, 105, 0.12)",
+      badgeLabel: "Colegio Titular",
+      badgeClass: "badge badge--green",
+    };
+  }
+  if (key === "coordinador_local_2") {
+    return {
+      icon: "home",
+      color: "#0284c7",
+      bg: "rgba(2, 132, 199, 0.12)",
+      badgeLabel: "Colegio Adjunto",
+      badgeClass: "badge badge--blue",
+    };
+  }
+  if (key === "coordinador_distrital") {
+    return {
+      icon: "rules",
+      color: "#7c3aed",
+      bg: "rgba(124, 58, 237, 0.12)",
+      badgeLabel: "Distrital",
+      badgeClass: "badge badge--purple",
+    };
+  }
+  if (key === "coordinador_provincial") {
+    return {
+      icon: "cloud",
+      color: "#4f46e5",
+      bg: "rgba(79, 70, 229, 0.12)",
+      badgeLabel: "Provincial",
+      badgeClass: "badge badge--indigo",
+    };
+  }
+  if (key === "coordinador_territorial") {
+    return {
+      icon: "sparkle",
+      color: "#0d9488",
+      bg: "rgba(13, 148, 136, 0.12)",
+      badgeLabel: "Territorial",
+      badgeClass: "badge badge--teal",
+    };
+  }
+  if (key === "personero") {
+    return {
+      icon: "id-card",
+      color: "#16a34a",
+      bg: "rgba(22, 163, 74, 0.12)",
+      badgeLabel: "Personero",
+      badgeClass: "badge badge--green",
+    };
+  }
+  if (key === "verificador") {
+    return {
+      icon: "eye",
+      color: "#2563eb",
+      bg: "rgba(37, 99, 235, 0.12)",
+      badgeLabel: "Verificador",
+      badgeClass: "badge badge--blue",
+    };
+  }
+  if (key.includes("digitador")) {
+    return {
+      icon: "clock",
+      color: "#ea580c",
+      bg: "rgba(234, 88, 12, 0.12)",
+      badgeLabel: "Digitador",
+      badgeClass: "badge badge--amber",
+    };
+  }
+  return {
+    icon: system ? "shield" : "tag",
+    color: system ? "var(--accent)" : "#6366f1",
+    bg: system ? "var(--accent-soft)" : "rgba(99, 102, 241, 0.12)",
+    badgeLabel: system ? "Sistema" : "Personalizado",
+    badgeClass: system ? "badge badge--neutral" : "badge badge--blue",
+  };
+}
 
 type Props = {
   rows: RoleRow[];
@@ -66,6 +172,7 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<ListFilter>("all");
   const [permSearch, setPermSearch] = useState("");
+  const [userSearch, setUserSearch] = useState("");
 
   type CreateInitial = {
     name?: string;
@@ -134,6 +241,7 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
     setPendingPerms(null);
     setEditingMeta(false);
     setPermSearch("");
+    setUserSearch("");
   }, [active?.id]);
 
   // Sync draft meta with active role
@@ -143,6 +251,19 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
       setDraftDesc(active.description ?? "");
     }
   }, [active?.id, active?.name, active?.description]);
+
+  const filteredRoleUsers = useMemo(() => {
+    if (!active) return [];
+    const q = userSearch.toLowerCase().trim();
+    if (!q) return active.users;
+    return active.users.filter(
+      (u) =>
+        u.name.toLowerCase().includes(q) ||
+        u.email.toLowerCase().includes(q),
+    );
+  }, [active, userSearch]);
+
+  const activeVisual = active ? getRoleVisual(active.key, active.system) : null;
 
   const totals = useMemo(
     () => ({
@@ -304,7 +425,7 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
     }
   };
 
-  const canEdit = perms.canWrite && active && !active.system;
+  const canEdit = perms.canWrite && !!active;
   const hasNoCustomRoles = rows.filter((r) => !r.system).length === 0;
 
   const onDuplicate = () => {
@@ -366,6 +487,49 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
         </div>
       )}
 
+      {/* KPI Stats Strip */}
+      <div className="roles__stats-strip">
+        <div className="roles__stat-card">
+          <div className="roles__stat-icon" style={{ background: "rgba(37, 99, 235, 0.1)", color: "#2563eb" }}>
+            <Icon name="shield" size={20} />
+          </div>
+          <div className="roles__stat-data">
+            <span className="roles__stat-value">{totals.total}</span>
+            <span className="roles__stat-label">Roles en Total</span>
+          </div>
+        </div>
+
+        <div className="roles__stat-card">
+          <div className="roles__stat-icon" style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10b981" }}>
+            <Icon name="rules" size={20} />
+          </div>
+          <div className="roles__stat-data">
+            <span className="roles__stat-value">{totals.system}</span>
+            <span className="roles__stat-label">Roles del Sistema</span>
+          </div>
+        </div>
+
+        <div className="roles__stat-card">
+          <div className="roles__stat-icon" style={{ background: "rgba(124, 58, 237, 0.1)", color: "#7c3aed" }}>
+            <Icon name="sparkle" size={20} />
+          </div>
+          <div className="roles__stat-data">
+            <span className="roles__stat-value">{totals.custom}</span>
+            <span className="roles__stat-label">Personalizados</span>
+          </div>
+        </div>
+
+        <div className="roles__stat-card">
+          <div className="roles__stat-icon" style={{ background: "rgba(245, 158, 11, 0.1)", color: "#f59e0b" }}>
+            <Icon name="users" size={20} />
+          </div>
+          <div className="roles__stat-data">
+            <span className="roles__stat-value">{totalUsers}</span>
+            <span className="roles__stat-label">Usuarios con Rol</span>
+          </div>
+        </div>
+      </div>
+
       <div className="roles">
         {/* ─────────────── LEFT LIST ─────────────── */}
         <div className="roles__list">
@@ -405,45 +569,44 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
           </div>
 
           <div className="roles__list-items">
-            {filtered.map((r) => (
-              <button
-                key={r.id}
-                className={`roles__list-item ${
-                  r.id === active?.id ? "is-active" : ""
-                }`}
-                onClick={() => setParams({ role: r.id })}
-              >
-                <span
-                  className="roles__list-item-icon"
-                  style={{
-                    background: r.system
-                      ? "var(--accent-soft)"
-                      : "var(--bg-sunken)",
-                    color: r.system ? "var(--accent)" : "var(--text-muted)",
-                  }}
+            {filtered.map((r) => {
+              const visual = getRoleVisual(r.key, r.system);
+              return (
+                <button
+                  key={r.id}
+                  className={`roles__list-item ${
+                    r.id === active?.id ? "is-active" : ""
+                  }`}
+                  onClick={() => setParams({ role: r.id })}
                 >
-                  <Icon name="shield" size={16} />
-                </span>
-                <div className="roles__list-item-body">
-                  <span className="roles__list-item-name">
-                    {r.name}
-                    {r.system && (
-                      <span className="badge badge--neutral">Sistema</span>
-                    )}
+                  <span
+                    className="roles__list-item-icon"
+                    style={{
+                      background: visual.bg,
+                      color: visual.color,
+                    }}
+                  >
+                    <Icon name={visual.icon} size={16} />
                   </span>
-                  <span className="roles__list-item-meta">
-                    {r.userCount} usuario{r.userCount !== 1 ? "s" : ""} ·{" "}
-                    {r.permissions.length} permiso
-                    {r.permissions.length !== 1 ? "s" : ""}
-                  </span>
-                </div>
-                <Icon
-                  name="chevron-right"
-                  size={16}
-                  className="roles__list-item-chev"
-                />
-              </button>
-            ))}
+                  <div className="roles__list-item-body">
+                    <span className="roles__list-item-name">
+                      {r.name}
+                      <span className={visual.badgeClass}>{visual.badgeLabel}</span>
+                    </span>
+                    <span className="roles__list-item-meta">
+                      {r.userCount} usuario{r.userCount !== 1 ? "s" : ""} ·{" "}
+                      {r.permissions.length} permiso
+                      {r.permissions.length !== 1 ? "s" : ""}
+                    </span>
+                  </div>
+                  <Icon
+                    name="chevron-right"
+                    size={16}
+                    className="roles__list-item-chev"
+                  />
+                </button>
+              );
+            })}
             {filtered.length === 0 && (
               <div className="empty" style={{ padding: 24 }}>
                 <Icon name="search" size={28} />
@@ -461,49 +624,86 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
           {active ? (
             <>
               <div className="roles__detail-head">
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  {editingMeta ? (
-                    <div className="roles__edit-meta">
-                      <input
-                        type="text"
-                        value={draftName}
-                        onChange={(e) => setDraftName(e.target.value)}
-                        className="roles__edit-name"
-                        autoFocus
-                      />
-                      <textarea
-                        value={draftDesc}
-                        onChange={(e) => setDraftDesc(e.target.value)}
-                        placeholder="Descripción"
-                        rows={2}
-                        className="roles__edit-desc"
-                        maxLength={200}
-                      />
+                <div style={{ minWidth: 0, flex: 1, display: "flex", alignItems: "flex-start", gap: 16 }}>
+                  {activeVisual && (
+                    <div
+                      className="roles__detail-avatar"
+                      style={{
+                        background: activeVisual.bg,
+                        color: activeVisual.color,
+                      }}
+                    >
+                      <Icon name={activeVisual.icon} size={26} />
                     </div>
-                  ) : (
-                    <>
-                      <h2>
-                        {active.name}
-                        {active.system && (
-                          <span
-                            className="badge badge--neutral"
-                            style={{ marginLeft: 12, verticalAlign: "middle" }}
-                          >
-                            Sistema
-                          </span>
-                        )}
-                      </h2>
-                      <p className="roles__detail-desc">
-                        {active.description ?? "Sin descripción."}
-                      </p>
-                    </>
                   )}
+
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    {editingMeta ? (
+                      <div className="roles__edit-meta-card">
+                        <div className="roles__edit-meta-title">
+                          <Icon name="edit" size={16} />
+                          <span>Editar Detalles del Rol</span>
+                        </div>
+                        <div className="field">
+                          <label className="field__label">Nombre del Rol</label>
+                          <input
+                            type="text"
+                            value={draftName}
+                            onChange={(e) => setDraftName(e.target.value)}
+                            placeholder="Nombre del rol (ej. Coordinador 1 de Colegio)"
+                            className="roles__edit-name"
+                            autoFocus
+                          />
+                        </div>
+                        <div className="field">
+                          <label className="field__label">Descripción y Funciones</label>
+                          <textarea
+                            value={draftDesc}
+                            onChange={(e) => setDraftDesc(e.target.value)}
+                            placeholder="Descripción de funciones y responsabilidades del rol..."
+                            rows={2}
+                            className="roles__edit-desc"
+                            maxLength={200}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="roles__detail-title-row">
+                          <h2>{active.name}</h2>
+                          {activeVisual && (
+                            <span className={activeVisual.badgeClass}>{activeVisual.badgeLabel}</span>
+                          )}
+                          {active.key === "superadmin" && (
+                            <span className="badge badge--red">Acceso Total</span>
+                          )}
+                        </div>
+                        <p className="roles__detail-desc">
+                          {active.description ?? "Sin descripción configurada."}
+                        </p>
+                        <div className="roles__detail-tags">
+                          <span className="roles__tag-chip">
+                            <code>ID: {active.key}</code>
+                          </span>
+                          <span className="roles__tag-chip">
+                            <Icon name="users" size={12} />
+                            {active.userCount} usuario{active.userCount !== 1 ? "s" : ""}
+                          </span>
+                          <span className="roles__tag-chip">
+                            <Icon name="check" size={12} />
+                            {active.permissions.length} permiso{active.permissions.length !== 1 ? "s" : ""}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
                 <div className="roles__detail-actions">
                   {editingMeta ? (
                     <>
                       <button
-                        className="btn btn--ghost"
+                        type="button"
+                        className="btn btn--secondary btn--sm"
                         onClick={() => {
                           setEditingMeta(false);
                           setDraftName(active.name);
@@ -511,56 +711,61 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
                         }}
                         disabled={busy}
                       >
-                        Cancelar
+                        <Icon name="close" size={14} />
+                        <span>Cancelar</span>
                       </button>
                       <button
-                        className="btn btn--primary"
+                        type="button"
+                        className="btn btn--primary btn--sm"
                         onClick={saveMeta}
                         disabled={busy || draftName.trim().length < 2}
                       >
-                        {busy ? "Guardando…" : "Guardar"}
+                        <Icon name="check" size={14} />
+                        <span>{busy ? "Guardando…" : "Guardar cambios"}</span>
                       </button>
                     </>
                   ) : (
                     <>
-                      {active.system && perms.canWrite && (
+                      {perms.canWrite && (
                         <button
-                          className="btn btn--ghost"
+                          type="button"
+                          className="btn btn--secondary btn--sm"
                           onClick={onDuplicate}
-                          title="Crear un rol personalizado con los mismos permisos"
+                          title="Crear un rol personalizado duplicando los permisos de este rol"
                         >
-                          <Icon name="external" size={14} />
-                          Duplicar
+                          <Icon name="copy" size={14} />
+                          <span>Duplicar</span>
                         </button>
                       )}
                       <button
-                        className="btn btn--ghost"
+                        type="button"
+                        className="btn btn--secondary btn--sm"
                         onClick={() => setEditingMeta(true)}
                         disabled={!canEdit || isEditingPerms}
                         title={
-                          active.system
-                            ? "El nombre de este rol es fijo. Puedes editar sus permisos en la lista inferior."
-                            : !perms.canWrite
-                              ? "Necesitas el permiso roles.write"
-                              : undefined
+                          !perms.canWrite
+                            ? "Necesitas el permiso roles.write para editar este rol"
+                            : "Editar nombre y descripción de este rol"
                         }
                       >
-                        Editar nombre
+                        <Icon name="edit" size={14} />
+                        <span>Editar</span>
                       </button>
                       <button
-                        className="btn btn--ghost"
-                        style={{ color: "#b91c1c" }}
+                        type="button"
+                        className="btn btn--danger-outline btn--sm"
                         onClick={() => setDeletingRole(active)}
-                        disabled={!canEdit || active.userCount > 0}
+                        disabled={!perms.canWrite || active.system || active.userCount > 0}
                         title={
                           active.system
-                            ? "Los roles del sistema no se pueden eliminar"
+                            ? "Los roles del sistema no se pueden eliminar para proteger la integridad del sistema electoral, pero puedes personalizar su nombre, descripción y permisos."
                             : active.userCount > 0
-                              ? "Reasigna a los usuarios antes de eliminar"
-                              : undefined
+                              ? `Este rol tiene ${active.userCount} usuario(s) asignado(s). Reasigna a los usuarios antes de eliminar.`
+                              : "Eliminar este rol personalizado"
                         }
                       >
-                        Eliminar
+                        <Icon name="trash" size={14} />
+                        <span>Eliminar</span>
                       </button>
                     </>
                   )}
@@ -596,18 +801,16 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
               {/* PERMISSIONS TAB */}
               {tab === "permisos" && (
                 <div className="roles__tab-body">
-                  {active.system && (
-                    <div className="banner" style={{ marginBottom: 16 }}>
-                      <Icon
-                        name="shield"
-                        size={16}
-                        className="banner__icon"
-                      />
-                      <p>
-                        <strong>Rol del sistema ({active.name}):</strong> Puedes marcar o desmarcar sus permisos dinámicamente y pulsar <em>Guardar permisos</em> para aplicar los cambios a todos sus usuarios.
-                      </p>
-                    </div>
-                  )}
+                  <div className="banner banner--accent" style={{ marginBottom: 16 }}>
+                    <Icon
+                      name="sparkle"
+                      size={16}
+                      className="banner__icon"
+                    />
+                    <p>
+                      <strong>Configuración dinámica ({active.name}):</strong> Puedes marcar o desmarcar permisos libremente; pulsa <em>Guardar permisos</em> para aplicar los cambios en tiempo real a los usuarios con este rol.
+                    </p>
+                  </div>
 
                   <div className="roles__perm-toolbar">
                     <div className="roles__list-search" style={{ flex: 1 }}>
@@ -728,49 +931,88 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
                       </p>
                     </div>
                   ) : (
-                    <ul className="roles__users">
-                      {active.users.map((u) => (
-                        <li key={u.id} className="roles__user-row">
-                          <span
-                            className="usr-avatar"
-                            style={{ background: avatarColor(u.id) }}
-                          >
-                            {initialsFor(u.name)}
-                          </span>
-                          <div className="roles__user-info">
-                            <div className="roles__user-name">
+                    <>
+                      <div className="roles__perm-toolbar">
+                        <div className="roles__list-search" style={{ flex: 1 }}>
+                          <Icon name="search" size={16} />
+                          <input
+                            type="text"
+                            placeholder="Buscar usuario por nombre o email…"
+                            value={userSearch}
+                            onChange={(e) => setUserSearch(e.target.value)}
+                          />
+                          {userSearch && (
+                            <button
+                              aria-label="Limpiar"
+                              onClick={() => setUserSearch("")}
+                              className="iconbtn iconbtn--small"
+                            >
+                              <Icon name="close" size={14} />
+                            </button>
+                          )}
+                        </div>
+                        <span className="roles__perm-count">
+                          {filteredRoleUsers.length} de {active.users.length} usuario{active.users.length !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+
+                      <ul className="roles__users">
+                        {filteredRoleUsers.map((u) => (
+                          <li key={u.id} className="roles__user-row">
+                            <span
+                              className="usr-avatar"
+                              style={{ background: avatarColor(u.id) }}
+                            >
+                              {initialsFor(u.name)}
+                            </span>
+                            <div className="roles__user-info">
+                              <div className="roles__user-name">
+                                <a
+                                  href={`/usuarios?detail=${u.id}`}
+                                  className="rowlink"
+                                >
+                                  {u.name}
+                                </a>
+                                {!u.active && (
+                                  <span className="badge badge--neutral">
+                                    Suspendido
+                                  </span>
+                                )}
+                              </div>
+                              <div className="roles__user-email">{u.email}</div>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                               <a
                                 href={`/usuarios?detail=${u.id}`}
-                                className="rowlink"
+                                className="btn btn--secondary btn--xs"
+                                title="Ver ficha en el módulo de usuarios"
                               >
-                                {u.name}
+                                <Icon name="external" size={12} />
+                                <span>Ver ficha</span>
                               </a>
-                              {!u.active && (
-                                <span className="badge badge--neutral">
-                                  Suspendido
-                                </span>
+                              {perms.canWrite && active.key !== "superadmin" && (
+                                <button
+                                  type="button"
+                                  className="btn btn--ghost btn--xs"
+                                  style={{ color: "#dc2626" }}
+                                  onClick={() =>
+                                    setRemovingUser({
+                                      role: active,
+                                      userId: u.id,
+                                      userName: u.name,
+                                    })
+                                  }
+                                  title="Quitar rol a este usuario"
+                                >
+                                  <Icon name="trash" size={12} />
+                                  <span>Quitar</span>
+                                </button>
                               )}
                             </div>
-                            <div className="roles__user-email">{u.email}</div>
-                          </div>
-                          <button
-                            className="linkbtn"
-                            disabled={
-                              !perms.canWrite || (active.key === "superadmin")
-                            }
-                            onClick={() =>
-                              setRemovingUser({
-                                role: active,
-                                userId: u.id,
-                                userName: u.name,
-                              })
-                            }
-                          >
-                            Quitar
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
                   )}
                 </div>
               )}
@@ -830,24 +1072,28 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
       {/* Sticky save bar when editing permissions */}
       {isEditingPerms && (
         <div className="roles__savebar">
-          <span>
-            <Icon name="info" size={16} />
-            Cambios sin guardar en los permisos
+          <span style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 600 }}>
+            <Icon name="sparkle" size={18} />
+            <span>Tienes cambios pendientes en los permisos de este rol</span>
           </span>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", gap: 10 }}>
             <button
-              className="btn btn--ghost"
+              type="button"
+              className="btn btn--secondary btn--sm"
               onClick={cancelPerms}
               disabled={busy}
             >
-              Cancelar
+              <Icon name="close" size={14} />
+              <span>Descartar</span>
             </button>
             <button
-              className="btn btn--primary"
+              type="button"
+              className="btn btn--primary btn--sm"
               onClick={savePerms}
               disabled={busy}
             >
-              {busy ? "Guardando…" : "Guardar permisos"}
+              <Icon name="check" size={14} />
+              <span>{busy ? "Guardando…" : "Guardar permisos"}</span>
             </button>
           </div>
         </div>
