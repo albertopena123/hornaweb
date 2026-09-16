@@ -126,6 +126,10 @@ type CreateInput = {
   email: string;
   password: string;
   roleIds: string[];
+  scopeType?: "departamental" | "provincial" | "distrital" | "local";
+  assignedProvince?: string | null;
+  assignedDistrict?: string | null;
+  assignedLocalId?: string | null;
 };
 
 export async function createUser(
@@ -171,6 +175,31 @@ export async function createUser(
       }
     }
 
+    let scopeType = input.scopeType || "departamental";
+    let assignedProvince = input.assignedProvince || null;
+    let assignedDistrict = input.assignedDistrict || null;
+    let assignedLocalId = input.assignedLocalId || null;
+
+    if (scopeType === "local" && assignedLocalId) {
+      const local = await prisma.electoralLocal.findUnique({
+        where: { id: assignedLocalId },
+        select: { district: true, province: true },
+      });
+      if (local) {
+        assignedDistrict = local.district;
+        assignedProvince = local.province;
+      }
+    } else if (scopeType === "distrital") {
+      assignedLocalId = null;
+    } else if (scopeType === "provincial") {
+      assignedLocalId = null;
+      assignedDistrict = null;
+    } else {
+      assignedLocalId = null;
+      assignedDistrict = null;
+      assignedProvince = null;
+    }
+
     const passwordHash = await hashPassword(password);
     try {
       const created = await prisma.user.create({
@@ -178,6 +207,10 @@ export async function createUser(
           name,
           email,
           passwordHash,
+          scopeType,
+          assignedProvince,
+          assignedDistrict: assignedDistrict as any,
+          assignedLocalId,
           roles: { create: roleIds.map((roleId) => ({ roleId })) },
         },
       });
@@ -195,6 +228,62 @@ export async function createUser(
     if (e instanceof Denied) return fail(e.message);
     console.error("createUser", e);
     return fail("No se pudo crear el usuario.");
+  }
+}
+
+export async function setUserScope(
+  userId: string,
+  input: {
+    scopeType: "departamental" | "provincial" | "distrital" | "local";
+    assignedProvince?: string | null;
+    assignedDistrict?: string | null;
+    assignedLocalId?: string | null;
+  },
+): Promise<ActionResult> {
+  try {
+    await authorize("users.write");
+
+    let scopeType = input.scopeType || "departamental";
+    let assignedProvince = input.assignedProvince || null;
+    let assignedDistrict = input.assignedDistrict || null;
+    let assignedLocalId = input.assignedLocalId || null;
+
+    if (scopeType === "local" && assignedLocalId) {
+      const local = await prisma.electoralLocal.findUnique({
+        where: { id: assignedLocalId },
+        select: { district: true, province: true },
+      });
+      if (local) {
+        assignedDistrict = local.district;
+        assignedProvince = local.province;
+      }
+    } else if (scopeType === "distrital") {
+      assignedLocalId = null;
+    } else if (scopeType === "provincial") {
+      assignedLocalId = null;
+      assignedDistrict = null;
+    } else {
+      assignedLocalId = null;
+      assignedDistrict = null;
+      assignedProvince = null;
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        scopeType,
+        assignedProvince,
+        assignedDistrict: assignedDistrict as any,
+        assignedLocalId,
+      },
+    });
+
+    refresh();
+    return ok();
+  } catch (e) {
+    if (e instanceof Denied) return fail(e.message);
+    console.error("setUserScope", e);
+    return fail("No se pudo actualizar el ámbito territorial.");
   }
 }
 

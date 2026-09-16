@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { requirePermission } from "@/lib/auth/server";
+import { requirePermission, getTerritoryFilter } from "@/lib/auth/server";
 import { prisma } from "@/lib/prisma";
 import { VerificacionClient } from "./VerificacionClient";
 
@@ -10,8 +10,10 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const me = await requirePermission("actas.verify");
+  const filter = getTerritoryFilter(me);
 
   const actas = await prisma.actaElectoral.findMany({
+    where: filter.isRestricted ? { local: filter.localFilter } : undefined,
     orderBy: { submittedAt: "desc" },
     include: {
       local: true,

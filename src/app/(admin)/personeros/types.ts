@@ -59,6 +59,8 @@ export type PermFlags = {
   canWriteActas: boolean;
   canVerifyActas: boolean;
   canReadCandidatos: boolean;
+  canManageCoordinators?: boolean;
+  isLocalScope?: boolean;
 };
 
 export type LocalOption = {
@@ -105,6 +107,9 @@ export type ElectoralLocalData = {
   coordinatorName: string | null;
   coordinatorPhone: string | null;
   coordinatorDni?: string | null;
+  coordinator2Name?: string | null;
+  coordinator2Phone?: string | null;
+  coordinator2Dni?: string | null;
   mesas: ElectoralMesaData[];
   cubiertasCount: number;
   cubiertasSuplenteCount?: number;

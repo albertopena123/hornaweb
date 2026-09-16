@@ -90,17 +90,19 @@ export default async function PersonerosLayout({ children }: { children: ReactNo
           label="Registrados"
           sub={`${stats.notificadosCount} con WhatsApp`}
         />
-        <KpiCard
-          icon="shield"
-          tone="amber"
-          value={`${stats.colegiosConCoord} / ${stats.colegiosTotal}`}
-          label="Coordinadores de Colegio"
-          sub={
-            stats.colegiosTotal - stats.colegiosConCoord > 0
-              ? `${stats.colegiosTotal - stats.colegiosConCoord} pendientes`
-              : "100% colegios asignados"
-          }
-        />
+        {!perms.isLocalScope && (
+          <KpiCard
+            icon="shield"
+            tone="amber"
+            value={`${stats.colegiosConCoord} / ${stats.colegiosTotal}`}
+            label="Coordinadores de Colegio"
+            sub={
+              stats.colegiosTotal - stats.colegiosConCoord > 0
+                ? `${stats.colegiosTotal - stats.colegiosConCoord} pendientes`
+                : "100% colegios asignados"
+            }
+          />
+        )}
       </section>
 
       {/* Pestañas de Navegación de Submódulos (Google Admin style) */}
@@ -114,6 +116,7 @@ export default async function PersonerosLayout({ children }: { children: ReactNo
             total: stats.colegiosTotal,
           },
         }}
+        perms={perms}
       />
 
       {/* Contenido del Submódulo Activo */}

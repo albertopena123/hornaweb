@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Vote, Map, Users, Camera, ShieldCheck } from "lucide-react";
 
+import type { PermFlags } from "./types";
+
 type Props = {
   stats?: {
     mesas: number;
@@ -14,9 +16,10 @@ type Props = {
       total: number;
     };
   };
+  perms?: PermFlags;
 };
 
-export function PersonerosTabs({ stats }: Props) {
+export function PersonerosTabs({ stats, perms }: Props) {
   const pathname = usePathname();
 
   const tabs = [
@@ -38,14 +41,18 @@ export function PersonerosTabs({ stats }: Props) {
       count: stats?.personeros !== undefined ? String(stats.personeros) : "61",
       icon: Users,
     },
-    {
-      href: "/personeros/coordinadores",
-      label: "Coordinadores",
-      count: stats?.coordinadores
-        ? `${stats.coordinadores.assigned}/${stats.coordinadores.total}`
-        : "1/51",
-      icon: ShieldCheck,
-    },
+    ...(perms === undefined || perms.canManageCoordinators
+      ? [
+          {
+            href: "/personeros/coordinadores",
+            label: "Coordinadores",
+            count: stats?.coordinadores
+              ? `${stats.coordinadores.assigned}/${stats.coordinadores.total}`
+              : "1/51",
+            icon: ShieldCheck,
+          },
+        ]
+      : []),
     {
       href: "/actas",
       label: "Subir Acta",

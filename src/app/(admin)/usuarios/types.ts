@@ -1,3 +1,5 @@
+export type ScopeType = "departamental" | "provincial" | "distrital" | "local";
+
 export type UserRow = {
   id: string;
   name: string;
@@ -6,6 +8,19 @@ export type UserRow = {
   lastLoginAt: string | null;
   createdAt: string;
   roles: { id: string; key: string; name: string }[];
+  scopeType: ScopeType;
+  assignedProvince: string | null;
+  assignedDistrict: string | null;
+  assignedLocalId: string | null;
+  assignedLocalName: string | null;
+};
+
+export type LocalSummary = {
+  id: string;
+  name: string;
+  district: string;
+  province: string;
+  totalMesas: number;
 };
 
 export type RoleOption = {

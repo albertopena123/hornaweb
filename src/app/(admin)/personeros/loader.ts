@@ -1,13 +1,32 @@
-import { requirePermission } from "@/lib/auth/server";
+import { requirePermission, getTerritoryFilter } from "@/lib/auth/server";
 import { prisma } from "@/lib/prisma";
 import { getSettingBool, SETTING_PERSONEROS_PUBLIC } from "@/lib/settings";
 import type { PersoneroRow, PermFlags, LocalOption, ElectoralLocalData } from "./types";
 
 export async function getPersonerosData() {
   const me = await requirePermission("personeros.read");
+  const filter = getTerritoryFilter(me);
 
-  // 1. Cargar personeros
+  // 1. Filtrado territorial de personeros
+  const personeroWhere: Record<string, any> = {};
+  if (filter.isRestricted) {
+    if (filter.scopeType === "local") {
+      if (me.assignedLocal?.name) {
+        personeroWhere.localName = { equals: me.assignedLocal.name, mode: "insensitive" };
+      }
+    } else if (filter.scopeType === "distrital" && me.assignedDistrict) {
+      personeroWhere.district = me.assignedDistrict;
+    } else if (filter.scopeType === "provincial" && me.assignedProvince) {
+      const provinceLocals = await prisma.electoralLocal.findMany({
+        where: { province: { equals: me.assignedProvince, mode: "insensitive" } },
+        select: { name: true },
+      });
+      personeroWhere.localName = { in: provinceLocals.map((l) => l.name) };
+    }
+  }
+
   const personeros = await prisma.personero.findMany({
+    where: Object.keys(personeroWhere).length > 0 ? personeroWhere : undefined,
     orderBy: { createdAt: "desc" },
     include: { createdBy: { select: { name: true } } },
   });
@@ -50,8 +69,9 @@ export async function getPersonerosData() {
     }
   }
 
-  // 2. Cargar Locales Electorales y sus Mesas
+  // 2. Cargar Locales Electorales y sus Mesas con filtro de ámbito territorial
   const electoralLocales = await prisma.electoralLocal.findMany({
+    where: filter.isRestricted ? filter.localFilter : undefined,
     orderBy: { name: "asc" },
     include: {
       mesas: {
@@ -141,6 +161,9 @@ export async function getPersonerosData() {
       coordinatorName: loc.coordinatorName,
       coordinatorPhone: loc.coordinatorPhone,
       coordinatorDni: loc.coordinatorDni ?? null,
+      coordinator2Name: loc.coordinator2Name ?? null,
+      coordinator2Phone: loc.coordinator2Phone ?? null,
+      coordinator2Dni: loc.coordinator2Dni ?? null,
       mesas: mesasData,
       cubiertasCount,
       cubiertasSuplenteCount,
@@ -158,6 +181,9 @@ export async function getPersonerosData() {
   const canVerifyActas = me.permissions.has("actas.verify");
   const canReadCandidatos = me.permissions.has("candidatos.read");
 
+  const isLocalScope = filter.isRestricted && filter.scopeType === "local";
+  const canManageCoordinators = canWriteLocales && !isLocalScope;
+
   const perms: PermFlags = {
     canRead: canReadPersoneros,
     canWrite: canWritePersoneros || canWriteLocales || canWriteMesas,
@@ -171,6 +197,8 @@ export async function getPersonerosData() {
     canWriteActas,
     canVerifyActas,
     canReadCandidatos,
+    canManageCoordinators,
+    isLocalScope,
   };
 
   const locales: LocalOption[] = electoralLocales.map((l) => ({

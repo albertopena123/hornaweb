@@ -23,6 +23,13 @@ model User {
   roles    UserRole[]
   sessions Session[]
 
+  // Ámbito territorial de acceso
+  scopeType        String          @default("departamental") // "departamental" | "provincial" | "distrital" | "local"
+  assignedProvince String?         // "Tambopata" | "Manu" | "Tahuamanu"
+  assignedDistrict District?       // Enum District
+  assignedLocalId  String?
+  assignedLocal    ElectoralLocal? @relation("LocalCoordinators", fields: [assignedLocalId], references: [id], onDelete: SetNull)
+
   createdSupporters  Supporter[] @relation("SupporterCreator")
   reviewedSupporters Supporter[] @relation("SupporterReviewer")
 
@@ -39,6 +46,8 @@ model User {
   reviewedActas         ActaElectoral[] @relation("ActaReviewer")
 
   @@index([active])
+  @@index([scopeType])
+  @@index([assignedLocalId])
 }
 
 model Role {
@@ -247,14 +256,18 @@ model ElectoralLocal {
   latitude         Float?
   longitude        Float?
   totalMesas       Int      @default(0)
-  coordinatorName  String?  // coordinador asignado al local
-  coordinatorPhone String?  // teléfono del coordinador
-  coordinatorDni   String?  // DNI del coordinador
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  coordinatorName   String?  // Coordinador 1 (titular) asignado al local
+  coordinatorPhone  String?  // teléfono del coordinador 1
+  coordinatorDni    String?  // DNI del coordinador 1
+  coordinator2Name  String?  // Coordinador 2 (adjunto/secundario) asignado al local
+  coordinator2Phone String?  // teléfono del coordinador 2
+  coordinator2Dni   String?  // DNI del coordinador 2
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  mesas ElectoralMesa[]
-  actas ActaElectoral[]
+  mesas        ElectoralMesa[]
+  actas        ActaElectoral[]
+  coordinators User[]         @relation("LocalCoordinators")
 
   @@index([district])
   @@index([province])

@@ -33,6 +33,10 @@ export type UserMinAggregateOutputType = {
   lastLoginAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  scopeType: string | null
+  assignedProvince: string | null
+  assignedDistrict: $Enums.District | null
+  assignedLocalId: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -44,6 +48,10 @@ export type UserMaxAggregateOutputType = {
   lastLoginAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  scopeType: string | null
+  assignedProvince: string | null
+  assignedDistrict: $Enums.District | null
+  assignedLocalId: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -55,6 +63,10 @@ export type UserCountAggregateOutputType = {
   lastLoginAt: number
   createdAt: number
   updatedAt: number
+  scopeType: number
+  assignedProvince: number
+  assignedDistrict: number
+  assignedLocalId: number
   _all: number
 }
 
@@ -68,6 +80,10 @@ export type UserMinAggregateInputType = {
   lastLoginAt?: true
   createdAt?: true
   updatedAt?: true
+  scopeType?: true
+  assignedProvince?: true
+  assignedDistrict?: true
+  assignedLocalId?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -79,6 +95,10 @@ export type UserMaxAggregateInputType = {
   lastLoginAt?: true
   createdAt?: true
   updatedAt?: true
+  scopeType?: true
+  assignedProvince?: true
+  assignedDistrict?: true
+  assignedLocalId?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -90,6 +110,10 @@ export type UserCountAggregateInputType = {
   lastLoginAt?: true
   createdAt?: true
   updatedAt?: true
+  scopeType?: true
+  assignedProvince?: true
+  assignedDistrict?: true
+  assignedLocalId?: true
   _all?: true
 }
 
@@ -174,6 +198,10 @@ export type UserGroupByOutputType = {
   lastLoginAt: Date | null
   createdAt: Date
   updatedAt: Date
+  scopeType: string
+  assignedProvince: string | null
+  assignedDistrict: $Enums.District | null
+  assignedLocalId: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -206,8 +234,13 @@ export type UserWhereInput = {
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  scopeType?: Prisma.StringFilter<"User"> | string
+  assignedProvince?: Prisma.StringNullableFilter<"User"> | string | null
+  assignedDistrict?: Prisma.EnumDistrictNullableFilter<"User"> | $Enums.District | null
+  assignedLocalId?: Prisma.StringNullableFilter<"User"> | string | null
   roles?: Prisma.UserRoleListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  assignedLocal?: Prisma.XOR<Prisma.ElectoralLocalNullableScalarRelationFilter, Prisma.ElectoralLocalWhereInput> | null
   createdSupporters?: Prisma.SupporterListRelationFilter
   reviewedSupporters?: Prisma.SupporterListRelationFilter
   createdPersoneros?: Prisma.PersoneroListRelationFilter
@@ -229,8 +262,13 @@ export type UserOrderByWithRelationInput = {
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  scopeType?: Prisma.SortOrder
+  assignedProvince?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedDistrict?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedLocalId?: Prisma.SortOrderInput | Prisma.SortOrder
   roles?: Prisma.UserRoleOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
+  assignedLocal?: Prisma.ElectoralLocalOrderByWithRelationInput
   createdSupporters?: Prisma.SupporterOrderByRelationAggregateInput
   reviewedSupporters?: Prisma.SupporterOrderByRelationAggregateInput
   createdPersoneros?: Prisma.PersoneroOrderByRelationAggregateInput
@@ -255,8 +293,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  scopeType?: Prisma.StringFilter<"User"> | string
+  assignedProvince?: Prisma.StringNullableFilter<"User"> | string | null
+  assignedDistrict?: Prisma.EnumDistrictNullableFilter<"User"> | $Enums.District | null
+  assignedLocalId?: Prisma.StringNullableFilter<"User"> | string | null
   roles?: Prisma.UserRoleListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
+  assignedLocal?: Prisma.XOR<Prisma.ElectoralLocalNullableScalarRelationFilter, Prisma.ElectoralLocalWhereInput> | null
   createdSupporters?: Prisma.SupporterListRelationFilter
   reviewedSupporters?: Prisma.SupporterListRelationFilter
   createdPersoneros?: Prisma.PersoneroListRelationFilter
@@ -278,6 +321,10 @@ export type UserOrderByWithAggregationInput = {
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  scopeType?: Prisma.SortOrder
+  assignedProvince?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedDistrict?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignedLocalId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -295,6 +342,10 @@ export type UserScalarWhereWithAggregatesInput = {
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  scopeType?: Prisma.StringWithAggregatesFilter<"User"> | string
+  assignedProvince?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  assignedDistrict?: Prisma.EnumDistrictNullableWithAggregatesFilter<"User"> | $Enums.District | null
+  assignedLocalId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
@@ -306,8 +357,12 @@ export type UserCreateInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -329,6 +384,10 @@ export type UserUncheckedCreateInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -352,8 +411,12 @@ export type UserUpdateInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -375,6 +438,10 @@ export type UserUncheckedUpdateInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -398,6 +465,10 @@ export type UserCreateManyInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -409,6 +480,9 @@ export type UserUpdateManyMutationInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -420,6 +494,10 @@ export type UserUncheckedUpdateManyInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -431,6 +509,10 @@ export type UserCountOrderByAggregateInput = {
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  scopeType?: Prisma.SortOrder
+  assignedProvince?: Prisma.SortOrder
+  assignedDistrict?: Prisma.SortOrder
+  assignedLocalId?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -442,6 +524,10 @@ export type UserMaxOrderByAggregateInput = {
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  scopeType?: Prisma.SortOrder
+  assignedProvince?: Prisma.SortOrder
+  assignedDistrict?: Prisma.SortOrder
+  assignedLocalId?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -453,6 +539,10 @@ export type UserMinOrderByAggregateInput = {
   lastLoginAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  scopeType?: Prisma.SortOrder
+  assignedProvince?: Prisma.SortOrder
+  assignedDistrict?: Prisma.SortOrder
+  assignedLocalId?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -463,6 +553,16 @@ export type UserScalarRelationFilter = {
 export type UserNullableScalarRelationFilter = {
   is?: Prisma.UserWhereInput | null
   isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -479,6 +579,14 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
+export type NullableEnumDistrictFieldUpdateOperationsInput = {
+  set?: $Enums.District | null
 }
 
 export type UserCreateNestedOneWithoutRolesInput = {
@@ -571,6 +679,48 @@ export type UserUpdateOneWithoutUpdatedPersonerosNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUpdatedPersonerosInput, Prisma.UserUpdateWithoutUpdatedPersonerosInput>, Prisma.UserUncheckedUpdateWithoutUpdatedPersonerosInput>
+}
+
+export type UserCreateNestedManyWithoutAssignedLocalInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedLocalInput, Prisma.UserUncheckedCreateWithoutAssignedLocalInput> | Prisma.UserCreateWithoutAssignedLocalInput[] | Prisma.UserUncheckedCreateWithoutAssignedLocalInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedLocalInput | Prisma.UserCreateOrConnectWithoutAssignedLocalInput[]
+  createMany?: Prisma.UserCreateManyAssignedLocalInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutAssignedLocalInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedLocalInput, Prisma.UserUncheckedCreateWithoutAssignedLocalInput> | Prisma.UserCreateWithoutAssignedLocalInput[] | Prisma.UserUncheckedCreateWithoutAssignedLocalInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedLocalInput | Prisma.UserCreateOrConnectWithoutAssignedLocalInput[]
+  createMany?: Prisma.UserCreateManyAssignedLocalInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateManyWithoutAssignedLocalNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedLocalInput, Prisma.UserUncheckedCreateWithoutAssignedLocalInput> | Prisma.UserCreateWithoutAssignedLocalInput[] | Prisma.UserUncheckedCreateWithoutAssignedLocalInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedLocalInput | Prisma.UserCreateOrConnectWithoutAssignedLocalInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutAssignedLocalInput | Prisma.UserUpsertWithWhereUniqueWithoutAssignedLocalInput[]
+  createMany?: Prisma.UserCreateManyAssignedLocalInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutAssignedLocalInput | Prisma.UserUpdateWithWhereUniqueWithoutAssignedLocalInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutAssignedLocalInput | Prisma.UserUpdateManyWithWhereWithoutAssignedLocalInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutAssignedLocalNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedLocalInput, Prisma.UserUncheckedCreateWithoutAssignedLocalInput> | Prisma.UserCreateWithoutAssignedLocalInput[] | Prisma.UserUncheckedCreateWithoutAssignedLocalInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedLocalInput | Prisma.UserCreateOrConnectWithoutAssignedLocalInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutAssignedLocalInput | Prisma.UserUpsertWithWhereUniqueWithoutAssignedLocalInput[]
+  createMany?: Prisma.UserCreateManyAssignedLocalInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutAssignedLocalInput | Prisma.UserUpdateWithWhereUniqueWithoutAssignedLocalInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutAssignedLocalInput | Prisma.UserUpdateManyWithWhereWithoutAssignedLocalInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
 export type UserCreateNestedOneWithoutCreatedAnnouncementsInput = {
@@ -678,7 +828,11 @@ export type UserCreateWithoutRolesInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -700,6 +854,10 @@ export type UserUncheckedCreateWithoutRolesInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
@@ -738,7 +896,11 @@ export type UserUpdateWithoutRolesInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -760,6 +922,10 @@ export type UserUncheckedUpdateWithoutRolesInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -782,7 +948,11 @@ export type UserCreateWithoutSessionsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -804,6 +974,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
@@ -842,7 +1016,11 @@ export type UserUpdateWithoutSessionsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -864,6 +1042,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -886,8 +1068,12 @@ export type UserCreateWithoutCreatedSupportersInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
@@ -908,6 +1094,10 @@ export type UserUncheckedCreateWithoutCreatedSupportersInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
@@ -935,8 +1125,12 @@ export type UserCreateWithoutReviewedSupportersInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
@@ -957,6 +1151,10 @@ export type UserUncheckedCreateWithoutReviewedSupportersInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -995,8 +1193,12 @@ export type UserUpdateWithoutCreatedSupportersInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
@@ -1017,6 +1219,10 @@ export type UserUncheckedUpdateWithoutCreatedSupportersInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1050,8 +1256,12 @@ export type UserUpdateWithoutReviewedSupportersInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
@@ -1072,6 +1282,10 @@ export type UserUncheckedUpdateWithoutReviewedSupportersInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1094,8 +1308,12 @@ export type UserCreateWithoutCreatedPersonerosInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
@@ -1116,6 +1334,10 @@ export type UserUncheckedCreateWithoutCreatedPersonerosInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1143,8 +1365,12 @@ export type UserCreateWithoutUpdatedPersonerosInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -1165,6 +1391,10 @@ export type UserUncheckedCreateWithoutUpdatedPersonerosInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1203,8 +1433,12 @@ export type UserUpdateWithoutCreatedPersonerosInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
@@ -1225,6 +1459,10 @@ export type UserUncheckedUpdateWithoutCreatedPersonerosInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1258,8 +1496,12 @@ export type UserUpdateWithoutUpdatedPersonerosInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -1280,6 +1522,10 @@ export type UserUncheckedUpdateWithoutUpdatedPersonerosInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1293,6 +1539,102 @@ export type UserUncheckedUpdateWithoutUpdatedPersonerosInput = {
   reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
+export type UserCreateWithoutAssignedLocalInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
+  reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
+  createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
+  updatedPersoneros?: Prisma.PersoneroCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementCreateNestedManyWithoutUpdatedByInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatedByInput
+  createdContactImports?: Prisma.ContactImportCreateNestedManyWithoutCreatedByInput
+  createdCampaigns?: Prisma.CampaignCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralCreateNestedManyWithoutReviewedByInput
+}
+
+export type UserUncheckedCreateWithoutAssignedLocalInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutReviewedByInput
+  createdPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedPersoneros?: Prisma.PersoneroUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedCreateNestedManyWithoutUpdatedByInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContactImports?: Prisma.ContactImportUncheckedCreateNestedManyWithoutCreatedByInput
+  createdCampaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedCreateNestedManyWithoutReviewedByInput
+}
+
+export type UserCreateOrConnectWithoutAssignedLocalInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedLocalInput, Prisma.UserUncheckedCreateWithoutAssignedLocalInput>
+}
+
+export type UserCreateManyAssignedLocalInputEnvelope = {
+  data: Prisma.UserCreateManyAssignedLocalInput | Prisma.UserCreateManyAssignedLocalInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithWhereUniqueWithoutAssignedLocalInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedLocalInput, Prisma.UserUncheckedUpdateWithoutAssignedLocalInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedLocalInput, Prisma.UserUncheckedCreateWithoutAssignedLocalInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutAssignedLocalInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedLocalInput, Prisma.UserUncheckedUpdateWithoutAssignedLocalInput>
+}
+
+export type UserUpdateManyWithWhereWithoutAssignedLocalInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutAssignedLocalInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  name?: Prisma.StringFilter<"User"> | string
+  passwordHash?: Prisma.StringFilter<"User"> | string
+  active?: Prisma.BoolFilter<"User"> | boolean
+  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  scopeType?: Prisma.StringFilter<"User"> | string
+  assignedProvince?: Prisma.StringNullableFilter<"User"> | string | null
+  assignedDistrict?: Prisma.EnumDistrictNullableFilter<"User"> | $Enums.District | null
+  assignedLocalId?: Prisma.StringNullableFilter<"User"> | string | null
+}
+
 export type UserCreateWithoutCreatedAnnouncementsInput = {
   id?: string
   email: string
@@ -1302,8 +1644,12 @@ export type UserCreateWithoutCreatedAnnouncementsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -1324,6 +1670,10 @@ export type UserUncheckedCreateWithoutCreatedAnnouncementsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1351,8 +1701,12 @@ export type UserCreateWithoutUpdatedAnnouncementsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -1373,6 +1727,10 @@ export type UserUncheckedCreateWithoutUpdatedAnnouncementsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1411,8 +1769,12 @@ export type UserUpdateWithoutCreatedAnnouncementsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -1433,6 +1795,10 @@ export type UserUncheckedUpdateWithoutCreatedAnnouncementsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1466,8 +1832,12 @@ export type UserUpdateWithoutUpdatedAnnouncementsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -1488,6 +1858,10 @@ export type UserUncheckedUpdateWithoutUpdatedAnnouncementsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1510,8 +1884,12 @@ export type UserCreateWithoutCreatedContactsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -1532,6 +1910,10 @@ export type UserUncheckedCreateWithoutCreatedContactsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1570,8 +1952,12 @@ export type UserUpdateWithoutCreatedContactsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -1592,6 +1978,10 @@ export type UserUncheckedUpdateWithoutCreatedContactsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1614,8 +2004,12 @@ export type UserCreateWithoutCreatedContactImportsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -1636,6 +2030,10 @@ export type UserUncheckedCreateWithoutCreatedContactImportsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1674,8 +2072,12 @@ export type UserUpdateWithoutCreatedContactImportsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -1696,6 +2098,10 @@ export type UserUncheckedUpdateWithoutCreatedContactImportsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1718,8 +2124,12 @@ export type UserCreateWithoutCreatedCampaignsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -1740,6 +2150,10 @@ export type UserUncheckedCreateWithoutCreatedCampaignsInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1778,8 +2192,12 @@ export type UserUpdateWithoutCreatedCampaignsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -1800,6 +2218,10 @@ export type UserUncheckedUpdateWithoutCreatedCampaignsInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1822,8 +2244,12 @@ export type UserCreateWithoutReviewedActasInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
   roles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  assignedLocal?: Prisma.ElectoralLocalCreateNestedOneWithoutCoordinatorsInput
   createdSupporters?: Prisma.SupporterCreateNestedManyWithoutCreatedByInput
   reviewedSupporters?: Prisma.SupporterCreateNestedManyWithoutReviewedByInput
   createdPersoneros?: Prisma.PersoneroCreateNestedManyWithoutCreatedByInput
@@ -1844,6 +2270,10 @@ export type UserUncheckedCreateWithoutReviewedActasInput = {
   lastLoginAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+  assignedLocalId?: string | null
   roles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   createdSupporters?: Prisma.SupporterUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1882,8 +2312,12 @@ export type UserUpdateWithoutReviewedActasInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
   roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  assignedLocal?: Prisma.ElectoralLocalUpdateOneWithoutCoordinatorsNestedInput
   createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
   reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
   createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
@@ -1904,6 +2338,10 @@ export type UserUncheckedUpdateWithoutReviewedActasInput = {
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  assignedLocalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1915,6 +2353,86 @@ export type UserUncheckedUpdateWithoutReviewedActasInput = {
   createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
   createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateManyAssignedLocalInput = {
+  id?: string
+  email: string
+  name: string
+  passwordHash: string
+  active?: boolean
+  lastLoginAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  scopeType?: string
+  assignedProvince?: string | null
+  assignedDistrict?: $Enums.District | null
+}
+
+export type UserUpdateWithoutAssignedLocalInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  roles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  createdSupporters?: Prisma.SupporterUpdateManyWithoutCreatedByNestedInput
+  reviewedSupporters?: Prisma.SupporterUpdateManyWithoutReviewedByNestedInput
+  createdPersoneros?: Prisma.PersoneroUpdateManyWithoutCreatedByNestedInput
+  updatedPersoneros?: Prisma.PersoneroUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUpdateManyWithoutUpdatedByNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatedByNestedInput
+  createdContactImports?: Prisma.ContactImportUpdateManyWithoutCreatedByNestedInput
+  createdCampaigns?: Prisma.CampaignUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUpdateManyWithoutReviewedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignedLocalInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
+  roles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  createdSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedSupporters?: Prisma.SupporterUncheckedUpdateManyWithoutReviewedByNestedInput
+  createdPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedPersoneros?: Prisma.PersoneroUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedAnnouncements?: Prisma.AnnouncementUncheckedUpdateManyWithoutUpdatedByNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContactImports?: Prisma.ContactImportUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdCampaigns?: Prisma.CampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  reviewedActas?: Prisma.ActaElectoralUncheckedUpdateManyWithoutReviewedByNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutAssignedLocalInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scopeType?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedProvince?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedDistrict?: Prisma.NullableEnumDistrictFieldUpdateOperationsInput | $Enums.District | null
 }
 
 
@@ -2056,8 +2574,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  scopeType?: boolean
+  assignedProvince?: boolean
+  assignedDistrict?: boolean
+  assignedLocalId?: boolean
   roles?: boolean | Prisma.User$rolesArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  assignedLocal?: boolean | Prisma.User$assignedLocalArgs<ExtArgs>
   createdSupporters?: boolean | Prisma.User$createdSupportersArgs<ExtArgs>
   reviewedSupporters?: boolean | Prisma.User$reviewedSupportersArgs<ExtArgs>
   createdPersoneros?: boolean | Prisma.User$createdPersonerosArgs<ExtArgs>
@@ -2080,6 +2603,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  scopeType?: boolean
+  assignedProvince?: boolean
+  assignedDistrict?: boolean
+  assignedLocalId?: boolean
+  assignedLocal?: boolean | Prisma.User$assignedLocalArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2091,6 +2619,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  scopeType?: boolean
+  assignedProvince?: boolean
+  assignedDistrict?: boolean
+  assignedLocalId?: boolean
+  assignedLocal?: boolean | Prisma.User$assignedLocalArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -2102,12 +2635,17 @@ export type UserSelectScalar = {
   lastLoginAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  scopeType?: boolean
+  assignedProvince?: boolean
+  assignedDistrict?: boolean
+  assignedLocalId?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "passwordHash" | "active" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "passwordHash" | "active" | "lastLoginAt" | "createdAt" | "updatedAt" | "scopeType" | "assignedProvince" | "assignedDistrict" | "assignedLocalId", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   roles?: boolean | Prisma.User$rolesArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  assignedLocal?: boolean | Prisma.User$assignedLocalArgs<ExtArgs>
   createdSupporters?: boolean | Prisma.User$createdSupportersArgs<ExtArgs>
   reviewedSupporters?: boolean | Prisma.User$reviewedSupportersArgs<ExtArgs>
   createdPersoneros?: boolean | Prisma.User$createdPersonerosArgs<ExtArgs>
@@ -2120,14 +2658,19 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviewedActas?: boolean | Prisma.User$reviewedActasArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignedLocal?: boolean | Prisma.User$assignedLocalArgs<ExtArgs>
+}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignedLocal?: boolean | Prisma.User$assignedLocalArgs<ExtArgs>
+}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
     roles: Prisma.$UserRolePayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
+    assignedLocal: Prisma.$ElectoralLocalPayload<ExtArgs> | null
     createdSupporters: Prisma.$SupporterPayload<ExtArgs>[]
     reviewedSupporters: Prisma.$SupporterPayload<ExtArgs>[]
     createdPersoneros: Prisma.$PersoneroPayload<ExtArgs>[]
@@ -2148,6 +2691,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     lastLoginAt: Date | null
     createdAt: Date
     updatedAt: Date
+    scopeType: string
+    assignedProvince: string | null
+    assignedDistrict: $Enums.District | null
+    assignedLocalId: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2544,6 +3091,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   roles<T extends Prisma.User$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedLocal<T extends Prisma.User$assignedLocalArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedLocalArgs<ExtArgs>>): Prisma.Prisma__ElectoralLocalClient<runtime.Types.Result.GetResult<Prisma.$ElectoralLocalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdSupporters<T extends Prisma.User$createdSupportersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdSupportersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupporterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewedSupporters<T extends Prisma.User$reviewedSupportersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedSupportersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupporterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdPersoneros<T extends Prisma.User$createdPersonerosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdPersonerosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PersoneroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2591,6 +3139,10 @@ export interface UserFieldRefs {
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly scopeType: Prisma.FieldRef<"User", 'String'>
+  readonly assignedProvince: Prisma.FieldRef<"User", 'String'>
+  readonly assignedDistrict: Prisma.FieldRef<"User", 'District'>
+  readonly assignedLocalId: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -2845,6 +3397,10 @@ export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2915,6 +3471,10 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Users to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -3029,6 +3589,25 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * User.assignedLocal
+ */
+export type User$assignedLocalArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ElectoralLocal
+   */
+  select?: Prisma.ElectoralLocalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ElectoralLocal
+   */
+  omit?: Prisma.ElectoralLocalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ElectoralLocalInclude<ExtArgs> | null
+  where?: Prisma.ElectoralLocalWhereInput
 }
 
 /**

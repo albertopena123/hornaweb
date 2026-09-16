@@ -352,18 +352,16 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
         <div className="banner" style={{ marginBottom: 16 }}>
           <Icon name="info" size={16} className="banner__icon" />
           <p>
-            <b>Aún no tienes roles personalizados.</b> Los roles del sistema
-            (Administrador, Editor, Consulta, etc.) no se pueden modificar.
-            Para asignar permisos específicos a un equipo,{" "}
+            <b>Roles del sistema disponibles.</b> Puedes ajustar los permisos de cualquier rol (incluidos los roles del sistema como Personero o Administrador) directamente marcando o desmarcando casillas, o{" "}
             <button
               type="button"
               className="linkbtn"
               onClick={() => setCreating({})}
               style={{ padding: "0 4px", verticalAlign: "baseline" }}
             >
-              crea un rol personalizado
+              crear un rol personalizado
             </button>{" "}
-            o duplica uno del sistema desde la barra de acciones.
+            para tu equipo.
           </p>
         </div>
       )}
@@ -541,13 +539,13 @@ export function RolesView({ rows, available, totalUsers, perms }: Props) {
                         disabled={!canEdit || isEditingPerms}
                         title={
                           active.system
-                            ? "Los roles del sistema no se pueden modificar"
+                            ? "El nombre de este rol es fijo. Puedes editar sus permisos en la lista inferior."
                             : !perms.canWrite
                               ? "Necesitas el permiso roles.write"
                               : undefined
                         }
                       >
-                        Editar
+                        Editar nombre
                       </button>
                       <button
                         className="btn btn--ghost"

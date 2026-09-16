@@ -127,13 +127,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  // Permitir ingresar directamente con DNI
-  if (/^\d{8}$/.test(normalizedEmail)) {
-    normalizedEmail = `${normalizedEmail}@personeros.ahoranacion.pe`;
-  }
+  const isDni = /^\d{8}$/.test(normalizedEmail);
+  const accountKey = isDni ? `${normalizedEmail}@personeros.ahoranacion.pe` : normalizedEmail;
 
   // Per-account throttle: cannot be bypassed by rotating the forwarded IP.
-  const accountBlock = emailBlocked(normalizedEmail);
+  const accountBlock = emailBlocked(accountKey);
   if (accountBlock.blocked) {
     return NextResponse.json(
       {
@@ -146,10 +144,21 @@ export async function POST(request: Request) {
     );
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email: normalizedEmail },
-    include: { roles: { include: { role: true } } },
-  });
+  const user = isDni
+    ? await prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: `${normalizedEmail}@personeros.ahoranacion.pe` },
+            { email: `${normalizedEmail}@ahoranacion.pe` },
+            { email: normalizedEmail },
+          ],
+        },
+        include: { roles: { include: { role: true } } },
+      })
+    : await prisma.user.findUnique({
+        where: { email: normalizedEmail },
+        include: { roles: { include: { role: true } } },
+      });
 
   // C2: equalize timing — always run a scrypt verify, even when the email
   // doesn't exist. Discard the result; return the same generic 401.

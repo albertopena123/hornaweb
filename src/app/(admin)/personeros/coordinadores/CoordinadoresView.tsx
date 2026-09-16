@@ -49,8 +49,9 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
   const [statusFilter, setStatusFilter] = useState<"all" | "missing" | "assigned">("all");
   const [sortBy, setSortBy] = useState<"mesas-desc" | "name-asc" | "province-asc">("mesas-desc");
 
-  // Modal para Asignar / Editar Coordinador
+  // Modal para Asignar / Editar Coordinador (1 = Titular, 2 = Adjunto)
   const [modalLocal, setModalLocal] = useState<ElectoralLocalData | null>(null);
+  const [modalPosition, setModalPosition] = useState<1 | 2>(1);
   const [modalTab, setModalTab] = useState<"dni" | "registered">("dni");
   const [modalDni, setModalDni] = useState("");
   const [modalName, setModalName] = useState("");
@@ -143,6 +144,10 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
     () => localItems.filter((l) => !!l.coordinatorName && l.coordinatorName.trim() !== "").length,
     [localItems]
   );
+  const conCoord2 = useMemo(
+    () => localItems.filter((l) => !!l.coordinator2Name && l.coordinator2Name.trim() !== "").length,
+    [localItems]
+  );
   const sinCoord = totalColegios - conCoord;
   const pctCoord = totalColegios > 0 ? Math.round((conCoord / totalColegios) * 100) : 0;
   const totalMesas = useMemo(
@@ -157,7 +162,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
     return localItems
       .filter((loc) => {
         // Filtro de estado
-        const hasCoord = !!loc.coordinatorName && loc.coordinatorName.trim() !== "";
+        const hasCoord = (!!loc.coordinatorName && loc.coordinatorName.trim() !== "") || (!!loc.coordinator2Name && loc.coordinator2Name.trim() !== "");
         if (statusFilter === "missing" && hasCoord) return false;
         if (statusFilter === "assigned" && !hasCoord) return false;
 
@@ -175,9 +180,9 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
         if (!q) return true;
         const termInName = loc.name.toLowerCase().includes(q);
         const termInCode = (loc.code || "").toLowerCase().includes(q);
-        const termInCoord = (loc.coordinatorName || "").toLowerCase().includes(q);
-        const termInDni = (loc.coordinatorDni || "").includes(q);
-        const termInPhone = (loc.coordinatorPhone || "").includes(q);
+        const termInCoord = (loc.coordinatorName || "").toLowerCase().includes(q) || (loc.coordinator2Name || "").toLowerCase().includes(q);
+        const termInDni = (loc.coordinatorDni || "").includes(q) || (loc.coordinator2Dni || "").includes(q);
+        const termInPhone = (loc.coordinatorPhone || "").includes(q) || (loc.coordinator2Phone || "").includes(q);
         const termInDistrict = (loc.district || "").toLowerCase().includes(q);
 
         return termInName || termInCode || termInCoord || termInDni || termInPhone || termInDistrict;
@@ -198,16 +203,24 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
       });
   }, [localItems, search, statusFilter, provinceFilter, districtFilter, sortBy]);
 
-  // Abrir modal de asignación
-  function openAssignModal(loc: ElectoralLocalData) {
+  // Abrir modal de asignación (position: 1 = Titular, 2 = Adjunto)
+  function openAssignModal(loc: ElectoralLocalData, position: 1 | 2 = 1) {
     setModalLocal(loc);
-    setModalDni(loc.coordinatorDni || "");
-    setModalName(loc.coordinatorName || "");
-    setModalPhone(loc.coordinatorPhone || "");
+    setModalPosition(position);
+    if (position === 1) {
+      setModalDni(loc.coordinatorDni || "");
+      setModalName(loc.coordinatorName || "");
+      setModalPhone(loc.coordinatorPhone || "");
+      setModalDniLookup(loc.coordinatorDni ? "success" : "idle");
+    } else {
+      setModalDni(loc.coordinator2Dni || "");
+      setModalName(loc.coordinator2Name || "");
+      setModalPhone(loc.coordinator2Phone || "");
+      setModalDniLookup(loc.coordinator2Dni ? "success" : "idle");
+    }
     setModalError(null);
     setModalTab("dni");
     setModalSearchTerm("");
-    setModalDniLookup(loc.coordinatorDni ? "success" : "idle");
   }
 
   // Seleccionar un personero registrado
@@ -220,7 +233,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
     toastSuccess(`Datos de ${p.name} cargados en el formulario.`);
   }
 
-  // Guardar coordinador
+  // Guardar coordinador (Coordinador 1 o 2)
   async function handleSaveCoordinator() {
     if (!modalLocal) return;
     const name = modalName.trim();
@@ -243,13 +256,16 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
     setModalSaving(true);
     setModalError(null);
 
-    const res = await updateLocalCoordinator(modalLocal.id, name, phone, dni || null);
+    const res = await updateLocalCoordinator(modalLocal.id, name, phone, dni || undefined, modalPosition);
     if (res.ok) {
-      toastSuccess(`Coordinador asignado a ${modalLocal.name}`);
+      const posLabel = modalPosition === 1 ? "1 (Titular)" : "2 (Adjunto)";
+      toastSuccess(`Coordinador ${posLabel} asignado a ${modalLocal.name}`);
       setLocalItems((prev) =>
         prev.map((l) =>
           l.id === modalLocal.id
-            ? { ...l, coordinatorName: name, coordinatorPhone: phone, coordinatorDni: dni || null }
+            ? modalPosition === 1
+              ? { ...l, coordinatorName: name, coordinatorPhone: phone, coordinatorDni: dni || null }
+              : { ...l, coordinator2Name: name, coordinator2Phone: phone, coordinator2Dni: dni || null }
             : l
         )
       );
@@ -262,23 +278,27 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
     setModalSaving(false);
   }
 
-  // Desasignar coordinador
-  async function handleRemoveCoordinator(loc: ElectoralLocalData) {
+  // Desasignar coordinador (Coordinador 1 o 2)
+  async function handleRemoveCoordinator(loc: ElectoralLocalData, position: 1 | 2 = 1) {
+    const coordName = position === 1 ? loc.coordinatorName : loc.coordinator2Name;
+    const posLabel = position === 1 ? "1 (Titular)" : "2 (Adjunto)";
     const ok = await confirmAction({
-      title: "¿Desasignar Coordinador?",
-      text: `¿Estás seguro de retirar a ${loc.coordinatorName} de la coordinación de ${loc.name}?`,
+      title: `¿Desasignar Coordinador ${posLabel}?`,
+      text: `¿Estás seguro de retirar a ${coordName || "este coordinador"} de la coordinación de ${loc.name}?`,
       confirmButtonText: "Sí, desasignar",
     });
 
     if (!ok) return;
 
-    const res = await removeLocalCoordinator(loc.id);
+    const res = await removeLocalCoordinator(loc.id, position);
     if (res.ok) {
-      toastSuccess(`Coordinador retirado de ${loc.name}`);
+      toastSuccess(`Coordinador ${posLabel} retirado de ${loc.name}`);
       setLocalItems((prev) =>
         prev.map((l) =>
           l.id === loc.id
-            ? { ...l, coordinatorName: null, coordinatorPhone: null, coordinatorDni: null }
+            ? position === 1
+              ? { ...l, coordinatorName: null, coordinatorPhone: null, coordinatorDni: null }
+              : { ...l, coordinator2Name: null, coordinator2Phone: null, coordinator2Dni: null }
             : l
         )
       );
@@ -407,7 +427,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
           </div>
 
           <select
-            className="input select"
+            className="filter-select"
             style={{ width: "auto", minWidth: "150px" }}
             value={provinceFilter}
             onChange={(e) => {
@@ -424,7 +444,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
           </select>
 
           <select
-            className="input select"
+            className="filter-select"
             style={{ width: "auto", minWidth: "150px" }}
             value={districtFilter}
             onChange={(e) => setDistrictFilter(e.target.value)}
@@ -438,7 +458,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
           </select>
 
           <select
-            className="input select"
+            className="filter-select"
             style={{ width: "auto", minWidth: "170px" }}
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
@@ -533,95 +553,221 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                   )}
                 </div>
 
-                {/* Sección del Coordinador */}
-                <div className="coord-card__body">
-                  {hasCoord ? (
-                    <div className="coord-assigned-box">
-                      <div className="coord-assigned-box__top">
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span className="coord-avatar-badge">
-                            <UserCheck size={16} />
-                          </span>
-                          <div>
-                            <span className="coord-badge coord-badge--success">Coordinador Oficial</span>
-                            <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
-                              <span className="coord-person-name">{loc.coordinatorName}</span>
-                              {loc.coordinatorDni && (
-                                <span className="coord-card__code" style={{ fontSize: "10.5px" }}>
-                                  DNI: {loc.coordinatorDni}
-                                </span>
-                              )}
+                {/* Sección de Coordinadores (Coordinador 1 y Coordinador 2) */}
+                <div className="coord-card__body" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  {/* --- Coordinador 1 (Titular) --- */}
+                  <div className="coord-slot">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                      <span className="coord-badge coord-badge--success" style={{ fontSize: "10.5px", fontWeight: 700 }}>
+                        Coordinador 1 (Titular)
+                      </span>
+                    </div>
+
+                    {loc.coordinatorName ? (
+                      <div className="coord-assigned-box" style={{ marginTop: 0, padding: "8px 10px" }}>
+                        <div className="coord-assigned-box__top">
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <span className="coord-avatar-badge" style={{ width: 28, height: 28 }}>
+                              <UserCheck size={14} />
+                            </span>
+                            <div>
+                              <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                                <span className="coord-person-name" style={{ fontSize: "13px" }}>{loc.coordinatorName}</span>
+                                {loc.coordinatorDni && (
+                                  <span className="coord-card__code" style={{ fontSize: "10px" }}>
+                                    DNI: {loc.coordinatorDni}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
+
+                          {perms.canWriteLocales && (
+                            <div style={{ display: "flex", gap: "4px" }}>
+                              <button
+                                type="button"
+                                className="btn-icon-subtle"
+                                title="Modificar Coordinador 1"
+                                onClick={() => openAssignModal(loc, 1)}
+                              >
+                                <Edit2 size={12} />
+                              </button>
+                              <button
+                                type="button"
+                                className="btn-icon-subtle btn-icon-subtle--danger"
+                                title="Desasignar Coordinador 1"
+                                onClick={() => handleRemoveCoordinator(loc, 1)}
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          )}
                         </div>
 
-                        {perms.canWriteLocales && (
-                          <div style={{ display: "flex", gap: "4px" }}>
-                            <button
-                              type="button"
-                              className="btn-icon-subtle"
-                              title="Modificar coordinador"
-                              onClick={() => openAssignModal(loc)}
+                        {loc.coordinatorPhone && (
+                          <div className="coord-contact-row" style={{ flexWrap: "wrap", gap: "5px", marginTop: "6px" }}>
+                            {loc.coordinatorDni && (
+                              <a
+                                href={`https://wa.me/51${loc.coordinatorPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                                  `¡Hola ${loc.coordinatorName}! Has sido asignado como Coordinador 1 (Titular) en el centro de votación "${loc.name}" (${loc.district.toUpperCase()} - ${loc.province}).\n\nTus credenciales para ingresar a la plataforma y gestionar tus ${numMesas} mesas y personeros son:\n🔑 Usuario: ${loc.coordinatorDni}\n🔒 Contraseña: ${loc.coordinatorDni}\n🌐 Enlace: https://hornaweb.pe/login\n\n¡Juntos por el triunfo de Simón Horna!`
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="coord-btn-wa"
+                                style={{ background: "#059669", color: "#fff", borderColor: "transparent", fontSize: "11px", padding: "3px 8px" }}
+                                title="Enviar credenciales por WhatsApp"
+                              >
+                                <ShieldCheck size={12} /> Enviar Acceso
+                              </a>
+                            )}
+                            <a
+                              href={`https://wa.me/51${loc.coordinatorPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                                `Hola ${loc.coordinatorName}, te escribimos del equipo de Simón Horna para coordinar el colegio ${loc.name}.`
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="coord-btn-wa"
+                              style={{ fontSize: "11px", padding: "3px 8px" }}
                             >
-                              <Edit2 size={13} />
-                            </button>
-                            <button
-                              type="button"
-                              className="btn-icon-subtle btn-icon-subtle--danger"
-                              title="Desasignar coordinador"
-                              onClick={() => handleRemoveCoordinator(loc)}
+                              <MessageCircle size={12} /> WhatsApp
+                            </a>
+                            <a
+                              href={`tel:${loc.coordinatorPhone.replace(/\D/g, "")}`}
+                              className="coord-btn-call"
+                              style={{ fontSize: "11px", padding: "3px 8px" }}
                             >
-                              <Trash2 size={13} />
-                            </button>
+                              <Phone size={12} /> {loc.coordinatorPhone}
+                            </a>
                           </div>
                         )}
                       </div>
-
-                      {/* Botones de Contacto Directo */}
-                      {loc.coordinatorPhone && (
-                        <div className="coord-contact-row">
-                          <a
-                            href={`https://wa.me/51${loc.coordinatorPhone.replace(/\D/g, "")}?text=${encodeURIComponent(
-                              `Hola ${loc.coordinatorName}, te escribimos del equipo electoral de Simón Horna Alpaca (Ahora Nación). Nos comunicamos contigo para coordinar las ${numMesas} mesas del colegio ${loc.name}.`
-                            )}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="coord-btn-wa"
-                          >
-                            <MessageCircle size={14} /> WhatsApp Directo
-                          </a>
-
-                          <a
-                            href={`tel:${loc.coordinatorPhone.replace(/\D/g, "")}`}
-                            className="coord-btn-call"
-                          >
-                            <Phone size={13} /> {loc.coordinatorPhone}
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="coord-missing-box">
-                      <div className="coord-missing-alert">
-                        <AlertTriangle size={15} style={{ color: "#d97706", flexShrink: 0 }} />
-                        <div>
-                          <strong>Sin coordinador asignado</strong>
-                          <p>Este centro de votación no tiene responsable territorial para el día D.</p>
+                    ) : (
+                      <div className="coord-missing-box" style={{ padding: "8px 10px", marginTop: 0 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", gap: "6px", flexWrap: "wrap" }}>
+                          <span style={{ fontSize: "11.5px", color: "var(--text-muted, #64748b)", display: "flex", alignItems: "center", gap: "4px" }}>
+                            <AlertTriangle size={12} style={{ color: "#d97706" }} /> Sin Coord. 1
+                          </span>
+                          {perms.canWriteLocales && (
+                            <button
+                              type="button"
+                              className="btn btn--primary btn--xs"
+                              onClick={() => openAssignModal(loc, 1)}
+                              style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", padding: "3px 8px" }}
+                            >
+                              <ShieldCheck size={12} /> + Asignar Coord. 1
+                            </button>
+                          )}
                         </div>
                       </div>
+                    )}
+                  </div>
 
-                      {perms.canWriteLocales && (
-                        <button
-                          type="button"
-                          className="btn btn--primary btn--sm coord-assign-trigger"
-                          onClick={() => openAssignModal(loc)}
-                          style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
-                        >
-                          <ShieldCheck size={14} /> Asignar Coordinador
-                        </button>
-                      )}
+                  {/* --- Coordinador 2 (Adjunto / Alterno) --- */}
+                  <div className="coord-slot" style={{ borderTop: "1px dashed var(--border, #e2e8f0)", paddingTop: "8px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                      <span className="coord-badge" style={{ fontSize: "10.5px", fontWeight: 700, background: "var(--accent-soft, #eff6ff)", color: "var(--accent, #2563eb)" }}>
+                        Coordinador 2 (Adjunto)
+                      </span>
                     </div>
-                  )}
+
+                    {loc.coordinator2Name ? (
+                      <div className="coord-assigned-box" style={{ marginTop: 0, padding: "8px 10px" }}>
+                        <div className="coord-assigned-box__top">
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <span className="coord-avatar-badge" style={{ width: 28, height: 28, background: "var(--accent-soft, #eff6ff)", color: "var(--accent, #2563eb)" }}>
+                              <UserCheck size={14} />
+                            </span>
+                            <div>
+                              <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                                <span className="coord-person-name" style={{ fontSize: "13px" }}>{loc.coordinator2Name}</span>
+                                {loc.coordinator2Dni && (
+                                  <span className="coord-card__code" style={{ fontSize: "10px" }}>
+                                    DNI: {loc.coordinator2Dni}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {perms.canWriteLocales && (
+                            <div style={{ display: "flex", gap: "4px" }}>
+                              <button
+                                type="button"
+                                className="btn-icon-subtle"
+                                title="Modificar Coordinador 2"
+                                onClick={() => openAssignModal(loc, 2)}
+                              >
+                                <Edit2 size={12} />
+                              </button>
+                              <button
+                                type="button"
+                                className="btn-icon-subtle btn-icon-subtle--danger"
+                                title="Desasignar Coordinador 2"
+                                onClick={() => handleRemoveCoordinator(loc, 2)}
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        {loc.coordinator2Phone && (
+                          <div className="coord-contact-row" style={{ flexWrap: "wrap", gap: "5px", marginTop: "6px" }}>
+                            {loc.coordinator2Dni && (
+                              <a
+                                href={`https://wa.me/51${loc.coordinator2Phone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                                  `¡Hola ${loc.coordinator2Name}! Has sido asignado como Coordinador 2 (Adjunto) en el centro de votación "${loc.name}" (${loc.district.toUpperCase()} - ${loc.province}).\n\nTus credenciales para ingresar a la plataforma y gestionar tus ${numMesas} mesas y personeros son:\n🔑 Usuario: ${loc.coordinator2Dni}\n🔒 Contraseña: ${loc.coordinator2Dni}\n🌐 Enlace: https://hornaweb.pe/login\n\n¡Juntos por el triunfo de Simón Horna!`
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="coord-btn-wa"
+                                style={{ background: "#059669", color: "#fff", borderColor: "transparent", fontSize: "11px", padding: "3px 8px" }}
+                                title="Enviar credenciales por WhatsApp"
+                              >
+                                <ShieldCheck size={12} /> Enviar Acceso
+                              </a>
+                            )}
+                            <a
+                              href={`https://wa.me/51${loc.coordinator2Phone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                                `Hola ${loc.coordinator2Name}, te escribimos del equipo de Simón Horna para coordinar el colegio ${loc.name}.`
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="coord-btn-wa"
+                              style={{ fontSize: "11px", padding: "3px 8px" }}
+                            >
+                              <MessageCircle size={12} /> WhatsApp
+                            </a>
+                            <a
+                              href={`tel:${loc.coordinator2Phone.replace(/\D/g, "")}`}
+                              className="coord-btn-call"
+                              style={{ fontSize: "11px", padding: "3px 8px" }}
+                            >
+                              <Phone size={12} /> {loc.coordinator2Phone}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="coord-missing-box" style={{ padding: "8px 10px", marginTop: 0, background: "transparent", borderStyle: "dashed" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", gap: "6px", flexWrap: "wrap" }}>
+                          <span style={{ fontSize: "11.5px", color: "var(--text-muted, #64748b)" }}>
+                            Sin Coordinador 2
+                          </span>
+                          {perms.canWriteLocales && (
+                            <button
+                              type="button"
+                              className="btn btn--secondary btn--xs"
+                              onClick={() => openAssignModal(loc, 2)}
+                              style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", padding: "3px 8px" }}
+                            >
+                              <UserPlus size={12} /> + Asignar Coord. 2
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Pie de tarjeta con enlace a Mesas del local */}
@@ -650,7 +796,9 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                   <ShieldCheck size={12} /> Liderazgo Territorial
                 </span>
                 <h3 style={{ margin: "4px 0 0", fontSize: "17px", fontWeight: 800 }}>
-                  {modalLocal.coordinatorName ? "Modificar Coordinador" : "Asignar Coordinador de Colegio"}
+                  {(modalPosition === 1 ? modalLocal.coordinatorName : modalLocal.coordinator2Name)
+                    ? `Modificar Coordinador ${modalPosition} (${modalPosition === 1 ? "Titular" : "Adjunto"})`
+                    : `Asignar Coordinador ${modalPosition} (${modalPosition === 1 ? "Titular" : "Adjunto"})`}
                 </h3>
                 <p style={{ margin: "2px 0 0", fontSize: "12px", color: "var(--text-muted, #64748b)" }}>
                   {modalLocal.name} ({modalLocal.totalMesas || modalLocal.mesas.length} mesas)
@@ -667,7 +815,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
             </header>
 
             {/* Selector de Pestañas Moderno */}
-            <div className="assign-modal-tabs">
+            <div className="assign-modal-tabs" style={{ display: "flex", borderBottom: "1px solid var(--border, #e2e8f0)", padding: "0 16px", background: "var(--surface-muted, #f8fafc)" }}>
               <button
                 type="button"
                 className={`tab-btn ${modalTab === "dni" ? "tab-btn--active" : ""}`}
@@ -777,18 +925,20 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
               ) : (
                 /* Pestaña: Seleccionar de registrados con buscador y cards (sin select nativo) */
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                  <div className="search-box">
-                    <Search size={14} className="search-icon" />
-                    <input
-                      type="text"
-                      placeholder="Buscar por DNI, nombre o celular..."
-                      value={modalSearchTerm}
-                      onChange={(e) => setModalSearchTerm(e.target.value)}
-                      autoFocus
-                    />
+                  <div style={{ display: "flex", width: "100%" }}>
+                    <div className="search-box" style={{ flex: "0 0 auto", width: "100%" }}>
+                      <Search size={14} className="search-icon" />
+                      <input
+                        type="text"
+                        placeholder="Buscar por DNI, nombre o celular..."
+                        value={modalSearchTerm}
+                        onChange={(e) => setModalSearchTerm(e.target.value)}
+                        autoFocus
+                      />
+                    </div>
                   </div>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: "6px", maxHeight: "300px", overflowY: "auto" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                     {filteredCandidates.length === 0 ? (
                       <div style={{ textAlign: "center", padding: "24px 12px", color: "var(--text-muted, #64748b)", fontSize: "13px" }}>
                         No se encontraron personeros que coincidan.
@@ -958,12 +1108,28 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                         </td>
                         <td style={{ textAlign: "center", fontWeight: 700 }}>{numMesas}</td>
                         <td>
-                          {hasCoord ? (
-                            <div>
-                              <strong style={{ color: "var(--text, #0f172a)" }}>{loc.coordinatorName}</strong>
-                              {loc.coordinatorDni && (
-                                <div style={{ fontSize: "11px", color: "var(--text-muted, #64748b)" }}>
-                                  DNI: {loc.coordinatorDni}
+                          {loc.coordinatorName || loc.coordinator2Name ? (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                              {loc.coordinatorName && (
+                                <div>
+                                  <span style={{ fontSize: "10px", fontWeight: 700, color: "#16a34a", textTransform: "uppercase" }}>Coord. 1: </span>
+                                  <strong style={{ color: "var(--text, #0f172a)" }}>{loc.coordinatorName}</strong>
+                                  {loc.coordinatorDni && (
+                                    <span style={{ fontSize: "11px", color: "var(--text-muted, #64748b)", marginLeft: "4px" }}>
+                                      (DNI: {loc.coordinatorDni})
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                              {loc.coordinator2Name && (
+                                <div>
+                                  <span style={{ fontSize: "10px", fontWeight: 700, color: "#2563eb", textTransform: "uppercase" }}>Coord. 2: </span>
+                                  <strong style={{ color: "var(--text, #0f172a)" }}>{loc.coordinator2Name}</strong>
+                                  {loc.coordinator2Dni && (
+                                    <span style={{ fontSize: "11px", color: "var(--text-muted, #64748b)", marginLeft: "4px" }}>
+                                      (DNI: {loc.coordinator2Dni})
+                                    </span>
+                                  )}
                                 </div>
                               )}
                             </div>
@@ -974,16 +1140,33 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                           )}
                         </td>
                         <td>
-                          {hasCoord && loc.coordinatorPhone ? (
-                            <a
-                              href={`tel:${loc.coordinatorPhone}`}
-                              style={{ color: "var(--accent, #2563eb)", fontWeight: 700, textDecoration: "none" }}
-                            >
-                              {loc.coordinatorPhone}
-                            </a>
-                          ) : (
-                            <span style={{ color: "#94a3b8" }}>—</span>
-                          )}
+                          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                            {loc.coordinatorPhone && (
+                              <div>
+                                <span style={{ fontSize: "10px", color: "var(--text-muted, #64748b)" }}>C1: </span>
+                                <a
+                                  href={`tel:${loc.coordinatorPhone}`}
+                                  style={{ color: "var(--accent, #2563eb)", fontWeight: 700, textDecoration: "none" }}
+                                >
+                                  {loc.coordinatorPhone}
+                                </a>
+                              </div>
+                            )}
+                            {loc.coordinator2Phone && (
+                              <div>
+                                <span style={{ fontSize: "10px", color: "var(--text-muted, #64748b)" }}>C2: </span>
+                                <a
+                                  href={`tel:${loc.coordinator2Phone}`}
+                                  style={{ color: "var(--accent, #2563eb)", fontWeight: 700, textDecoration: "none" }}
+                                >
+                                  {loc.coordinator2Phone}
+                                </a>
+                              </div>
+                            )}
+                            {!loc.coordinatorPhone && !loc.coordinator2Phone && (
+                              <span style={{ color: "#94a3b8" }}>—</span>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     );

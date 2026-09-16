@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import { hashPassword } from "@/lib/auth/password";
 import { getCurrentUser, type CurrentUser } from "@/lib/auth/server";
 import { isDistrictId, type DistrictId } from "@/lib/districts";
 import { setSettingBool, SETTING_PERSONEROS_PUBLIC } from "@/lib/settings";
@@ -423,19 +424,20 @@ export async function updateMesa(
   }
 }
 
-/** Asignar o actualizar el Coordinador de un Colegio de Votación */
+/** Asignar o modificar el coordinador de un local (Coordinador 1 o Coordinador 2) */
 export async function updateLocalCoordinator(
   localId: string,
   coordinatorName: string,
   coordinatorPhone: string,
-  coordinatorDni?: string | null,
+  coordinatorDni?: string,
+  position: 1 | 2 = 1,
 ): Promise<ActionResult> {
   try {
     const me = await authorize("personeros.write");
+
     const name = coordinatorName.trim();
-    if (name.length < 2 || name.length > 120) {
-      return fail("El nombre del coordinador debe tener entre 2 y 120 caracteres.");
-    }
+    if (name.length < 2) return fail("El nombre del coordinador es obligatorio.");
+
     const phone = coordinatorPhone.trim().replace(/\D/g, "");
     if (phone.length < 6 || phone.length > 15) {
       return fail("El teléfono del coordinador debe tener entre 6 y 15 dígitos.");
@@ -446,49 +448,43 @@ export async function updateLocalCoordinator(
       return fail("El DNI del coordinador debe tener 8 dígitos numéricos.");
     }
 
-    let local;
-    try {
-      local = await prisma.electoralLocal.update({
-        where: { id: localId },
+    const updateData: any =
+      position === 2
+        ? {
+            coordinator2Name: name,
+            coordinator2Phone: phone,
+            coordinator2Dni: cleanDni || null,
+          }
+        : {
+            coordinatorName: name,
+            coordinatorPhone: phone,
+            coordinatorDni: cleanDni || null,
+          };
+
+    const local = await prisma.electoralLocal.update({
+      where: { id: localId },
+      data: updateData,
+    });
+
+    // Sincronizar personeros si es el Coordinador 1 (principal)
+    if (position === 1) {
+      await prisma.personero.updateMany({
+        where: { localName: local.name },
         data: {
           coordinatorName: name,
           coordinatorPhone: phone,
-          coordinatorDni: cleanDni || null,
-        } as any,
+          updatedById: me.id,
+        },
       });
-    } catch (err: any) {
-      if (
-        err?.message?.includes("coordinatorDni") ||
-        err?.name === "PrismaClientValidationError"
-      ) {
-        local = await prisma.electoralLocal.update({
-          where: { id: localId },
-          data: {
-            coordinatorName: name,
-            coordinatorPhone: phone,
-          },
-        });
-        await prisma.$executeRaw`UPDATE "ElectoralLocal" SET "coordinatorDni" = ${cleanDni || null} WHERE id = ${localId}`;
-      } else {
-        throw err;
-      }
     }
-
-    // Sincronizar automáticamente con todos los personeros asignados a este local
-    await prisma.personero.updateMany({
-      where: { localName: local.name },
-      data: {
-        coordinatorName: name,
-        coordinatorPhone: phone,
-        updatedById: me.id,
-      },
-    });
 
     // Si tiene DNI, registrar o vincular al coordinador en la tabla de Personeros
     if (cleanDni) {
       const existing = await prisma.personero.findFirst({
         where: { docNumber: cleanDni },
       });
+
+      const roleStr = position === 2 ? "coordinador_2" : "coordinador";
 
       if (existing) {
         await prisma.personero.update({
@@ -497,9 +493,9 @@ export async function updateLocalCoordinator(
             name,
             phone: phone || existing.phone,
             localName: local.name,
-            role: existing.role === "titular" || existing.role === "suplente" ? existing.role : "coordinador",
-            coordinatorName: name,
-            coordinatorPhone: phone,
+            role: existing.role === "titular" || existing.role === "suplente" ? existing.role : roleStr,
+            coordinatorName: position === 1 ? name : (local.coordinatorName || name),
+            coordinatorPhone: position === 1 ? phone : (local.coordinatorPhone || phone),
             updatedById: me.id,
           },
         });
@@ -514,12 +510,66 @@ export async function updateLocalCoordinator(
             localName: local.name,
             localAddress: local.address,
             mesa: "-",
-            role: "coordinador",
-            isSuplente: false,
-            coordinatorName: name,
-            coordinatorPhone: phone,
+            role: roleStr,
+            isSuplente: position === 2,
+            coordinatorName: position === 1 ? name : (local.coordinatorName || name),
+            coordinatorPhone: position === 1 ? phone : (local.coordinatorPhone || phone),
             active: true,
             createdById: me.id,
+          },
+        });
+      }
+
+      // Sincronizar o crear cuenta de Usuario para el Coordinador de Local
+      const coordEmail = `${cleanDni}@ahoranacion.pe`;
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: coordEmail },
+            { email: `${cleanDni}@personeros.ahoranacion.pe` },
+          ],
+        },
+      });
+
+      const coordRole = await prisma.role.findFirst({
+        where: { key: "coordinador_local" },
+      });
+
+      if (existingUser) {
+        await prisma.user.update({
+          where: { id: existingUser.id },
+          data: {
+            name,
+            scopeType: "local",
+            assignedLocalId: local.id,
+            assignedDistrict: local.district,
+            assignedProvince: local.province,
+            active: true,
+          },
+        });
+
+        if (coordRole) {
+          await prisma.userRole.upsert({
+            where: { userId_roleId: { userId: existingUser.id, roleId: coordRole.id } },
+            update: {},
+            create: { userId: existingUser.id, roleId: coordRole.id },
+          });
+        }
+      } else {
+        const passwordHash = await hashPassword(cleanDni);
+        await prisma.user.create({
+          data: {
+            email: coordEmail,
+            name,
+            passwordHash,
+            scopeType: "local",
+            assignedLocalId: local.id,
+            assignedDistrict: local.district,
+            assignedProvince: local.province,
+            active: true,
+            roles: coordRole
+              ? { create: [{ roleId: coordRole.id }] }
+              : undefined,
           },
         });
       }
@@ -534,54 +584,67 @@ export async function updateLocalCoordinator(
   }
 }
 
-/** Desasignar / eliminar coordinador de un local */
-export async function removeLocalCoordinator(localId: string): Promise<ActionResult> {
+/** Desasignar / eliminar coordinador de un local (Coordinador 1 o Coordinador 2) */
+export async function removeLocalCoordinator(localId: string, position: 1 | 2 = 1): Promise<ActionResult> {
   try {
     const me = await authorize("personeros.write");
-    let local;
-    try {
-      local = await prisma.electoralLocal.update({
-        where: { id: localId },
-        data: {
-          coordinatorName: null,
-          coordinatorPhone: null,
-          coordinatorDni: null,
-        } as any,
-      });
-    } catch (err: any) {
-      if (
-        err?.message?.includes("coordinatorDni") ||
-        err?.name === "PrismaClientValidationError"
-      ) {
-        local = await prisma.electoralLocal.update({
-          where: { id: localId },
-          data: {
+    const currentLocal = await prisma.electoralLocal.findUnique({ where: { id: localId } });
+    if (!currentLocal) return fail("Colegio no encontrado.");
+
+    const dniToUnlink = position === 2 ? currentLocal.coordinator2Dni : currentLocal.coordinatorDni;
+
+    const clearData: any =
+      position === 2
+        ? {
+            coordinator2Name: null,
+            coordinator2Phone: null,
+            coordinator2Dni: null,
+          }
+        : {
             coordinatorName: null,
             coordinatorPhone: null,
-          },
-        });
-        await prisma.$executeRaw`UPDATE "ElectoralLocal" SET "coordinatorDni" = NULL WHERE id = ${localId}`;
-      } else {
-        throw err;
-      }
+            coordinatorDni: null,
+          };
+
+    const local = await prisma.electoralLocal.update({
+      where: { id: localId },
+      data: clearData,
+    });
+
+    if (position === 1) {
+      // Restablecer coordinación central por defecto si se borró el coord 1
+      await prisma.personero.updateMany({
+        where: { localName: local.name },
+        data: {
+          coordinatorName: local.coordinator2Name || "Coordinación Central Ahora Nación",
+          coordinatorPhone: local.coordinator2Phone || "982136949",
+          updatedById: me.id,
+        },
+      });
     }
 
-    // Restablecer coordinación central por defecto a los personeros de ese colegio
-    await prisma.personero.updateMany({
-      where: { localName: local.name },
-      data: {
-        coordinatorName: "Coordinación Central Ahora Nación",
-        coordinatorPhone: "982136949",
-        updatedById: me.id,
-      },
-    });
+    // Desvincular el usuario específico de ese coordinador si tenía DNI
+    if (dniToUnlink) {
+      await prisma.user.updateMany({
+        where: {
+          OR: [
+            { email: `${dniToUnlink}@ahoranacion.pe` },
+            { email: `${dniToUnlink}@personeros.ahoranacion.pe` },
+          ],
+          assignedLocalId: localId,
+        },
+        data: {
+          assignedLocalId: null,
+        },
+      });
+    }
 
     refresh();
     return { ok: true };
   } catch (e) {
     if (e instanceof Denied) return fail("No tienes permiso para desasignar coordinadores.");
     console.error("removeLocalCoordinator", e);
-    return fail("Error al desasignar el coordinador del colegio.");
+    return fail("Error al desasignar el coordinador.");
   }
 }
 

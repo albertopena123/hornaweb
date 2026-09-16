@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { getPersonerosData } from "../loader";
 import { CoordinadoresView } from "./CoordinadoresView";
 
@@ -10,6 +11,10 @@ export const dynamic = "force-dynamic";
 
 export default async function CoordinadoresPage() {
   const data = await getPersonerosData();
+
+  if (!data.perms.canManageCoordinators) {
+    redirect("/personeros/mesas");
+  }
 
   return (
     <CoordinadoresView

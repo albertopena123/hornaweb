@@ -22,18 +22,21 @@ import {
   setUserActive,
   setUserPassword,
   setUserRoles,
+  setUserScope,
   updateUserProfile,
 } from "./actions";
+import { districtLabel } from "@/lib/districts";
 import { CreateUserModal } from "./CreateUserModal";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { UserDetailDrawer } from "./UserDetailDrawer";
 import { Toasts, type Toast } from "./Toasts";
-import type { PermFlags, RoleOption, UserRow } from "./types";
+import type { PermFlags, RoleOption, UserRow, LocalSummary } from "./types";
 import "./users.css";
 
 type Props = {
   rows: UserRow[];
   roles: RoleOption[];
+  locales?: LocalSummary[];
   perms: PermFlags;
   currentUserId: string;
 };
@@ -45,7 +48,9 @@ type StatusFilter = "all" | "active" | "suspended";
 function roleBadgeClass(key: string): string {
   if (key === "superadmin") return "badge badge--red";
   if (key === "admin") return "badge badge--amber";
-  if (key === "editor") return "badge badge--green";
+  if (key.startsWith("coordinador")) return "badge badge--accent";
+  if (key === "personero") return "badge badge--green";
+  if (key === "verificador") return "badge badge--blue";
   return "badge badge--neutral";
 }
 
@@ -59,7 +64,7 @@ function parseSort(raw: string | null): { key: SortKey; dir: SortDir } {
   };
 }
 
-export function UsersClient({ rows, roles, perms, currentUserId }: Props) {
+export function UsersClient({ rows, roles, locales = [], perms, currentUserId }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -466,6 +471,7 @@ export function UsersClient({ rows, roles, perms, currentUserId }: Props) {
                 onToggle={toggleSort}
               />
               <th>Roles</th>
+              <th>Ámbito</th>
               <th>Estado</th>
               <SortableTh
                 label="Último acceso"
@@ -563,6 +569,29 @@ export function UsersClient({ rows, roles, perms, currentUserId }: Props) {
                             {r.name}
                           </span>
                         ))
+                      )}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="inline-tags">
+                      {u.scopeType === "departamental" ? (
+                        <span className="badge badge--accent" title="Acceso total a Madre de Dios">
+                          🏛️ Regional
+                        </span>
+                      ) : u.scopeType === "provincial" ? (
+                        <span className="badge badge--neutral" title={`Provincia de ${u.assignedProvince}`}>
+                          🗺️ {u.assignedProvince || "Provincia"}
+                        </span>
+                      ) : u.scopeType === "distrital" ? (
+                        <span className="badge badge--neutral" title={`Distrito de ${u.assignedDistrict}`}>
+                          📍 {districtLabel(u.assignedDistrict as any) || u.assignedDistrict}
+                        </span>
+                      ) : u.scopeType === "local" ? (
+                        <span className="badge badge--neutral" style={{ maxWidth: 170, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={u.assignedLocalName || "Colegio"}>
+                          🏫 {u.assignedLocalName || "Colegio"}
+                        </span>
+                      ) : (
+                        <span className="badge badge--neutral">Regional</span>
                       )}
                     </div>
                   </td>
@@ -726,6 +755,7 @@ export function UsersClient({ rows, roles, perms, currentUserId }: Props) {
       {creating && (
         <CreateUserModal
           roles={roles}
+          locales={locales}
           onClose={() => setParams({ new: null })}
           onSubmit={async (input) => {
             const res = await runAction(() => createUser(input));
@@ -742,9 +772,19 @@ export function UsersClient({ rows, roles, perms, currentUserId }: Props) {
         <UserDetailDrawer
           user={detailUser}
           roles={roles}
+          locales={locales}
           perms={perms}
           isSelf={detailUser.id === currentUserId}
           onClose={() => setParams({ detail: null })}
+          onSetScope={async (scopeInput) => {
+            const res = await runAction(() =>
+              setUserScope(detailUser.id, scopeInput),
+            );
+            if (res.ok) pushToast("success", "Ámbito territorial actualizado.");
+            else pushToast("error", res.error);
+            afterMutation();
+            return res;
+          }}
           onUpdateProfile={async (input) => {
             const res = await runAction(() =>
               updateUserProfile(detailUser.id, input),

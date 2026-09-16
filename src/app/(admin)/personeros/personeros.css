@@ -366,6 +366,13 @@ html[data-theme="dark"] .kpi-icon--amber { background: rgba(217, 119, 6, 0.2); c
   color: var(--text, #0f172a);
   outline: none;
   cursor: pointer;
+  color-scheme: light dark;
+}
+
+.filter-select option,
+select option {
+  background-color: var(--surface, #ffffff);
+  color: var(--text, #0f172a);
 }
 
 .status-pills {
@@ -1996,15 +2003,28 @@ html[data-theme="dark"] .directorio-filter-bar {
 html[data-theme="dark"] .mesas-search-input,
 html[data-theme="dark"] .mesas-select,
 html[data-theme="dark"] .personeros__search,
-html[data-theme="dark"] .personeros__district {
-  background: var(--bg-soft);
-  border-color: var(--border);
-  color: var(--text);
+html[data-theme="dark"] .personeros__district,
+html[data-theme="dark"] .filter-select,
+html[data-theme="dark"] select {
+  background: var(--surface, #1e2024) !important;
+  border-color: var(--border, #2d3034) !important;
+  color: var(--text, #e8eaed) !important;
+  color-scheme: dark !important;
 }
+
+html[data-theme="dark"] .filter-select option,
+html[data-theme="dark"] select option,
+html[data-theme="dark"] .mesas-select option,
+html[data-theme="dark"] .personeros__district option {
+  background-color: #1e2024 !important;
+  color: #e8eaed !important;
+}
+
 html[data-theme="dark"] .mesas-search-input:focus,
 html[data-theme="dark"] .mesas-select:focus,
 html[data-theme="dark"] .personeros__search:focus,
-html[data-theme="dark"] .personeros__district:focus {
+html[data-theme="dark"] .personeros__district:focus,
+html[data-theme="dark"] .filter-select:focus {
   border-color: var(--accent);
 }
 

@@ -1,25 +1,32 @@
 "use client";
 
-import { useState, useEffect, useRef, type FormEvent } from "react";
+import { useState, useEffect, useRef, useMemo, type FormEvent } from "react";
 import { Icon } from "@/components/admin/Icon";
 import { useEscClose } from "@/lib/ui/useEscClose";
 import { RolePicker } from "./RolePicker";
-import type { ActionResult, RoleOption } from "./types";
+import { DISTRICTS } from "@/lib/districts";
+import type { ActionResult, RoleOption, ScopeType, LocalSummary } from "./types";
 
 type Props = {
   roles: RoleOption[];
+  locales?: LocalSummary[];
   onClose: () => void;
   onSubmit: (input: {
     name: string;
     email: string;
     password: string;
     roleIds: string[];
+    scopeType: ScopeType;
+    assignedProvince?: string | null;
+    assignedDistrict?: string | null;
+    assignedLocalId?: string | null;
   }) => Promise<ActionResult<{ id: string }>>;
 };
 
 const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const PROVINCES = ["Tambopata", "Manu", "Tahuamanu"] as const;
 
-export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
+export function CreateUserModal({ roles, locales = [], onClose, onSubmit }: Props) {
   const [dni, setDni] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -30,6 +37,13 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
   const [dniStatus, setDniStatus] = useState<"idle" | "loading" | "found" | "notfound" | "error">("idle");
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
   const [topError, setTopError] = useState<string | null>(null);
+
+  // Ámbito territorial
+  const [scopeType, setScopeType] = useState<ScopeType>("departamental");
+  const [assignedProvince, setAssignedProvince] = useState<string>("Tambopata");
+  const [assignedDistrict, setAssignedDistrict] = useState<string>("tambopata");
+  const [assignedLocalId, setAssignedLocalId] = useState<string>(locales[0]?.id || "");
+  const [localSearch, setLocalSearch] = useState<string>("");
 
   const autoFilledNameRef = useRef<string>("");
 
@@ -53,7 +67,6 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
         if (res.ok && json?.ok && typeof json.name === "string" && json.name) {
           const resolvedName = json.name;
           setDniStatus("found");
-          // Si el nombre no ha sido editado manualmente, auto-llenarlo
           setName((prev) => (!prev.trim() || prev === autoFilledNameRef.current ? resolvedName : prev));
           autoFilledNameRef.current = resolvedName;
 
@@ -80,10 +93,43 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
     };
   }, [dni]);
 
+  // Si se selecciona un rol de coordinación específico, sugerir el scope automáticamente
+  const handleRoleChange = (newRoleIds: string[]) => {
+    setRoleIds(newRoleIds);
+    const selectedRoles = roles.filter((r) => newRoleIds.includes(r.id));
+    if (selectedRoles.some((r) => r.key === "coordinador_local")) {
+      setScopeType("local");
+    } else if (selectedRoles.some((r) => r.key === "coordinador_distrital")) {
+      setScopeType("distrital");
+    } else if (selectedRoles.some((r) => r.key === "coordinador_provincial")) {
+      setScopeType("provincial");
+    }
+  };
+
+  // Filtrado de colegios para búsqueda rápida
+  const filteredLocales = useMemo(() => {
+    const q = localSearch.trim().toLowerCase();
+    let list = locales;
+    if (q) {
+      list = locales.filter(
+        (l) =>
+          l.name.toLowerCase().includes(q) ||
+          l.district.toLowerCase().includes(q) ||
+          l.province.toLowerCase().includes(q)
+      );
+    }
+    if (assignedLocalId && !list.some((l) => l.id === assignedLocalId)) {
+      const found = locales.find((l) => l.id === assignedLocalId);
+      if (found) list = [found, ...list];
+    }
+    return list.slice(0, 50);
+  }, [locales, localSearch, assignedLocalId]);
+
   const valid =
     name.trim().length >= 2 &&
     EMAIL_RE.test(email.trim().toLowerCase()) &&
-    password.length >= 6;
+    password.length >= 6 &&
+    (scopeType !== "local" || !!assignedLocalId);
 
   const onSubmitForm = async (e: FormEvent) => {
     e.preventDefault();
@@ -97,6 +143,10 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
       email: email.trim().toLowerCase(),
       password,
       roleIds,
+      scopeType,
+      assignedProvince: scopeType === "provincial" ? assignedProvince : null,
+      assignedDistrict: scopeType === "distrital" ? assignedDistrict : null,
+      assignedLocalId: scopeType === "local" ? assignedLocalId : null,
     });
 
     if (!res.ok) {
@@ -110,7 +160,7 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <form className="modal" onClick={(e) => e.stopPropagation()} onSubmit={onSubmitForm}>
+      <form className="modal" onClick={(e) => e.stopPropagation()} onSubmit={onSubmitForm} style={{ maxWidth: 540 }}>
         <header className="modal__head">
           <h2>Crear usuario</h2>
           <button
@@ -122,9 +172,9 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
             <Icon name="close" size={20} />
           </button>
         </header>
-        <div className="modal__body">
+        <div className="modal__body" style={{ maxHeight: "calc(85vh - 120px)", overflowY: "auto" }}>
           <p className="modal__intro">
-            Ingresa los datos del usuario. Puedes buscarlo por su DNI para autocompletar su nombre, y asignar cualquier correo electrónico personal o institucional.
+            Ingresa los datos del usuario. Puedes buscarlo por su DNI para autocompletar su nombre, y asignar su jurisdicción territorial.
           </p>
 
           {topError && (
@@ -251,15 +301,124 @@ export function CreateUserModal({ roles, onClose, onSubmit }: Props) {
             )}
           </label>
 
+          {/* ──────────────── SECCIÓN: ÁMBITO TERRITORIAL ──────────────── */}
+          <div style={{ marginTop: 12, padding: "12px 14px", background: "var(--bg-soft)", borderRadius: 10, border: "1px solid var(--border)" }}>
+            <div className="field__label" style={{ marginBottom: 6, fontWeight: 600 }}>
+              Ámbito Territorial / Responsabilidad
+            </div>
+            <p style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 10 }}>
+              Define qué colegios, mesas y personeros podrá ver y gestionar este usuario.
+            </p>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 6, marginBottom: 10 }}>
+              <button
+                type="button"
+                className={`usr-filter ${scopeType === "departamental" ? "is-on" : ""}`}
+                style={{ justifyContent: "center", height: 32, fontSize: 12 }}
+                onClick={() => setScopeType("departamental")}
+              >
+                🏛️ Departamental (Todo)
+              </button>
+              <button
+                type="button"
+                className={`usr-filter ${scopeType === "provincial" ? "is-on" : ""}`}
+                style={{ justifyContent: "center", height: 32, fontSize: 12 }}
+                onClick={() => setScopeType("provincial")}
+              >
+                🗺️ Provincial
+              </button>
+              <button
+                type="button"
+                className={`usr-filter ${scopeType === "distrital" ? "is-on" : ""}`}
+                style={{ justifyContent: "center", height: 32, fontSize: 12 }}
+                onClick={() => setScopeType("distrital")}
+              >
+                📍 Distrital
+              </button>
+              <button
+                type="button"
+                className={`usr-filter ${scopeType === "local" ? "is-on" : ""}`}
+                style={{ justifyContent: "center", height: 32, fontSize: 12 }}
+                onClick={() => setScopeType("local")}
+              >
+                🏫 Colegio / Local
+              </button>
+            </div>
+
+            {/* Sub-selector según el Scope */}
+            {scopeType === "provincial" && (
+              <label className="field" style={{ marginBottom: 0 }}>
+                <span className="field__label">Provincia asignada</span>
+                <select
+                  value={assignedProvince}
+                  onChange={(e) => setAssignedProvince(e.target.value)}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--surface)" }}
+                >
+                  {PROVINCES.map((p) => (
+                    <option key={p} value={p}>
+                      Provincia de {p}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
+            {scopeType === "distrital" && (
+              <label className="field" style={{ marginBottom: 0 }}>
+                <span className="field__label">Distrito asignado</span>
+                <select
+                  value={assignedDistrict}
+                  onChange={(e) => setAssignedDistrict(e.target.value)}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--surface)" }}
+                >
+                  {DISTRICTS.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.label} ({d.province})
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
+            {scopeType === "local" && (
+              <div>
+                <label className="field" style={{ marginBottom: 6 }}>
+                  <span className="field__label">Buscar colegio / local</span>
+                  <input
+                    type="text"
+                    placeholder="Filtrar por nombre o distrito…"
+                    value={localSearch}
+                    onChange={(e) => setLocalSearch(e.target.value)}
+                    style={{ fontSize: 12.5 }}
+                  />
+                </label>
+                <label className="field" style={{ marginBottom: 0 }}>
+                  <span className="field__label">Colegio seleccionado<span className="field__req">*</span></span>
+                  <select
+                    value={assignedLocalId}
+                    onChange={(e) => setAssignedLocalId(e.target.value)}
+                    style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--surface)", fontSize: 12.5 }}
+                  >
+                    {filteredLocales.map((l) => (
+                      <option key={l.id} value={l.id}>
+                        {l.name} · {l.district.toUpperCase()} ({l.totalMesas} mesas)
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            )}
+          </div>
+
           {/* Selector de Roles */}
-          <div style={{ marginTop: 8 }}>
+          <div style={{ marginTop: 12 }}>
             <div className="field__label" style={{ marginBottom: 8 }}>
               Roles asignados
             </div>
             <RolePicker
               roles={roles}
               selected={roleIds}
-              onChange={setRoleIds}
+              onChange={handleRoleChange}
               disabled={submitting}
             />
           </div>

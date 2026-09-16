@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth/server";
+import { getCurrentUser, getTerritoryFilter } from "@/lib/auth/server";
 
 class Denied extends Error {}
 
@@ -84,9 +84,11 @@ export async function observeActa(actaId: string, reason: string) {
 
 export async function getActasQueue() {
   try {
-    await authorizeVerifier();
+    const me = await authorizeVerifier();
+    const filter = getTerritoryFilter(me);
 
     const actas = await prisma.actaElectoral.findMany({
+      where: filter.isRestricted ? { local: filter.localFilter } : undefined,
       orderBy: { submittedAt: "desc" },
       include: {
         local: true,

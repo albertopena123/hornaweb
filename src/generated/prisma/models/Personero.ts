@@ -887,10 +887,6 @@ export type EnumPersoneroSourceFieldUpdateOperationsInput = {
   set?: $Enums.PersoneroSource
 }
 
-export type NullableEnumDistrictFieldUpdateOperationsInput = {
-  set?: $Enums.District | null
-}
-
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }

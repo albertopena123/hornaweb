@@ -111,6 +111,23 @@ a:hover {
   text-decoration: underline;
 }
 
+select {
+  color-scheme: light dark;
+}
+select option {
+  background-color: var(--surface, #ffffff);
+  color: var(--text, #0f172a);
+}
+html[data-theme="dark"] select {
+  color-scheme: dark !important;
+  background-color: var(--surface, #1e2024);
+  color: var(--text, #e8eaed);
+}
+html[data-theme="dark"] select option {
+  background-color: #1e2024 !important;
+  color: #e8eaed !important;
+}
+
 /* ─────────── Shell ─────────── */
 html,
 body {

@@ -101,7 +101,11 @@ export const UserScalarFieldEnum = {
   active: 'active',
   lastLoginAt: 'lastLoginAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  scopeType: 'scopeType',
+  assignedProvince: 'assignedProvince',
+  assignedDistrict: 'assignedDistrict',
+  assignedLocalId: 'assignedLocalId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -248,6 +252,9 @@ export const ElectoralLocalScalarFieldEnum = {
   coordinatorName: 'coordinatorName',
   coordinatorPhone: 'coordinatorPhone',
   coordinatorDni: 'coordinatorDni',
+  coordinator2Name: 'coordinator2Name',
+  coordinator2Phone: 'coordinator2Phone',
+  coordinator2Dni: 'coordinator2Dni',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

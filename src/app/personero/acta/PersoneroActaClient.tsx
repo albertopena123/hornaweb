@@ -20,6 +20,11 @@ import {
   AlertTriangle,
   RotateCw,
   Landmark,
+  ZoomIn,
+  ZoomOut,
+  Maximize2,
+  Minimize2,
+  Move,
 } from "lucide-react";
 import "./personero-acta.css";
 import { submitActa } from "./actions";
@@ -91,6 +96,119 @@ export function PersoneroActaClient({
   const [iaExtracted, setIaExtracted] = useState(false);
   const [iaError, setIaError] = useState<string | null>(null);
 
+  // Controles de inspección de imagen (Zoom, Rotación, Pan y Pantalla Completa)
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [rotation, setRotation] = useState(0);
+  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const photoViewportRef = useRef<HTMLDivElement>(null);
+  const lightboxRef = useRef<HTMLDivElement>(null);
+
+  const resetZoom = () => {
+    setZoomLevel(1);
+    setRotation(0);
+    setPanPosition({ x: 0, y: 0 });
+  };
+
+  // Manejadores de arrastre con mouse (Pan)
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setDragStart({
+      x: e.clientX - panPosition.x,
+      y: e.clientY - panPosition.y,
+    });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    setPanPosition({
+      x: e.clientX - dragStart.x,
+      y: e.clientY - dragStart.y,
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // Manejadores de arrastre táctil (Celulares / Tablets)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      setIsDragging(true);
+      setDragStart({
+        x: e.touches[0].clientX - panPosition.x,
+        y: e.touches[0].clientY - panPosition.y,
+      });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    setPanPosition({
+      x: e.touches[0].clientX - dragStart.x,
+      y: e.touches[0].clientY - dragStart.y,
+    });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  // Doble click para alternar entre 100% y 250%
+  const handleDoubleClick = () => {
+    if (zoomLevel > 1.2) {
+      resetZoom();
+    } else {
+      setZoomLevel(2.5);
+    }
+  };
+
+  // Zoom con rueda del mouse en el viewport principal (PC)
+  useEffect(() => {
+    const el = photoViewportRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.2 : -0.2;
+      setZoomLevel((prev) => {
+        const next = Math.round((prev + delta) * 10) / 10;
+        return Math.min(Math.max(next, 0.6), 5.0);
+      });
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [photoUrl]);
+
+  // Zoom con rueda del mouse en el visor de pantalla completa (PC)
+  useEffect(() => {
+    const el = lightboxRef.current;
+    if (!el || !isFullscreen) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.25 : -0.25;
+      setZoomLevel((prev) => {
+        const next = Math.round((prev + delta) * 10) / 10;
+        return Math.min(Math.max(next, 0.6), 6.0);
+      });
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [isFullscreen]);
+
+  // Cerrar lightbox con tecla ESC
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullscreen]);
+
   // Candidatos filtrados según la elección y provincia
   const activeCandidates = useMemo(() => {
     if (electionType === "gobernador") {
@@ -137,6 +255,7 @@ export function PersoneroActaClient({
     setIaExtracted(false);
     setIaError(null);
     setErrorMessage(null);
+    resetZoom();
   }, [electionType, currentActa, activeCandidates]);
 
   const [submitting, setSubmitting] = useState(false);
@@ -166,6 +285,7 @@ export function PersoneroActaClient({
       setPhotoUrl(base64);
       setIaExtracted(false);
       setIaError(null);
+      resetZoom();
     };
     reader.readAsDataURL(file);
   }
@@ -198,42 +318,42 @@ export function PersoneroActaClient({
       }
 
       const extracted = data.data;
-      if (extracted.votes) {
-        setVotes(extracted.votes);
+      if (extracted.votos && typeof extracted.votos === "object") {
+        setVotes((prev) => ({
+          ...prev,
+          ...extracted.votos,
+        }));
       }
-      setVotosBlancos(extracted.votosBlancos || 0);
-      setVotosNulos(extracted.votosNulos || 0);
-      setVotosImpugnados(extracted.votosImpugnados || 0);
-      setMode("ia");
+      if (typeof extracted.votosBlancos === "number") setVotosBlancos(extracted.votosBlancos);
+      if (typeof extracted.votosNulos === "number") setVotosNulos(extracted.votosNulos);
+      if (typeof extracted.votosImpugnados === "number") setVotosImpugnados(extracted.votosImpugnados);
+
       setIaExtracted(true);
+      setMode("ia");
     } catch (err: any) {
-      setIaError(err.message || "Error al procesar con IA.");
+      setIaError(err.message || "Ocurrió un error al procesar la imagen con IA.");
     } finally {
       setIsExtractingIa(false);
     }
   }
 
-  // Enviar acta a validación
+  // Manejador de Envío Oficial
   async function handleSubmit() {
-    if (!mesaNum.trim()) {
-      setErrorMessage("Ingresa el número de mesa.");
+    if (!mesaNum || mesaNum.trim().length !== 6) {
+      setErrorMessage("El número de mesa debe tener 6 dígitos.");
       return;
     }
+
     if (!photoUrl) {
-      setErrorMessage("Debes adjuntar la fotografía del acta de escrutinio.");
+      setErrorMessage("Es obligatorio tomar o adjuntar la fotografía del acta de escrutinio.");
       return;
-    }
-    if (totalCalculado === 0) {
-      if (!confirm("El total de votos calculados es 0. ¿Estás seguro de enviar esta acta?")) {
-        return;
-      }
     }
 
     setSubmitting(true);
     setErrorMessage(null);
 
     const res = await submitActa({
-      mesaNumber: mesaNum,
+      mesaNumber: mesaNum.trim(),
       photoUrl,
       source: mode,
       electionType,
@@ -428,15 +548,91 @@ export function PersoneroActaClient({
 
             {photoUrl ? (
               <div className="acta-photo-preview-wrap">
-                <img src={photoUrl} alt="Foto del acta de escrutinio" className="acta-photo-img" />
-                <div className="acta-photo-overlay-actions">
-                  <button
-                    type="button"
-                    className="btn btn--sm btn--primary"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <RotateCw size={14} /> Cambiar fotografía
-                  </button>
+                {/* Barra de Herramientas de Zoom / Rotación / Pantalla Completa */}
+                <div className="acta-photo-toolbar">
+                  <div className="photo-toolbar-left">
+                    <span className="photo-toolbar-tag">Acta Original</span>
+                    <span className="photo-zoom-badge">{Math.round(zoomLevel * 100)}%</span>
+                  </div>
+                  <div className="photo-toolbar-actions">
+                    <button
+                      type="button"
+                      className="photo-btn-ctrl"
+                      onClick={() => setZoomLevel((z) => Math.min(Math.round((z + 0.3) * 10) / 10, 5.0))}
+                      title="Acercar (Zoom In)"
+                    >
+                      <ZoomIn size={14} />
+                    </button>
+                    <button
+                      type="button"
+                      className="photo-btn-ctrl"
+                      onClick={() => setZoomLevel((z) => Math.max(Math.round((z - 0.3) * 10) / 10, 0.6))}
+                      title="Alejar (Zoom Out)"
+                    >
+                      <ZoomOut size={14} />
+                    </button>
+                    <button
+                      type="button"
+                      className="photo-btn-ctrl"
+                      onClick={() => setRotation((r) => (r + 90) % 360)}
+                      title="Rotar 90°"
+                    >
+                      <RotateCw size={14} />
+                    </button>
+                    <button
+                      type="button"
+                      className="photo-btn-ctrl photo-btn-ctrl--reset"
+                      onClick={resetZoom}
+                      title="Restablecer tamaño (100%)"
+                    >
+                      100%
+                    </button>
+                    <button
+                      type="button"
+                      className="photo-btn-ctrl photo-btn-ctrl--expand"
+                      onClick={() => setIsFullscreen(true)}
+                      title="Pantalla Completa / Visor Gigante"
+                    >
+                      <Maximize2 size={14} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Lienzo interactivo para arrastrar y hacer zoom con rueda / touch */}
+                <div
+                  ref={photoViewportRef}
+                  className={`acta-photo-viewport ${isDragging ? "is-dragging" : ""} ${zoomLevel > 1 ? "can-drag" : ""}`}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                  onDoubleClick={handleDoubleClick}
+                >
+                  <img
+                    src={photoUrl}
+                    alt="Foto del acta de escrutinio"
+                    className="acta-photo-img"
+                    style={{
+                      transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomLevel}) rotate(${rotation}deg)`,
+                      transition: isDragging ? "none" : "transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1)",
+                    }}
+                    draggable={false}
+                  />
+                  <div className="acta-photo-floating-hints">
+                    <span className="photo-hint-pill">
+                      <Move size={11} /> Rueda o doble clic para zoom · Arrastra para mover
+                    </span>
+                    <button
+                      type="button"
+                      className="btn-change-photo"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <RotateCw size={13} /> Cambiar foto
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -555,8 +751,8 @@ export function PersoneroActaClient({
                           <div className="party-logo-placeholder">{cand.party.slice(0, 2)}</div>
                         )}
                         <div className="party-names">
-                          <strong className="party-title">{cand.party}</strong>
-                          <span className="candidate-name">{cand.name}</span>
+                          <strong className="party-title" title={cand.party}>{cand.party}</strong>
+                          <span className="candidate-name" title={cand.name}>{cand.name}</span>
                         </div>
                       </div>
 
@@ -585,42 +781,48 @@ export function PersoneroActaClient({
                   <div className="party-names">
                     <strong>Votos en Blanco</strong>
                   </div>
-                  <input
-                    type="number"
-                    min="0"
-                    className="vote-number-input"
-                    value={votosBlancos === 0 ? "" : votosBlancos}
-                    placeholder="0"
-                    onChange={(e) => setVotosBlancos(Math.max(0, parseInt(e.target.value, 10) || 0))}
-                  />
+                  <div className="vote-row__input-wrap">
+                    <input
+                      type="number"
+                      min="0"
+                      className="vote-number-input"
+                      value={votosBlancos === 0 ? "" : votosBlancos}
+                      placeholder="0"
+                      onChange={(e) => setVotosBlancos(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                    />
+                  </div>
                 </div>
 
                 <div className="acta-vote-row acta-vote-row--special">
                   <div className="party-names">
                     <strong>Votos Nulos</strong>
                   </div>
-                  <input
-                    type="number"
-                    min="0"
-                    className="vote-number-input"
-                    value={votosNulos === 0 ? "" : votosNulos}
-                    placeholder="0"
-                    onChange={(e) => setVotosNulos(Math.max(0, parseInt(e.target.value, 10) || 0))}
-                  />
+                  <div className="vote-row__input-wrap">
+                    <input
+                      type="number"
+                      min="0"
+                      className="vote-number-input"
+                      value={votosNulos === 0 ? "" : votosNulos}
+                      placeholder="0"
+                      onChange={(e) => setVotosNulos(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                    />
+                  </div>
                 </div>
 
                 <div className="acta-vote-row acta-vote-row--special">
                   <div className="party-names">
                     <strong>Votos Impugnados</strong>
                   </div>
-                  <input
-                    type="number"
-                    min="0"
-                    className="vote-number-input"
-                    value={votosImpugnados === 0 ? "" : votosImpugnados}
-                    placeholder="0"
-                    onChange={(e) => setVotosImpugnados(Math.max(0, parseInt(e.target.value, 10) || 0))}
-                  />
+                  <div className="vote-row__input-wrap">
+                    <input
+                      type="number"
+                      min="0"
+                      className="vote-number-input"
+                      value={votosImpugnados === 0 ? "" : votosImpugnados}
+                      placeholder="0"
+                      onChange={(e) => setVotosImpugnados(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -655,6 +857,105 @@ export function PersoneroActaClient({
           </section>
         </div>
       </div>
+
+      {/* ========================================================= */}
+      {/* MODAL / LIGHTBOX DE PANTALLA COMPLETA (MODO GIGANTE PC)  */}
+      {/* ========================================================= */}
+      {isFullscreen && photoUrl && (
+        <div className="acta-lightbox" onClick={() => setIsFullscreen(false)}>
+          <div className="acta-lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <div className="acta-lightbox-toolbar">
+              <div className="lightbox-info">
+                <span className="lightbox-badge">Mesa N° {mesaNum || "______"}</span>
+                <span className="lightbox-title">
+                  Acta de {electionType === "gobernador" ? "Gobernador Regional" : `Alcaldía (${selectedProvince})`}
+                </span>
+              </div>
+
+              <div className="lightbox-actions">
+                <button
+                  type="button"
+                  className="btn-lightbox-ctrl"
+                  onClick={() => setZoomLevel((z) => Math.min(Math.round((z + 0.3) * 10) / 10, 6.0))}
+                  title="Acercar"
+                >
+                  <ZoomIn size={18} />
+                </button>
+                <button
+                  type="button"
+                  className="btn-lightbox-ctrl"
+                  onClick={() => setZoomLevel((z) => Math.max(Math.round((z - 0.3) * 10) / 10, 0.6))}
+                  title="Alejar"
+                >
+                  <ZoomOut size={18} />
+                </button>
+                <span className="lightbox-zoom-pill">{Math.round(zoomLevel * 100)}%</span>
+                <button
+                  type="button"
+                  className="btn-lightbox-ctrl"
+                  onClick={() => setRotation((r) => (r + 90) % 360)}
+                  title="Rotar 90°"
+                >
+                  <RotateCw size={18} />
+                </button>
+                <button
+                  type="button"
+                  className="btn-lightbox-ctrl"
+                  onClick={resetZoom}
+                  title="Restablecer (100%)"
+                >
+                  100%
+                </button>
+                <button
+                  type="button"
+                  className="btn-lightbox-ctrl btn-lightbox-ctrl--close"
+                  onClick={() => setIsFullscreen(false)}
+                  title="Salir (ESC)"
+                >
+                  <Minimize2 size={18} /> Cerrar (ESC)
+                </button>
+              </div>
+            </div>
+
+            <div
+              ref={lightboxRef}
+              className={`acta-lightbox-canvas ${isDragging ? "is-dragging" : ""}`}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onDoubleClick={handleDoubleClick}
+            >
+              <img
+                src={photoUrl}
+                alt="Foto del acta gigante"
+                className="acta-lightbox-img"
+                style={{
+                  transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomLevel}) rotate(${rotation}deg)`,
+                  transition: isDragging ? "none" : "transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1)",
+                }}
+                draggable={false}
+              />
+            </div>
+
+            <div className="acta-lightbox-footer">
+              <span>
+                💡 Usa la <strong>rueda del ratón</strong> o <strong>doble clic</strong> para acercar · <strong>Arrastra libremente</strong> para cotejar los números · Presiona <strong>ESC</strong> para volver a llenar votos.
+              </span>
+              <button
+                type="button"
+                className="btn btn--sm btn--primary"
+                onClick={() => setIsFullscreen(false)}
+              >
+                Volver al Formulario
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

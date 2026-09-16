@@ -2250,7 +2250,11 @@ export const UserScalarFieldEnum = {
   active: 'active',
   lastLoginAt: 'lastLoginAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  scopeType: 'scopeType',
+  assignedProvince: 'assignedProvince',
+  assignedDistrict: 'assignedDistrict',
+  assignedLocalId: 'assignedLocalId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2397,6 +2401,9 @@ export const ElectoralLocalScalarFieldEnum = {
   coordinatorName: 'coordinatorName',
   coordinatorPhone: 'coordinatorPhone',
   coordinatorDni: 'coordinatorDni',
+  coordinator2Name: 'coordinator2Name',
+  coordinator2Phone: 'coordinator2Phone',
+  coordinator2Dni: 'coordinator2Dni',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2729,6 +2736,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'District'
+ */
+export type EnumDistrictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'District'>
+    
+
+
+/**
+ * Reference to a field of type 'District[]'
+ */
+export type ListEnumDistrictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'District[]'>
+    
+
+
+/**
  * Reference to a field of type 'ClientType'
  */
 export type EnumClientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ClientType'>
@@ -2767,20 +2788,6 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
- * Reference to a field of type 'District'
- */
-export type EnumDistrictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'District'>
-    
-
-
-/**
- * Reference to a field of type 'District[]'
- */
-export type ListEnumDistrictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'District[]'>
     
 
 

@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Vote,
   Search,
@@ -45,6 +46,7 @@ type Props = {
   onCoordinatorUpdated?: (localId: string, name: string, phone: string) => void;
   onLocalUpdated?: (local: ElectoralLocalData) => void;
   perms?: PermFlags;
+  initialLocal?: string;
 };
 
 export function MesasView({
@@ -54,25 +56,30 @@ export function MesasView({
   onCoordinatorUpdated,
   onLocalUpdated,
   perms,
+  initialLocal,
 }: Props) {
+  const searchParams = useSearchParams();
+  const urlLocal = initialLocal || searchParams?.get("local") || searchParams?.get("q") || "";
+
   const [localItems, setLocalItems] = useState<ElectoralLocalData[]>(locales);
   useEffect(() => {
     setLocalItems(locales);
   }, [locales]);
 
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState(urlLocal);
+
+  useEffect(() => {
+    const fromUrl = searchParams?.get("local") || searchParams?.get("q") || initialLocal;
+    if (fromUrl !== null && fromUrl !== undefined) {
+      setQ(fromUrl);
+    }
+  }, [searchParams, initialLocal]);
+
   const [district, setDistrict] = useState("");
   const [province, setProvince] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "empty" | "without-suplente" | "full">("all");
   const [coordFilter, setCoordFilter] = useState<"all" | "with" | "without">("all");
   const [selectedMesa, setSelectedMesa] = useState<any | null>(null);
-
-  // Modal para editar coordinador del colegio
-  const [editingLocalCoord, setEditingLocalCoord] = useState<ElectoralLocalData | null>(null);
-  const [coordName, setCoordName] = useState("");
-  const [coordPhone, setCoordPhone] = useState("");
-  const [savingCoord, setSavingCoord] = useState(false);
-  const [coordError, setCoordError] = useState<string | null>(null);
 
   // Modal para editar colegio completo
   const [editingLocal, setEditingLocal] = useState<ElectoralLocalData | null>(null);
@@ -476,12 +483,6 @@ export function MesasView({
     setSavingNewPersonero(false);
   }
 
-  function openCoordModal(loc: ElectoralLocalData) {
-    setEditingLocalCoord(loc);
-    setCoordName(loc.coordinatorName || "");
-    setCoordPhone(loc.coordinatorPhone || "");
-    setCoordError(null);
-  }
 
   function openEditLocalModal(loc: ElectoralLocalData) {
     setEditingLocal(loc);
@@ -565,33 +566,6 @@ export function MesasView({
     setSavingLocal(false);
   }
 
-  async function handleSaveLocalCoord() {
-    if (!editingLocalCoord) return;
-    if (!coordName.trim()) {
-      setCoordError("Ingresa el nombre del coordinador.");
-      return;
-    }
-    setSavingCoord(true);
-    setCoordError(null);
-    const res = await updateLocalCoordinator(editingLocalCoord.id, coordName.trim(), coordPhone.trim());
-    if (res.ok) {
-      setLocalItems((prev) =>
-        prev.map((loc) =>
-          loc.id === editingLocalCoord.id
-            ? { ...loc, coordinatorName: coordName.trim(), coordinatorPhone: coordPhone.trim() }
-            : loc
-        )
-      );
-      onCoordinatorUpdated?.(editingLocalCoord.id, coordName.trim(), coordPhone.trim());
-      toastSuccess("Coordinador del colegio guardado con éxito");
-      setEditingLocalCoord(null);
-    } else {
-      const msg = res.error || "Error al guardar el coordinador.";
-      setCoordError(msg);
-      toastError(msg);
-    }
-    setSavingCoord(false);
-  }
 
   async function handleUnassignPersonero(personeroId: string, mesaNum: string, isSupl: boolean) {
     const roleLabel = isSupl ? "personero suplente" : "personero titular";
@@ -690,9 +664,17 @@ export function MesasView({
         const matchesProvince = province === "" || loc.province === province;
         if (!matchesDistrict || !matchesProvince) return null;
 
-        const hasCoord = !!loc.coordinatorName;
+        const hasCoord = !!loc.coordinatorName || !!loc.coordinator2Name;
         if (coordFilter === "with" && !hasCoord) return null;
         if (coordFilter === "without" && hasCoord) return null;
+
+        const locNameLower = loc.name.toLowerCase();
+        const locCodeLower = loc.code ? loc.code.toLowerCase() : "";
+        const matchesLocalName =
+          term !== "" &&
+          (locNameLower.includes(term) ||
+            term.includes(locNameLower) ||
+            (locCodeLower && (locCodeLower.includes(term) || term.includes(locCodeLower))));
 
         // Filtrar mesas dentro del colegio
         const matchingMesas = loc.mesas.filter((m) => {
@@ -708,10 +690,11 @@ export function MesasView({
           if (filterStatus === "full" && !isComplete) return false;
 
           if (term === "") return true;
+          if (matchesLocalName) return true; // Si el filtro es el colegio, muestra TODAS sus mesas
           return (
             m.number.includes(term) ||
-            loc.name.toLowerCase().includes(term) ||
             (loc.coordinatorName && loc.coordinatorName.toLowerCase().includes(term)) ||
+            (loc.coordinator2Name && loc.coordinator2Name.toLowerCase().includes(term)) ||
             (titular?.name && titular.name.toLowerCase().includes(term)) ||
             (suplente?.name && suplente.name.toLowerCase().includes(term))
           );
@@ -720,8 +703,9 @@ export function MesasView({
         if (
           term !== "" &&
           matchingMesas.length === 0 &&
-          !loc.name.toLowerCase().includes(term) &&
-          !(loc.coordinatorName && loc.coordinatorName.toLowerCase().includes(term))
+          !matchesLocalName &&
+          !(loc.coordinatorName && loc.coordinatorName.toLowerCase().includes(term)) &&
+          !(loc.coordinator2Name && loc.coordinator2Name.toLowerCase().includes(term))
         ) {
           return null;
         }
@@ -901,29 +885,31 @@ export function MesasView({
         </div>
 
         {/* Filtro de Coordinadores de Colegio */}
-        <div className="status-pills status-pills--coords" style={{ borderLeft: "1px solid var(--border, #cbd5e1)", paddingLeft: "8px" }}>
-          <button
-            type="button"
-            className={`status-pill ${coordFilter === "all" ? "status-pill--active" : ""}`}
-            onClick={() => setCoordFilter("all")}
-          >
-            Colegios ({colegioStats.total})
-          </button>
-          <button
-            type="button"
-            className={`status-pill status-pill--green ${coordFilter === "with" ? "status-pill--active" : ""}`}
-            onClick={() => setCoordFilter("with")}
-          >
-            Con Coord. ({colegioStats.withCoord})
-          </button>
-          <button
-            type="button"
-            className={`status-pill status-pill--yellow ${coordFilter === "without" ? "status-pill--active" : ""}`}
-            onClick={() => setCoordFilter("without")}
-          >
-            Sin Coord. ({colegioStats.withoutCoord})
-          </button>
-        </div>
+        {perms?.canManageCoordinators && !perms?.isLocalScope && (
+          <div className="status-pills status-pills--coords" style={{ borderLeft: "1px solid var(--border, #cbd5e1)", paddingLeft: "8px" }}>
+            <button
+              type="button"
+              className={`status-pill ${coordFilter === "all" ? "status-pill--active" : ""}`}
+              onClick={() => setCoordFilter("all")}
+            >
+              Colegios ({colegioStats.total})
+            </button>
+            <button
+              type="button"
+              className={`status-pill status-pill--green ${coordFilter === "with" ? "status-pill--active" : ""}`}
+              onClick={() => setCoordFilter("with")}
+            >
+              Con Coord. ({colegioStats.withCoord})
+            </button>
+            <button
+              type="button"
+              className={`status-pill status-pill--yellow ${coordFilter === "without" ? "status-pill--active" : ""}`}
+              onClick={() => setCoordFilter("without")}
+            >
+              Sin Coord. ({colegioStats.withoutCoord})
+            </button>
+          </div>
+        )}
 
         {hasActiveFilters && (
           <button
@@ -1011,7 +997,7 @@ export function MesasView({
                   </div>
 
                   <div className="local-card__head-actions">
-                    {perms?.canWriteLocales !== false && (
+                    {perms?.canWriteLocales !== false && perms?.canManageCoordinators && (
                       <button
                         type="button"
                         className="btn btn--xs btn--outline local-card__edit-btn"
@@ -1086,48 +1072,69 @@ export function MesasView({
                 </div>
 
                 {/* Fila del Coordinador del Colegio */}
-                <div className={`local-card__coord-bar ${!loc.coordinatorName ? "local-card__coord-bar--missing" : ""}`}>
-                  <div className="local-card__coord-info">
-                    <div className={`coord-avatar ${loc.coordinatorName ? "coord-avatar--active" : "coord-avatar--empty"}`}>
+                <div className={`local-card__coord-bar ${!loc.coordinatorName && !loc.coordinator2Name ? "local-card__coord-bar--missing" : ""}`}>
+                  <div className="local-card__coord-info" style={{ flexWrap: "wrap", gap: "10px" }}>
+                    <div className={`coord-avatar ${loc.coordinatorName || loc.coordinator2Name ? "coord-avatar--active" : "coord-avatar--empty"}`}>
                       <UserCheck size={13} />
                     </div>
-                    <div className="coord-details">
-                      {loc.coordinatorName ? (
+                    <div className="coord-details" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                      {loc.coordinatorName || loc.coordinator2Name ? (
                         <>
-                          <div className="coord-label">Coordinador del Colegio</div>
-                          <div className="coord-name-wrap">
-                            <strong className="coord-name">{loc.coordinatorName}</strong>
-                            {loc.coordinatorPhone && (
-                              <a
-                                href={`https://wa.me/51${loc.coordinatorPhone.replace(/\D/g, "")}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="coord-wa-btn"
-                                title={`Chatear por WhatsApp con ${loc.coordinatorName}`}
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <MessageCircle size={11} /> WhatsApp ({loc.coordinatorPhone})
-                              </a>
-                            )}
-                          </div>
+                          {loc.coordinatorName && (
+                            <div className="coord-name-wrap" style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                              <span style={{ fontSize: "10px", fontWeight: 700, color: "#16a34a", textTransform: "uppercase" }}>Coord. 1:</span>
+                              <strong className="coord-name">{loc.coordinatorName}</strong>
+                              {loc.coordinatorPhone && (
+                                <a
+                                  href={`https://wa.me/51${loc.coordinatorPhone.replace(/\D/g, "")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="coord-wa-btn"
+                                  title={`Chatear por WhatsApp con ${loc.coordinatorName}`}
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <MessageCircle size={11} /> WhatsApp ({loc.coordinatorPhone})
+                                </a>
+                              )}
+                            </div>
+                          )}
+                          {loc.coordinator2Name && (
+                            <div className="coord-name-wrap" style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                              <span style={{ fontSize: "10px", fontWeight: 700, color: "#2563eb", textTransform: "uppercase" }}>Coord. 2:</span>
+                              <strong className="coord-name">{loc.coordinator2Name}</strong>
+                              {loc.coordinator2Phone && (
+                                <a
+                                  href={`https://wa.me/51${loc.coordinator2Phone.replace(/\D/g, "")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="coord-wa-btn"
+                                  title={`Chatear por WhatsApp con ${loc.coordinator2Name}`}
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <MessageCircle size={11} /> WhatsApp ({loc.coordinator2Phone})
+                                </a>
+                              )}
+                            </div>
+                          )}
                         </>
                       ) : (
                         <div className="coord-missing-text">
-                          <AlertCircle size={12} /> Sin coordinador de centro asignado
+                          <AlertCircle size={12} /> Sin coordinadores de centro asignados
                         </div>
                       )}
                     </div>
                   </div>
 
-                  {perms?.canWriteLocales !== false && (
-                    <button
-                      type="button"
-                      className={`btn btn--xs ${loc.coordinatorName ? "btn--outline" : "btn--primary"} coord-action-btn`}
-                      onClick={() => openCoordModal(loc)}
-                      title="Asignar o modificar el coordinador de este colegio"
+                  {perms?.canManageCoordinators && (
+                    <a
+                      href="/personeros/coordinadores"
+                      className="linkbtn"
+                      style={{ fontSize: 11.5, color: "var(--text-muted)", textDecoration: "none", flexShrink: 0 }}
+                      onClick={(e) => e.stopPropagation()}
+                      title="Gestionar en el módulo de Coordinadores"
                     >
-                      {loc.coordinatorName ? "Editar Coord." : "+ Asignar Coord."}
-                    </button>
+                      Coordinadores →
+                    </a>
                   )}
                 </div>
 
@@ -1695,85 +1702,7 @@ export function MesasView({
         </div>
       )}
 
-      {/* Modal para Asignar / Editar Coordinador del Colegio */}
-      {editingLocalCoord && (
-        <div className="modal-backdrop" onClick={() => setEditingLocalCoord(null)}>
-          <div className="modal" style={{ maxWidth: "460px" }} onClick={(e) => e.stopPropagation()}>
-            <header className="modal__head">
-              <div>
-                <span className="badge badge--blue">Coordinación de Colegio</span>
-                <h3 style={{ margin: "6px 0 0", fontSize: "17px", fontWeight: 800 }}>
-                  {editingLocalCoord.coordinatorName ? "Modificar Coordinador" : "Asignar Coordinador de Colegio"}
-                </h3>
-                <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#64748b" }}>
-                  {editingLocalCoord.name} ({editingLocalCoord.totalMesas} mesas)
-                </p>
-              </div>
-              <button type="button" className="btn-icon" onClick={() => setEditingLocalCoord(null)}>
-                ✕
-              </button>
-            </header>
 
-            <div className="modal__body" style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-              <p className="coord-modal-desc">
-                El coordinador es el responsable de supervisar este centro de votación. Su nombre y número de WhatsApp aparecerán directamente en la credencial digital de los personeros para que puedan comunicarse inmediatamente.
-              </p>
-
-              <div className="field">
-                <label className="field__label">
-                  Nombre Completo del Coordinador <span style={{ color: "#dc2626" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="input"
-                  placeholder="Ej. Juan Carlos Pérez Quispe"
-                  value={coordName}
-                  onChange={(e) => setCoordName(e.target.value)}
-                  autoFocus
-                />
-              </div>
-
-              <div className="field">
-                <label className="field__label">
-                  Celular / WhatsApp del Coordinador <span style={{ color: "#dc2626" }}>*</span>
-                </label>
-                <input
-                  type="tel"
-                  className="input"
-                  placeholder="Ej. 982136949"
-                  value={coordPhone}
-                  onChange={(e) => setCoordPhone(e.target.value)}
-                />
-              </div>
-
-              {coordError && (
-                <div style={{ background: "#fef2f2", border: "1px solid #fecaca", padding: "8px 12px", borderRadius: "6px", color: "#b91c1c", fontSize: "12px" }}>
-                  {coordError}
-                </div>
-              )}
-            </div>
-
-            <footer className="modal__foot">
-              <button
-                type="button"
-                className="btn btn--secondary"
-                onClick={() => setEditingLocalCoord(null)}
-                disabled={savingCoord}
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="btn btn--primary"
-                onClick={handleSaveLocalCoord}
-                disabled={savingCoord}
-              >
-                {savingCoord ? "Guardando..." : "Guardar Coordinador"}
-              </button>
-            </footer>
-          </div>
-        </div>
-      )}
 
       {/* Modal para Asignar Personero (Titular / Suplente) */}
       {assignModal && (

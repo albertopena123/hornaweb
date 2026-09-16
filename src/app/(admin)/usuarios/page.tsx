@@ -9,9 +9,10 @@ export const dynamic = "force-dynamic";
 export default async function Page() {
   const me = await requirePermission("users.read");
 
-  const [users, roles] = await Promise.all([
+  const [users, roles, locales] = await Promise.all([
     prisma.user.findMany({
       include: {
+        assignedLocal: { select: { id: true, name: true, district: true, province: true, totalMesas: true } },
         roles: { include: { role: true } },
         _count: { select: { sessions: true } },
       },
@@ -19,6 +20,10 @@ export default async function Page() {
     }),
     prisma.role.findMany({
       orderBy: [{ system: "desc" }, { name: "asc" }],
+    }),
+    prisma.electoralLocal.findMany({
+      select: { id: true, name: true, district: true, province: true, totalMesas: true },
+      orderBy: [{ province: "asc" }, { district: "asc" }, { name: "asc" }],
     }),
   ]);
 
@@ -34,6 +39,11 @@ export default async function Page() {
       key: r.role.key,
       name: r.role.name,
     })),
+    scopeType: (u.scopeType as any) || "departamental",
+    assignedProvince: u.assignedProvince,
+    assignedDistrict: u.assignedDistrict,
+    assignedLocalId: u.assignedLocalId,
+    assignedLocalName: u.assignedLocal?.name ?? null,
   }));
 
   const roleOptions: RoleOption[] = roles.map((r) => ({
@@ -54,6 +64,7 @@ export default async function Page() {
     <UsersClient
       rows={rows}
       roles={roleOptions}
+      locales={locales}
       perms={perms}
       currentUserId={me.id}
     />

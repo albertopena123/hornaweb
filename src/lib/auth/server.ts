@@ -12,6 +12,8 @@ import {
 } from "./cookie";
 import type { PermissionKey } from "./permissions";
 
+export type ScopeType = "departamental" | "provincial" | "distrital" | "local";
+
 export type CurrentUser = {
   id: string;
   email: string;
@@ -20,6 +22,17 @@ export type CurrentUser = {
   sessionId: string;
   roles: { id: string; key: string; name: string }[];
   permissions: Set<string>;
+  scopeType: ScopeType;
+  assignedProvince: string | null;
+  assignedDistrict: string | null;
+  assignedLocalId: string | null;
+  assignedLocal: {
+    id: string;
+    code: string;
+    name: string;
+    district: string;
+    province: string;
+  } | null;
 };
 
 export async function createSessionFor(
@@ -97,6 +110,9 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     include: {
       user: {
         include: {
+          assignedLocal: {
+            select: { id: true, code: true, name: true, district: true, province: true },
+          },
           roles: {
             include: {
               role: {
@@ -136,6 +152,65 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
       name: ur.role.name,
     })),
     permissions,
+    scopeType: (session.user.scopeType as ScopeType) || "departamental",
+    assignedProvince: session.user.assignedProvince,
+    assignedDistrict: session.user.assignedDistrict,
+    assignedLocalId: session.user.assignedLocalId,
+    assignedLocal: session.user.assignedLocal,
+  };
+}
+
+/**
+ * Retorna las condiciones de filtrado territorial según el ámbito del usuario.
+ */
+export function getTerritoryFilter(user: CurrentUser) {
+  // Superadmin o acceso departamental/regional ve todo sin restricciones
+  if (
+    user.roles.some((r) => r.key === "superadmin") ||
+    user.scopeType === "departamental"
+  ) {
+    return {
+      isRestricted: false,
+      scopeType: "departamental" as const,
+      localFilter: {},
+      personeroFilter: {},
+    };
+  }
+
+  if (user.scopeType === "local" && user.assignedLocalId) {
+    return {
+      isRestricted: true,
+      scopeType: "local" as const,
+      localFilter: { id: user.assignedLocalId },
+      personeroFilter: user.assignedLocal?.name
+        ? { localName: user.assignedLocal.name }
+        : {},
+    };
+  }
+
+  if (user.scopeType === "distrital" && user.assignedDistrict) {
+    return {
+      isRestricted: true,
+      scopeType: "distrital" as const,
+      localFilter: { district: user.assignedDistrict as any },
+      personeroFilter: { district: user.assignedDistrict as any },
+    };
+  }
+
+  if (user.scopeType === "provincial" && user.assignedProvince) {
+    return {
+      isRestricted: true,
+      scopeType: "provincial" as const,
+      localFilter: { province: { equals: user.assignedProvince, mode: "insensitive" as const } },
+      personeroFilter: {},
+    };
+  }
+
+  return {
+    isRestricted: false,
+    scopeType: "departamental" as const,
+    localFilter: {},
+    personeroFilter: {},
   };
 }
 
