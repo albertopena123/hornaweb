@@ -13,8 +13,16 @@ export type ExtractedActaData = {
 };
 
 /**
- * Extraer votos de la fotografía de un Acta de Escrutinio utilizando IA (Gemini Vision)
- * con fallback inteligente para entornos de demostración y pruebas.
+ * Extraer votos de la fotografía de un Acta de Escrutinio utilizando IA (Gemini Vision).
+ *
+ * Última red de seguridad de la cadena Claude API → Claude CLI → (este archivo).
+ * Si tampoco hay GEMINI_API_KEY, NO se inventan votos: se lanza un error para que
+ * el personero vea claramente que la IA no pudo leer el acta y la llene a mano.
+ * El modo de simulación (números al azar, útil solo para demos) sigue existiendo
+ * pero queda apagado por defecto — se activa explícitamente con
+ * ACTA_IA_SIMULATION_FALLBACK=true (pensado para desarrollo/demo, nunca producción,
+ * porque de lo contrario una acta real que falla a la IA se llenaría con cifras
+ * falsas indistinguibles de una lectura real).
  */
 export async function extractVotesFromActaImage(
   imageBase64OrUrl: string,
@@ -135,7 +143,13 @@ Responde ÚNICAMENTE en formato JSON con la siguiente estructura:
   }
 
   // 2. Modo Simulación Asistida con IA (Genera conteo plausible y balanceado con Ahora Nación destacando en Madre de Dios)
-  // Permite verificar el flujo al 100% de inmediato
+  // Solo para desarrollo/demo — nunca por defecto en producción (ver comentario de la función).
+  if (process.env.ACTA_IA_SIMULATION_FALLBACK !== "true") {
+    throw new Error(
+      "No se pudo leer el acta con IA (Claude y Gemini no están disponibles en este momento). Ingresa los votos manualmente o vuelve a intentar en unos minutos.",
+    );
+  }
+
   const votesMap: Record<string, number> = {};
   const extractedList: any[] = [];
   let totalVotes = 0;

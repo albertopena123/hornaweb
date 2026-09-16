@@ -54,20 +54,19 @@ export async function submitActa(input: SubmitActaInput) {
       });
     }
 
-    // Crear o actualizar el Acta Electoral para esta mesa y tipo de elección
-    const existing = await prisma.actaElectoral.findFirst({
-      where: { mesaNumber: mesaNum, electionType },
-    });
+    // Crear o actualizar el Acta Electoral para esta mesa y tipo de elección, y
+    // reemplazar sus votos, todo en una sola transacción: el upsert usa la
+    // constraint única (mesaNumber, electionType) para que un doble envío
+    // (doble click, reintento de red) no choque contra un findFirst-luego-create
+    // ya obsoleto — Postgres serializa el upsert en vez de fallar con "ya existe".
+    const personeroUpdate = personero?.id ? { personeroId: personero.id } : {};
 
-    let actaId = existing?.id;
-
-    if (existing) {
-      const updated = await prisma.actaElectoral.update({
-        where: { id: existing.id },
-        data: {
+    const acta = await prisma.$transaction(async (tx) => {
+      const acta = await tx.actaElectoral.upsert({
+        where: { mesaNumber_electionType: { mesaNumber: mesaNum, electionType } },
+        update: {
           photoUrl: input.photoUrl,
           source: input.source,
-          electionType,
           status: "enviada",
           observationReason: null,
           votosBlancos: Math.max(0, input.votosBlancos || 0),
@@ -76,13 +75,9 @@ export async function submitActa(input: SubmitActaInput) {
           totalVotos: Math.max(0, input.totalVotos || 0),
           submittedAt: new Date(),
           localId: mesa.localId,
-          personeroId: personero?.id || existing.personeroId,
+          ...personeroUpdate,
         },
-      });
-      actaId = updated.id;
-    } else {
-      const created = await prisma.actaElectoral.create({
-        data: {
+        create: {
           mesaNumber: mesaNum,
           electionType,
           localId: mesa.localId,
@@ -97,23 +92,23 @@ export async function submitActa(input: SubmitActaInput) {
           submittedAt: new Date(),
         },
       });
-      actaId = created.id;
-    }
 
-    // Guardar votos por candidato
-    if (actaId) {
-      await prisma.actaVoto.deleteMany({ where: { actaId } });
+      await tx.actaVoto.deleteMany({ where: { actaId: acta.id } });
 
       const voteEntries = Object.entries(input.votes || {}).map(([candId, count]) => ({
-        actaId,
+        actaId: acta.id,
         candidateId: candId,
         votes: Math.max(0, count || 0),
       }));
 
       if (voteEntries.length > 0) {
-        await prisma.actaVoto.createMany({ data: voteEntries });
+        await tx.actaVoto.createMany({ data: voteEntries });
       }
-    }
+
+      return acta;
+    });
+
+    const actaId = acta.id;
 
     revalidatePath("/personero/acta");
     revalidatePath("/verificacion");
