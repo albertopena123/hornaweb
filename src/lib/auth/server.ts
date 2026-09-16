@@ -11,6 +11,7 @@ import {
   verifySession,
 } from "./cookie";
 import type { PermissionKey } from "./permissions";
+import { DISTRICTS } from "@/lib/districts";
 
 export type ScopeType = "departamental" | "provincial" | "distrital" | "local";
 
@@ -198,11 +199,15 @@ export function getTerritoryFilter(user: CurrentUser) {
   }
 
   if (user.scopeType === "provincial" && user.assignedProvince) {
+    const provinceDistricts = DISTRICTS.filter(
+      (d) => d.province.toLowerCase() === user.assignedProvince?.toLowerCase()
+    ).map((d) => d.id);
+
     return {
       isRestricted: true,
       scopeType: "provincial" as const,
       localFilter: { province: { equals: user.assignedProvince, mode: "insensitive" as const } },
-      personeroFilter: {},
+      personeroFilter: provinceDistricts.length > 0 ? { district: { in: provinceDistricts as any } } : {},
     };
   }
 
