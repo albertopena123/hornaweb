@@ -1,3 +1,57 @@
+/* ──────────────── Search input in filterbar ──────────────── */
+.usr-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 260px;
+  max-width: 380px;
+  flex: 1;
+}
+.usr-search svg {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.usr-search input {
+  width: 100%;
+  height: 36px;
+  border-radius: 18px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  padding: 0 32px 0 34px;
+  font-size: 13px;
+  color: var(--text);
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.usr-search input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.usr-search input::placeholder {
+  color: var(--text-faint);
+  font-size: 12.5px;
+}
+.usr-search__clear {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.usr-search__clear:hover {
+  color: var(--text);
+  background: var(--bg-soft);
+}
+
 /* ──────────────── Filter chips (status, role) ──────────────── */
 .usr-filter {
   background: transparent;

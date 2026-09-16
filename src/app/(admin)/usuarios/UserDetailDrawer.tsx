@@ -23,7 +23,12 @@ type Props = {
   perms: PermFlags;
   isSelf: boolean;
   onClose: () => void;
-  onUpdateProfile: (input: { name: string }) => Promise<ActionResult>;
+  onUpdateProfile: (input: {
+    name: string;
+    email?: string;
+    dni?: string | null;
+    phone?: string | null;
+  }) => Promise<ActionResult>;
   onToggleActive: (active: boolean) => Promise<ActionResult>;
   onSetRoles: (roleIds: string[]) => Promise<ActionResult>;
   onSetScope?: (input: {
@@ -58,9 +63,17 @@ export function UserDetailDrawer({
 
   // Profile
   const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [dni, setDni] = useState(user.dni || "");
+  const [phone, setPhone] = useState(user.phone || "");
   const [nameDirty, setNameDirty] = useState(false);
   const [profileError, setProfileError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
   const [profileSaving, setProfileSaving] = useState(false);
+
+  // DNI Lookup
+  const [dniStatus, setDniStatus] = useState<"idle" | "loading" | "found" | "notfound" | "error">("idle");
+  const [dniFoundName, setDniFoundName] = useState<string | null>(null);
 
   // Roles
   const [roleIds, setRoleIds] = useState<string[]>(user.roles.map((r) => r.id));
@@ -127,6 +140,9 @@ export function UserDetailDrawer({
   // a router.refresh() triggered by sibling mutations.
   useEffect(() => {
     setName(user.name);
+    setEmail(user.email);
+    setDni(user.dni || "");
+    setPhone(user.phone || "");
     setRoleIds(user.roles.map((r) => r.id));
     setScopeType(user.scopeType || "departamental");
     setAssignedProvince(user.assignedProvince || "Tambopata");
@@ -138,23 +154,65 @@ export function UserDetailDrawer({
     setPassword("");
     setShowPassword(false);
     setProfileError(null);
+    setFieldErrors({});
+    setDniStatus("idle");
+    setDniFoundName(null);
     setRolesError(null);
     setScopeError(null);
     setSecurityError(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.id, user.scopeType, user.assignedProvince, user.assignedDistrict, user.assignedLocalId]);
+  }, [user.id, user.name, user.email, user.dni, user.phone, user.scopeType, user.assignedProvince, user.assignedDistrict, user.assignedLocalId]);
 
   const canEdit = perms.canWrite;
   const canAssignRoles = perms.canAssignRoles;
   const cannotTouchSelf = isSelf;
 
+  const isProfileChanged =
+    name.trim() !== user.name.trim() ||
+    email.trim().toLowerCase() !== user.email.trim().toLowerCase() ||
+    (dni.trim() || null) !== (user.dni || null) ||
+    (phone.trim() || null) !== (user.phone || null);
+
+  const handleLookupDni = async () => {
+    const cleanDni = dni.trim().replace(/\D/g, "");
+    if (cleanDni.length !== 8) {
+      setDniStatus("error");
+      return;
+    }
+    setDniStatus("loading");
+    setDniFoundName(null);
+    try {
+      const res = await fetch(`/api/dni/${cleanDni}`);
+      const json = await res.json().catch(() => null);
+      if (res.ok && json?.ok && json.name) {
+        setDniStatus("found");
+        setDniFoundName(json.name);
+      } else if (res.status === 404) {
+        setDniStatus("notfound");
+      } else {
+        setDniStatus("error");
+      }
+    } catch {
+      setDniStatus("error");
+    }
+  };
+
   const saveProfile = async () => {
     if (profileSaving) return;
     setProfileSaving(true);
     setProfileError(null);
-    const res = await onUpdateProfile({ name: name.trim() });
+    setFieldErrors({});
+    const cleanDni = dni.trim() ? dni.trim().replace(/\D/g, "") : null;
+    const cleanPhone = phone.trim() ? phone.trim() : null;
+    const res = await onUpdateProfile({
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      dni: cleanDni,
+      phone: cleanPhone,
+    });
     if (!res.ok) {
       setProfileError(res.error);
+      if (res.fieldErrors) setFieldErrors(res.fieldErrors);
     } else {
       setNameDirty(false);
     }
@@ -258,7 +316,7 @@ export function UserDetailDrawer({
                 <Icon name="mail" size={14} />
                 {user.email}
               </div>
-              <div style={{ marginTop: 8, display: "flex", gap: 6 }}>
+              <div style={{ marginTop: 8, display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
                 <span
                   className={`badge ${
                     user.active ? "badge--green" : "badge--neutral"
@@ -266,6 +324,16 @@ export function UserDetailDrawer({
                 >
                   {user.active ? "Activo" : "Suspendido"}
                 </span>
+                {user.dni && (
+                  <span className="badge badge--neutral" style={{ fontWeight: 600 }}>
+                    🪪 {user.dni}
+                  </span>
+                )}
+                {user.phone && (
+                  <span className="badge badge--neutral">
+                    📞 {user.phone}
+                  </span>
+                )}
                 {isSelf && (
                   <span className="badge badge--accent">Tú</span>
                 )}
@@ -340,8 +408,88 @@ export function UserDetailDrawer({
                   <span>{profileError}</span>
                 </div>
               )}
+
+              {/* DNI */}
               <label className="field" style={{ margin: 0 }}>
-                <span className="field__label">Nombre completo</span>
+                <span className="field__label" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span>DNI (8 dígitos)</span>
+                  {dniStatus === "loading" && (
+                    <span style={{ fontSize: 12, color: "var(--accent)" }}>Consultando padrón…</span>
+                  )}
+                  {dniStatus === "notfound" && (
+                    <span style={{ fontSize: 12, color: "#b45309" }}>No encontrado en padrón</span>
+                  )}
+                  {dniStatus === "error" && (
+                    <span style={{ fontSize: 12, color: "#b91c1c" }}>Error al consultar</span>
+                  )}
+                </span>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <input
+                    type="text"
+                    maxLength={8}
+                    value={dni}
+                    onChange={(e) => {
+                      setDni(e.target.value.replace(/\D/g, "").slice(0, 8));
+                      setNameDirty(true);
+                      setDniStatus("idle");
+                      setDniFoundName(null);
+                    }}
+                    placeholder="8 dígitos numéricos"
+                    disabled={!canEdit || profileSaving}
+                    aria-invalid={!!fieldErrors.dni}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn--ghost"
+                    style={{ whiteSpace: "nowrap", flexShrink: 0, fontSize: 12 }}
+                    onClick={handleLookupDni}
+                    disabled={!canEdit || profileSaving || dni.trim().replace(/\D/g, "").length !== 8 || dniStatus === "loading"}
+                  >
+                    <Icon name="search" size={14} />
+                    <span>Consultar</span>
+                  </button>
+                </div>
+                {fieldErrors.dni && (
+                  <span style={{ color: "#b91c1c", fontSize: 12, marginTop: 4 }}>
+                    {fieldErrors.dni}
+                  </span>
+                )}
+                {dniStatus === "found" && dniFoundName && (
+                  <div style={{
+                    marginTop: 6,
+                    padding: "8px 12px",
+                    background: "#f0fdf4",
+                    border: "1px solid #bbf7d0",
+                    borderRadius: 8,
+                    fontSize: 12.5,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 8,
+                  }}>
+                    <span style={{ color: "#166534" }}>
+                      Padrón: <b>{dniFoundName}</b>
+                    </span>
+                    <button
+                      type="button"
+                      className="btn btn--secondary"
+                      style={{ fontSize: 11, padding: "2px 8px", height: 26 }}
+                      onClick={() => {
+                        setName(dniFoundName);
+                        setNameDirty(true);
+                      }}
+                    >
+                      Usar nombre
+                    </button>
+                  </div>
+                )}
+              </label>
+
+              {/* Nombre completo */}
+              <label className="field" style={{ margin: 0 }}>
+                <span className="field__label">
+                  Nombre completo<span className="field__req">*</span>
+                </span>
                 <input
                   type="text"
                   value={name}
@@ -350,17 +498,53 @@ export function UserDetailDrawer({
                     setNameDirty(true);
                   }}
                   disabled={!canEdit || profileSaving}
+                  aria-invalid={!!fieldErrors.name}
                 />
+                {fieldErrors.name && (
+                  <span style={{ color: "#b91c1c", fontSize: 12, marginTop: 4 }}>
+                    {fieldErrors.name}
+                  </span>
+                )}
               </label>
+
+              {/* Correo electrónico */}
               <label className="field" style={{ margin: 0 }}>
-                <span className="field__label">Correo</span>
+                <span className="field__label">
+                  Correo electrónico<span className="field__req">*</span>
+                </span>
                 <input
-                  type="text"
-                  value={user.email}
-                  disabled
-                  style={{ background: "var(--bg-soft)" }}
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setNameDirty(true);
+                  }}
+                  disabled={!canEdit || profileSaving}
+                  aria-invalid={!!fieldErrors.email}
+                />
+                {fieldErrors.email && (
+                  <span style={{ color: "#b91c1c", fontSize: 12, marginTop: 4 }}>
+                    {fieldErrors.email}
+                  </span>
+                )}
+              </label>
+
+              {/* Teléfono / WhatsApp */}
+              <label className="field" style={{ margin: 0 }}>
+                <span className="field__label">Teléfono / WhatsApp</span>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    setNameDirty(true);
+                  }}
+                  placeholder="p. ej. 987654321"
+                  disabled={!canEdit || profileSaving}
                 />
               </label>
+
+              {/* Switch cuenta activa */}
               <div className="usr-toggle">
                 <div>
                   <div className="usr-toggle__label">Cuenta activa</div>
@@ -378,6 +562,7 @@ export function UserDetailDrawer({
                   aria-label="Activar/Suspender"
                 />
               </div>
+
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button
                   className="btn btn--primary"
@@ -385,9 +570,10 @@ export function UserDetailDrawer({
                   disabled={
                     !canEdit ||
                     profileSaving ||
-                    !nameDirty ||
-                    name.trim() === user.name ||
-                    name.trim().length < 2
+                    !isProfileChanged ||
+                    name.trim().length < 2 ||
+                    !email.trim().includes("@") ||
+                    (dni.trim().length > 0 && dni.trim().replace(/\D/g, "").length !== 8)
                   }
                 >
                   {profileSaving ? "Guardando…" : "Guardar cambios"}

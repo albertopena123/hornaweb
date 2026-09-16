@@ -14,7 +14,8 @@ import {
   CheckCircle2,
   Trash2,
   Edit2,
-  Printer,
+  Download,
+  FileSpreadsheet,
   X,
   Vote,
   UserCheck,
@@ -29,6 +30,7 @@ import { updateLocalCoordinator, removeLocalCoordinator } from "../actions";
 import { confirmAction, toastSuccess, toastError } from "@/lib/alerts";
 import { DISTRICTS, districtLabel } from "@/lib/districts";
 import { getGoogleMapsUrl } from "@/lib/geo";
+import { downloadNominaPdf, downloadNominaExcel, type NominaLocal, type NominaStats } from "@/lib/nominaExport";
 
 type Props = {
   locales: ElectoralLocalData[];
@@ -63,6 +65,8 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
 
   // Modal de Nómina Imprimible
   const [showPrintModal, setShowPrintModal] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [downloadingExcel, setDownloadingExcel] = useState(false);
 
   // Consulta automática de DNI a RENIEC o personeros registrados
   useEffect(() => {
@@ -203,6 +207,33 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
       });
   }, [localItems, search, statusFilter, provinceFilter, districtFilter, sortBy]);
 
+  // Preparar datos para exportar (PDF / Excel)
+  function prepareNominaData(): { locales: NominaLocal[]; stats: NominaStats } {
+    const data: NominaLocal[] = localItems.map((loc) => ({
+      name: loc.name,
+      code: loc.code || null,
+      province: loc.province || "",
+      district: loc.district || "",
+      totalMesas: loc.totalMesas || 0,
+      mesasLength: loc.mesas?.length || 0,
+      coordinatorName: loc.coordinatorName || null,
+      coordinatorDni: loc.coordinatorDni || null,
+      coordinatorPhone: loc.coordinatorPhone || null,
+      coordinator2Name: loc.coordinator2Name || null,
+      coordinator2Dni: loc.coordinator2Dni || null,
+      coordinator2Phone: loc.coordinator2Phone || null,
+    }));
+
+    return {
+      locales: data,
+      stats: {
+        totalColegios,
+        conCoord,
+        sinCoord,
+      },
+    };
+  }
+
   // Abrir modal de asignación (position: 1 = Titular, 2 = Adjunto)
   function openAssignModal(loc: ElectoralLocalData, position: 1 | 2 = 1) {
     setModalLocal(loc);
@@ -333,7 +364,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
               onClick={() => setShowPrintModal(true)}
               style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12.5px" }}
             >
-              <Printer size={14} /> Imprimir / Exportar Nómina
+              <Download size={14} /> Exportar Nómina
             </button>
           </div>
         </div>
@@ -1045,14 +1076,50 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                   Madre de Dios · 51 Colegios Electorales
                 </p>
               </div>
-              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
                 <button
                   type="button"
-                  className="btn btn--primary btn--sm"
-                  onClick={() => window.print()}
-                  style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+                  className="btn btn--sm"
+                  disabled={downloadingPdf}
+                  onClick={async () => {
+                    setDownloadingPdf(true);
+                    try {
+                      const data = prepareNominaData();
+                      await downloadNominaPdf(data.locales, data.stats);
+                      toastSuccess("PDF descargado exitosamente.");
+                    } catch (e) {
+                      console.error(e);
+                      toastError("Error al generar el PDF.");
+                    } finally {
+                      setDownloadingPdf(false);
+                    }
+                  }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#dc2626", color: "#fff", border: "none" }}
                 >
-                  <Printer size={14} /> Imprimir Ahora
+                  {downloadingPdf ? <Loader2 size={14} className="spin" /> : <Download size={14} />}
+                  {downloadingPdf ? "Generando..." : "Descargar PDF"}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn--sm"
+                  disabled={downloadingExcel}
+                  onClick={async () => {
+                    setDownloadingExcel(true);
+                    try {
+                      const data = prepareNominaData();
+                      await downloadNominaExcel(data.locales, data.stats);
+                      toastSuccess("Excel descargado exitosamente.");
+                    } catch (e) {
+                      console.error(e);
+                      toastError("Error al generar el Excel.");
+                    } finally {
+                      setDownloadingExcel(false);
+                    }
+                  }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#16a34a", color: "#fff", border: "none" }}
+                >
+                  {downloadingExcel ? <Loader2 size={14} className="spin" /> : <FileSpreadsheet size={14} />}
+                  {downloadingExcel ? "Generando..." : "Descargar Excel"}
                 </button>
                 <button type="button" className="btn-icon" onClick={() => setShowPrintModal(false)}>
                   <X size={18} />
@@ -1183,14 +1250,52 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
               >
                 Cerrar
               </button>
-              <button
-                type="button"
-                className="btn btn--primary"
-                onClick={() => window.print()}
-                style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
-              >
-                <Printer size={14} /> Imprimir Nómina
-              </button>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button
+                  type="button"
+                  className="btn"
+                  disabled={downloadingPdf}
+                  onClick={async () => {
+                    setDownloadingPdf(true);
+                    try {
+                      const data = prepareNominaData();
+                      await downloadNominaPdf(data.locales, data.stats);
+                      toastSuccess("PDF descargado exitosamente.");
+                    } catch (e) {
+                      console.error(e);
+                      toastError("Error al generar el PDF.");
+                    } finally {
+                      setDownloadingPdf(false);
+                    }
+                  }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#dc2626", color: "#fff", border: "none", borderRadius: "8px", padding: "8px 16px", fontWeight: 700, cursor: "pointer" }}
+                >
+                  {downloadingPdf ? <Loader2 size={14} className="spin" /> : <Download size={14} />}
+                  {downloadingPdf ? "Generando..." : "Descargar PDF"}
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  disabled={downloadingExcel}
+                  onClick={async () => {
+                    setDownloadingExcel(true);
+                    try {
+                      const data = prepareNominaData();
+                      await downloadNominaExcel(data.locales, data.stats);
+                      toastSuccess("Excel descargado exitosamente.");
+                    } catch (e) {
+                      console.error(e);
+                      toastError("Error al generar el Excel.");
+                    } finally {
+                      setDownloadingExcel(false);
+                    }
+                  }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#16a34a", color: "#fff", border: "none", borderRadius: "8px", padding: "8px 16px", fontWeight: 700, cursor: "pointer" }}
+                >
+                  {downloadingExcel ? <Loader2 size={14} className="spin" /> : <FileSpreadsheet size={14} />}
+                  {downloadingExcel ? "Generando..." : "Descargar Excel"}
+                </button>
+              </div>
             </footer>
           </div>
         </div>

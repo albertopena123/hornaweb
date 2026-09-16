@@ -4,6 +4,8 @@ export type UserRow = {
   id: string;
   name: string;
   email: string;
+  dni: string | null;
+  phone: string | null;
   active: boolean;
   lastLoginAt: string | null;
   createdAt: string;

@@ -125,6 +125,8 @@ type CreateInput = {
   name: string;
   email: string;
   password: string;
+  dni?: string | null;
+  phone?: string | null;
   roleIds: string[];
   scopeType?: "departamental" | "provincial" | "distrital" | "local";
   assignedProvince?: string | null;
@@ -141,6 +143,8 @@ export async function createUser(
     const name = (input.name ?? "").trim();
     const email = (input.email ?? "").trim().toLowerCase();
     const password = input.password ?? "";
+    const dni = input.dni ? input.dni.trim() : null;
+    const phone = input.phone ? input.phone.trim() : null;
     const roleIds = dedupe(input.roleIds);
 
     const fieldErrors: Record<string, string> = {};
@@ -148,6 +152,9 @@ export async function createUser(
     else if (name.length > NAME_MAX)
       fieldErrors.name = `Máximo ${NAME_MAX} caracteres.`;
     if (!EMAIL_RE.test(email)) fieldErrors.email = "Correo no válido.";
+    if (dni && !/^\d{8}$/.test(dni)) {
+      fieldErrors.dni = "El DNI debe tener 8 dígitos numéricos.";
+    }
     if (password.length < PASSWORD_MIN)
       fieldErrors.password = `La contraseña debe tener al menos ${PASSWORD_MIN} caracteres.`;
     else if (password.length > PASSWORD_MAX)
@@ -207,6 +214,8 @@ export async function createUser(
           name,
           email,
           passwordHash,
+          dni,
+          phone,
           scopeType,
           assignedProvince,
           assignedDistrict: assignedDistrict as any,
@@ -218,6 +227,13 @@ export async function createUser(
       return ok({ id: created.id });
     } catch (e) {
       if (isP2002(e)) {
+        const target = (e as any)?.meta?.target;
+        const targetStr = Array.isArray(target) ? target.join(",") : String(target ?? "");
+        if (targetStr.includes("dni")) {
+          return fail("Ya existe un usuario con este DNI.", {
+            dni: "DNI en uso.",
+          });
+        }
         return fail("Ya existe un usuario con ese correo.", {
           email: "Correo en uso.",
         });
@@ -291,28 +307,82 @@ export async function setUserScope(
 
 export async function updateUserProfile(
   userId: string,
-  input: { name?: string },
+  input: {
+    name?: string;
+    email?: string;
+    dni?: string | null;
+    phone?: string | null;
+  },
 ): Promise<ActionResult> {
   try {
     await authorize("users.write");
 
-    const data: { name?: string } = {};
+    const data: {
+      name?: string;
+      email?: string;
+      dni?: string | null;
+      phone?: string | null;
+    } = {};
+    const fieldErrors: Record<string, string> = {};
+
     if (typeof input.name === "string") {
       const trimmed = input.name.trim();
-      if (trimmed.length < NAME_MIN)
-        return fail("Nombre demasiado corto.", {
-          name: `Mínimo ${NAME_MIN} caracteres.`,
-        });
-      if (trimmed.length > NAME_MAX)
-        return fail("Nombre demasiado largo.", {
-          name: `Máximo ${NAME_MAX} caracteres.`,
-        });
-      data.name = trimmed;
+      if (trimmed.length < NAME_MIN) {
+        fieldErrors.name = `Mínimo ${NAME_MIN} caracteres.`;
+      } else if (trimmed.length > NAME_MAX) {
+        fieldErrors.name = `Máximo ${NAME_MAX} caracteres.`;
+      } else {
+        data.name = trimmed;
+      }
+    }
+
+    if (typeof input.email === "string") {
+      const trimmed = input.email.trim().toLowerCase();
+      if (!EMAIL_RE.test(trimmed)) {
+        fieldErrors.email = "Correo no válido.";
+      } else {
+        data.email = trimmed;
+      }
+    }
+
+    if (input.dni !== undefined) {
+      const trimmed = input.dni ? input.dni.trim() : null;
+      if (trimmed && !/^\d{8}$/.test(trimmed)) {
+        fieldErrors.dni = "El DNI debe tener 8 dígitos numéricos.";
+      } else {
+        data.dni = trimmed || null;
+      }
+    }
+
+    if (input.phone !== undefined) {
+      const trimmed = input.phone ? input.phone.trim() : null;
+      data.phone = trimmed || null;
+    }
+
+    if (Object.keys(fieldErrors).length > 0) {
+      return fail("Revisa los datos ingresados.", fieldErrors);
     }
 
     if (Object.keys(data).length === 0) return ok();
 
-    await prisma.user.update({ where: { id: userId }, data });
+    try {
+      await prisma.user.update({ where: { id: userId }, data });
+    } catch (e) {
+      if (isP2002(e)) {
+        const target = (e as any)?.meta?.target;
+        const targetStr = Array.isArray(target) ? target.join(",") : String(target ?? "");
+        if (targetStr.includes("dni")) {
+          return fail("Ya existe otro usuario con este DNI.", {
+            dni: "DNI en uso.",
+          });
+        }
+        return fail("Ya existe un usuario con ese correo.", {
+          email: "Correo en uso.",
+        });
+      }
+      throw e;
+    }
+
     refresh();
     return ok();
   } catch (e) {

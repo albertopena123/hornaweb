@@ -71,7 +71,6 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
   const [isPending, startTransition] = useTransition();
 
   // URL state
-  const search = (params.get("q") ?? "").toLowerCase().trim();
   const statusFilter: StatusFilter =
     params.get("status") === "active"
       ? "active"
@@ -82,6 +81,13 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
   const { key: sortKey, dir: sortDir } = parseSort(params.get("sort"));
   const detailId = params.get("detail");
   const creating = params.get("new") === "1";
+
+  // Search state with URL sync
+  const [searchInput, setSearchInput] = useState(params.get("q") ?? "");
+
+  useEffect(() => {
+    setSearchInput(params.get("q") ?? "");
+  }, [params]);
 
   const setParams = useCallback(
     (updates: Record<string, string | null>) => {
@@ -97,6 +103,18 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
     },
     [params, pathname, router],
   );
+
+  // Debounced URL update for search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const currentQ = params.get("q") ?? "";
+      const trimmed = searchInput.trim();
+      if (currentQ !== trimmed) {
+        setParams({ q: trimmed || null });
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [searchInput, params, setParams]);
 
   // Hydration-safe: render absolute dates on first paint, swap to relative after mount.
   const [mounted, setMounted] = useState(false);
@@ -154,7 +172,7 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
   // Reset selection when filter set changes meaningfully
   useEffect(() => {
     setSelected(new Set());
-  }, [search, statusFilter, roleFilter]);
+  }, [searchInput, statusFilter, roleFilter]);
 
   // Computed
   const filtered = useMemo(() => {
@@ -163,12 +181,18 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
     if (statusFilter === "suspended") out = out.filter((u) => !u.active);
     if (roleFilter)
       out = out.filter((u) => u.roles.some((r) => r.id === roleFilter));
-    if (search) {
+    const q = searchInput.toLowerCase().trim();
+    if (q) {
       out = out.filter(
         (u) =>
-          u.name.toLowerCase().includes(search) ||
-          u.email.toLowerCase().includes(search) ||
-          u.roles.some((r) => r.name.toLowerCase().includes(search)),
+          u.name.toLowerCase().includes(q) ||
+          u.email.toLowerCase().includes(q) ||
+          (u.dni && u.dni.toLowerCase().includes(q)) ||
+          (u.phone && u.phone.toLowerCase().includes(q)) ||
+          u.roles.some((r) => r.name.toLowerCase().includes(q)) ||
+          (u.assignedProvince && u.assignedProvince.toLowerCase().includes(q)) ||
+          (u.assignedDistrict && u.assignedDistrict.toLowerCase().includes(q)) ||
+          (u.assignedLocalName && u.assignedLocalName.toLowerCase().includes(q)),
       );
     }
     return [...out].sort((a, b) => {
@@ -183,12 +207,12 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
       if (!bValue) return -1;
       return dir * (new Date(aValue).getTime() - new Date(bValue).getTime());
     });
-  }, [rows, search, statusFilter, roleFilter, sortKey, sortDir]);
+  }, [rows, searchInput, statusFilter, roleFilter, sortKey, sortDir]);
 
   const activeCount = rows.filter((u) => u.active).length;
   const suspendedCount = rows.length - activeCount;
   const hasFilters =
-    !!roleFilter || statusFilter !== "all" || search !== "";
+    !!roleFilter || statusFilter !== "all" || searchInput.trim() !== "";
 
   const toggleSort = (k: SortKey) => {
     if (sortKey === k) {
@@ -216,8 +240,10 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
     else setSelected(new Set(selectableFiltered.map((u) => u.id)));
   };
 
-  const clearFilters = () =>
+  const clearFilters = () => {
+    setSearchInput("");
     setParams({ status: null, role: null, q: null });
+  };
 
   const afterMutation = () => {
     startTransition(() => router.refresh());
@@ -283,6 +309,29 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
       </div>
 
       <div className="filterbar">
+        <div className="usr-search">
+          <Icon name="search" size={16} />
+          <input
+            type="text"
+            placeholder="Buscar por nombre, DNI, correo, teléfono o rol…"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+          {searchInput && (
+            <button
+              type="button"
+              className="usr-search__clear"
+              onClick={() => {
+                setSearchInput("");
+                setParams({ q: null });
+              }}
+              title="Limpiar búsqueda"
+            >
+              <Icon name="close" size={14} />
+            </button>
+          )}
+        </div>
+
         <button
           className={`usr-filter ${statusFilter === "all" ? "is-on" : ""}`}
           onClick={() => setParams({ status: null })}
@@ -556,6 +605,28 @@ export function UsersClient({ rows, roles, locales = [], perms, currentUserId }:
                         <span className="usr-row-name__sub" title={u.email}>
                           {u.email}
                         </span>
+                        {(u.dni || u.phone) && (
+                          <div style={{ display: "flex", gap: 6, marginTop: 4, flexWrap: "wrap", alignItems: "center" }}>
+                            {u.dni && (
+                              <span
+                                className="badge badge--neutral"
+                                style={{ fontSize: 11, padding: "1px 6px", fontWeight: 600, color: "var(--text)" }}
+                                title="Documento Nacional de Identidad"
+                              >
+                                🪪 {u.dni}
+                              </span>
+                            )}
+                            {u.phone && (
+                              <span
+                                className="badge badge--neutral"
+                                style={{ fontSize: 11, padding: "1px 6px", color: "var(--text-muted)" }}
+                                title="Teléfono / WhatsApp"
+                              >
+                                📞 {u.phone}
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </td>

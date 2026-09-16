@@ -31,6 +31,8 @@ export default async function Page() {
     id: u.id,
     name: u.name,
     email: u.email,
+    dni: u.dni ?? null,
+    phone: u.phone ?? null,
     active: u.active,
     lastLoginAt: u.lastLoginAt ? u.lastLoginAt.toISOString() : null,
     createdAt: u.createdAt.toISOString(),

@@ -15,6 +15,8 @@ type Props = {
     name: string;
     email: string;
     password: string;
+    dni?: string | null;
+    phone?: string | null;
     roleIds: string[];
     scopeType: ScopeType;
     assignedProvince?: string | null;
@@ -30,6 +32,7 @@ export function CreateUserModal({ roles, locales = [], onClose, onSubmit }: Prop
   const [dni, setDni] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [roleIds, setRoleIds] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -138,10 +141,15 @@ export function CreateUserModal({ roles, locales = [], onClose, onSubmit }: Prop
     setTopError(null);
     setFieldErrors({});
 
+    const cleanDni = dni.trim().replace(/\D/g, "");
+    const cleanPhone = phone.trim();
+
     const res = await onSubmit({
       name: name.trim(),
       email: email.trim().toLowerCase(),
       password,
+      dni: cleanDni.length === 8 ? cleanDni : null,
+      phone: cleanPhone ? cleanPhone : null,
       roleIds,
       scopeType,
       assignedProvince: scopeType === "provincial" ? assignedProvince : null,
@@ -262,6 +270,19 @@ export function CreateUserModal({ roles, locales = [], onClose, onSubmit }: Prop
                 {fieldErrors.email}
               </span>
             )}
+          </label>
+
+          {/* Campo Teléfono / Celular */}
+          <label className="field">
+            <span className="field__label">
+              Teléfono / WhatsApp (opcional)
+            </span>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="p. ej. 987654321"
+            />
           </label>
 
           {/* Campo Contraseña inicial */}
