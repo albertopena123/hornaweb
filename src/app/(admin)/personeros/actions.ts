@@ -520,19 +520,22 @@ export async function updateLocalCoordinator(
         });
       }
 
-      // Sincronizar o crear cuenta de Usuario para el Coordinador de Local
+      // Sincronizar o crear cuenta de Usuario para el Coordinador de Local (Titular o Adjunto)
       const coordEmail = `${cleanDni}@ahoranacion.pe`;
       const existingUser = await prisma.user.findFirst({
         where: {
           OR: [
+            { dni: cleanDni },
             { email: coordEmail },
             { email: `${cleanDni}@personeros.ahoranacion.pe` },
           ],
         },
       });
 
+      const roleKey = position === 2 ? "coordinador_local_2" : "coordinador_local_1";
+      const otherRoleKey = position === 2 ? "coordinador_local_1" : "coordinador_local_2";
       const coordRole = await prisma.role.findFirst({
-        where: { key: "coordinador_local" },
+        where: { key: roleKey },
       });
 
       if (existingUser) {
@@ -540,6 +543,8 @@ export async function updateLocalCoordinator(
           where: { id: existingUser.id },
           data: {
             name,
+            dni: cleanDni,
+            phone: phone || existingUser.phone,
             scopeType: "local",
             assignedLocalId: local.id,
             assignedDistrict: local.district,
@@ -549,6 +554,13 @@ export async function updateLocalCoordinator(
         });
 
         if (coordRole) {
+          // Remover el rol contrario si lo tenía
+          const otherRole = await prisma.role.findFirst({ where: { key: otherRoleKey } });
+          if (otherRole) {
+            await prisma.userRole.deleteMany({
+              where: { userId: existingUser.id, roleId: otherRole.id },
+            });
+          }
           await prisma.userRole.upsert({
             where: { userId_roleId: { userId: existingUser.id, roleId: coordRole.id } },
             update: {},
@@ -561,6 +573,8 @@ export async function updateLocalCoordinator(
           data: {
             email: coordEmail,
             name,
+            dni: cleanDni,
+            phone: phone || null,
             passwordHash,
             scopeType: "local",
             assignedLocalId: local.id,

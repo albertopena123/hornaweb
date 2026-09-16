@@ -244,9 +244,24 @@ export const ROLE_DEFS = [
     ],
   },
   {
-    key: "coordinador_local",
-    name: "Coordinador de Colegio / Local",
-    description: "Responsable directo del colegio asignado: mesas, personeros y recepción de actas.",
+    key: "coordinador_local_1",
+    name: "Coordinador 1 de Colegio (Titular)",
+    description: "Responsable titular del colegio asignado: mesas, personeros y recepción de actas.",
+    system: true,
+    permissions: [
+      "personeros.read",
+      "personeros.write",
+      "locales.read",
+      "mesas.read",
+      "mesas.write",
+      "actas.read",
+      "actas.write",
+    ],
+  },
+  {
+    key: "coordinador_local_2",
+    name: "Coordinador 2 de Colegio (Adjunto)",
+    description: "Responsable adjunto del colegio asignado: mesas, personeros y recepción de actas.",
     system: true,
     permissions: [
       "personeros.read",

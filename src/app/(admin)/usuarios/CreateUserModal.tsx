@@ -100,7 +100,7 @@ export function CreateUserModal({ roles, locales = [], onClose, onSubmit }: Prop
   const handleRoleChange = (newRoleIds: string[]) => {
     setRoleIds(newRoleIds);
     const selectedRoles = roles.filter((r) => newRoleIds.includes(r.id));
-    if (selectedRoles.some((r) => r.key === "coordinador_local")) {
+    if (selectedRoles.some((r) => r.key === "coordinador_local" || r.key === "coordinador_local_1" || r.key === "coordinador_local_2")) {
       setScopeType("local");
     } else if (selectedRoles.some((r) => r.key === "coordinador_distrital")) {
       setScopeType("distrital");

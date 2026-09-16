@@ -48,6 +48,8 @@ type StatusFilter = "all" | "active" | "suspended";
 function roleBadgeClass(key: string): string {
   if (key === "superadmin") return "badge badge--red";
   if (key === "admin") return "badge badge--amber";
+  if (key === "coordinador_local_1") return "badge badge--green";
+  if (key === "coordinador_local_2") return "badge badge--blue";
   if (key.startsWith("coordinador")) return "badge badge--accent";
   if (key === "personero") return "badge badge--green";
   if (key === "verificador") return "badge badge--blue";
