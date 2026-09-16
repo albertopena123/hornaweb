@@ -148,6 +148,7 @@ export async function POST(request: Request) {
     ? await prisma.user.findFirst({
         where: {
           OR: [
+            { dni: normalizedEmail },
             { email: `${normalizedEmail}@personeros.ahoranacion.pe` },
             { email: `${normalizedEmail}@ahoranacion.pe` },
             { email: normalizedEmail },
@@ -155,8 +156,13 @@ export async function POST(request: Request) {
         },
         include: { roles: { include: { role: true } } },
       })
-    : await prisma.user.findUnique({
-        where: { email: normalizedEmail },
+    : await prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: normalizedEmail },
+            { dni: normalizedEmail },
+          ],
+        },
         include: { roles: { include: { role: true } } },
       });
 
