@@ -142,7 +142,7 @@ function extractBalancedJson(s: string): string | null {
 
 function parseActaJson(raw: string): {
   mesaNumber: string | null;
-  votes: Array<{ party: string; votes: number }>;
+  votes: Array<{ order: number | null; party: string; votes: number }>;
   votosBlancos: number;
   votosNulos: number;
   votosImpugnados: number;
@@ -172,8 +172,15 @@ function parseActaJson(raw: string): {
   return {
     mesaNumber: typeof data.mesaNumber === "string" ? data.mesaNumber : null,
     votes: votesRaw
-      .filter((v): v is { party: unknown; votes: unknown } => !!v && typeof v === "object")
-      .map((v) => ({ party: String((v as any).party ?? ""), votes: num((v as any).votes) })),
+      .filter((v): v is Record<string, unknown> => !!v && typeof v === "object")
+      .map((v) => ({
+        order:
+          typeof (v as any).order === "number" && Number.isFinite((v as any).order)
+            ? Math.trunc((v as any).order)
+            : null,
+        party: String((v as any).party ?? ""),
+        votes: num((v as any).votes),
+      })),
     votosBlancos: num(data.votosBlancos),
     votosNulos: num(data.votosNulos),
     votosImpugnados: num(data.votosImpugnados),
@@ -182,38 +189,64 @@ function parseActaJson(raw: string): {
   };
 }
 
+// Compara nombres de partido ignorando tildes, mayúsculas y puntuación: los
+// modelos de visión a veces "corrigen" ortografía (tildes) o cambian guiones
+// por espacios al transcribir texto borroso, lo que rompía el `.includes()`
+// literal usado antes.
+function normalizeName(s: string): string {
+  return s
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, " ")
+    .trim();
+}
+
 // ── Prompt ────────────────────────────────────────────────────────────────
 
 function buildPrompt(
-  candidateParties: string[],
+  candidates: Array<{ order: number; party: string }>,
   filename: string,
   mesaHint: string | undefined,
   electionType: string,
   province: string,
 ): string {
+  const referenceList = [...candidates]
+    .sort((a, b) => a.order - b.order)
+    .map((c) => `${c.order}. ${c.party}`)
+    .join("\n");
+
   return `Eres un auditor electoral experto en actas de escrutinio de la ONPE (Perú). Usa la herramienta Read para abrir el archivo de imagen "${filename}" (está en el directorio actual) y transcribe EXACTAMENTE los números manuscritos de la tabla de resultados.
 
 ESTRUCTURA TÍPICA DEL ACTA:
 - Encabezado con "MESA DE SUFRAGIO N°" (6 dígitos).
-- Tabla "ORGANIZACIONES POLÍTICAS": una fila por partido, con su nombre/sigla y una columna "TOTAL DE VOTOS" escrita a mano.
+- Justo debajo dice "MUY IMPORTANTE Escriba con números legibles como estos:" seguido de una guía de caligrafía "0 1 2 3 4 5 6 7 8 9" escrita a mano por la misma persona que llenó el acta. NO es un dato del escrutinio: úsala solo como referencia para calibrar cómo ESA persona dibuja cada dígito (p. ej. si cierra el 4 arriba, si el 1 lleva gancho, si el 7 lleva rayita) antes de leer los votos.
+- Tabla "ORGANIZACIONES POLÍTICAS": una fila NUMERADA (1, 2, 3...) por partido, con su logo, nombre/sigla y una columna "TOTAL DE VOTOS" escrita a mano.
 - Debajo de la tabla: "VOTOS EN BLANCO", "VOTOS NULOS", "VOTOS IMPUGNADOS" y "TOTAL DE VOTOS EMITIDOS", también manuscritos.
+- El acta suele tener una marca de agua diagonal ("ONPE") y líneas/recuadros de fondo: ignóralos, no son datos.
+
+LA FOTO PUEDE VENIR IMPERFECTA — no la descartes, compénsala activamente:
+- Inclinada o tomada en ángulo (perspectiva torcida): sigue cada fila de la tabla siguiendo su línea real aunque no esté horizontal en la imagen, no la fila de arriba que "visualmente" quede más cerca.
+- Borrosa, con sombra o brillo de flash sobre la tinta: si el NOMBRE IMPRESO del partido queda ilegible pero el logo, el color y el NÚMERO DE FILA sí se distinguen, usa ese número de fila para identificar la organización contra la "Lista de referencia" de abajo — reporta el nombre EXACTO tal como aparece en esa lista, no inventes ni parafrasees texto nuevo.
+- Dígitos manuscritos ambiguos: compáralos con la guía de caligrafía del encabezado y con otros números que la misma persona escribió en el acta (hora, mesa, DNI) antes de decidir cuál es.
+- Antes de responder, suma mentalmente todas las filas de organizaciones + blancos + nulos + impugnados y compárala con "TOTAL DE VOTOS EMITIDOS". Si no coincide, vuelve a mirar con cuidado los dígitos que generaron la diferencia (no todos) por si hay un trazo mal leído — pero si tras revisar siguen igual, DÉJALOS COMO ESTÁN: nunca fuerces ni ajustes una cifra solo para que la suma cuadre.
 
 REGLAS:
 - Transcribe cada número EXACTAMENTE como está escrito, dígito por dígito.
-- Si un número es realmente ilegible, usa 0 en ese campo y baja "confidence" en vez de adivinar.
+- Si un número es realmente ilegible incluso después de aplicar lo anterior, usa 0 en ese campo y baja "confidence" en vez de adivinar.
 - No inventes, no redondees ni corrijas cifras aunque no cuadre la suma total.
-- Devuelve una fila por cada organización política visible en la tabla, respetando el orden del acta.
+- Devuelve una fila por cada organización política visible en la tabla, respetando el orden del acta, e incluye SIEMPRE el número de fila impreso en "order": es un respaldo útil para identificar la fila cuando el nombre del partido salga vacío o totalmente ilegible, pero el nombre transcrito sigue siendo el dato principal — transcríbelo siempre que puedas leer aunque sea parte de él.
 
 CONTEXTO: Elección de ${electionType === "provincial" ? `Consejeros / Alcaldía Provincial (${province})` : "Gobernador Regional"} — Madre de Dios, Elecciones Regionales y Municipales 2026.${
     mesaHint ? ` Mesa esperada: ${mesaHint}.` : ""
   }
-Organizaciones políticas en contienda (referencia; el orden exacto de la tabla puede variar):
-${candidateParties.map((p) => `- ${p}`).join("\n")}
+Lista de referencia de organizaciones políticas en contienda, con el número de fila en el que normalmente aparecen impresas (verifica el número real contra la foto; el orden exacto puede variar):
+${referenceList}
 
 Responde ÚNICAMENTE con un JSON (sin texto antes ni después, sin bloque \`\`\`) con esta forma exacta:
 {
   "mesaNumber": "string de 6 dígitos o null si no es legible",
-  "votes": [ { "party": "nombre del partido tal como aparece en el acta", "votes": numero_entero } ],
+  "votes": [ { "order": numero_de_fila_impreso_en_el_acta, "party": "nombre del partido tal como aparece en el acta", "votes": numero_entero } ],
   "votosBlancos": numero_entero,
   "votosNulos": numero_entero,
   "votosImpugnados": numero_entero,
@@ -246,7 +279,7 @@ export async function extractVotesFromActaImageCli(
 
   const parsed = await withIsolatedImage(image, async (dir, filename) => {
     const prompt = buildPrompt(
-      candidates.map((c) => c.party),
+      candidates.map((c) => ({ order: c.order, party: c.party })),
       filename,
       mesaHint,
       electionType,
@@ -296,19 +329,72 @@ export async function extractVotesFromActaImageCli(
     return parseActaJson(String(output.result ?? ""));
   });
 
-  // Empareja cada fila leída del acta con el candidato real de la BD por nombre de partido.
+  // Empareja cada fila leída del acta con el candidato real de la BD en tres
+  // pasadas GLOBALES de confianza decreciente (cada pasada se completa para
+  // todos los candidatos antes de pasar a la siguiente, para que un nombre
+  // exacto nunca pierda su fila frente al respaldo débil de otro candidato):
+  //   1º nombre normalizado (sin tildes/puntuación) EXACTO — inequívoco si el
+  //      OCR leyó bien el texto, sin importar el orden impreso.
+  //   2º nombre normalizado por coincidencia parcial (substring).
+  //   3º número de fila impreso ("order"), solo como último recurso para
+  //      filas cuyo nombre salió vacío/ilegible.
+  // No usamos "order" como clave principal porque el orden impreso en ESTA
+  // acta no siempre coincide posición a posición con el de "candidates" en
+  // la BD (p. ej. Gobernador Regional trae 14 organizaciones pero una foto
+  // puede listar solo 12 si le faltan algunas a esa mesa/plantilla): usarlo
+  // como ancla principal desalineaba en cascada todas las filas siguientes.
+  // En todas las pasadas la fila se marca "consumida" para que nunca se le
+  // asignen los mismos votos a dos candidatos distintos.
+  const usedRows = new Set<number>();
+  const normalizedRows = parsed.votes.map((v) => normalizeName(v.party));
+  const rowIndexByCandidateId = new Map<string, number>();
+
+  let pending = candidates;
+
+  pending = pending.filter((cand) => {
+    const candNorm = normalizeName(cand.party);
+    const idx = normalizedRows.findIndex((rowNorm, i) => !usedRows.has(i) && rowNorm === candNorm);
+    if (idx === -1) return true;
+    usedRows.add(idx);
+    rowIndexByCandidateId.set(cand.id, idx);
+    return false;
+  });
+
+  pending = pending.filter((cand) => {
+    const candNorm = normalizeName(cand.party);
+    const idx = normalizedRows.findIndex(
+      (rowNorm, i) => !usedRows.has(i) && rowNorm.length > 0 && (rowNorm.includes(candNorm) || candNorm.includes(rowNorm)),
+    );
+    if (idx === -1) return true;
+    usedRows.add(idx);
+    rowIndexByCandidateId.set(cand.id, idx);
+    return false;
+  });
+
+  pending = pending.filter((cand) => {
+    const idx = parsed.votes.findIndex(
+      (v, i) => !usedRows.has(i) && normalizedRows[i].length === 0 && v.order === cand.order,
+    );
+    if (idx === -1) return true;
+    usedRows.add(idx);
+    rowIndexByCandidateId.set(cand.id, idx);
+    return false;
+  });
+
   const votesMap: Record<string, number> = {};
   const extractedList: NonNullable<ExtractedActaData["extractedList"]> = [];
 
   for (const cand of candidates) {
-    const row = parsed.votes.find(
-      (v) =>
-        v.party.toLowerCase().includes(cand.party.toLowerCase()) ||
-        cand.party.toLowerCase().includes(v.party.toLowerCase()),
-    );
-    const votes = Math.max(0, row?.votes ?? 0);
+    const idx = rowIndexByCandidateId.get(cand.id);
+    const votes = idx !== undefined ? Math.max(0, parsed.votes[idx].votes) : 0;
     votesMap[cand.id] = votes;
     extractedList.push({ candidateId: cand.id, candidateName: cand.name, party: cand.party, votes });
+  }
+
+  if (pending.length) {
+    console.warn(
+      `[claude-cli-extractor] No se pudo emparejar con ninguna fila leída del acta (quedaron en 0 votos, revisar manualmente): ${pending.map((c) => c.party).join(", ")}`,
+    );
   }
 
   return {

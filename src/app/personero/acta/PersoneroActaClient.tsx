@@ -318,10 +318,10 @@ export function PersoneroActaClient({
       }
 
       const extracted = data.data;
-      if (extracted.votos && typeof extracted.votos === "object") {
+      if (extracted.votes && typeof extracted.votes === "object") {
         setVotes((prev) => ({
           ...prev,
-          ...extracted.votos,
+          ...extracted.votes,
         }));
       }
       if (typeof extracted.votosBlancos === "number") setVotosBlancos(extracted.votosBlancos);
