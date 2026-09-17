@@ -139,135 +139,187 @@ export async function downloadNominaPdf(
   const pageW = 297;
   const pageH = 210;
   const margin = 12;
-  const usableW = pageW - margin * 2;
+  const usableW = pageW - margin * 2; // 273mm
 
   // Cargar logo oficial Ahora Nación
   const logoData = await loadLogoBase64();
 
-  // ─── Función para dibujar cabecera institucional ───
+  // ─── Posición exacta de las 9 columnas (Total = 273mm) ───
+  // Col 0: # (8mm)
+  // Col 1: Provincia (22mm)
+  // Col 2: Distrito (26mm)
+  // Col 3: Local de Votación (65mm)
+  // Col 4: Mesas (12mm)
+  // Col 5: Coordinador 1 (44mm)
+  // Col 6: Coordinador 2 (44mm)
+  // Col 7: Teléfonos (26mm)
+  // Col 8: Estado (26mm)
+  function getColumnXPositions(): number[] {
+    return [
+      margin,             // 0: #
+      margin + 8,         // 1: Provincia
+      margin + 30,        // 2: Distrito
+      margin + 56,        // 3: Local de Votación
+      margin + 121,       // 4: Mesas
+      margin + 133,       // 5: Coord 1
+      margin + 177,       // 6: Coord 2
+      margin + 221,       // 7: Teléfonos
+      margin + 247,       // 8: Estado
+    ];
+  }
+
+  // ─── Cabecera Institucional y Métricas ───
   function drawHeader(pageNum: number, totalPages: number) {
-    // Franja superior carmesí Ahora Nación (#b91c1c)
-    pdf.setFillColor(...COLORS.brand);
-    pdf.rect(0, 0, pageW, 26, "F");
+    // 1. Franja superior carmesí Ahora Nación (#991b1b / #b91c1c)
+    pdf.setFillColor(...COLORS.brandDark);
+    pdf.rect(0, 0, pageW, 23, "F");
 
-    // Franja dorada de acento (#d97706)
+    // 2. Franja dorada de acento (#d97706)
     pdf.setFillColor(...COLORS.gold);
-    pdf.rect(0, 26, pageW, 1.8, "F");
+    pdf.rect(0, 23, pageW, 1.8, "F");
 
-    // Logo oficial Ahora Nación
+    // 3. Medallón Circular para Logo Oficial (evita fondos blancos cuadrados)
+    const logoCenter = margin + 8;
+    pdf.setFillColor(...COLORS.white);
+    pdf.circle(logoCenter, 11.5, 8.5, "F");
+    pdf.setDrawColor(...COLORS.gold);
+    pdf.setLineWidth(0.35);
+    pdf.circle(logoCenter, 11.5, 8.5, "S");
+
     if (logoData) {
-      pdf.addImage(logoData, "PNG", margin, 3, 20, 20, undefined, "FAST");
+      pdf.addImage(logoData, "PNG", logoCenter - 7, 4.5, 14, 14, undefined, "FAST");
     }
 
-    const textX = logoData ? margin + 24 : margin;
+    const textX = margin + 20;
 
     // Título Principal
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(14);
+    pdf.setFontSize(13);
     pdf.setTextColor(...COLORS.white);
-    pdf.text("PARTIDO POLÍTICO AHORA NACIÓN", textX, 10);
+    pdf.text("PARTIDO POLÍTICO AHORA NACIÓN", textX, 9);
 
     // Subtítulo
     pdf.setFontSize(8.5);
     pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(255, 255, 255);
     pdf.text(
-      "NÓMINA OFICIAL DE COORDINADORES DE LOCAL DE VOTACIÓN · REGIÓN MADRE DE DIOS",
+      "NÓMINA OFICIAL DE COORDINADORES DE LOCAL DE VOTACIÓN",
       textX,
-      16
+      15
     );
 
-    // KPI Badges en cabecera
-    const totalMesasSum = locales.reduce((acc, l) => acc + (l.totalMesas || l.mesasLength || 0), 0);
-    const pct = Math.round((stats.conCoord / Math.max(1, stats.totalColegios)) * 100);
-
-    pdf.setFontSize(7.5);
-    pdf.setFont("helvetica", "normal");
-    pdf.setTextColor(255, 245, 235);
-    pdf.text(
-      `Locales: ${stats.totalColegios}  |  Asignados: ${stats.conCoord}  |  Pendientes: ${stats.sinCoord}  |  Mesas Totales: ${totalMesasSum}  |  Cobertura: ${pct}%`,
-      textX,
-      22
-    );
+    // Jurisdicción / Ámbito
+    pdf.setFontSize(7);
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(...COLORS.goldLight);
+    pdf.text("REGIÓN MADRE DE DIOS · ELECCIONES GENERALES 2026", textX, 20);
 
     // Fecha y página a la derecha
-    pdf.setFontSize(7);
-    pdf.setTextColor(255, 255, 255);
-    pdf.text(formatDate(), pageW - margin, 10, { align: "right" });
-    pdf.setFont("helvetica", "bold");
-    pdf.text(`Página ${pageNum} de ${totalPages}`, pageW - margin, 16, { align: "right" });
+    pdf.setFontSize(6.8);
     pdf.setFont("helvetica", "normal");
-    pdf.setTextColor(255, 240, 240);
-    pdf.text("Sistema Electoral HornaWeb", pageW - margin, 21, { align: "right" });
+    pdf.setTextColor(255, 255, 255);
+    pdf.text(formatDate(), pageW - margin, 9, { align: "right" });
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(7.5);
+    pdf.text(`Página ${pageNum} de ${totalPages}`, pageW - margin, 15, { align: "right" });
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(6.5);
+    pdf.setTextColor(...COLORS.goldLight);
+    pdf.text("Sistema Electoral HornaWeb", pageW - margin, 20, { align: "right" });
+
+    // 4. Franja de Métricas / KPI Strip (y = 25.5 a 32.5)
+    const totalMesasSum = locales.reduce((acc, l) => acc + (l.totalMesas || l.mesasLength || 0), 0);
+    const pct = Math.round((stats.conCoord / Math.max(1, stats.totalColegios)) * 100);
+    const kpiY = 25.5;
+
+    pdf.setFillColor(...COLORS.grayLight);
+    pdf.setDrawColor(...COLORS.border);
+    pdf.setLineWidth(0.2);
+    pdf.roundedRect(margin, kpiY, usableW, 7, 1, 1, "FD");
+
+    const kpiItems = [
+      { label: "Centros Electorales", val: `${stats.totalColegios} Locales`, color: COLORS.brand },
+      { label: "Locales Asignados", val: `${stats.conCoord} Asignados`, color: COLORS.success },
+      { label: "Locales Pendientes", val: `${stats.sinCoord} Pendientes`, color: COLORS.danger },
+      { label: "Mesas de Sufragio", val: `${totalMesasSum} Mesas`, color: COLORS.slateDark },
+      { label: "Cobertura Regional", val: `${pct}% Cobertura`, color: COLORS.gold },
+    ];
+
+    const itemW = usableW / kpiItems.length;
+    kpiItems.forEach((kpi, idx) => {
+      const itemX = margin + idx * itemW + itemW / 2;
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(5.5);
+      pdf.setTextColor(...COLORS.gray);
+      pdf.text(kpi.label.toUpperCase(), itemX, kpiY + 2.8, { align: "center" });
+
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(7.5);
+      pdf.setTextColor(...kpi.color);
+      pdf.text(kpi.val, itemX, kpiY + 6, { align: "center" });
+
+      if (idx < kpiItems.length - 1) {
+        pdf.setDrawColor(...COLORS.border);
+        pdf.setLineWidth(0.15);
+        pdf.line(margin + (idx + 1) * itemW, kpiY + 1.2, margin + (idx + 1) * itemW, kpiY + 5.8);
+      }
+    });
   }
 
-  // ─── Cabecera de la tabla ───
+  // ─── Cabecera de la tabla (y = 34) ───
   function drawTableHeader(y: number): number {
     const colX = getColumnXPositions();
     const headerH = 7.5;
 
-    // Fondo cabecera de tabla: Carmesí intenso
+    // Fondo cabecera de tabla: Carmesí oscuro
     pdf.setFillColor(...COLORS.brandDark);
     pdf.roundedRect(margin, y, usableW, headerH, 1, 1, "F");
 
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(7);
+    pdf.setFontSize(6.8);
     pdf.setTextColor(...COLORS.white);
 
     const headers = [
-      "#",
-      "Provincia",
-      "Distrito",
-      "Local de Votación",
-      "Mesas",
-      "Coordinador 1 (Titular)",
-      "Coordinador 2 (Adjunto)",
-      "Teléfono / Contacto",
-      "Estado",
+      { text: "#", x: colX[0] + 4, align: "center" as const },
+      { text: "Provincia", x: colX[1] + 2, align: "left" as const },
+      { text: "Distrito", x: colX[2] + 2, align: "left" as const },
+      { text: "Local de Votación", x: colX[3] + 2, align: "left" as const },
+      { text: "Mesas", x: colX[4] + 6, align: "center" as const },
+      { text: "Coordinador 1 (Titular)", x: colX[5] + 2, align: "left" as const },
+      { text: "Coordinador 2 (Adjunto)", x: colX[6] + 2, align: "left" as const },
+      { text: "Teléfonos", x: colX[7] + 2, align: "left" as const },
+      { text: "Estado", x: colX[8] + 13, align: "center" as const },
     ];
 
-    headers.forEach((h, i) => {
-      const x = colX[i] + 1.5;
-      pdf.text(h, x, y + 5);
+    headers.forEach((h) => {
+      pdf.text(h.text, h.x, y + 4.8, { align: h.align });
     });
 
-    return y + headerH + 1;
-  }
-
-  function getColumnXPositions(): number[] {
-    // UsableW = 273mm
-    return [
-      margin,             // # (8mm)
-      margin + 8,         // Provincia (24mm)
-      margin + 32,        // Distrito (28mm)
-      margin + 60,        // Centro (65mm)
-      margin + 125,       // Mesas (15mm)
-      margin + 140,       // Coord 1 (46mm)
-      margin + 186,       // Coord 2 (46mm)
-      margin + 232,       // Teléfono (23mm)
-      margin + 255,       // Estado (18mm)
-    ];
+    return y + headerH + 0.8;
   }
 
   // ─── Pie de página ───
   function drawFooter() {
-    pdf.setFontSize(6.5);
-    pdf.setTextColor(...COLORS.gray);
-    pdf.text(
-      "Documento oficial de campaña · Partido Político Ahora Nación · Madre de Dios · hornaweb",
-      pageW / 2,
-      pageH - 4.5,
-      { align: "center" }
-    );
     pdf.setDrawColor(...COLORS.border);
     pdf.setLineWidth(0.2);
     pdf.line(margin, pageH - 7, pageW - margin, pageH - 7);
+
+    pdf.setFontSize(6.2);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(...COLORS.gray);
+    pdf.text(
+      "Documento oficial de campaña · Partido Político Ahora Nación · Madre de Dios · hornaweb.pe",
+      pageW / 2,
+      pageH - 4.2,
+      { align: "center" }
+    );
   }
 
   // ─── Paginación y filas ───
-  const rowH = 9.5;
-  const startY = 32;
+  const rowH = 8.8;
+  const startY = 34;
   const maxY = pageH - 12;
-  const rowsPerPage = Math.floor((maxY - startY) / rowH);
+  const rowsPerPage = Math.floor((maxY - (startY + 8.3)) / rowH);
   const totalPages = Math.max(1, Math.ceil(locales.length / rowsPerPage));
 
   let currentPage = 1;
@@ -290,122 +342,140 @@ export async function downloadNominaPdf(
     const colX = getColumnXPositions();
     const rowIdx = idx + 1;
 
-    // Fondo alternado / alerta
-    if (!hasAnyCoord) {
-      pdf.setFillColor(...COLORS.dangerLight);
-      pdf.rect(margin, y - 0.8, usableW, rowH, "F");
-    } else if (idx % 2 === 0) {
+    // Fondo cebra suave (sin llenar toda la fila de rojo fuerte)
+    if (idx % 2 === 1) {
       pdf.setFillColor(...COLORS.grayLight);
-      pdf.rect(margin, y - 0.8, usableW, rowH, "F");
+      pdf.rect(margin, y, usableW, rowH, "F");
     }
 
     // Línea inferior fina
     pdf.setDrawColor(...COLORS.border);
     pdf.setLineWidth(0.1);
-    pdf.line(margin, y + rowH - 0.8, pageW - margin, y + rowH - 0.8);
+    pdf.line(margin, y + rowH, pageW - margin, y + rowH);
 
-    const textY = y + 2.8;
+    const textY = y + 3.2;
 
     // Col 0: #
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(6.5);
+    pdf.setFontSize(6.2);
     pdf.setTextColor(...COLORS.gray);
-    pdf.text(String(rowIdx), colX[0] + 1.5, textY);
+    pdf.text(String(rowIdx), colX[0] + 4, textY + 0.8, { align: "center" });
 
     // Col 1: Provincia
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(6.5);
-    pdf.setTextColor(...COLORS.text);
-    pdf.text(loc.province, colX[1] + 1.5, textY);
+    pdf.setFontSize(6.4);
+    pdf.setTextColor(...COLORS.slateDark);
+    pdf.text(loc.province, colX[1] + 2, textY + 0.8);
 
     // Col 2: Distrito
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(6.5);
-    pdf.setTextColor(...COLORS.gray);
-    pdf.text(districtLabel(loc.district), colX[2] + 1.5, textY);
+    pdf.setFontSize(6.4);
+    pdf.setTextColor(...COLORS.slateDark);
+    pdf.text(districtLabel(loc.district), colX[2] + 2, textY + 0.8);
 
-    // Col 3: Centro de Votación
+    // Col 3: Centro de Votación (ancho 65mm para evitar cortes agresivos)
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(6.5);
-    pdf.setTextColor(...COLORS.text);
+    pdf.setTextColor(...COLORS.slateDark);
     const maxNameLen = 42;
     const displayName = loc.name.length > maxNameLen ? loc.name.slice(0, maxNameLen) + "…" : loc.name;
-    pdf.text(displayName, colX[3] + 1.5, textY);
+    pdf.text(displayName, colX[3] + 2, textY);
     if (loc.code) {
       pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(5.5);
+      pdf.setFontSize(5.2);
       pdf.setTextColor(...COLORS.gray);
-      pdf.text(`CÓD: ${loc.code}`, colX[3] + 1.5, textY + 3.8);
+      pdf.text(`CÓD: ${loc.code}`, colX[3] + 2, textY + 3.4);
     }
 
-    // Col 4: Mesas
+    // Col 4: Mesas (Centrado)
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(7.5);
-    pdf.setTextColor(...COLORS.text);
-    pdf.text(String(numMesas), colX[4] + 6, textY + 1, { align: "center" });
+    pdf.setFontSize(7.2);
+    pdf.setTextColor(...COLORS.slateDark);
+    pdf.text(String(numMesas), colX[4] + 6, textY + 0.8, { align: "center" });
 
     // Col 5: Coordinador 1 (Titular)
     if (hasCoord1) {
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(6.2);
+      pdf.setFontSize(6.4);
       pdf.setTextColor(...COLORS.brand);
-      pdf.text(loc.coordinatorName!, colX[5] + 1.5, textY);
+      const maxC1Len = 28;
+      const c1Display = loc.coordinatorName!.length > maxC1Len ? loc.coordinatorName!.slice(0, maxC1Len) + "…" : loc.coordinatorName!;
+      pdf.text(c1Display, colX[5] + 2, textY);
       if (loc.coordinatorDni) {
         pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(5.5);
+        pdf.setFontSize(5.2);
         pdf.setTextColor(...COLORS.gray);
-        pdf.text(`DNI: ${loc.coordinatorDni}`, colX[5] + 1.5, textY + 3.8);
+        pdf.text(`DNI: ${loc.coordinatorDni}`, colX[5] + 2, textY + 3.4);
       }
     } else {
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(6);
       pdf.setTextColor(...COLORS.danger);
-      pdf.text("⚠ SIN TITULAR", colX[5] + 1.5, textY + 1);
+      pdf.text("SIN ASIGNAR", colX[5] + 2, textY + 0.8);
     }
 
     // Col 6: Coordinador 2 (Adjunto)
     if (hasCoord2) {
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(6.2);
+      pdf.setFontSize(6.4);
       pdf.setTextColor(...COLORS.accent);
-      pdf.text(loc.coordinator2Name!, colX[6] + 1.5, textY);
+      const maxC2Len = 28;
+      const c2Display = loc.coordinator2Name!.length > maxC2Len ? loc.coordinator2Name!.slice(0, maxC2Len) + "…" : loc.coordinator2Name!;
+      pdf.text(c2Display, colX[6] + 2, textY);
       if (loc.coordinator2Dni) {
         pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(5.5);
+        pdf.setFontSize(5.2);
         pdf.setTextColor(...COLORS.gray);
-        pdf.text(`DNI: ${loc.coordinator2Dni}`, colX[6] + 1.5, textY + 3.8);
+        pdf.text(`DNI: ${loc.coordinator2Dni}`, colX[6] + 2, textY + 3.4);
       }
     } else {
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(6);
-      pdf.setTextColor(170, 175, 185);
-      pdf.text("—", colX[6] + 1.5, textY + 1);
+      pdf.setTextColor(...COLORS.gray);
+      pdf.text("-", colX[6] + 2, textY + 0.8);
     }
 
-    // Col 7: Teléfono
+    // Col 7: Teléfonos
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(6);
-    pdf.setTextColor(...COLORS.text);
+    pdf.setFontSize(5.8);
+    pdf.setTextColor(...COLORS.slateDark);
     if (loc.coordinatorPhone) {
-      pdf.text(`C1: ${loc.coordinatorPhone}`, colX[7] + 1.5, textY);
+      pdf.text(`C1: ${loc.coordinatorPhone}`, colX[7] + 2, textY);
     }
     if (loc.coordinator2Phone) {
-      pdf.text(`C2: ${loc.coordinator2Phone}`, colX[7] + 1.5, textY + 3.8);
+      pdf.text(`C2: ${loc.coordinator2Phone}`, colX[7] + 2, textY + 3.4);
     }
     if (!loc.coordinatorPhone && !loc.coordinator2Phone) {
-      pdf.setTextColor(170, 175, 185);
-      pdf.text("—", colX[7] + 1.5, textY + 1);
+      pdf.setTextColor(...COLORS.gray);
+      pdf.text("-", colX[7] + 2, textY + 0.8);
     }
 
-    // Col 8: Estado
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(6);
+    // Col 8: Estado (Badge Pill dibujado)
+    const pillW = 20;
+    const pillH = 4.2;
+    const pillX = colX[8] + 13 - pillW / 2;
+    const pillY = y + (rowH - pillH) / 2;
+
     if (hasAnyCoord) {
+      pdf.setFillColor(...COLORS.successLight);
+      pdf.setDrawColor(...COLORS.success);
+      pdf.setLineWidth(0.2);
+      pdf.roundedRect(pillX, pillY, pillW, pillH, 0.8, 0.8, "FD");
+
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(5.5);
       pdf.setTextColor(...COLORS.success);
-      pdf.text("✔ ASIGNADO", colX[8] + 1.5, textY + 1);
+      pdf.text("ASIGNADO", colX[8] + 13, pillY + 3, { align: "center" });
     } else {
+      pdf.setFillColor(...COLORS.dangerLight);
+      pdf.setDrawColor(...COLORS.danger);
+      pdf.setLineWidth(0.2);
+      pdf.roundedRect(pillX, pillY, pillW, pillH, 0.8, 0.8, "FD");
+
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(5.5);
       pdf.setTextColor(...COLORS.danger);
-      pdf.text("PENDIENTE", colX[8] + 1.5, textY + 1);
+      pdf.text("PENDIENTE", colX[8] + 13, pillY + 3, { align: "center" });
     }
 
     y += rowH;

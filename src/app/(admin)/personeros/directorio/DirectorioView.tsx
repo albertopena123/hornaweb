@@ -30,8 +30,15 @@ import {
   Download,
   X,
   Printer,
+  FileSpreadsheet,
+  Loader2,
 } from "lucide-react";
 import { CredentialA4Modal } from "./CredentialA4Modal";
+import {
+  downloadPersonerosPdf,
+  downloadPersonerosExcel,
+  type PersonerosExportStats,
+} from "@/lib/personerosExport";
 
 type Props = {
   rows: PersoneroRow[];
@@ -100,6 +107,28 @@ export function DirectorioView({ rows, perms, locales }: Props) {
       return haystack.includes(query);
     });
   }, [personeroList, q, district, roleFilter]);
+
+  // Estados para exportación ejecutiva (PDF / Excel)
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
+  const [downloadingExcel, setDownloadingExcel] = useState(false);
+
+  const exportStats = useMemo<PersonerosExportStats>(() => {
+    const total = visible.length;
+    const titulares = visible.filter((p) => !p.isSuplente && p.role !== "suplente" && p.role !== "general").length;
+    const suplentes = visible.filter((p) => p.isSuplente || p.role === "suplente").length;
+    const generales = visible.filter((p) => p.role === "general").length;
+    const uniqueLocales = new Set(visible.map((p) => p.localName.toLowerCase())).size;
+    const uniqueMesas = new Set(visible.map((p) => `${p.localName}-${p.mesa}`)).size;
+    return {
+      total,
+      titulares,
+      suplentes,
+      generales,
+      localesCount: uniqueLocales,
+      mesasCount: uniqueMesas,
+    };
+  }, [visible]);
 
   // Exportar a CSV
   function handleExportCSV() {
@@ -241,12 +270,25 @@ export function DirectorioView({ rows, perms, locales }: Props) {
 
         <button
           type="button"
-          className="btn btn--secondary"
-          onClick={handleExportCSV}
-          title="Descargar lista completa en formato CSV / Excel"
+          className="btn"
+          onClick={() => setShowExportModal(true)}
+          title="Exportar nómina y padrón oficial de personeros (PDF, Excel, CSV)"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            background: "#b91c1c",
+            color: "#fff",
+            border: "none",
+            fontWeight: 700,
+            boxShadow: "0 2px 6px rgba(185, 28, 28, 0.25)",
+            padding: "8px 14px",
+            borderRadius: "8px",
+            cursor: "pointer",
+          }}
         >
           <Download size={14} />
-          <span>Exportar CSV</span>
+          <span>Exportar Padrón</span>
         </button>
       </div>
 
@@ -483,6 +525,289 @@ export function DirectorioView({ rows, perms, locales }: Props) {
           personero={selectedCredPersonero}
           onClose={() => setSelectedCredPersonero(null)}
         />
+      )}
+
+      {/* Modal Corporativo de Exportación Oficial Ahora Nación */}
+      {showExportModal && (
+        <div
+          className="modal-backdrop"
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(15, 23, 42, 0.75)",
+            backdropFilter: "blur(4px)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+        >
+          <div
+            className="modal"
+            style={{
+              background: "var(--surface, #ffffff)",
+              borderRadius: "16px",
+              maxWidth: "1050px",
+              width: "100%",
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              border: "1px solid var(--border, #e2e8f0)",
+              overflow: "hidden",
+            }}
+          >
+            <header
+              className="modal__header"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "16px 22px",
+                background: "linear-gradient(to right, #7f1d1d, #b91c1c)",
+                color: "#fff",
+                borderBottom: "2px solid #d97706",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <img
+                  src="/assets/images/logo/logo-an.webp"
+                  alt="Ahora Nación"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                    background: "#fff",
+                    padding: "2px",
+                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+                  }}
+                />
+                <div>
+                  <h2 style={{ fontSize: "16px", fontWeight: 800, margin: 0, color: "#fff" }}>
+                    NÓMINA OFICIAL DE PERSONEROS · AHORA NACIÓN
+                  </h2>
+                  <p style={{ fontSize: "11px", color: "#fef3c7", margin: "2px 0 0" }}>
+                    Madre de Dios · Elecciones 2026 · {exportStats.total} Personeros Filtrados
+                  </p>
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  className="btn"
+                  disabled={downloadingPdf || visible.length === 0}
+                  onClick={async () => {
+                    setDownloadingPdf(true);
+                    try {
+                      await downloadPersonerosPdf(visible, exportStats);
+                      toast("success", "PDF oficial de personeros descargado.");
+                    } catch (e) {
+                      console.error(e);
+                      toast("error", "Error al generar el PDF.");
+                    } finally {
+                      setDownloadingPdf(false);
+                    }
+                  }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    background: "#dc2626",
+                    color: "#fff",
+                    border: "none",
+                    fontWeight: 700,
+                    padding: "7px 14px",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 6px rgba(220, 38, 38, 0.3)",
+                    cursor: "pointer",
+                  }}
+                >
+                  {downloadingPdf ? <Loader2 size={14} className="spin" /> : <Download size={14} />}
+                  {downloadingPdf ? "Generando..." : "Descargar PDF (Oficial)"}
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  disabled={downloadingExcel || visible.length === 0}
+                  onClick={async () => {
+                    setDownloadingExcel(true);
+                    try {
+                      await downloadPersonerosExcel(visible, exportStats, locales);
+                      toast("success", "Excel oficial de personeros descargado.");
+                    } catch (e) {
+                      console.error(e);
+                      toast("error", "Error al generar el Excel.");
+                    } finally {
+                      setDownloadingExcel(false);
+                    }
+                  }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    background: "#16a34a",
+                    color: "#fff",
+                    border: "none",
+                    fontWeight: 700,
+                    padding: "7px 14px",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 6px rgba(22, 163, 74, 0.3)",
+                    cursor: "pointer",
+                  }}
+                >
+                  {downloadingExcel ? <Loader2 size={14} className="spin" /> : <FileSpreadsheet size={14} />}
+                  {downloadingExcel ? "Generando..." : "Descargar Excel (.xlsx)"}
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={handleExportCSV}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    background: "rgba(255, 255, 255, 0.15)",
+                    color: "#fff",
+                    border: "1px solid rgba(255, 255, 255, 0.3)",
+                    fontWeight: 600,
+                    padding: "7px 12px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Download size={13} />
+                  <span>CSV</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn-icon"
+                  onClick={() => setShowExportModal(false)}
+                  style={{ color: "#fff", background: "transparent", border: "none", cursor: "pointer" }}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </header>
+
+            <div className="modal__body" style={{ flex: 1, overflowY: "auto", padding: "18px" }}>
+              {/* Franja de Indicadores Clave */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+                  gap: "10px",
+                  marginBottom: "16px",
+                }}
+              >
+                <div style={{ background: "var(--surface)", border: "1px solid var(--border)", padding: "8px 12px", borderRadius: "10px", textAlign: "center" }}>
+                  <div style={{ fontSize: "10.5px", color: "var(--text-muted)", fontWeight: 600 }}>Total Personeros</div>
+                  <div style={{ fontSize: "17px", fontWeight: 800, color: "var(--text)" }}>{exportStats.total}</div>
+                </div>
+                <div style={{ background: "rgba(22, 163, 74, 0.08)", border: "1px solid rgba(22, 163, 74, 0.2)", padding: "8px 12px", borderRadius: "10px", textAlign: "center" }}>
+                  <div style={{ fontSize: "10.5px", color: "#15803d", fontWeight: 600 }}>Titulares</div>
+                  <div style={{ fontSize: "17px", fontWeight: 800, color: "#16a34a" }}>{exportStats.titulares}</div>
+                </div>
+                <div style={{ background: "rgba(2, 132, 199, 0.08)", border: "1px solid rgba(2, 132, 199, 0.2)", padding: "8px 12px", borderRadius: "10px", textAlign: "center" }}>
+                  <div style={{ fontSize: "10.5px", color: "#0284c7", fontWeight: 600 }}>Suplentes</div>
+                  <div style={{ fontSize: "17px", fontWeight: 800, color: "#0284c7" }}>{exportStats.suplentes}</div>
+                </div>
+                <div style={{ background: "rgba(124, 58, 237, 0.08)", border: "1px solid rgba(124, 58, 237, 0.2)", padding: "8px 12px", borderRadius: "10px", textAlign: "center" }}>
+                  <div style={{ fontSize: "10.5px", color: "#7c3aed", fontWeight: 600 }}>Generales</div>
+                  <div style={{ fontSize: "17px", fontWeight: 800, color: "#7c3aed" }}>{exportStats.generales}</div>
+                </div>
+                <div style={{ background: "var(--surface)", border: "1px solid var(--border)", padding: "8px 12px", borderRadius: "10px", textAlign: "center" }}>
+                  <div style={{ fontSize: "10.5px", color: "var(--text-muted)", fontWeight: 600 }}>Locales Cubiertos</div>
+                  <div style={{ fontSize: "17px", fontWeight: 800, color: "var(--text)" }}>{exportStats.localesCount}</div>
+                </div>
+                <div style={{ background: "var(--surface)", border: "1px solid var(--border)", padding: "8px 12px", borderRadius: "10px", textAlign: "center" }}>
+                  <div style={{ fontSize: "10.5px", color: "var(--text-muted)", fontWeight: 600 }}>Mesas Asignadas</div>
+                  <div style={{ fontSize: "17px", fontWeight: 800, color: "var(--text)" }}>{exportStats.mesasCount}</div>
+                </div>
+              </div>
+
+              {/* Tabla Preview */}
+              <table className="table" style={{ width: "100%", fontSize: "12px", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#b91c1c", color: "#ffffff" }}>
+                    <th style={{ width: "35px", color: "#ffffff", background: "#b91c1c", padding: "8px 10px" }}>#</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c", padding: "8px 10px" }}>DNI / Nombre</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c", padding: "8px 10px" }}>Cargo</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c", padding: "8px 10px" }}>Distrito / Local</th>
+                    <th style={{ width: "70px", textAlign: "center", color: "#ffffff", background: "#b91c1c", padding: "8px 10px" }}>Mesa</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c", padding: "8px 10px" }}>Celular</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c", padding: "8px 10px" }}>Coordinador Colegio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visible.slice(0, 35).map((p, idx) => {
+                    const isTitular = !p.isSuplente && p.role !== "suplente" && p.role !== "general";
+                    const isGeneral = p.role === "general";
+                    return (
+                      <tr key={p.id} style={{ borderBottom: "1px solid var(--border, #e2e8f0)", background: idx % 2 === 1 ? "var(--bg-subtle, #f8fafc)" : "transparent" }}>
+                        <td style={{ textAlign: "center", color: "var(--text-muted)", padding: "8px 10px" }}>{idx + 1}</td>
+                        <td style={{ padding: "8px 10px" }}>
+                          <div style={{ fontWeight: 700, color: "#b91c1c" }}>{p.name}</div>
+                          <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>DNI: {p.docNumber}</div>
+                        </td>
+                        <td style={{ padding: "8px 10px" }}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              padding: "2px 8px",
+                              borderRadius: "12px",
+                              fontSize: "11px",
+                              fontWeight: 700,
+                              background: isGeneral ? "rgba(124, 58, 237, 0.1)" : isTitular ? "rgba(22, 163, 74, 0.1)" : "rgba(2, 132, 199, 0.1)",
+                              color: isGeneral ? "#7c3aed" : isTitular ? "#16a34a" : "#0284c7",
+                            }}
+                          >
+                            {isGeneral ? "General" : isTitular ? "Titular" : "Suplente"}
+                          </span>
+                        </td>
+                        <td style={{ padding: "8px 10px" }}>
+                          <div style={{ fontWeight: 600 }}>{p.localName}</div>
+                          <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{p.district || "—"}</div>
+                        </td>
+                        <td style={{ textAlign: "center", fontWeight: 700, padding: "8px 10px" }}>{p.mesa || "GENERAL"}</td>
+                        <td style={{ padding: "8px 10px", fontWeight: 600 }}>{p.phone || "—"}</td>
+                        <td style={{ padding: "8px 10px", fontSize: "11px" }}>{p.coordinatorName || "—"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              {visible.length > 35 && (
+                <div style={{ textAlign: "center", padding: "10px", color: "var(--text-muted)", fontSize: "11.5px" }}>
+                  Mostrando los primeros 35 de {visible.length} personeros filtrados. El reporte exportado contendrá todos los registros.
+                </div>
+              )}
+            </div>
+
+            <footer
+              className="modal__footer"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "12px 22px",
+                background: "var(--bg-subtle, #f8fafc)",
+                borderTop: "1px solid var(--border, #e2e8f0)",
+              }}
+            >
+              <span style={{ fontSize: "11.5px", color: "var(--text-muted)" }}>
+                Partido Político Ahora Nación · Sistema Electoral HornaWeb
+              </span>
+              <button
+                type="button"
+                className="btn btn--secondary"
+                onClick={() => setShowExportModal(false)}
+              >
+                Cerrar
+              </button>
+            </footer>
+          </div>
+        </div>
       )}
 
       <Toasts items={toasts} onDismiss={(id) => setToasts((t) => t.filter((x) => x.id !== id))} />
