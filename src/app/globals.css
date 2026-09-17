@@ -1419,6 +1419,10 @@ html[data-theme="dark"] .sidebar__subitem:hover {
   background: #ccfbf1;
   color: #115e59;
 }
+.badge--pink {
+  background: #fce7f3;
+  color: #be185d;
+}
 html[data-theme="dark"] .badge--amber {
   background: rgba(245, 158, 11, 0.18);
   color: #fcd34d;

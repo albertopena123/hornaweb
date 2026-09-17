@@ -78,6 +78,15 @@ function getRoleVisual(key: string, system: boolean): {
       badgeClass: "badge badge--purple",
     };
   }
+  if (key === "coordinador_departamental") {
+    return {
+      icon: "globe",
+      color: "#be185d",
+      bg: "rgba(190, 24, 93, 0.12)",
+      badgeLabel: "Departamental",
+      badgeClass: "badge badge--pink",
+    };
+  }
   if (key === "coordinador_provincial") {
     return {
       icon: "cloud",
