@@ -207,9 +207,20 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
       });
   }, [localItems, search, statusFilter, provinceFilter, districtFilter, sortBy]);
 
+  // Locales ordenados jerárquicamente por Provincia -> Distrito -> Local para la nómina y reportes
+  const sortedNominaLocales = useMemo(() => {
+    return [...localItems].sort((a, b) => {
+      const pComp = (a.province || "").localeCompare(b.province || "");
+      if (pComp !== 0) return pComp;
+      const dComp = (a.district || "").localeCompare(b.district || "");
+      if (dComp !== 0) return dComp;
+      return a.name.localeCompare(b.name);
+    });
+  }, [localItems]);
+
   // Preparar datos para exportar (PDF / Excel)
   function prepareNominaData(): { locales: NominaLocal[]; stats: NominaStats } {
-    const data: NominaLocal[] = localItems.map((loc) => ({
+    const data: NominaLocal[] = sortedNominaLocales.map((loc) => ({
       name: loc.name,
       code: loc.code || null,
       province: loc.province || "",
@@ -1142,7 +1153,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                   <img
                     src="/assets/images/logo/logo-an.webp"
                     alt="Ahora Nación"
-                    style={{ width: "46px", height: "46px", objectFit: "contain", borderRadius: "50%", boxShadow: "0 2px 8px rgba(185, 28, 28, 0.2)" }}
+                    style={{ width: "44px", height: "44px", objectFit: "contain" }}
                   />
                   <div>
                     <h2 style={{ fontSize: "17px", fontWeight: 900, margin: 0, color: "#b91c1c", letterSpacing: "-0.01em" }}>
@@ -1181,7 +1192,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {localItems.map((loc, idx) => {
+                  {sortedNominaLocales.map((loc, idx) => {
                     const hasCoord = !!loc.coordinatorName && loc.coordinatorName.trim() !== "";
                     const numMesas = loc.totalMesas || loc.mesas.length || 0;
 

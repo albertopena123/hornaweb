@@ -144,6 +144,15 @@ export async function downloadNominaPdf(
   // Cargar logo oficial Ahora Nación
   const logoData = await loadLogoBase64();
 
+  // Ordenar jerárquicamente por Provincia -> Distrito -> Local de Votación
+  const sortedLocales = [...locales].sort((a, b) => {
+    const pComp = (a.province || "").localeCompare(b.province || "");
+    if (pComp !== 0) return pComp;
+    const dComp = (a.district || "").localeCompare(b.district || "");
+    if (dComp !== 0) return dComp;
+    return a.name.localeCompare(b.name);
+  });
+
   // ─── Posición exacta de las 9 columnas (Total = 273mm) ───
   // Col 0: # (8mm)
   // Col 1: Provincia (22mm)
@@ -178,16 +187,9 @@ export async function downloadNominaPdf(
     pdf.setFillColor(...COLORS.gold);
     pdf.rect(0, 23, pageW, 1.8, "F");
 
-    // 3. Medallón Circular para Logo Oficial (evita fondos blancos cuadrados)
-    const logoCenter = margin + 8;
-    pdf.setFillColor(...COLORS.white);
-    pdf.circle(logoCenter, 11.5, 8.5, "F");
-    pdf.setDrawColor(...COLORS.gold);
-    pdf.setLineWidth(0.35);
-    pdf.circle(logoCenter, 11.5, 8.5, "S");
-
+    // 3. Logo Oficial Ahora Nación (Directo sobre franja institucional, sin círculos)
     if (logoData) {
-      pdf.addImage(logoData, "PNG", logoCenter - 7, 4.5, 14, 14, undefined, "FAST");
+      pdf.addImage(logoData, "PNG", margin, 3.5, 16, 16, undefined, "FAST");
     }
 
     const textX = margin + 20;
@@ -320,13 +322,13 @@ export async function downloadNominaPdf(
   const startY = 34;
   const maxY = pageH - 12;
   const rowsPerPage = Math.floor((maxY - (startY + 8.3)) / rowH);
-  const totalPages = Math.max(1, Math.ceil(locales.length / rowsPerPage));
+  const totalPages = Math.max(1, Math.ceil(sortedLocales.length / rowsPerPage));
 
   let currentPage = 1;
   drawHeader(currentPage, totalPages);
   let y = drawTableHeader(startY);
 
-  locales.forEach((loc, idx) => {
+  sortedLocales.forEach((loc, idx) => {
     if (y + rowH > maxY) {
       drawFooter();
       pdf.addPage();
@@ -535,6 +537,15 @@ export async function downloadNominaExcel(
     coord2Bg: "FFE0F2FE",
   };
 
+  // Ordenar jerárquicamente por Provincia -> Distrito -> Local de Votación
+  const sortedLocales = [...locales].sort((a, b) => {
+    const pComp = (a.province || "").localeCompare(b.province || "");
+    if (pComp !== 0) return pComp;
+    const dComp = (a.district || "").localeCompare(b.district || "");
+    if (dComp !== 0) return dComp;
+    return a.name.localeCompare(b.name);
+  });
+
   // ═══════════════════════════════════════════════════════════════════
   // HOJA 1: COORDINADORES POR LOCAL DE VOTACIÓN (51 Colegios)
   // ═══════════════════════════════════════════════════════════════════
@@ -549,11 +560,21 @@ export async function downloadNominaExcel(
     },
   });
 
-  // Logo en Hoja 1
+  // Logotipo institucional contenido en A1:A3
+  ws1.mergeCells("A1:A3");
+  const logoCell1 = ws1.getCell("A1");
+  logoCell1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandDark } };
+  logoCell1.border = {
+    top: { style: "medium", color: { argb: ARGB.brandDark } },
+    bottom: { style: "medium", color: { argb: ARGB.brandDark } },
+    left: { style: "medium", color: { argb: ARGB.brandDark } },
+    right: { style: "medium", color: { argb: ARGB.brandDark } },
+  };
+
   if (logoId !== null) {
     ws1.addImage(logoId, {
-      tl: { col: 0.15, row: 0.2 },
-      ext: { width: 68, height: 68 },
+      tl: { col: 0.15, row: 0.25 },
+      ext: { width: 48, height: 48 },
     });
   }
 
@@ -576,7 +597,7 @@ export async function downloadNominaExcel(
   ws1.getRow(2).height = 20;
 
   // Fila 3: KPI Metrics Strip
-  const totalMesas1 = locales.reduce((acc, l) => acc + (l.totalMesas || l.mesasLength || 0), 0);
+  const totalMesas1 = sortedLocales.reduce((acc, l) => acc + (l.totalMesas || l.mesasLength || 0), 0);
   const pct1 = Math.round((stats.conCoord / Math.max(1, stats.totalColegios)) * 100);
 
   ws1.mergeCells("B3:M3");
@@ -590,21 +611,21 @@ export async function downloadNominaExcel(
   // Fila 4: Separador
   ws1.getRow(4).height = 6;
 
-  // Fila 5: Cabeceras de Columna
+  // Fila 5: Cabeceras de Columna con anchos balanceados y legibles
   ws1.columns = [
-    { key: "num",         width: 5,  header: "#" },
-    { key: "province",    width: 16, header: "Provincia" },
-    { key: "district",    width: 18, header: "Distrito" },
-    { key: "localName",   width: 44, header: "Centro de Votación" },
-    { key: "code",        width: 12, header: "Código" },
-    { key: "mesas",       width: 9,  header: "Mesas" },
-    { key: "coord1Name",  width: 32, header: "Coordinador 1 (Titular)" },
-    { key: "coord1Dni",   width: 13, header: "DNI Coord. 1" },
-    { key: "coord1Phone", width: 14, header: "Cel. Coord. 1" },
-    { key: "coord2Name",  width: 32, header: "Coordinador 2 (Adjunto)" },
-    { key: "coord2Dni",   width: 13, header: "DNI Coord. 2" },
-    { key: "coord2Phone", width: 14, header: "Cel. Coord. 2" },
-    { key: "estado",      width: 15, header: "Estado" },
+    { key: "num",         width: 8,  header: "#" },
+    { key: "province",    width: 18, header: "Provincia" },
+    { key: "district",    width: 22, header: "Distrito" },
+    { key: "localName",   width: 48, header: "Centro de Votación" },
+    { key: "code",        width: 14, header: "Código" },
+    { key: "mesas",       width: 10, header: "Mesas" },
+    { key: "coord1Name",  width: 36, header: "Coordinador 1 (Titular)" },
+    { key: "coord1Dni",   width: 14, header: "DNI Coord. 1" },
+    { key: "coord1Phone", width: 16, header: "Cel. Coord. 1" },
+    { key: "coord2Name",  width: 36, header: "Coordinador 2 (Adjunto)" },
+    { key: "coord2Dni",   width: 14, header: "DNI Coord. 2" },
+    { key: "coord2Phone", width: 16, header: "Cel. Coord. 2" },
+    { key: "estado",      width: 18, header: "Estado" },
   ];
 
   const headerRow1 = ws1.getRow(5);
@@ -627,7 +648,7 @@ export async function downloadNominaExcel(
   });
 
   // Filas de Datos
-  locales.forEach((loc, idx) => {
+  sortedLocales.forEach((loc, idx) => {
     const hasCoord1 = !!loc.coordinatorName && loc.coordinatorName.trim() !== "";
     const hasCoord2 = !!loc.coordinator2Name && loc.coordinator2Name.trim() !== "";
     const hasAny = hasCoord1 || hasCoord2;
@@ -695,6 +716,27 @@ export async function downloadNominaExcel(
       c2Cell.font = { name: "Calibri", size: 9.5, bold: true, color: { argb: ARGB.coord2Fg } };
     }
 
+    // DNI y Celular formateados como texto puro (numFmt = "@") para conservar ceros
+    const c1DniCell = row.getCell(8);
+    c1DniCell.numFmt = "@";
+    c1DniCell.alignment = { horizontal: "center", vertical: "middle" };
+    c1DniCell.font = { name: "Calibri", size: 9.5, bold: true };
+
+    const c1PhoneCell = row.getCell(9);
+    c1PhoneCell.numFmt = "@";
+    c1PhoneCell.alignment = { horizontal: "center", vertical: "middle" };
+    c1PhoneCell.font = { name: "Calibri", size: 9.5 };
+
+    const c2DniCell = row.getCell(11);
+    c2DniCell.numFmt = "@";
+    c2DniCell.alignment = { horizontal: "center", vertical: "middle" };
+    c2DniCell.font = { name: "Calibri", size: 9.5, bold: true };
+
+    const c2PhoneCell = row.getCell(12);
+    c2PhoneCell.numFmt = "@";
+    c2PhoneCell.alignment = { horizontal: "center", vertical: "middle" };
+    c2PhoneCell.font = { name: "Calibri", size: 9.5 };
+
     // Estado Badge
     const estCell = row.getCell(13);
     estCell.alignment = { horizontal: "center", vertical: "middle" };
@@ -708,7 +750,7 @@ export async function downloadNominaExcel(
   });
 
   // Fila de Totales en Hoja 1
-  const sumRow1 = locales.length + 6;
+  const sumRow1 = sortedLocales.length + 6;
   ws1.mergeCells(`A${sumRow1}:E${sumRow1}`);
   const sumLabel1 = ws1.getCell(`A${sumRow1}`);
   sumLabel1.value = `TOTAL: ${stats.totalColegios} Colegios Electorales`;
@@ -738,7 +780,7 @@ export async function downloadNominaExcel(
 
   // Congelar encabezados y autofiltro
   ws1.views = [{ state: "frozen", ySplit: 5, xSplit: 0 }];
-  ws1.autoFilter = { from: { row: 5, column: 1 }, to: { row: locales.length + 5, column: 13 } };
+  ws1.autoFilter = { from: { row: 5, column: 1 }, to: { row: sortedLocales.length + 5, column: 13 } };
 
   // ═══════════════════════════════════════════════════════════════════
   // HOJA 2: LIDERAZGO REGIONAL Y COORDINACIÓN TERRITORIAL
@@ -754,11 +796,21 @@ export async function downloadNominaExcel(
     },
   });
 
-  // Logo en Hoja 2
+  // Logotipo institucional contenido en A1:A3 en Hoja 2
+  ws2.mergeCells("A1:A3");
+  const logoCell2 = ws2.getCell("A1");
+  logoCell2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandDark } };
+  logoCell2.border = {
+    top: { style: "medium", color: { argb: ARGB.brandDark } },
+    bottom: { style: "medium", color: { argb: ARGB.brandDark } },
+    left: { style: "medium", color: { argb: ARGB.brandDark } },
+    right: { style: "medium", color: { argb: ARGB.brandDark } },
+  };
+
   if (logoId !== null) {
     ws2.addImage(logoId, {
-      tl: { col: 0.15, row: 0.2 },
-      ext: { width: 68, height: 68 },
+      tl: { col: 0.15, row: 0.25 },
+      ext: { width: 48, height: 48 },
     });
   }
 
@@ -794,14 +846,14 @@ export async function downloadNominaExcel(
 
   // Columnas Hoja 2
   ws2.columns = [
-    { key: "item",   width: 6,  header: "Item" },
-    { key: "name",   width: 36, header: "Nombres y Apellidos (Oficial RENIEC)" },
+    { key: "item",   width: 8,  header: "Item" },
+    { key: "name",   width: 38, header: "Nombres y Apellidos (Oficial RENIEC)" },
     { key: "cargo",  width: 38, header: "Cargo en el Partido" },
     { key: "rol",    width: 28, header: "Rol en el Sistema" },
-    { key: "scope",  width: 30, header: "Ámbito Territorial" },
+    { key: "scope",  width: 34, header: "Ámbito Territorial" },
     { key: "dni",    width: 14, header: "DNI" },
-    { key: "phone",  width: 15, header: "Celular" },
-    { key: "estado", width: 14, header: "Estado" },
+    { key: "phone",  width: 16, header: "Celular" },
+    { key: "estado", width: 16, header: "Estado" },
   ];
 
   const headerRow2 = ws2.getRow(5);
@@ -862,10 +914,12 @@ export async function downloadNominaExcel(
     // Cargo en negrita
     row.getCell(3).font = { name: "Calibri", size: 9.5, bold: true };
 
-    // DNI y Celular centrados
+    // DNI y Celular centrados y formateados como texto puro (numFmt = "@")
+    row.getCell(6).numFmt = "@";
     row.getCell(6).alignment = { horizontal: "center", vertical: "middle" };
     row.getCell(6).font = { name: "Calibri", size: 9.5, bold: true };
 
+    row.getCell(7).numFmt = "@";
     row.getCell(7).alignment = { horizontal: "center", vertical: "middle" };
     row.getCell(7).font = { name: "Calibri", size: 9.5, bold: true, color: { argb: ARGB.coord2Fg } };
 

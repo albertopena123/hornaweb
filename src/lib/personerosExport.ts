@@ -107,6 +107,29 @@ export async function downloadPersonerosPdf(
 
   const logoData = await loadLogoBase64();
 
+  // Ordenar jerárquicamente por Distrito -> Local de Votación -> Mesa -> Cargo (Titular antes de Suplente) -> Nombre
+  const sortedPersoneros = [...personeros].sort((a, b) => {
+    const dComp = (a.district || "").localeCompare(b.district || "");
+    if (dComp !== 0) return dComp;
+    const lComp = (a.localName || "").localeCompare(b.localName || "");
+    if (lComp !== 0) return lComp;
+    const mA = a.mesa || "";
+    const mB = b.mesa || "";
+    if (mA !== mB) {
+      if (mA === "" || mA.toLowerCase().includes("gen")) return -1;
+      if (mB === "" || mB.toLowerCase().includes("gen")) return 1;
+      return mA.localeCompare(mB, undefined, { numeric: true });
+    }
+    const roleRank = (p: PersoneroRow) => {
+      if (!p.isSuplente && p.role !== "suplente" && p.role !== "general") return 1;
+      if (p.isSuplente || p.role === "suplente") return 2;
+      return 3;
+    };
+    const rComp = roleRank(a) - roleRank(b);
+    if (rComp !== 0) return rComp;
+    return (a.name || "").localeCompare(b.name || "");
+  });
+
   // ─── Columnas del Reporte de Personeros ───
   // Total = 8 + 18 + 52 + 22 + 24 + 54 + 16 + 26 + 37 + 16 = 273mm
   function getCols() {
@@ -134,16 +157,9 @@ export async function downloadPersonerosPdf(
     pdf.setFillColor(...COLORS.gold);
     pdf.rect(0, 23, pageW, 1.8, "F");
 
-    // 3. Medallón Circular para Logo Oficial
-    const logoCenter = margin + 8;
-    pdf.setFillColor(...COLORS.white);
-    pdf.circle(logoCenter, 11.5, 8.5, "F");
-    pdf.setDrawColor(...COLORS.gold);
-    pdf.setLineWidth(0.35);
-    pdf.circle(logoCenter, 11.5, 8.5, "S");
-
+    // 3. Logo Oficial Ahora Nación (Directo sobre franja institucional, sin círculos)
     if (logoData) {
-      pdf.addImage(logoData, "PNG", logoCenter - 7, 4.5, 14, 14, undefined, "FAST");
+      pdf.addImage(logoData, "PNG", margin, 3.5, 16, 16, undefined, "FAST");
     }
 
     const textX = margin + 20;
@@ -270,13 +286,13 @@ export async function downloadPersonerosPdf(
   const startY = 34;
   const maxY = pageH - 12;
   const rowsPerPage = Math.floor((maxY - (startY + 8.5)) / rowH);
-  const totalPages = Math.max(1, Math.ceil(personeros.length / rowsPerPage));
+  const totalPages = Math.max(1, Math.ceil(sortedPersoneros.length / rowsPerPage));
 
   let currentPage = 1;
   drawHeader(currentPage, totalPages);
   let y = drawTableHeader(startY);
 
-  personeros.forEach((p, idx) => {
+  sortedPersoneros.forEach((p, idx) => {
     if (y + rowH > maxY) {
       drawFooter();
       pdf.addPage();
@@ -502,6 +518,29 @@ export async function downloadPersonerosExcel(
     purpleFg: "FF7C3AED",
   };
 
+  // Ordenar jerárquicamente por Distrito -> Local de Votación -> Mesa -> Cargo -> Nombre
+  const sortedPersoneros = [...personeros].sort((a, b) => {
+    const dComp = (a.district || "").localeCompare(b.district || "");
+    if (dComp !== 0) return dComp;
+    const lComp = (a.localName || "").localeCompare(b.localName || "");
+    if (lComp !== 0) return lComp;
+    const mA = a.mesa || "";
+    const mB = b.mesa || "";
+    if (mA !== mB) {
+      if (mA === "" || mA.toLowerCase().includes("gen")) return -1;
+      if (mB === "" || mB.toLowerCase().includes("gen")) return 1;
+      return mA.localeCompare(mB, undefined, { numeric: true });
+    }
+    const roleRank = (p: PersoneroRow) => {
+      if (!p.isSuplente && p.role !== "suplente" && p.role !== "general") return 1;
+      if (p.isSuplente || p.role === "suplente") return 2;
+      return 3;
+    };
+    const rComp = roleRank(a) - roleRank(b);
+    if (rComp !== 0) return rComp;
+    return (a.name || "").localeCompare(b.name || "");
+  });
+
   // ───────────────────────────────────────────────────────────────────
   // HOJA 1: PADRÓN NOMINAL DE PERSONEROS
   // ───────────────────────────────────────────────────────────────────
@@ -516,10 +555,21 @@ export async function downloadPersonerosExcel(
     },
   });
 
+  // Logotipo institucional contenido en A1:A3
+  ws1.mergeCells("A1:A3");
+  const logoCell1 = ws1.getCell("A1");
+  logoCell1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandDark } };
+  logoCell1.border = {
+    top: { style: "medium", color: { argb: ARGB.brandDark } },
+    bottom: { style: "medium", color: { argb: ARGB.brandDark } },
+    left: { style: "medium", color: { argb: ARGB.brandDark } },
+    right: { style: "medium", color: { argb: ARGB.brandDark } },
+  };
+
   if (logoId !== null) {
     ws1.addImage(logoId, {
-      tl: { col: 0.15, row: 0.2 },
-      ext: { width: 66, height: 66 },
+      tl: { col: 0.15, row: 0.25 },
+      ext: { width: 48, height: 48 },
     });
   }
 
@@ -552,23 +602,23 @@ export async function downloadPersonerosExcel(
 
   ws1.getRow(4).height = 6;
 
-  // Columnas Hoja 1
+  // Columnas Hoja 1 con anchos equilibrados
   ws1.columns = [
-    { key: "num",         width: 5,  header: "#" },
-    { key: "dni",         width: 13, header: "DNI" },
+    { key: "num",         width: 8,  header: "#" },
+    { key: "dni",         width: 14, header: "DNI" },
     { key: "name",        width: 36, header: "Apellidos y Nombres" },
-    { key: "cargo",       width: 18, header: "Cargo / Rol" },
-    { key: "district",    width: 18, header: "Distrito" },
-    { key: "localName",   width: 42, header: "Local de Votación" },
-    { key: "address",     width: 30, header: "Dirección del Local" },
-    { key: "mesa",        width: 10, header: "Mesa" },
+    { key: "cargo",       width: 20, header: "Cargo / Rol" },
+    { key: "district",    width: 20, header: "Distrito" },
+    { key: "localName",   width: 44, header: "Local de Votación" },
+    { key: "address",     width: 32, header: "Dirección del Local" },
+    { key: "mesa",        width: 12, header: "Mesa" },
     { key: "aula",        width: 12, header: "Aula" },
-    { key: "phone",       width: 14, header: "Celular" },
+    { key: "phone",       width: 16, header: "Celular" },
     { key: "whatsapp",    width: 14, header: "Notif. WA" },
     { key: "onpeMember",  width: 16, header: "Miembro ONPE" },
-    { key: "coordName",   width: 32, header: "Coordinador Colegio" },
-    { key: "coordPhone",  width: 14, header: "Cel. Coordinador" },
-    { key: "estado",      width: 12, header: "Estado" },
+    { key: "coordName",   width: 34, header: "Coordinador Colegio" },
+    { key: "coordPhone",  width: 16, header: "Cel. Coordinador" },
+    { key: "estado",      width: 14, header: "Estado" },
     { key: "credencial",  width: 14, header: "Credencial" },
   ];
 
@@ -591,7 +641,7 @@ export async function downloadPersonerosExcel(
     };
   });
 
-  personeros.forEach((p, idx) => {
+  sortedPersoneros.forEach((p, idx) => {
     const isTitular = !p.isSuplente && p.role !== "suplente" && p.role !== "general";
     const isGeneral = p.role === "general";
     const cargoStr = isGeneral ? "General de Local" : isTitular ? "Titular de Mesa" : "Suplente de Mesa";
@@ -633,8 +683,13 @@ export async function downloadPersonerosExcel(
     });
 
     row.getCell(1).alignment = { horizontal: "center", vertical: "middle" };
-    row.getCell(2).alignment = { horizontal: "center", vertical: "middle" };
-    row.getCell(2).font = { name: "Calibri", size: 9.5, bold: true };
+    
+    // DNI formateado como texto puro (numFmt = "@") y centrado
+    const dniCell = row.getCell(2);
+    dniCell.numFmt = "@";
+    dniCell.alignment = { horizontal: "center", vertical: "middle" };
+    dniCell.font = { name: "Calibri", size: 9.5, bold: true };
+
     row.getCell(3).font = { name: "Calibri", size: 10, bold: true, color: { argb: ARGB.brandRed } };
 
     // Cargo con color
@@ -654,10 +709,19 @@ export async function downloadPersonerosExcel(
 
     row.getCell(8).alignment = { horizontal: "center", vertical: "middle" };
     row.getCell(8).font = { name: "Calibri", size: 9.5, bold: true };
-    row.getCell(10).alignment = { horizontal: "center", vertical: "middle" };
+
+    // Celular personero
+    const phoneCell = row.getCell(10);
+    phoneCell.numFmt = "@";
+    phoneCell.alignment = { horizontal: "center", vertical: "middle" };
+
     row.getCell(11).alignment = { horizontal: "center", vertical: "middle" };
     row.getCell(12).alignment = { horizontal: "center", vertical: "middle" };
-    row.getCell(14).alignment = { horizontal: "center", vertical: "middle" };
+
+    // Celular coordinador
+    const coordPhoneCell = row.getCell(14);
+    coordPhoneCell.numFmt = "@";
+    coordPhoneCell.alignment = { horizontal: "center", vertical: "middle" };
 
     // Estado
     const estadoCell = row.getCell(15);
@@ -670,11 +734,11 @@ export async function downloadPersonerosExcel(
   });
 
   // Fila de Totales
-  const lastRow1 = personeros.length + 5;
+  const lastRow1 = sortedPersoneros.length + 5;
   const summaryRow1 = lastRow1 + 1;
   ws1.mergeCells(`A${summaryRow1}:C${summaryRow1}`);
   const totalCell1 = ws1.getCell(`A${summaryRow1}`);
-  totalCell1.value = `TOTAL GENERAL: ${personeros.length} PERSONEROS REGISTRADOS`;
+  totalCell1.value = `TOTAL GENERAL: ${sortedPersoneros.length} PERSONEROS REGISTRADOS`;
   totalCell1.font = { name: "Calibri", size: 10, bold: true, color: { argb: ARGB.white } };
   totalCell1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandDark } };
   totalCell1.alignment = { horizontal: "center", vertical: "middle" };
@@ -705,10 +769,21 @@ export async function downloadPersonerosExcel(
       },
     });
 
+    // Logotipo institucional contenido en A1:A3 de Hoja 2
+    ws2.mergeCells("A1:A3");
+    const logoCell2 = ws2.getCell("A1");
+    logoCell2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandDark } };
+    logoCell2.border = {
+      top: { style: "medium", color: { argb: ARGB.brandDark } },
+      bottom: { style: "medium", color: { argb: ARGB.brandDark } },
+      left: { style: "medium", color: { argb: ARGB.brandDark } },
+      right: { style: "medium", color: { argb: ARGB.brandDark } },
+    };
+
     if (logoId !== null) {
       ws2.addImage(logoId, {
-        tl: { col: 0.15, row: 0.2 },
-        ext: { width: 66, height: 66 },
+        tl: { col: 0.15, row: 0.25 },
+        ext: { width: 48, height: 48 },
       });
     }
 
@@ -743,17 +818,17 @@ export async function downloadPersonerosExcel(
 
     // Columnas Hoja 2
     ws2.columns = [
-      { key: "num",          width: 5,  header: "#" },
-      { key: "localName",    width: 44, header: "Local de Votación" },
-      { key: "district",     width: 18, header: "Distrito" },
-      { key: "totalMesas",   width: 12, header: "Mesas Totales" },
-      { key: "totalPers",    width: 14, header: "Personeros Asignados" },
-      { key: "titulares",    width: 12, header: "Titulares" },
-      { key: "suplentes",    width: 12, header: "Suplentes" },
+      { key: "num",          width: 8,  header: "#" },
+      { key: "localName",    width: 46, header: "Local de Votación" },
+      { key: "district",     width: 20, header: "Distrito" },
+      { key: "totalMesas",   width: 14, header: "Mesas Totales" },
+      { key: "totalPers",    width: 16, header: "Personeros Asignados" },
+      { key: "titulares",    width: 14, header: "Titulares" },
+      { key: "suplentes",    width: 14, header: "Suplentes" },
       { key: "cobertura",    width: 14, header: "% Cobertura" },
-      { key: "coord1",       width: 32, header: "Coordinador Titular" },
-      { key: "coordPhone",   width: 14, header: "Cel. Coordinador" },
-      { key: "estado",       width: 14, header: "Estado" },
+      { key: "coord1",       width: 34, header: "Coordinador Titular" },
+      { key: "coordPhone",   width: 16, header: "Cel. Coordinador" },
+      { key: "estado",       width: 16, header: "Estado" },
     ];
 
     const headerRow2 = ws2.getRow(5);
@@ -774,7 +849,14 @@ export async function downloadPersonerosExcel(
       };
     });
 
-    locales.forEach((loc, idx) => {
+    // Ordenar locales por Distrito y Nombre
+    const sortedLocales = [...locales].sort((a, b) => {
+      const dComp = (a.district || "").localeCompare(b.district || "");
+      if (dComp !== 0) return dComp;
+      return (a.name || "").localeCompare(b.name || "");
+    });
+
+    sortedLocales.forEach((loc, idx) => {
       const pInLoc = personeros.filter((p) => p.localName.toLowerCase() === loc.name.toLowerCase());
       const tCount = pInLoc.filter((p) => !p.isSuplente && p.role !== "suplente" && p.role !== "general").length;
       const sCount = pInLoc.filter((p) => p.isSuplente || p.role === "suplente").length;
@@ -824,6 +906,10 @@ export async function downloadPersonerosExcel(
       row.getCell(7).alignment = { horizontal: "center", vertical: "middle" };
       row.getCell(8).alignment = { horizontal: "center", vertical: "middle" };
       row.getCell(8).font = { name: "Calibri", size: 9.5, bold: true };
+
+      // Teléfono coordinador
+      row.getCell(10).numFmt = "@";
+      row.getCell(10).alignment = { horizontal: "center", vertical: "middle" };
 
       // Estado cobertura
       const estCell = row.getCell(11);
