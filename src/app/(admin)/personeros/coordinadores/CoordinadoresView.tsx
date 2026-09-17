@@ -1064,17 +1064,26 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
             style={{ maxWidth: "860px", width: "100%", maxHeight: "90vh", display: "flex", flexDirection: "column" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <header className="modal__head print-hidden">
-              <div>
-                <span className="badge badge--green" style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
-                  <ShieldCheck size={12} /> Nómina Territorial Oficial
-                </span>
-                <h3 style={{ margin: "4px 0 0", fontSize: "18px", fontWeight: 800 }}>
-                  Padrón de Coordinadores de Centro de Votación
-                </h3>
-                <p style={{ margin: "2px 0 0", fontSize: "12px", color: "var(--text-muted, #64748b)" }}>
-                  Madre de Dios · 51 Colegios Electorales
-                </p>
+            <header className="modal__head print-hidden" style={{ borderBottom: "2px solid #b91c1c", background: "linear-gradient(180deg, rgba(185, 28, 28, 0.04) 0%, transparent 100%)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <img
+                  src="/assets/images/logo/logo-an.webp"
+                  alt="Ahora Nación"
+                  style={{ width: "42px", height: "42px", objectFit: "contain", borderRadius: "50%", boxShadow: "0 2px 8px rgba(185, 28, 28, 0.25)" }}
+                />
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span className="badge badge--red" style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", fontWeight: 700 }}>
+                      <ShieldCheck size={12} /> Nómina Territorial Oficial
+                    </span>
+                  </div>
+                  <h3 style={{ margin: "2px 0 0", fontSize: "17px", fontWeight: 800, color: "var(--text, #0f172a)" }}>
+                    Padrón Oficial de Coordinadores de Local de Votación
+                  </h3>
+                  <p style={{ margin: "1px 0 0", fontSize: "11.5px", color: "var(--text-muted, #64748b)" }}>
+                    Región Madre de Dios · 51 Centros Electorales · Partido Político Ahora Nación
+                  </p>
+                </div>
               </div>
               <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
                 <button
@@ -1086,7 +1095,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                     try {
                       const data = prepareNominaData();
                       await downloadNominaPdf(data.locales, data.stats);
-                      toastSuccess("PDF descargado exitosamente.");
+                      toastSuccess("PDF oficial descargado exitosamente.");
                     } catch (e) {
                       console.error(e);
                       toastError("Error al generar el PDF.");
@@ -1094,10 +1103,10 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                       setDownloadingPdf(false);
                     }
                   }}
-                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#dc2626", color: "#fff", border: "none" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#dc2626", color: "#fff", border: "none", fontWeight: 700, padding: "7px 14px", borderRadius: "8px", boxShadow: "0 2px 6px rgba(220, 38, 38, 0.3)" }}
                 >
                   {downloadingPdf ? <Loader2 size={14} className="spin" /> : <Download size={14} />}
-                  {downloadingPdf ? "Generando..." : "Descargar PDF"}
+                  {downloadingPdf ? "Generando..." : "Descargar PDF (Oficial)"}
                 </button>
                 <button
                   type="button"
@@ -1108,7 +1117,7 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                     try {
                       const data = prepareNominaData();
                       await downloadNominaExcel(data.locales, data.stats);
-                      toastSuccess("Excel descargado exitosamente.");
+                      toastSuccess("Excel oficial descargado exitosamente.");
                     } catch (e) {
                       console.error(e);
                       toastError("Error al generar el Excel.");
@@ -1116,10 +1125,10 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
                       setDownloadingExcel(false);
                     }
                   }}
-                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#16a34a", color: "#fff", border: "none" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "#16a34a", color: "#fff", border: "none", fontWeight: 700, padding: "7px 14px", borderRadius: "8px", boxShadow: "0 2px 6px rgba(22, 163, 74, 0.3)" }}
                 >
                   {downloadingExcel ? <Loader2 size={14} className="spin" /> : <FileSpreadsheet size={14} />}
-                  {downloadingExcel ? "Generando..." : "Descargar Excel"}
+                  {downloadingExcel ? "Generando..." : "Descargar Excel (.xlsx)"}
                 </button>
                 <button type="button" className="btn-icon" onClick={() => setShowPrintModal(false)}>
                   <X size={18} />
@@ -1128,27 +1137,47 @@ export function CoordinadoresView({ locales, personeros, perms }: Props) {
             </header>
 
             <div className="modal__body" style={{ flex: 1, overflowY: "auto", padding: "20px" }}>
-              <div style={{ textAlign: "center", marginBottom: "16px", borderBottom: "1px solid var(--border, #e2e8f0)", paddingBottom: "12px" }}>
-                <h2 style={{ fontSize: "18px", fontWeight: 900, margin: 0 }}>
-                  PARTIDO POLÍTICO AHORA NACIÓN
-                </h2>
-                <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--text-muted, #475569)", marginTop: "2px" }}>
-                  NÓMINA DE COORDINADORES DE LOCAL DE VOTACIÓN · REGIÓN MADRE DE DIOS
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", marginBottom: "18px", borderBottom: "2px solid #b91c1c", paddingBottom: "14px", background: "linear-gradient(to right, rgba(185, 28, 28, 0.05), transparent)", borderRadius: "10px", padding: "12px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <img
+                    src="/assets/images/logo/logo-an.webp"
+                    alt="Ahora Nación"
+                    style={{ width: "46px", height: "46px", objectFit: "contain", borderRadius: "50%", boxShadow: "0 2px 8px rgba(185, 28, 28, 0.2)" }}
+                  />
+                  <div>
+                    <h2 style={{ fontSize: "17px", fontWeight: 900, margin: 0, color: "#b91c1c", letterSpacing: "-0.01em" }}>
+                      PARTIDO POLÍTICO AHORA NACIÓN
+                    </h2>
+                    <div style={{ fontSize: "12px", fontWeight: 700, color: "#1e293b", marginTop: "2px" }}>
+                      NÓMINA OFICIAL DE COORDINADORES DE LOCAL DE VOTACIÓN · MADRE DE DIOS
+                    </div>
+                  </div>
                 </div>
-                <div style={{ fontSize: "11px", color: "var(--text-muted, #64748b)", marginTop: "4px" }}>
-                  Total Colegios: 51 | Asignados: {conCoord} | Pendientes: {sinCoord}
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <div style={{ background: "var(--surface, #ffffff)", border: "1px solid var(--border, #e2e8f0)", padding: "6px 12px", borderRadius: "8px", textAlign: "center" }}>
+                    <div style={{ fontSize: "10px", color: "var(--text-muted, #64748b)", fontWeight: 600 }}>Locales</div>
+                    <div style={{ fontSize: "15px", fontWeight: 800, color: "var(--text, #0f172a)" }}>51</div>
+                  </div>
+                  <div style={{ background: "rgba(22, 163, 74, 0.1)", border: "1px solid rgba(22, 163, 74, 0.25)", padding: "6px 12px", borderRadius: "8px", textAlign: "center" }}>
+                    <div style={{ fontSize: "10px", color: "#15803d", fontWeight: 600 }}>Asignados</div>
+                    <div style={{ fontSize: "15px", fontWeight: 800, color: "#16a34a" }}>{conCoord}</div>
+                  </div>
+                  <div style={{ background: "rgba(220, 38, 38, 0.1)", border: "1px solid rgba(220, 38, 38, 0.25)", padding: "6px 12px", borderRadius: "8px", textAlign: "center" }}>
+                    <div style={{ fontSize: "10px", color: "#b91c1c", fontWeight: 600 }}>Pendientes</div>
+                    <div style={{ fontSize: "15px", fontWeight: 800, color: "#dc2626" }}>{sinCoord}</div>
+                  </div>
                 </div>
               </div>
 
               <table className="table" style={{ width: "100%", fontSize: "12px" }}>
                 <thead>
-                  <tr>
-                    <th style={{ width: "40px" }}>#</th>
-                    <th>Provincia / Distrito</th>
-                    <th>Centro de Votación</th>
-                    <th style={{ width: "70px", textAlign: "center" }}>Mesas</th>
-                    <th>Coordinador Oficial</th>
-                    <th>Teléfono / WhatsApp</th>
+                  <tr style={{ background: "#b91c1c", color: "#ffffff" }}>
+                    <th style={{ width: "40px", color: "#ffffff", background: "#b91c1c" }}>#</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c" }}>Provincia / Distrito</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c" }}>Centro de Votación</th>
+                    <th style={{ width: "70px", textAlign: "center", color: "#ffffff", background: "#b91c1c" }}>Mesas</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c" }}>Coordinadores Oficiales</th>
+                    <th style={{ color: "#ffffff", background: "#b91c1c" }}>Teléfono / Contacto</th>
                   </tr>
                 </thead>
                 <tbody>

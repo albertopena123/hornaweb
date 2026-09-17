@@ -1,14 +1,14 @@
 /**
  * nominaExport.ts
  * ─────────────────────────────────────────────────────────────────────
- * Exporta la Nómina de Coordinadores de Centro de Votación en dos
- * formatos profesionales:
+ * Exporta la Nómina Oficial de Coordinadores de Centro de Votación y
+ * la Plana de Coordinación Territorial en dos formatos ejecutivos:
  *
- *   1) PDF  – Generado con jsPDF (vectorial, no screenshot)
- *   2) XLSX – Generado con ExcelJS con colores y estilos corporativos
- *
- * Ambos incluyen el logo del partido, encabezados con la paleta
- * oficial y un diseño listo para impresión y distribución.
+ *   1) PDF  – Vectorial de alta resolución (jsPDF) con membrete oficial
+ *             Ahora Nación, paleta carmesí/dorada, logo circular y KPI badges.
+ *   2) XLSX – Libro corporativo ExcelJS con 2 hojas:
+ *             • Hoja 1: Locales de Votación (51 colegios y coordinadores)
+ *             • Hoja 2: Liderazgo Territorial (Plana regional, provincial y distrital)
  * ─────────────────────────────────────────────────────────────────────
  */
 
@@ -33,41 +33,79 @@ export interface NominaStats {
   sinCoord: number;
 }
 
-// ─── Paleta Oficial ─────────────────────────────────────────────────
+// ─── Paleta Oficial Ahora Nación ────────────────────────────────────
 const COLORS = {
-  brand: [22, 101, 52] as [number, number, number],       // Verde oscuro institucional
-  brandLight: [220, 252, 231] as [number, number, number], // Verde clarito fondo
-  accent: [37, 99, 235] as [number, number, number],       // Azul para Coord. 2
-  accentLight: [239, 246, 255] as [number, number, number],
-  danger: [220, 38, 38] as [number, number, number],       // Rojo para sin asignar
-  dangerLight: [254, 242, 242] as [number, number, number],
-  headerBg: [15, 23, 42] as [number, number, number],      // Slate-900 header
-  headerText: [255, 255, 255] as [number, number, number],
-  gray: [100, 116, 139] as [number, number, number],
-  grayLight: [241, 245, 249] as [number, number, number],
-  text: [15, 23, 42] as [number, number, number],
-  white: [255, 255, 255] as [number, number, number],
-  border: [226, 232, 240] as [number, number, number],
+  brand: [185, 28, 28] as [number, number, number],          // Carmesí Institucional (#b91c1c)
+  brandDark: [127, 29, 29] as [number, number, number],      // Borgoña (#7f1d1d)
+  brandLight: [254, 242, 242] as [number, number, number],   // Fondo suave carmesí (#fef2f2)
+  gold: [217, 119, 6] as [number, number, number],           // Dorado Solar (#d97706)
+  goldLight: [254, 243, 199] as [number, number, number],    // Amarillo tenue (#fef3c7)
+  accent: [2, 132, 199] as [number, number, number],         // Azul Institucional para Coord 2 (#0284c7)
+  accentLight: [240, 249, 255] as [number, number, number],  // Azul tenue (#f0f9ff)
+  success: [22, 163, 74] as [number, number, number],        // Verde éxito (#16a34a)
+  successLight: [240, 253, 244] as [number, number, number], // Verde tenue (#f0fdf4)
+  danger: [220, 38, 38] as [number, number, number],         // Rojo alerta (#dc2626)
+  dangerLight: [254, 242, 242] as [number, number, number],  // Rojo tenue (#fef2f2)
+  headerBg: [185, 28, 28] as [number, number, number],       // Encabezado de tabla (#b91c1c)
+  headerText: [255, 255, 255] as [number, number, number],   // Blanco
+  slateDark: [15, 23, 42] as [number, number, number],       // Slate 900 (#0f172a)
+  text: [15, 23, 42] as [number, number, number],            // Texto principal
+  gray: [100, 116, 139] as [number, number, number],         // Slate 500 (#64748b)
+  grayLight: [248, 250, 252] as [number, number, number],    // Slate 50 (#f8fafc)
+  white: [255, 255, 255] as [number, number, number],        // Blanco
+  border: [226, 232, 240] as [number, number, number],       // Slate 200 (#e2e8f0)
 };
+
+// ─── Liderazgo y Coordinación Territorial (Hoja 2) ──────────────────
+export const TERRITORIAL_LEADERS = [
+  { item: 1, name: "Jorge Alfredo Blanco Garcia", cargo: "Coordinador General MDD", rol: "Coordinador Departamental", scope: "Departamental (Madre de Dios)", dni: "42837202", phone: "951329084" },
+  { item: 2, name: "Vladimir Lipa Colque", cargo: "Personero Legal", rol: "Administrador", scope: "Departamental", dni: "46889586", phone: "974259136" },
+  { item: 3, name: "Guillermo Condor Paucar", cargo: "Coordinador Adjunto", rol: "Administrador", scope: "Departamental", dni: "19963793", phone: "915008611" },
+  { item: 4, name: "Boris Manuel Callo Lipa", cargo: "Secretario de Grupo", rol: "Coordinador Departamental", scope: "Departamental", dni: "60973331", phone: "969322735" },
+  { item: 5, name: "Jose Carlos Navarro Vega", cargo: "Área de Sistemas e Informática", rol: "Administrador", scope: "Departamental", dni: "40455993", phone: "987787010" },
+  { item: 6, name: "Angel Rigoberto Quijandria Mendoza", cargo: "Apoyo Legal", rol: "Verificador de Cómputo", scope: "Departamental", dni: "21492930", phone: "982727238" },
+  { item: 7, name: "Karol Margarita Paredes Torrez", cargo: "Capacitadora Personeros", rol: "Coordinador Departamental", scope: "Departamental", dni: "46424983", phone: "955721347" },
+  { item: 8, name: "Guadalupe Nalvarte", cargo: "Capacitadora Personeros", rol: "Coordinador Departamental", scope: "Departamental", dni: "—", phone: "978341497" },
+  { item: 9, name: "Roy Rubeli Gutierrez Paredes", cargo: "Coordinador Delegado Prov. Tambopata", rol: "Coordinador Provincial", scope: "Provincia Tambopata", dni: "40951921", phone: "913933709" },
+  { item: 10, name: "Abelino Ccahuantico Ccasa", cargo: "Coordinador Delegado Prov. Tambopata", rol: "Coordinador Provincial", scope: "Provincia Tambopata", dni: "46318591", phone: "989412131" },
+  { item: 11, name: "Cliffod Dixson Gutierrez Machaca", cargo: "Coordinador Delegado Prov. Tahuamanu", rol: "Coordinador Provincial", scope: "Provincia Tahuamanu", dni: "41774094", phone: "997075261" },
+  { item: 12, name: "Lujhams Wilson Choque Condori", cargo: "Coordinador Delegado Prov. Manu", rol: "Coordinador Provincial", scope: "Provincia Manu", dni: "01560048", phone: "965248836" },
+  { item: 13, name: "Vivian Milusca Lara Escobar", cargo: "Distrital Deleg. Dist. Inambari, Piedras, Laberinto", rol: "Coordinador Distrital", scope: "Multidistrital (Inambari / Tambopata)", dni: "43110497", phone: "982760254" },
+];
 
 // ─── Helpers ────────────────────────────────────────────────────────
 
-/** Carga una imagen desde una URL y devuelve su base64 data-url */
-async function loadImageAsBase64(url: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext("2d")!;
-      ctx.drawImage(img, 0, 0);
-      resolve(canvas.toDataURL("image/png"));
-    };
-    img.onerror = reject;
-    img.src = url;
-  });
+/** Carga el logo oficial en PNG base64 vía canvas para soporte universal */
+async function loadLogoBase64(): Promise<string | null> {
+  const sources = [
+    "/assets/images/logo/logo-an.png",
+    "/assets/images/logo/logo-an.webp",
+    "/assets/images/logo/logo.png",
+  ];
+
+  for (const src of sources) {
+    try {
+      const data = await new Promise<string>((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = img.naturalWidth || 400;
+          canvas.height = img.naturalHeight || 400;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return reject("No canvas context");
+          ctx.drawImage(img, 0, 0);
+          resolve(canvas.toDataURL("image/png"));
+        };
+        img.onerror = reject;
+        img.src = src;
+      });
+      if (data) return data;
+    } catch {
+      // Intentar con siguiente ruta
+    }
+  }
+  return null;
 }
 
 function districtLabel(d: string): string {
@@ -88,7 +126,7 @@ function formatDate(): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// 1) EXPORTAR A PDF
+// 1) EXPORTAR A PDF (Membrete oficial Ahora Nación)
 // ═══════════════════════════════════════════════════════════════════════
 export async function downloadNominaPdf(
   locales: NominaLocal[],
@@ -96,130 +134,147 @@ export async function downloadNominaPdf(
 ): Promise<void> {
   const { jsPDF } = await import("jspdf");
 
-  // Landscape A4 para que la tabla quepa bien
+  // Landscape A4 para máxima legibilidad de la tabla
   const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
   const pageW = 297;
   const pageH = 210;
   const margin = 12;
   const usableW = pageW - margin * 2;
 
-  // Cargar logo
-  let logoData: string | null = null;
-  try {
-    logoData = await loadImageAsBase64("/assets/images/logo/logo.png");
-  } catch {
-    // Si falla el logo, continuar sin él
-  }
+  // Cargar logo oficial Ahora Nación
+  const logoData = await loadLogoBase64();
 
-  // ─── Función para dibujar cabecera en cada página ───
+  // ─── Función para dibujar cabecera institucional ───
   function drawHeader(pageNum: number, totalPages: number) {
-    // Franja superior verde oscuro
+    // Franja superior carmesí Ahora Nación (#b91c1c)
     pdf.setFillColor(...COLORS.brand);
-    pdf.rect(0, 0, pageW, 28, "F");
+    pdf.rect(0, 0, pageW, 26, "F");
 
-    // Logo
+    // Franja dorada de acento (#d97706)
+    pdf.setFillColor(...COLORS.gold);
+    pdf.rect(0, 26, pageW, 1.8, "F");
+
+    // Logo oficial Ahora Nación
     if (logoData) {
-      pdf.addImage(logoData, "PNG", margin, 3, 22, 22, undefined, "FAST");
+      pdf.addImage(logoData, "PNG", margin, 3, 20, 20, undefined, "FAST");
     }
 
-    // Texto del partido
+    const textX = logoData ? margin + 24 : margin;
+
+    // Título Principal
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(15);
+    pdf.setFontSize(14);
     pdf.setTextColor(...COLORS.white);
-    pdf.text("PARTIDO POLÍTICO AHORA NACIÓN", logoData ? margin + 26 : margin, 11);
+    pdf.text("PARTIDO POLÍTICO AHORA NACIÓN", textX, 10);
 
-    pdf.setFontSize(9);
+    // Subtítulo
+    pdf.setFontSize(8.5);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(
+      "NÓMINA OFICIAL DE COORDINADORES DE LOCAL DE VOTACIÓN · REGIÓN MADRE DE DIOS",
+      textX,
+      16
+    );
+
+    // KPI Badges en cabecera
+    const totalMesasSum = locales.reduce((acc, l) => acc + (l.totalMesas || l.mesasLength || 0), 0);
+    const pct = Math.round((stats.conCoord / Math.max(1, stats.totalColegios)) * 100);
+
+    pdf.setFontSize(7.5);
     pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(255, 245, 235);
     pdf.text(
-      "NÓMINA DE COORDINADORES DE LOCAL DE VOTACIÓN · REGIÓN MADRE DE DIOS",
-      logoData ? margin + 26 : margin,
-      17
+      `Locales: ${stats.totalColegios}  |  Asignados: ${stats.conCoord}  |  Pendientes: ${stats.sinCoord}  |  Mesas Totales: ${totalMesasSum}  |  Cobertura: ${pct}%`,
+      textX,
+      22
     );
 
-    // Estadísticas en la cabecera
-    pdf.setFontSize(8);
-    pdf.text(
-      `Total Colegios: ${stats.totalColegios}  |  Asignados: ${stats.conCoord}  |  Pendientes: ${stats.sinCoord}`,
-      logoData ? margin + 26 : margin,
-      23
-    );
-
-    // Fecha y paginación a la derecha
+    // Fecha y página a la derecha
     pdf.setFontSize(7);
-    pdf.setTextColor(200, 220, 200);
-    pdf.text(formatDate(), pageW - margin, 11, { align: "right" });
+    pdf.setTextColor(255, 255, 255);
+    pdf.text(formatDate(), pageW - margin, 10, { align: "right" });
+    pdf.setFont("helvetica", "bold");
     pdf.text(`Página ${pageNum} de ${totalPages}`, pageW - margin, 16, { align: "right" });
-
-    // Línea separadora
-    pdf.setDrawColor(...COLORS.brand);
-    pdf.setLineWidth(0.5);
-    pdf.line(margin, 29, pageW - margin, 29);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(255, 240, 240);
+    pdf.text("Sistema Electoral HornaWeb", pageW - margin, 21, { align: "right" });
   }
 
-  // ─── Función para dibujar cabecera de tabla ───
+  // ─── Cabecera de la tabla ───
   function drawTableHeader(y: number): number {
     const colX = getColumnXPositions();
-    const headerH = 8;
+    const headerH = 7.5;
 
-    pdf.setFillColor(...COLORS.headerBg);
+    // Fondo cabecera de tabla: Carmesí intenso
+    pdf.setFillColor(...COLORS.brandDark);
     pdf.roundedRect(margin, y, usableW, headerH, 1, 1, "F");
 
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(7.5);
-    pdf.setTextColor(...COLORS.headerText);
+    pdf.setFontSize(7);
+    pdf.setTextColor(...COLORS.white);
 
-    const headers = ["#", "Provincia / Distrito", "Centro de Votación", "Mesas", "Coordinador 1 (Titular)", "Coordinador 2 (Adjunto)", "Teléfono"];
+    const headers = [
+      "#",
+      "Provincia",
+      "Distrito",
+      "Local de Votación",
+      "Mesas",
+      "Coordinador 1 (Titular)",
+      "Coordinador 2 (Adjunto)",
+      "Teléfono / Contacto",
+      "Estado",
+    ];
+
     headers.forEach((h, i) => {
       const x = colX[i] + 1.5;
-      pdf.text(h, x, y + 5.5);
+      pdf.text(h, x, y + 5);
     });
 
     return y + headerH + 1;
   }
 
   function getColumnXPositions(): number[] {
-    // #, Provincia, Centro, Mesas, Coord1, Coord2, Teléfono
+    // UsableW = 273mm
     return [
-      margin,
-      margin + 10,
-      margin + 45,
-      margin + 120,
-      margin + 135,
-      margin + 195,
-      margin + 240,
+      margin,             // # (8mm)
+      margin + 8,         // Provincia (24mm)
+      margin + 32,        // Distrito (28mm)
+      margin + 60,        // Centro (65mm)
+      margin + 125,       // Mesas (15mm)
+      margin + 140,       // Coord 1 (46mm)
+      margin + 186,       // Coord 2 (46mm)
+      margin + 232,       // Teléfono (23mm)
+      margin + 255,       // Estado (18mm)
     ];
   }
 
-  // ─── Función para dibujar pie de página ───
+  // ─── Pie de página ───
   function drawFooter() {
     pdf.setFontSize(6.5);
     pdf.setTextColor(...COLORS.gray);
     pdf.text(
-      "Documento generado por el Sistema de Gestión Electoral · Ahora Nación MDD · ahoranacionmdd.com",
+      "Documento oficial de campaña · Partido Político Ahora Nación · Madre de Dios · hornaweb",
       pageW / 2,
-      pageH - 5,
+      pageH - 4.5,
       { align: "center" }
     );
-    // Línea fina en pie
     pdf.setDrawColor(...COLORS.border);
     pdf.setLineWidth(0.2);
-    pdf.line(margin, pageH - 8, pageW - margin, pageH - 8);
+    pdf.line(margin, pageH - 7, pageW - margin, pageH - 7);
   }
 
-  // ─── Pre-calcular total de páginas ───
-  const rowH = 10;
-  const startY = 35;
-  const maxY = pageH - 14;
-  const rowsPerFirstPage = Math.floor((maxY - startY) / rowH);
-  const totalPages = Math.max(1, 1 + Math.ceil((locales.length - rowsPerFirstPage) / Math.floor((maxY - startY) / rowH)));
+  // ─── Paginación y filas ───
+  const rowH = 9.5;
+  const startY = 32;
+  const maxY = pageH - 12;
+  const rowsPerPage = Math.floor((maxY - startY) / rowH);
+  const totalPages = Math.max(1, Math.ceil(locales.length / rowsPerPage));
 
-  // ─── Dibujar filas ───
   let currentPage = 1;
   drawHeader(currentPage, totalPages);
   let y = drawTableHeader(startY);
 
   locales.forEach((loc, idx) => {
-    // Salto de página si no cabe
     if (y + rowH > maxY) {
       drawFooter();
       pdf.addPage();
@@ -228,116 +283,129 @@ export async function downloadNominaPdf(
       y = drawTableHeader(startY);
     }
 
-    const hasCoord = !!loc.coordinatorName && loc.coordinatorName.trim() !== "";
+    const hasCoord1 = !!loc.coordinatorName && loc.coordinatorName.trim() !== "";
+    const hasCoord2 = !!loc.coordinator2Name && loc.coordinator2Name.trim() !== "";
+    const hasAnyCoord = hasCoord1 || hasCoord2;
     const numMesas = loc.totalMesas || loc.mesasLength || 0;
     const colX = getColumnXPositions();
     const rowIdx = idx + 1;
 
-    // Fondo alterno + fondo rojo si no tiene coordinador
-    if (!hasCoord && !loc.coordinator2Name) {
+    // Fondo alternado / alerta
+    if (!hasAnyCoord) {
       pdf.setFillColor(...COLORS.dangerLight);
-      pdf.rect(margin, y - 1, usableW, rowH, "F");
+      pdf.rect(margin, y - 0.8, usableW, rowH, "F");
     } else if (idx % 2 === 0) {
       pdf.setFillColor(...COLORS.grayLight);
-      pdf.rect(margin, y - 1, usableW, rowH, "F");
+      pdf.rect(margin, y - 0.8, usableW, rowH, "F");
     }
 
-    // Línea inferior
+    // Línea inferior fina
     pdf.setDrawColor(...COLORS.border);
     pdf.setLineWidth(0.1);
-    pdf.line(margin, y + rowH - 1, pageW - margin, y + rowH - 1);
+    pdf.line(margin, y + rowH - 0.8, pageW - margin, y + rowH - 0.8);
 
-    const textY = y + 3;
+    const textY = y + 2.8;
 
     // Col 0: #
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(7);
+    pdf.setFontSize(6.5);
     pdf.setTextColor(...COLORS.gray);
     pdf.text(String(rowIdx), colX[0] + 1.5, textY);
 
-    // Col 1: Provincia / Distrito
+    // Col 1: Provincia
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(7);
+    pdf.setFontSize(6.5);
     pdf.setTextColor(...COLORS.text);
     pdf.text(loc.province, colX[1] + 1.5, textY);
+
+    // Col 2: Distrito
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(6.5);
     pdf.setTextColor(...COLORS.gray);
-    pdf.text(districtLabel(loc.district), colX[1] + 1.5, textY + 4);
+    pdf.text(districtLabel(loc.district), colX[2] + 1.5, textY);
 
-    // Col 2: Centro de Votación
+    // Col 3: Centro de Votación
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(6.5);
     pdf.setTextColor(...COLORS.text);
-    // Truncar nombre si es muy largo
-    const maxNameLen = 50;
+    const maxNameLen = 42;
     const displayName = loc.name.length > maxNameLen ? loc.name.slice(0, maxNameLen) + "…" : loc.name;
-    pdf.text(displayName, colX[2] + 1.5, textY);
+    pdf.text(displayName, colX[3] + 1.5, textY);
     if (loc.code) {
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(5.5);
       pdf.setTextColor(...COLORS.gray);
-      pdf.text(`CÓD. ${loc.code}`, colX[2] + 1.5, textY + 4);
+      pdf.text(`CÓD: ${loc.code}`, colX[3] + 1.5, textY + 3.8);
     }
 
-    // Col 3: Mesas
+    // Col 4: Mesas
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(8);
+    pdf.setFontSize(7.5);
     pdf.setTextColor(...COLORS.text);
-    pdf.text(String(numMesas), colX[3] + 6, textY + 1, { align: "center" });
+    pdf.text(String(numMesas), colX[4] + 6, textY + 1, { align: "center" });
 
-    // Col 4: Coordinador 1
-    if (loc.coordinatorName) {
+    // Col 5: Coordinador 1 (Titular)
+    if (hasCoord1) {
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(6.5);
+      pdf.setFontSize(6.2);
       pdf.setTextColor(...COLORS.brand);
-      pdf.text(loc.coordinatorName, colX[4] + 1.5, textY);
+      pdf.text(loc.coordinatorName!, colX[5] + 1.5, textY);
       if (loc.coordinatorDni) {
         pdf.setFont("helvetica", "normal");
         pdf.setFontSize(5.5);
         pdf.setTextColor(...COLORS.gray);
-        pdf.text(`DNI: ${loc.coordinatorDni}`, colX[4] + 1.5, textY + 4);
+        pdf.text(`DNI: ${loc.coordinatorDni}`, colX[5] + 1.5, textY + 3.8);
       }
     } else {
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(6.5);
+      pdf.setFontSize(6);
       pdf.setTextColor(...COLORS.danger);
-      pdf.text("⚠ SIN COORDINADOR", colX[4] + 1.5, textY + 1);
+      pdf.text("⚠ SIN TITULAR", colX[5] + 1.5, textY + 1);
     }
 
-    // Col 5: Coordinador 2
-    if (loc.coordinator2Name) {
+    // Col 6: Coordinador 2 (Adjunto)
+    if (hasCoord2) {
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(6.5);
+      pdf.setFontSize(6.2);
       pdf.setTextColor(...COLORS.accent);
-      pdf.text(loc.coordinator2Name, colX[5] + 1.5, textY);
+      pdf.text(loc.coordinator2Name!, colX[6] + 1.5, textY);
       if (loc.coordinator2Dni) {
         pdf.setFont("helvetica", "normal");
         pdf.setFontSize(5.5);
         pdf.setTextColor(...COLORS.gray);
-        pdf.text(`DNI: ${loc.coordinator2Dni}`, colX[5] + 1.5, textY + 4);
+        pdf.text(`DNI: ${loc.coordinator2Dni}`, colX[6] + 1.5, textY + 3.8);
       }
     } else {
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(6);
-      pdf.setTextColor(180, 180, 180);
-      pdf.text("—", colX[5] + 1.5, textY + 1);
+      pdf.setTextColor(170, 175, 185);
+      pdf.text("—", colX[6] + 1.5, textY + 1);
     }
 
-    // Col 6: Teléfonos
+    // Col 7: Teléfono
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(6.5);
+    pdf.setFontSize(6);
+    pdf.setTextColor(...COLORS.text);
     if (loc.coordinatorPhone) {
-      pdf.setTextColor(...COLORS.accent);
-      pdf.text(`C1: ${loc.coordinatorPhone}`, colX[6] + 1.5, textY);
+      pdf.text(`C1: ${loc.coordinatorPhone}`, colX[7] + 1.5, textY);
     }
     if (loc.coordinator2Phone) {
-      pdf.setTextColor(...COLORS.accent);
-      pdf.text(`C2: ${loc.coordinator2Phone}`, colX[6] + 1.5, textY + 4);
+      pdf.text(`C2: ${loc.coordinator2Phone}`, colX[7] + 1.5, textY + 3.8);
     }
     if (!loc.coordinatorPhone && !loc.coordinator2Phone) {
-      pdf.setTextColor(180, 180, 180);
-      pdf.text("—", colX[6] + 1.5, textY + 1);
+      pdf.setTextColor(170, 175, 185);
+      pdf.text("—", colX[7] + 1.5, textY + 1);
+    }
+
+    // Col 8: Estado
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(6);
+    if (hasAnyCoord) {
+      pdf.setTextColor(...COLORS.success);
+      pdf.text("✔ ASIGNADO", colX[8] + 1.5, textY + 1);
+    } else {
+      pdf.setTextColor(...COLORS.danger);
+      pdf.text("PENDIENTE", colX[8] + 1.5, textY + 1);
     }
 
     y += rowH;
@@ -345,13 +413,12 @@ export async function downloadNominaPdf(
 
   drawFooter();
 
-  // Guardar archivo
   const dateStr = new Date().toISOString().slice(0, 10);
-  pdf.save(`Nomina_Coordinadores_MDD_${dateStr}.pdf`);
+  pdf.save(`Nomina_Coordinadores_Ahora_Nacion_${dateStr}.pdf`);
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// 2) EXPORTAR A EXCEL
+// 2) EXPORTAR A EXCEL (.XLSX) con 2 Hojas Profesionales
 // ═══════════════════════════════════════════════════════════════════════
 export async function downloadNominaExcel(
   locales: NominaLocal[],
@@ -359,120 +426,148 @@ export async function downloadNominaExcel(
 ): Promise<void> {
   const ExcelJS = await import("exceljs");
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = "Sistema Electoral Ahora Nación";
+  workbook.creator = "Partido Político Ahora Nación";
   workbook.created = new Date();
 
-  const ws = workbook.addWorksheet("Nómina de Coordinadores", {
-    properties: { tabColor: { argb: "FF166534" } },
+  // ─── Cargar Logo para el Libro Excel ───
+  let logoId: number | null = null;
+  try {
+    const logoResp = await fetch("/assets/images/logo/logo-an.png");
+    if (logoResp.ok) {
+      const logoBlob = await logoResp.blob();
+      const logoBuffer = await logoBlob.arrayBuffer();
+      logoId = workbook.addImage({
+        buffer: logoBuffer,
+        extension: "png",
+      });
+    }
+  } catch {
+    // Si falla cargar el archivo png, continuar
+  }
+
+  const ARGB = {
+    brandRed: "FFB91C1C",       // Rojo Carmesí (#b91c1c)
+    brandDark: "FF7F1D1D",      // Borgoña (#7f1d1d)
+    bannerRed: "FFDC2626",      // Rojo brillante (#dc2626)
+    brandLight: "FFFEF2F2",     // Fondo rojo suave (#fef2f2)
+    gold: "FFD97706",           // Dorado (#d97706)
+    goldLight: "FFFEF3C7",      // Fondo dorado (#fef3c7)
+    slateHeader: "FF1E293B",    // Slate 800
+    white: "FFFFFFFF",
+    grayBorder: "FFE2E8F0",
+    grayDarkBorder: "FF94A3B8",
+    zebraBg: "FFF8FAFC",
+    assignedBg: "FFDCFCE7",
+    assignedFg: "FF15803D",
+    pendingBg: "FFFEE2E2",
+    pendingFg: "FFB91C1C",
+    coord2Fg: "FF0284C7",
+    coord2Bg: "FFE0F2FE",
+  };
+
+  // ═══════════════════════════════════════════════════════════════════
+  // HOJA 1: COORDINADORES POR LOCAL DE VOTACIÓN (51 Colegios)
+  // ═══════════════════════════════════════════════════════════════════
+  const ws1 = workbook.addWorksheet("Locales de Votación", {
+    properties: { tabColor: { argb: ARGB.brandRed } },
     pageSetup: {
       orientation: "landscape",
-      paperSize: 9, // A4
+      paperSize: 9,
       fitToPage: true,
       fitToWidth: 1,
       fitToHeight: 0,
     },
   });
 
-  // ─── Logo e imagen ───────────────────────────
-  // ExcelJS puede insertar imágenes; intentamos cargar el logo
-  try {
-    const logoResponse = await fetch("/assets/images/logo/logo.png");
-    const logoBlob = await logoResponse.blob();
-    const logoBuffer = await logoBlob.arrayBuffer();
-    const logoId = workbook.addImage({
-      buffer: logoBuffer,
-      extension: "png",
+  // Logo en Hoja 1
+  if (logoId !== null) {
+    ws1.addImage(logoId, {
+      tl: { col: 0.15, row: 0.2 },
+      ext: { width: 68, height: 68 },
     });
-    ws.addImage(logoId, {
-      tl: { col: 0, row: 0 },
-      ext: { width: 70, height: 70 },
-    });
-  } catch {
-    // Continuar sin logo si falla
   }
 
-  // ─── Título principal ─────────────────────────
-  // Fila 1: Título del Partido
-  ws.mergeCells("B1:K1");
-  const titleCell = ws.getCell("B1");
-  titleCell.value = "PARTIDO POLÍTICO AHORA NACIÓN";
-  titleCell.font = { name: "Calibri", size: 16, bold: true, color: { argb: "FF166534" } };
-  titleCell.alignment = { horizontal: "left", vertical: "middle" };
-  ws.getRow(1).height = 30;
+  // Fila 1: Título Oficial con fondo Rojo Ahora Nación
+  ws1.mergeCells("B1:M1");
+  const titleCell1 = ws1.getCell("B1");
+  titleCell1.value = "PARTIDO POLÍTICO AHORA NACIÓN";
+  titleCell1.font = { name: "Calibri", size: 16, bold: true, color: { argb: ARGB.white } };
+  titleCell1.alignment = { horizontal: "left", vertical: "middle", indent: 1 };
+  titleCell1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.bannerRed } };
+  ws1.getRow(1).height = 28;
 
   // Fila 2: Subtítulo
-  ws.mergeCells("B2:K2");
-  const subtitleCell = ws.getCell("B2");
-  subtitleCell.value = "NÓMINA DE COORDINADORES DE LOCAL DE VOTACIÓN · REGIÓN MADRE DE DIOS";
-  subtitleCell.font = { name: "Calibri", size: 11, bold: true, color: { argb: "FF475569" } };
-  subtitleCell.alignment = { horizontal: "left", vertical: "middle" };
-  ws.getRow(2).height = 20;
+  ws1.mergeCells("B2:M2");
+  const subtitleCell1 = ws1.getCell("B2");
+  subtitleCell1.value = "PADRÓN OFICIAL DE COORDINADORES DE CENTRO DE VOTACIÓN · MADRE DE DIOS";
+  subtitleCell1.font = { name: "Calibri", size: 10.5, bold: true, color: { argb: ARGB.white } };
+  subtitleCell1.alignment = { horizontal: "left", vertical: "middle", indent: 1 };
+  subtitleCell1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandRed } };
+  ws1.getRow(2).height = 20;
 
-  // Fila 3: Estadísticas
-  ws.mergeCells("B3:K3");
-  const statsCell = ws.getCell("B3");
-  statsCell.value = `Total Colegios: ${stats.totalColegios}  |  Asignados: ${stats.conCoord}  |  Pendientes: ${stats.sinCoord}  |  Generado: ${formatDate()}`;
-  statsCell.font = { name: "Calibri", size: 9, italic: true, color: { argb: "FF64748B" } };
-  statsCell.alignment = { horizontal: "left", vertical: "middle" };
-  ws.getRow(3).height = 18;
+  // Fila 3: KPI Metrics Strip
+  const totalMesas1 = locales.reduce((acc, l) => acc + (l.totalMesas || l.mesasLength || 0), 0);
+  const pct1 = Math.round((stats.conCoord / Math.max(1, stats.totalColegios)) * 100);
 
-  // Fila 4: Vacía (separador)
-  ws.getRow(4).height = 8;
+  ws1.mergeCells("B3:M3");
+  const statsCell1 = ws1.getCell("B3");
+  statsCell1.value = `Colegios: ${stats.totalColegios}   |   Asignados: ${stats.conCoord}   |   Pendientes: ${stats.sinCoord}   |   Mesas Totales: ${totalMesas1}   |   Cobertura: ${pct1}%   |   Generado: ${formatDate()}`;
+  statsCell1.font = { name: "Calibri", size: 9, bold: true, color: { argb: ARGB.gold } };
+  statsCell1.alignment = { horizontal: "left", vertical: "middle", indent: 1 };
+  statsCell1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandLight } };
+  ws1.getRow(3).height = 18;
 
-  // ─── Columnas ────────────────────────────────
-  ws.columns = [
-    { key: "num",            width: 5,  header: "#" },
-    { key: "province",       width: 16, header: "Provincia" },
-    { key: "district",       width: 18, header: "Distrito" },
-    { key: "centerName",     width: 42, header: "Centro de Votación" },
-    { key: "code",           width: 12, header: "Código" },
-    { key: "mesas",          width: 8,  header: "Mesas" },
-    { key: "coord1Name",     width: 30, header: "Coordinador 1 (Titular)" },
-    { key: "coord1Dni",      width: 14, header: "DNI Coord. 1" },
-    { key: "coord1Phone",    width: 14, header: "Cel. Coord. 1" },
-    { key: "coord2Name",     width: 30, header: "Coordinador 2 (Adjunto)" },
-    { key: "coord2Dni",      width: 14, header: "DNI Coord. 2" },
-    { key: "coord2Phone",    width: 14, header: "Cel. Coord. 2" },
-    { key: "estado",         width: 14, header: "Estado" },
+  // Fila 4: Separador
+  ws1.getRow(4).height = 6;
+
+  // Fila 5: Cabeceras de Columna
+  ws1.columns = [
+    { key: "num",         width: 5,  header: "#" },
+    { key: "province",    width: 16, header: "Provincia" },
+    { key: "district",    width: 18, header: "Distrito" },
+    { key: "localName",   width: 44, header: "Centro de Votación" },
+    { key: "code",        width: 12, header: "Código" },
+    { key: "mesas",       width: 9,  header: "Mesas" },
+    { key: "coord1Name",  width: 32, header: "Coordinador 1 (Titular)" },
+    { key: "coord1Dni",   width: 13, header: "DNI Coord. 1" },
+    { key: "coord1Phone", width: 14, header: "Cel. Coord. 1" },
+    { key: "coord2Name",  width: 32, header: "Coordinador 2 (Adjunto)" },
+    { key: "coord2Dni",   width: 13, header: "DNI Coord. 2" },
+    { key: "coord2Phone", width: 14, header: "Cel. Coord. 2" },
+    { key: "estado",      width: 15, header: "Estado" },
   ];
 
-  // ─── Fila de encabezados (fila 5) ─────────────
-  const headerRow = ws.getRow(5);
-  headerRow.values = [
+  const headerRow1 = ws1.getRow(5);
+  headerRow1.values = [
     "#", "Provincia", "Distrito", "Centro de Votación", "Código",
     "Mesas", "Coordinador 1 (Titular)", "DNI Coord. 1", "Cel. Coord. 1",
     "Coordinador 2 (Adjunto)", "DNI Coord. 2", "Cel. Coord. 2", "Estado",
   ];
-  headerRow.height = 22;
-  headerRow.eachCell((cell, colNumber) => {
-    if (colNumber <= 13) {
-      cell.font = { name: "Calibri", size: 10, bold: true, color: { argb: "FFFFFFFF" } };
-      cell.fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FF0F172A" },
-      };
-      cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true };
-      cell.border = {
-        top: { style: "thin", color: { argb: "FF334155" } },
-        bottom: { style: "thin", color: { argb: "FF334155" } },
-        left: { style: "thin", color: { argb: "FF334155" } },
-        right: { style: "thin", color: { argb: "FF334155" } },
-      };
-    }
+  headerRow1.height = 24;
+  headerRow1.eachCell((cell) => {
+    cell.font = { name: "Calibri", size: 10, bold: true, color: { argb: ARGB.white } };
+    cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandRed } };
+    cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true };
+    cell.border = {
+      top: { style: "medium", color: { argb: ARGB.brandDark } },
+      bottom: { style: "medium", color: { argb: ARGB.gold } },
+      left: { style: "thin", color: { argb: ARGB.brandDark } },
+      right: { style: "thin", color: { argb: ARGB.brandDark } },
+    };
   });
 
-  // ─── Datos ─────────────────────────────────────
+  // Filas de Datos
   locales.forEach((loc, idx) => {
-    const hasCoord = !!loc.coordinatorName && loc.coordinatorName.trim() !== "";
+    const hasCoord1 = !!loc.coordinatorName && loc.coordinatorName.trim() !== "";
+    const hasCoord2 = !!loc.coordinator2Name && loc.coordinator2Name.trim() !== "";
+    const hasAny = hasCoord1 || hasCoord2;
     const numMesas = loc.totalMesas || loc.mesasLength || 0;
-    const rowNum = idx + 6; // Empezamos en la fila 6
 
-    const row = ws.addRow({
+    const row = ws1.addRow({
       num: idx + 1,
       province: loc.province,
       district: districtLabel(loc.district),
-      centerName: loc.name,
+      localName: loc.name,
       code: loc.code || "",
       mesas: numMesas,
       coord1Name: loc.coordinatorName || "SIN ASIGNAR",
@@ -481,169 +576,251 @@ export async function downloadNominaExcel(
       coord2Name: loc.coordinator2Name || "",
       coord2Dni: loc.coordinator2Dni || "",
       coord2Phone: loc.coordinator2Phone || "",
-      estado: hasCoord || loc.coordinator2Name ? "✔ Asignado" : "⚠ Pendiente",
+      estado: hasAny ? "✔ Asignado" : "⚠ Pendiente",
     });
 
-    row.height = 18;
+    row.height = 19;
 
-    // Estilos de cada celda
     row.eachCell((cell, colNumber) => {
       if (colNumber > 13) return;
-
-      // Fuente base
       cell.font = { name: "Calibri", size: 9.5 };
       cell.alignment = { vertical: "middle", wrapText: true };
-
-      // Bordes finos
       cell.border = {
-        top: { style: "thin", color: { argb: "FFE2E8F0" } },
-        bottom: { style: "thin", color: { argb: "FFE2E8F0" } },
-        left: { style: "thin", color: { argb: "FFE2E8F0" } },
-        right: { style: "thin", color: { argb: "FFE2E8F0" } },
+        top: { style: "thin", color: { argb: ARGB.grayBorder } },
+        bottom: { style: "thin", color: { argb: ARGB.grayBorder } },
+        left: { style: "thin", color: { argb: ARGB.grayBorder } },
+        right: { style: "thin", color: { argb: ARGB.grayBorder } },
       };
 
-      // Fondo alterno
-      if (!hasCoord && !loc.coordinator2Name) {
-        cell.fill = {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "FFFEF2F2" },
-        };
+      // Fondo
+      if (!hasAny) {
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.pendingBg } };
       } else if (idx % 2 === 0) {
-        cell.fill = {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "FFF8FAFC" },
-        };
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.zebraBg } };
       }
     });
 
-    // Estilos especiales por columna
-    const numCell = row.getCell(1);
-    numCell.alignment = { horizontal: "center", vertical: "middle" };
-    numCell.font = { name: "Calibri", size: 9, color: { argb: "FF64748B" } };
+    // Formateo por columna
+    row.getCell(1).alignment = { horizontal: "center", vertical: "middle" };
+    row.getCell(1).font = { name: "Calibri", size: 9, color: { argb: "FF64748B" } };
+
+    row.getCell(2).font = { name: "Calibri", size: 9.5, bold: true };
+    row.getCell(4).font = { name: "Calibri", size: 9.5, bold: true };
 
     const mesasCell = row.getCell(6);
     mesasCell.alignment = { horizontal: "center", vertical: "middle" };
     mesasCell.font = { name: "Calibri", size: 10, bold: true };
 
-    // Coordinador 1 coloreado
-    const coord1Cell = row.getCell(7);
-    if (loc.coordinatorName) {
-      coord1Cell.font = { name: "Calibri", size: 9.5, bold: true, color: { argb: "FF166534" } };
+    // Coord 1 resaltado
+    const c1Cell = row.getCell(7);
+    if (hasCoord1) {
+      c1Cell.font = { name: "Calibri", size: 9.5, bold: true, color: { argb: ARGB.brandRed } };
     } else {
-      coord1Cell.font = { name: "Calibri", size: 9, bold: true, color: { argb: "FFDC2626" } };
+      c1Cell.font = { name: "Calibri", size: 9.5, bold: true, color: { argb: ARGB.pendingFg } };
     }
 
-    // Coordinador 2 coloreado
-    const coord2Cell = row.getCell(10);
-    if (loc.coordinator2Name) {
-      coord2Cell.font = { name: "Calibri", size: 9.5, bold: true, color: { argb: "FF2563EB" } };
+    // Coord 2 resaltado en azul institucional
+    const c2Cell = row.getCell(10);
+    if (hasCoord2) {
+      c2Cell.font = { name: "Calibri", size: 9.5, bold: true, color: { argb: ARGB.coord2Fg } };
     }
 
-    // Estado
-    const estadoCell = row.getCell(13);
-    estadoCell.alignment = { horizontal: "center", vertical: "middle" };
-    if (hasCoord || loc.coordinator2Name) {
-      estadoCell.font = { name: "Calibri", size: 9, bold: true, color: { argb: "FF16A34A" } };
-      estadoCell.fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FFDCFCE7" },
-      };
+    // Estado Badge
+    const estCell = row.getCell(13);
+    estCell.alignment = { horizontal: "center", vertical: "middle" };
+    if (hasAny) {
+      estCell.font = { name: "Calibri", size: 9, bold: true, color: { argb: ARGB.assignedFg } };
+      estCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.assignedBg } };
     } else {
-      estadoCell.font = { name: "Calibri", size: 9, bold: true, color: { argb: "FFDC2626" } };
-      estadoCell.fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FFFEE2E2" },
-      };
+      estCell.font = { name: "Calibri", size: 9, bold: true, color: { argb: ARGB.pendingFg } };
+      estCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.pendingBg } };
     }
-
-    // Provincia y Centro en negrita
-    row.getCell(2).font = { name: "Calibri", size: 9.5, bold: true };
-    row.getCell(4).font = { name: "Calibri", size: 9.5, bold: true };
   });
 
-  // ─── Fila resumen al final ────────────────────
-  const summaryRowNum = locales.length + 6;
-  ws.mergeCells(`A${summaryRowNum}:E${summaryRowNum}`);
-  const summaryCell = ws.getCell(`A${summaryRowNum}`);
-  summaryCell.value = `TOTAL: ${stats.totalColegios} Colegios`;
-  summaryCell.font = { name: "Calibri", size: 11, bold: true, color: { argb: "FF0F172A" } };
-  summaryCell.alignment = { horizontal: "right", vertical: "middle" };
-  summaryCell.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "FFE2E8F0" },
-  };
+  // Fila de Totales en Hoja 1
+  const sumRow1 = locales.length + 6;
+  ws1.mergeCells(`A${sumRow1}:E${sumRow1}`);
+  const sumLabel1 = ws1.getCell(`A${sumRow1}`);
+  sumLabel1.value = `TOTAL: ${stats.totalColegios} Colegios Electorales`;
+  sumLabel1.font = { name: "Calibri", size: 11, bold: true, color: { argb: ARGB.white } };
+  sumLabel1.alignment = { horizontal: "right", vertical: "middle", indent: 1 };
+  sumLabel1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.slateHeader } };
 
-  const totalMesasSummary = locales.reduce((acc, l) => acc + (l.totalMesas || l.mesasLength || 0), 0);
-  const mesasSumCell = ws.getCell(`F${summaryRowNum}`);
-  mesasSumCell.value = totalMesasSummary;
-  mesasSumCell.font = { name: "Calibri", size: 11, bold: true };
-  mesasSumCell.alignment = { horizontal: "center", vertical: "middle" };
-  mesasSumCell.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "FFE2E8F0" },
-  };
+  const sumMesasCell1 = ws1.getCell(`F${sumRow1}`);
+  sumMesasCell1.value = totalMesas1;
+  sumMesasCell1.font = { name: "Calibri", size: 11, bold: true, color: { argb: ARGB.white } };
+  sumMesasCell1.alignment = { horizontal: "center", vertical: "middle" };
+  sumMesasCell1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.slateHeader } };
 
-  ws.mergeCells(`G${summaryRowNum}:L${summaryRowNum}`);
-  const coordSumCell = ws.getCell(`G${summaryRowNum}`);
-  coordSumCell.value = `Asignados: ${stats.conCoord}  |  Pendientes: ${stats.sinCoord}  |  Cobertura: ${Math.round((stats.conCoord / stats.totalColegios) * 100)}%`;
-  coordSumCell.font = { name: "Calibri", size: 10, bold: true, color: { argb: "FF166534" } };
-  coordSumCell.alignment = { horizontal: "center", vertical: "middle" };
-  coordSumCell.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "FFE2E8F0" },
-  };
+  ws1.mergeCells(`G${sumRow1}:L${sumRow1}`);
+  const sumMid1 = ws1.getCell(`G${sumRow1}`);
+  sumMid1.value = `Asignados: ${stats.conCoord}  |  Pendientes: ${stats.sinCoord}  |  Cobertura Total: ${pct1}%`;
+  sumMid1.font = { name: "Calibri", size: 10, bold: true, color: { argb: ARGB.brandRed } };
+  sumMid1.alignment = { horizontal: "center", vertical: "middle" };
+  sumMid1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandLight } };
 
-  // Estado summary
-  const estadoSumCell = ws.getCell(`M${summaryRowNum}`);
-  estadoSumCell.value = `${Math.round((stats.conCoord / stats.totalColegios) * 100)}%`;
-  estadoSumCell.font = { name: "Calibri", size: 11, bold: true, color: { argb: "FF166534" } };
-  estadoSumCell.alignment = { horizontal: "center", vertical: "middle" };
-  estadoSumCell.fill = {
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb: "FFDCFCE7" },
-  };
+  const sumEnd1 = ws1.getCell(`M${sumRow1}`);
+  sumEnd1.value = `${pct1}%`;
+  sumEnd1.font = { name: "Calibri", size: 11, bold: true, color: { argb: ARGB.assignedFg } };
+  sumEnd1.alignment = { horizontal: "center", vertical: "middle" };
+  sumEnd1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.assignedBg } };
+  ws1.getRow(sumRow1).height = 22;
 
-  ws.getRow(summaryRowNum).height = 22;
+  // Congelar encabezados y autofiltro
+  ws1.views = [{ state: "frozen", ySplit: 5, xSplit: 0 }];
+  ws1.autoFilter = { from: { row: 5, column: 1 }, to: { row: locales.length + 5, column: 13 } };
 
-  // ─── Pie de documento ─────────────────────────
-  const footerRowNum = summaryRowNum + 2;
-  ws.mergeCells(`A${footerRowNum}:M${footerRowNum}`);
-  const footerCell = ws.getCell(`A${footerRowNum}`);
-  footerCell.value = `Documento generado por el Sistema de Gestión Electoral · Ahora Nación MDD · ahoranacionmdd.com · ${formatDate()}`;
-  footerCell.font = { name: "Calibri", size: 8, italic: true, color: { argb: "FF94A3B8" } };
-  footerCell.alignment = { horizontal: "center", vertical: "middle" };
+  // ═══════════════════════════════════════════════════════════════════
+  // HOJA 2: LIDERAZGO REGIONAL Y COORDINACIÓN TERRITORIAL
+  // ═══════════════════════════════════════════════════════════════════
+  const ws2 = workbook.addWorksheet("Liderazgo Territorial", {
+    properties: { tabColor: { argb: ARGB.gold } },
+    pageSetup: {
+      orientation: "landscape",
+      paperSize: 9,
+      fitToPage: true,
+      fitToWidth: 1,
+      fitToHeight: 0,
+    },
+  });
 
-  // ─── Congelar encabezado ─────────────────────
-  ws.views = [
-    { state: "frozen", ySplit: 5, xSplit: 0 },
+  // Logo en Hoja 2
+  if (logoId !== null) {
+    ws2.addImage(logoId, {
+      tl: { col: 0.15, row: 0.2 },
+      ext: { width: 68, height: 68 },
+    });
+  }
+
+  // Fila 1: Título Hoja 2
+  ws2.mergeCells("B1:H1");
+  const titleCell2 = ws2.getCell("B1");
+  titleCell2.value = "PARTIDO POLÍTICO AHORA NACIÓN";
+  titleCell2.font = { name: "Calibri", size: 16, bold: true, color: { argb: ARGB.white } };
+  titleCell2.alignment = { horizontal: "left", vertical: "middle", indent: 1 };
+  titleCell2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.bannerRed } };
+  ws2.getRow(1).height = 28;
+
+  // Fila 2: Subtítulo Hoja 2
+  ws2.mergeCells("B2:H2");
+  const subtitleCell2 = ws2.getCell("B2");
+  subtitleCell2.value = "COORDINACIÓN REGIONAL, PROVINCIAL Y DISTRITAL DE PERSONEROS · MADRE DE DIOS";
+  subtitleCell2.font = { name: "Calibri", size: 10.5, bold: true, color: { argb: ARGB.white } };
+  subtitleCell2.alignment = { horizontal: "left", vertical: "middle", indent: 1 };
+  subtitleCell2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandRed } };
+  ws2.getRow(2).height = 20;
+
+  // Fila 3: Info Hoja 2
+  ws2.mergeCells("B3:H3");
+  const infoCell2 = ws2.getCell("B3");
+  infoCell2.value = `Total Líderes Registrados: ${TERRITORIAL_LEADERS.length}   |   Supervisión Departamental, Provincial y Distrital   |   Generado: ${formatDate()}`;
+  infoCell2.font = { name: "Calibri", size: 9, bold: true, color: { argb: ARGB.gold } };
+  infoCell2.alignment = { horizontal: "left", vertical: "middle", indent: 1 };
+  infoCell2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandLight } };
+  ws2.getRow(3).height = 18;
+
+  // Fila 4: Separador
+  ws2.getRow(4).height = 6;
+
+  // Columnas Hoja 2
+  ws2.columns = [
+    { key: "item",   width: 6,  header: "Item" },
+    { key: "name",   width: 36, header: "Nombres y Apellidos (Oficial RENIEC)" },
+    { key: "cargo",  width: 38, header: "Cargo en el Partido" },
+    { key: "rol",    width: 28, header: "Rol en el Sistema" },
+    { key: "scope",  width: 30, header: "Ámbito Territorial" },
+    { key: "dni",    width: 14, header: "DNI" },
+    { key: "phone",  width: 15, header: "Celular" },
+    { key: "estado", width: 14, header: "Estado" },
   ];
 
-  // ─── Auto filtro ─────────────────────────────
-  ws.autoFilter = {
-    from: { row: 5, column: 1 },
-    to: { row: locales.length + 5, column: 13 },
-  };
+  const headerRow2 = ws2.getRow(5);
+  headerRow2.values = [
+    "Item", "Nombres y Apellidos (Oficial RENIEC)", "Cargo en el Partido",
+    "Rol en el Sistema", "Ámbito Territorial", "DNI", "Celular", "Estado",
+  ];
+  headerRow2.height = 24;
+  headerRow2.eachCell((cell) => {
+    cell.font = { name: "Calibri", size: 10, bold: true, color: { argb: ARGB.white } };
+    cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.brandRed } };
+    cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true };
+    cell.border = {
+      top: { style: "medium", color: { argb: ARGB.brandDark } },
+      bottom: { style: "medium", color: { argb: ARGB.gold } },
+      left: { style: "thin", color: { argb: ARGB.brandDark } },
+      right: { style: "thin", color: { argb: ARGB.brandDark } },
+    };
+  });
 
-  // ─── Protección de columnas para impresión ────
-  ws.getColumn(1).width = 5;
+  // Datos Hoja 2
+  TERRITORIAL_LEADERS.forEach((lead, idx) => {
+    const row = ws2.addRow({
+      item: lead.item,
+      name: lead.name,
+      cargo: lead.cargo,
+      rol: lead.rol,
+      scope: lead.scope,
+      dni: lead.dni,
+      phone: lead.phone,
+      estado: "✔ Registrado",
+    });
 
-  // ─── Generar y descargar ──────────────────────
+    row.height = 20;
+
+    row.eachCell((cell, colNumber) => {
+      if (colNumber > 8) return;
+      cell.font = { name: "Calibri", size: 9.5 };
+      cell.alignment = { vertical: "middle", wrapText: true };
+      cell.border = {
+        top: { style: "thin", color: { argb: ARGB.grayBorder } },
+        bottom: { style: "thin", color: { argb: ARGB.grayBorder } },
+        left: { style: "thin", color: { argb: ARGB.grayBorder } },
+        right: { style: "thin", color: { argb: ARGB.grayBorder } },
+      };
+
+      if (idx % 2 === 0) {
+        cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.zebraBg } };
+      }
+    });
+
+    row.getCell(1).alignment = { horizontal: "center", vertical: "middle" };
+    row.getCell(1).font = { name: "Calibri", size: 9, bold: true, color: { argb: "FF64748B" } };
+
+    // Nombre en negrita carmesí
+    row.getCell(2).font = { name: "Calibri", size: 10, bold: true, color: { argb: ARGB.brandRed } };
+
+    // Cargo en negrita
+    row.getCell(3).font = { name: "Calibri", size: 9.5, bold: true };
+
+    // DNI y Celular centrados
+    row.getCell(6).alignment = { horizontal: "center", vertical: "middle" };
+    row.getCell(6).font = { name: "Calibri", size: 9.5, bold: true };
+
+    row.getCell(7).alignment = { horizontal: "center", vertical: "middle" };
+    row.getCell(7).font = { name: "Calibri", size: 9.5, bold: true, color: { argb: ARGB.coord2Fg } };
+
+    // Estado verde
+    const est2 = row.getCell(8);
+    est2.alignment = { horizontal: "center", vertical: "middle" };
+    est2.font = { name: "Calibri", size: 9, bold: true, color: { argb: ARGB.assignedFg } };
+    est2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.assignedBg } };
+  });
+
+  // Congelar encabezados y autofiltro en Hoja 2
+  ws2.views = [{ state: "frozen", ySplit: 5, xSplit: 0 }];
+  ws2.autoFilter = { from: { row: 5, column: 1 }, to: { row: TERRITORIAL_LEADERS.length + 5, column: 8 } };
+
+  // ─── Generar y Descargar Archivo XLSX ───
   const buffer = await workbook.xlsx.writeBuffer();
-  const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  const blob = new Blob([buffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
   const dateStr = new Date().toISOString().slice(0, 10);
   a.href = url;
-  a.download = `Nomina_Coordinadores_MDD_${dateStr}.xlsx`;
+  a.download = `Nomina_Coordinadores_Ahora_Nacion_${dateStr}.xlsx`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
