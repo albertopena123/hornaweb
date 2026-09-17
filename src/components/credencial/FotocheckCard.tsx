@@ -61,15 +61,16 @@ export function FotocheckCard({
         {/* Encabezado Oficial Rojo */}
         <header className="fc-head">
           <div className="fc-brand-row">
-            <img
-              src="/assets/images/logo/logo-an.webp"
-              alt="Logo Ahora Nación"
-              className="fc-logo-img"
-            />
-            <div className="fc-brand-text">
-              <h1 className="fc-party-title">AHORA NACIÓN</h1>
-              <div className="fc-party-sub">MADRE DE DIOS · 2026</div>
-              <div className="fc-campaign-sub">SIMÓN HORNA ALPACA · GOBERNADOR</div>
+            <div className="fc-brand-text" style={{ width: "100%", textAlign: "center" }}>
+              <h1 className="fc-party-title" style={{ fontSize: "11px", letterSpacing: "0.04em" }}>
+                ORGANIZACIÓN POLÍTICA &ldquo;AHORA NACIÓN&rdquo;
+              </h1>
+              <div className="fc-party-sub" style={{ fontSize: "7.5px", fontWeight: 700 }}>
+                JURADO ELECTORAL ESPECIAL DE TAMBOPATA
+              </div>
+              <div className="fc-campaign-sub" style={{ fontSize: "6.5px", fontWeight: 600 }}>
+                RES. N° 00373-2026-JEE-TBPT/JNE · ELECCIONES 2026
+              </div>
             </div>
           </div>
 
@@ -168,7 +169,7 @@ export function FotocheckCard({
 
           {/* Base Legal */}
           <div className="fc-legal">
-            <strong>Base Legal:</strong> Conforme a los Arts. 128°, 129°, 130° y 140° de la Ley Orgánica de Elecciones N° 26859, el personero está legalmente facultado para presenciar y fiscalizar los actos de instalación, sufragio y escrutinio en la mesa de votación.
+            <strong>Base Legal:</strong> Res. N° 00373-2026-JEE-TBPT/JNE y Arts. 128°, 129°, 130° y 140° de la LOE N° 26859. Facultado a presenciar y fiscalizar instalación, sufragio y escrutinio.
           </div>
 
           {/* Zona de Firma y Huella */}
@@ -176,13 +177,13 @@ export function FotocheckCard({
             <div className="fc-sig-box">
               <div className="fc-sig-space" />
               <div className="fc-sig-line" />
-              <div className="fc-sig-label">Firma y Sello Encargado</div>
-              <div className="fc-sig-sub">Personero Legal / Coord. Regional</div>
+              <div className="fc-sig-label" style={{ fontWeight: 800 }}>VLADIMIR LIPA COLQUE</div>
+              <div className="fc-sig-sub">DNI 46889586 · Personero Legal</div>
             </div>
 
-            <div className="fc-huella-box">
-              <span className="fc-huella-tag">HUELLA</span>
-              <span className="fc-huella-sub">Índice Der.</span>
+            <div className="fc-huella-container">
+              <div className="fc-huella-box" />
+              <span className="fc-huella-caption">HUELLA</span>
             </div>
           </div>
 

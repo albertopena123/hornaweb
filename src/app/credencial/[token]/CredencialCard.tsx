@@ -168,17 +168,12 @@ export function CredencialCard({ data }: { data: CredencialData }) {
 
         {/* Tarjeta Fotocheck Digital Oficial */}
         <div className="cred-card">
-          {/* Header Oficial con Logo del Partido */}
+          {/* Header Oficial Institucional */}
           <header className="cred-header">
-            <div className="cred-header-brand">
-              <img
-                src="/assets/images/logo/logo-an.webp"
-                alt="Logo Ahora Nación"
-                className="cred-header-logo"
-              />
+            <div className="cred-header-brand" style={{ justifyContent: "center", textAlign: "center" }}>
               <div>
-                <h1 className="cred-party-title">Partido Político Ahora Nación</h1>
-                <p className="cred-party-sub">Madre de Dios · Elecciones 2026</p>
+                <h1 className="cred-party-title" style={{ fontSize: "1.05rem" }}>Organización Política &ldquo;Ahora Nación&rdquo;</h1>
+                <p className="cred-party-sub" style={{ fontWeight: 600 }}>Jurado Electoral Especial de Tambopata · Res. N° 00373-2026-JEE-TBPT/JNE</p>
               </div>
             </div>
 
@@ -186,8 +181,8 @@ export function CredencialCard({ data }: { data: CredencialData }) {
               <span className="cred-badge-doc">FOTOCHECK DIGITAL OFICIAL</span>
             </div>
 
-            <p className="cred-sub-campaign">
-              SIMÓN HORNA ALPACA · GOBERNADOR REGIONAL
+            <p className="cred-sub-campaign" style={{ letterSpacing: "0.03em" }}>
+              ELECCIONES GENERALES 2026 · EXPEDIENTE N° EG.2026030581
             </p>
           </header>
 
@@ -308,11 +303,11 @@ export function CredencialCard({ data }: { data: CredencialData }) {
                 className="cred-qr-img"
               />
               <div className="cred-stamp">
-                <span className="cred-stamp-title">Personería Legal Regional</span>
-                <div className="cred-stamp-role">Ahora Nación Madre de Dios</div>
-                <div className="cred-security-code">TOKEN: {data.token.slice(0, 16)}</div>
+                <span className="cred-stamp-title">Personería Legal Titular</span>
+                <div className="cred-stamp-role">Vladimir Lipa Colque (DNI 46889586)</div>
+                <div className="cred-security-code">RES. N° 00373-2026-JEE-TBPT/JNE</div>
                 <div style={{ fontSize: "0.625rem", color: "#64748b", marginTop: "4px", lineHeight: "1.2" }}>
-                  Acreditado conforme a la Ley Orgánica de Elecciones N° 26859
+                  Acreditado ante el JEE Tambopata · LOE N° 26859
                 </div>
               </div>
             </div>

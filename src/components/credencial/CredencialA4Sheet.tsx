@@ -47,22 +47,17 @@ export function CredencialA4Sheet({ data, id = "credencial-a4-sheet-target" }: P
 
     return (
       <div className={`cred-v-half ${!isOriginal ? "cred-v-half--copia" : ""}`}>
-        {/* Cabecera Oficial con Logo del Partido */}
+        {/* Cabecera Oficial Institucional (Conforme a Ley Orgánica de Elecciones N° 26859) */}
         <header className="cred-v-head">
           <div className="cred-v-head-top">
             <div className="cred-v-brand">
-              <img
-                src="/assets/images/logo/logo-an.webp"
-                alt="Logo Ahora Nación"
-                className={`cred-party-logo-img ${!isOriginal ? "cred-party-logo-img--copia" : ""}`}
-              />
               <div className="cred-v-brand-text">
-                <h1 className="cred-v-party-title">PARTIDO POLÍTICO AHORA NACIÓN</h1>
+                <h1 className="cred-v-party-title">ORGANIZACIÓN POLÍTICA &ldquo;AHORA NACIÓN&rdquo;</h1>
                 <span className="cred-v-election-sub">
-                  ELECCIONES REGIONALES Y MUNICIPALES 2026
+                  ELECCIONES GENERALES 2026
                 </span>
-                <span className="cred-v-candidate-sub">
-                  SIMÓN HORNA ALPACA · GOBERNADOR REGIONAL DE MADRE DE DIOS
+                <span className="cred-v-jee-sub">
+                  JURADO ELECTORAL ESPECIAL DE TAMBOPATA · RES. N° 00373-2026-JEE-TBPT/JNE
                 </span>
               </div>
             </div>
@@ -154,25 +149,27 @@ export function CredencialA4Sheet({ data, id = "credencial-a4-sheet-target" }: P
           </div>
         </div>
 
-        {/* Base Legal Sintetizada */}
+        {/* Base Legal y Acreditación de Personería */}
         <div className="cred-v-legal">
-          <strong>Base Legal:</strong> El Personero Legal acreditado del Partido Político Ahora
-          Nación ante el Jurado Electoral Especial acredita ante las autoridades electorales
-          (JNE/ONPE/ODPE) y los miembros de mesa al ciudadano indicado, facultándolo a presenciar y
-          fiscalizar los actos de instalación, sufragio y escrutinio, formular observaciones,
-          suscribir actas electorales y recabar copias, conforme a los Arts. 128°, 129°, 130° y 140°
-          de la Ley Orgánica de Elecciones N° 26859.
+          <strong>Base Legal:</strong> El Personero Legal Titular de la Organización Política &ldquo;Ahora Nación&rdquo;,
+          reconocido ante el Jurado Electoral Especial de Tambopata mediante <strong>Resolución N° 00373-2026-JEE-TBPT/JNE</strong> (Expediente N° EG.2026030581),
+          acredita ante las autoridades electorales (JNE, ONPE, ODPE) y los miembros de mesa al ciudadano consignado, facultándolo plenamente a
+          presenciar y fiscalizar los actos de instalación, sufragio y escrutinio, formular observaciones, suscribir actas electorales y recabar copias, conforme a los Arts. 127°, 128°, 129°, 130°, 133° y 140°
+          de la Ley Orgánica de Elecciones N° 26859 y la Resolución N° 0243-2020-JNE.
         </div>
 
-        {/* Sección de Firmas Oficiales, Sello y Huella Dactilar */}
+        {/* Sección de Firmas Oficiales y Huella Dactilar */}
         <div className="cred-v-signatures">
-          {/* Firma y Sello del Encargado */}
+          {/* Firma del Personero Legal Titular */}
           <div className="cred-v-sig-box">
             <div className="cred-v-sig-space" />
             <div className="cred-v-sig-line" />
-            <div className="cred-v-sig-title">Firma y Sello del Encargado</div>
-            <div className="cred-v-sig-sub">Personero Legal / Coordinador Regional</div>
-            <div className="cred-v-sig-sub">Partido Político Ahora Nación · MDD</div>
+            <div className="cred-v-sig-title">VLADIMIR LIPA COLQUE</div>
+            <div className="cred-v-sig-sub" style={{ fontWeight: 800, color: "#0f172a" }}>DNI N° 46889586</div>
+            <div className="cred-v-sig-sub">Personero Legal Titular · JEE Tambopata</div>
+            <div className="cred-v-sig-sub" style={{ fontSize: "6.5px", color: "#64748b" }}>
+              Res. N° 00373-2026-JEE-TBPT/JNE
+            </div>
           </div>
 
           {/* Firma del Personero + Recuadro para Huella Dactilar */}
@@ -181,13 +178,16 @@ export function CredencialA4Sheet({ data, id = "credencial-a4-sheet-target" }: P
               <div className="cred-v-sig-space" />
               <div className="cred-v-sig-line" />
               <div className="cred-v-sig-title">Firma del Personero Designado</div>
-              <div className="cred-v-sig-sub">DNI N° {data.docNumber}</div>
+              <div className="cred-v-sig-sub" style={{ fontWeight: 800, color: "#0f172a" }}>DNI N° {data.docNumber}</div>
               <div className="cred-v-sig-sub">Acreditación Oficial de Mesa</div>
             </div>
 
-            <div className="cred-v-huella-box" title="Recuadro para impresión dactilar del personero">
-              <span className="cred-v-huella-tag">HUELLA</span>
-              <span className="cred-v-huella-sub">Índice Der.</span>
+            <div className="cred-v-huella-container" title="Espacio libre para impresión dactilar (índice derecho)">
+              <div className="cred-v-huella-box" />
+              <div className="cred-v-huella-caption">
+                <strong>HUELLA</strong>
+                <span>Índice Derecho</span>
+              </div>
             </div>
           </div>
 
