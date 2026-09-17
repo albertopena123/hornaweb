@@ -80,7 +80,7 @@ function getRoleVisual(key: string, system: boolean): {
   }
   if (key === "coordinador_departamental") {
     return {
-      icon: "globe",
+      icon: "apps",
       color: "#be185d",
       bg: "rgba(190, 24, 93, 0.12)",
       badgeLabel: "Departamental",
