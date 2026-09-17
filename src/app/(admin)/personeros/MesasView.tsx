@@ -1256,7 +1256,7 @@ export function MesasView({
       )}
 
       {/* Modal de Detalle de Mesa seleccionada (Titular + Suplente + Aula + ONPE) */}
-      {selectedMesa && (
+      {selectedMesa && !assignModal && (
         <div className="modal-backdrop" onClick={() => setSelectedMesa(null)}>
           <div className="modal" style={{ maxWidth: "480px" }} onClick={(e) => e.stopPropagation()}>
             <header className="modal__head">
@@ -1731,50 +1731,52 @@ export function MesasView({
             </header>
 
             {/* Selector de Pestañas */}
-            <div className="assign-modal-tabs">
+            <div className="assign-modal-tabs" style={{ display: "flex", borderBottom: "1px solid var(--border, #e2e8f0)", padding: "0 16px" }}>
               <button
                 type="button"
                 className={`tab-btn ${assignTab === "search" ? "tab-btn--active" : ""}`}
                 onClick={() => setAssignTab("search")}
                 style={{
-                  padding: "10px 14px",
+                  padding: "12px 16px",
                   border: "none",
                   background: "none",
                   cursor: "pointer",
                   fontWeight: 700,
-                  fontSize: "13px",
+                  fontSize: "13.5px",
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "6px",
-                  color: assignTab === "search" ? "var(--accent, #2563eb)" : "var(--text-muted, #64748b)",
-                  borderBottom: assignTab === "search" ? "2px solid var(--accent, #2563eb)" : "2px solid transparent",
+                  gap: "7px",
+                  color: assignTab === "search" ? "#b91c1c" : "var(--text-muted, #64748b)",
+                  borderBottom: assignTab === "search" ? "2.5px solid #b91c1c" : "2.5px solid transparent",
+                  transition: "all 0.15s ease",
                 }}
               >
-                <Search size={14} /> Seleccionar Registrado ({personerosDisponibles.length} libres)
+                <Search size={15} /> Seleccionar Registrado ({personerosDisponibles.length} libres)
               </button>
               <button
                 type="button"
                 className={`tab-btn ${assignTab === "new" ? "tab-btn--active" : ""}`}
                 onClick={() => setAssignTab("new")}
                 style={{
-                  padding: "10px 14px",
+                  padding: "12px 16px",
                   border: "none",
                   background: "none",
                   cursor: "pointer",
                   fontWeight: 700,
-                  fontSize: "13px",
+                  fontSize: "13.5px",
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "6px",
-                  color: assignTab === "new" ? "var(--accent, #2563eb)" : "var(--text-muted, #64748b)",
-                  borderBottom: assignTab === "new" ? "2px solid var(--accent, #2563eb)" : "2px solid transparent",
+                  gap: "7px",
+                  color: assignTab === "new" ? "#b91c1c" : "var(--text-muted, #64748b)",
+                  borderBottom: assignTab === "new" ? "2.5px solid #b91c1c" : "2.5px solid transparent",
+                  transition: "all 0.15s ease",
                 }}
               >
-                <UserPlus size={14} /> Registrar Nuevo
+                <UserPlus size={15} /> Registrar Nuevo
               </button>
             </div>
 
-            <div className="modal__body" style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "60vh", overflowY: "auto", padding: "16px" }}>
+            <div className="modal__body" style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "60vh", overflowY: "auto", padding: "16px 20px" }}>
               {assignTab === "search" ? (
                 <>
                   {/* Buscador y Filtro */}
@@ -1845,7 +1847,7 @@ export function MesasView({
 
                             <button
                               type="button"
-                              className="btn btn--xs btn--primary"
+                              className="btn btn--xs btn--brand"
                               disabled={isAssigningThis || !!assigningId}
                               onClick={() => handleAssignExistingPersonero(p)}
                               style={{ whiteSpace: "nowrap", flexShrink: 0 }}
@@ -1871,7 +1873,7 @@ export function MesasView({
                     e.preventDefault();
                     handleCreateAndAssignPersonero();
                   }}
-                  style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+                  style={{ display: "flex", flexDirection: "column", gap: "14px" }}
                 >
                   {newPersoneroError && (
                     <div className="alert alert--danger" style={{ fontSize: "12px", padding: "8px 12px" }}>
@@ -1879,11 +1881,11 @@ export function MesasView({
                     </div>
                   )}
 
-                  <div>
-                    <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--text, #0f172a)", display: "block" }}>
+                  <div className="field" style={{ margin: 0 }}>
+                    <label className="field__label" style={{ fontWeight: 700, color: "var(--text, #0f172a)", display: "flex", alignItems: "center", gap: 4 }}>
                       DNI (8 dígitos) <span style={{ color: "#dc2626" }}>*</span>
                     </label>
-                    <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "4px" }}>
+                    <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                       <input
                         type="text"
                         maxLength={8}
@@ -1891,38 +1893,39 @@ export function MesasView({
                         value={newDocNumber}
                         onChange={(e) => setNewDocNumber(e.target.value.replace(/\D/g, ""))}
                         className="input"
-                        style={{ flex: 1 }}
+                        style={{ paddingRight: "38px" }}
                         required
                         autoFocus
                       />
-                      {newDniLookup === "loading" && <Loader2 size={18} className="spin" style={{ color: "#3b82f6" }} />}
-                      {newDniLookup === "found" && <Check size={18} style={{ color: "#10b981" }} />}
+                      <div style={{ position: "absolute", right: "12px", display: "flex", alignItems: "center", pointerEvents: "none" }}>
+                        {newDniLookup === "loading" && <Loader2 size={16} className="spin" style={{ color: "#b91c1c" }} />}
+                        {newDniLookup === "found" && <Check size={16} style={{ color: "#16a34a" }} />}
+                      </div>
                     </div>
                     {newDniLookup === "found" && (
-                      <span style={{ fontSize: "11px", color: "#10b981", fontWeight: 600, marginTop: "2px", display: "block" }}>
+                      <span style={{ fontSize: "11px", color: "#16a34a", fontWeight: 600, marginTop: "4px", display: "block" }}>
                         ✓ Nombre consultado con éxito desde RENIEC
                       </span>
                     )}
                   </div>
 
-                  <div>
-                    <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--text, #0f172a)", display: "block" }}>
+                  <div className="field" style={{ margin: 0 }}>
+                    <label className="field__label" style={{ fontWeight: 700, color: "var(--text, #0f172a)" }}>
                       Nombres y Apellidos Completos <span style={{ color: "#dc2626" }}>*</span>
                     </label>
                     <input
                       type="text"
-                      placeholder="Nombres completos"
+                      placeholder="Nombres y apellidos completos"
                       value={newName}
                       onChange={(e) => setNewName(e.target.value)}
                       className="input"
-                      style={{ marginTop: "4px", width: "100%" }}
                       required
                     />
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                    <div>
-                      <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--text, #0f172a)", display: "block" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <div className="field" style={{ margin: 0 }}>
+                      <label className="field__label" style={{ fontWeight: 700, color: "var(--text, #0f172a)" }}>
                         Teléfono (WhatsApp)
                       </label>
                       <input
@@ -1931,19 +1934,17 @@ export function MesasView({
                         value={newPhone}
                         onChange={(e) => setNewPhone(e.target.value)}
                         className="input"
-                        style={{ marginTop: "4px", width: "100%" }}
                       />
                     </div>
 
-                    <div>
-                      <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--text, #0f172a)", display: "block" }}>
+                    <div className="field" style={{ margin: 0 }}>
+                      <label className="field__label" style={{ fontWeight: 700, color: "var(--text, #0f172a)" }}>
                         Distrito
                       </label>
                       <select
                         value={newDistrict}
                         onChange={(e) => setNewDistrict(e.target.value)}
-                        className="filter-select"
-                        style={{ marginTop: "4px", width: "100%" }}
+                        className="input"
                       >
                         <option value="">Seleccionar distrito...</option>
                         {DISTRICTS.map((d) => (
@@ -1955,34 +1956,46 @@ export function MesasView({
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="btn btn--primary"
-                    disabled={savingNewPersonero}
-                    style={{ marginTop: "10px", padding: "10px", width: "100%", justifyContent: "center" }}
-                  >
-                    {savingNewPersonero ? (
-                      <>
-                        <Loader2 size={15} className="spin" /> Registrando y Asignando...
-                      </>
-                    ) : (
-                      `Registrar y Asignar como ${assignModal.role === "titular" ? "Titular" : "Suplente"}`
-                    )}
-                  </button>
+                  <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", marginTop: "8px", paddingTop: "14px", borderTop: "1px solid var(--border, #e2e8f0)" }}>
+                    <button
+                      type="button"
+                      className="btn btn--outline"
+                      onClick={() => setAssignModal(null)}
+                      disabled={savingNewPersonero}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn--brand"
+                      disabled={savingNewPersonero}
+                      style={{ padding: "0 20px" }}
+                    >
+                      {savingNewPersonero ? (
+                        <>
+                          <Loader2 size={15} className="spin" /> Registrando y Asignando...
+                        </>
+                      ) : (
+                        `Registrar y Asignar como ${assignModal.role === "titular" ? "Titular" : "Suplente"}`
+                      )}
+                    </button>
+                  </div>
                 </form>
               )}
             </div>
 
-            <footer className="modal__foot" style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button
-                type="button"
-                className="btn btn--outline"
-                onClick={() => setAssignModal(null)}
-                disabled={savingNewPersonero || !!assigningId}
-              >
-                Cerrar
-              </button>
-            </footer>
+            {assignTab === "search" && (
+              <footer className="modal__foot" style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  type="button"
+                  className="btn btn--outline"
+                  onClick={() => setAssignModal(null)}
+                  disabled={savingNewPersonero || !!assigningId}
+                >
+                  Cerrar
+                </button>
+              </footer>
+            )}
           </div>
         </div>
       )}
