@@ -644,7 +644,7 @@ export async function downloadPersonerosExcel(
   sortedPersoneros.forEach((p, idx) => {
     const isTitular = !p.isSuplente && p.role !== "suplente" && p.role !== "general";
     const isGeneral = p.role === "general";
-    const cargoStr = isGeneral ? "General de Local" : isTitular ? "Titular de Mesa" : "Suplente de Mesa";
+    const cargoStr = isGeneral ? "Personero General" : isTitular ? "Personero de Mesa" : "Personero Suplente";
 
     const row = ws1.addRow({
       num: idx + 1,

@@ -152,7 +152,7 @@ export function DirectorioView({ rows, perms, locales }: Props) {
       `"${p.docNumber}"`,
       `"${p.name.replace(/"/g, '""')}"`,
       `"${p.phone || ""}"`,
-      `"${p.role === "general" ? "General de Local" : p.isSuplente ? "Suplente" : "Titular"}"`,
+      `"${p.role === "general" ? "Personero General" : p.isSuplente ? "Personero Suplente" : "Personero de Mesa"}"`,
       `"${p.district || ""}"`,
       `"${p.localName.replace(/"/g, '""')}"`,
       `"${(p.localAddress || "").replace(/"/g, '""')}"`,
@@ -346,10 +346,10 @@ export function DirectorioView({ rows, perms, locales }: Props) {
                         }`}
                       >
                         {r.role === "general"
-                          ? "General de Local"
+                          ? "Personero General"
                           : r.isSuplente || r.role === "suplente"
-                          ? "Suplente de Mesa"
-                          : "Titular de Mesa"}
+                          ? "Personero Suplente"
+                          : "Personero de Mesa"}
                       </span>
                     </td>
                     <td>
