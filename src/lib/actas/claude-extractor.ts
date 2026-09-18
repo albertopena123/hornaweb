@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
+import { getActaCandidates } from "./acta-candidates";
 import type { ExtractedActaData } from "./ai-extractor";
 
 /**
@@ -87,14 +87,9 @@ export async function extractVotesFromActaImageClaude(
     );
   }
 
-  const candidates = await prisma.candidate.findMany({
-    where: {
-      cargo: electionType === "provincial" ? "provincial" : "gobernador",
-      ...(electionType === "provincial" ? { province } : {}),
-      active: true,
-    },
-    orderBy: { order: "asc" },
-  });
+  const resolved = await getActaCandidates(electionType, province);
+  const candidates = resolved.candidates;
+  province = resolved.province; // forma canónica ("Tambopata"), también para el prompt
 
   const userText = `Elección: ${
     electionType === "provincial" ? `Consejeros / Alcaldía Provincial (${province})` : "Gobernador Regional"

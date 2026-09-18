@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getActaCandidates } from "./acta-candidates";
 
 export type ExtractedActaData = {
   mesaNumber?: string;
@@ -31,14 +31,9 @@ export async function extractVotesFromActaImage(
   province: string = "Tambopata"
 ): Promise<ExtractedActaData> {
   // 1. Obtener candidatos activos correspondientes a la elección
-  const candidates = await prisma.candidate.findMany({
-    where: {
-      cargo: electionType === "provincial" ? "provincial" : "gobernador",
-      ...(electionType === "provincial" ? { province } : {}),
-      active: true,
-    },
-    orderBy: { order: "asc" },
-  });
+  const resolved = await getActaCandidates(electionType, province);
+  const candidates = resolved.candidates;
+  province = resolved.province; // forma canónica ("Tambopata"), también para el prompt
 
   const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 

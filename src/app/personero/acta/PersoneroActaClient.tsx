@@ -66,8 +66,13 @@ export function PersoneroActaClient({
   const [electionType, setElectionType] = useState<"gobernador" | "provincial">("gobernador");
 
   // Provincia activa (detectada del colegio o por defecto Tambopata)
+  // ElectoralLocal.province viene en MAYÚSCULAS ("TAMBOPATA"); se lleva a la forma
+  // de las pestañas y de Candidate.province para que la pestaña quede marcada y
+  // el extractor con IA reciba el mismo valor que al elegirla a mano.
+  const PROVINCES = ["Tambopata", "Manu", "Tahuamanu"];
+  const localProvince = (mesaData?.local?.province || "").trim().toLowerCase();
   const defaultProvince =
-    mesaData?.local?.province ||
+    PROVINCES.find((p) => p.toLowerCase() === localProvince) ||
     (personero?.district === "manu" || personero?.district === "fitzcarrald" || personero?.district === "madre_de_dios" || personero?.district === "huepetuhe"
       ? "Manu"
       : personero?.district === "inambari" || personero?.district === "laberinto" || personero?.district === "las_piedras"
@@ -477,7 +482,7 @@ export function PersoneroActaClient({
           <div className="province-scope-bar">
             <span className="province-scope-label">Selecciona Provincia:</span>
             <div className="province-pills">
-              {["Tambopata", "Manu", "Tahuamanu"].map((prov) => (
+              {PROVINCES.map((prov) => (
                 <button
                   key={prov}
                   type="button"

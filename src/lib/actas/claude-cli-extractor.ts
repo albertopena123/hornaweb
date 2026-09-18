@@ -2,7 +2,7 @@ import { spawn } from "node:child_process";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { prisma } from "@/lib/prisma";
+import { getActaCandidates } from "./acta-candidates";
 import type { ExtractedActaData } from "./ai-extractor";
 
 /**
@@ -268,14 +268,9 @@ export async function extractVotesFromActaImageCli(
     );
   }
 
-  const candidates = await prisma.candidate.findMany({
-    where: {
-      cargo: electionType === "provincial" ? "provincial" : "gobernador",
-      ...(electionType === "provincial" ? { province } : {}),
-      active: true,
-    },
-    orderBy: { order: "asc" },
-  });
+  const resolved = await getActaCandidates(electionType, province);
+  const candidates = resolved.candidates;
+  province = resolved.province; // forma canónica ("Tambopata"), también para el prompt
 
   const parsed = await withIsolatedImage(image, async (dir, filename) => {
     const prompt = buildPrompt(
