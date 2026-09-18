@@ -255,9 +255,12 @@ export function VisorTvClient({ initialData }: { initialData: LiveData }) {
       {/* HEADER PRINCIPAL — AHORA NACIÓN CONTEO RÁPIDO */}
       <header className="visor-tv-header">
         <div className="header-left-cluster">
-          <Link href="/" className="visor-nav-back" title="Volver a la web principal">
+          <Link href="/inicio" className="visor-nav-back" title="Volver al Panel de Control">
             <ArrowLeft size={16} />
-            <span className="visor-back-text">Web Principal</span>
+            <span className="visor-back-text">Panel</span>
+          </Link>
+          <Link href="/" className="visor-nav-back" title="Volver a la web principal">
+            <span className="visor-back-text">Web Pública</span>
           </Link>
 
           <div className="visor-brand-divider" />

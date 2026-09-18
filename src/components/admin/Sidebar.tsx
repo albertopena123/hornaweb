@@ -148,6 +148,8 @@ export function Sidebar({ collapsed, mobileOpen = false, user }: Props) {
                   ) : (
                     <Link
                       href={item.href ?? item.children?.[0]?.href ?? `/${item.id}`}
+                      target={item.target}
+                      rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
                       className={itemClass}
                       title={collapsed ? item.label : undefined}
                     >

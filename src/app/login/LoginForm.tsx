@@ -12,7 +12,9 @@ const REMEMBER_KEY = "login.email";
 export function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") || "/usuarios";
+  const rawNext = params.get("next");
+  const isBadNext = !rawNext || rawNext === "/usuarios" || rawNext === "/403" || rawNext === "/login";
+  const next = isBadNext ? null : rawNext;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,7 +61,7 @@ export function LoginForm() {
       } catch {
         // localStorage bloqueado: se ignora.
       }
-      const targetUrl = next && next !== "/usuarios" ? next : (resData?.defaultRedirect || "/personeros");
+      const targetUrl = next ? next : (resData?.defaultRedirect || "/inicio");
       router.replace(targetUrl);
       router.refresh();
     } catch {

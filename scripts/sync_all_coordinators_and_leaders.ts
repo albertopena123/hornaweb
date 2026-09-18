@@ -247,7 +247,9 @@ async function main() {
       const name = toTitleCase(rawName);
       const phone = local.coordinatorPhone?.trim() || null;
       const email = `${dni}@ahoranacion.pe`;
-      const pwHash = await hashPassword(dni);
+      const cleanCel = phone ? phone.replace(/\D/g, "") : "";
+      const pwToUse = cleanCel.length >= 6 ? cleanCel : dni;
+      const pwHash = await hashPassword(pwToUse);
 
       const existing = await prisma.user.findFirst({
         where: { OR: [{ dni }, { email }, { email: `${dni}@personeros.ahoranacion.pe` }] },
@@ -261,6 +263,7 @@ async function main() {
             name,
             dni,
             phone: phone || existing.phone,
+            passwordHash: pwHash,
             scopeType: "local",
             assignedLocalId: local.id,
             assignedDistrict: local.district,
@@ -303,7 +306,9 @@ async function main() {
       const name = toTitleCase(rawName);
       const phone = local.coordinator2Phone?.trim() || null;
       const email = `${dni}@ahoranacion.pe`;
-      const pwHash = await hashPassword(dni);
+      const cleanCel = phone ? phone.replace(/\D/g, "") : "";
+      const pwToUse = cleanCel.length >= 6 ? cleanCel : dni;
+      const pwHash = await hashPassword(pwToUse);
 
       const existing = await prisma.user.findFirst({
         where: { OR: [{ dni }, { email }, { email: `${dni}@personeros.ahoranacion.pe` }] },
@@ -317,6 +322,7 @@ async function main() {
             name,
             dni,
             phone: phone || existing.phone,
+            passwordHash: pwHash,
             scopeType: "local",
             assignedLocalId: local.id,
             assignedDistrict: local.district,
@@ -483,7 +489,10 @@ async function main() {
     const rawName = reniecMap[l.dni] || l.rawName;
     const name = toTitleCase(rawName);
     const email = `${l.dni}@ahoranacion.pe`;
-    const pwHash = await hashPassword(l.dni);
+    const isCoord = l.roleKey.includes("coordinador") || l.cargo.toLowerCase().includes("coordinador");
+    const cleanCel = l.phone ? l.phone.replace(/\D/g, "") : "";
+    const pwToUse = (isCoord && cleanCel.length >= 6) ? cleanCel : l.dni;
+    const pwHash = await hashPassword(pwToUse);
     const roleTarget = rolesMap.get(l.roleKey);
 
     if (!roleTarget) {
@@ -503,6 +512,7 @@ async function main() {
           name,
           dni: l.dni,
           phone: l.phone || existing.phone,
+          ...(isCoord ? { passwordHash: pwHash } : {}),
           scopeType: l.scopeType,
           assignedProvince: l.province,
           assignedDistrict: l.district,

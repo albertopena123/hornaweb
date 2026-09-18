@@ -20,6 +20,7 @@ export type SidebarItem = {
   label: string;
   icon: IconName;
   href?: string;
+  target?: string;
   expandable?: boolean;
   dot?: boolean;
   permission?: string;
@@ -116,6 +117,7 @@ export const SIDEBAR_SECTIONS: NavSection[] = [
         label: "Cómputo en Vivo",
         icon: "device",
         href: "/visor-envivo",
+        target: "_blank",
         permission: "actas.read",
       },
     ],

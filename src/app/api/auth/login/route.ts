@@ -196,11 +196,15 @@ export async function POST(request: Request) {
   });
 
   const roleKeys = user.roles.map((ur) => ur.role.key);
-  let defaultRedirect = "/personeros";
+  let defaultRedirect = "/inicio";
   if (roleKeys.includes("personero")) {
     defaultRedirect = "/personero/acta";
   } else if (roleKeys.includes("verificador")) {
     defaultRedirect = "/verificacion";
+  } else if (roleKeys.some((k) => k.startsWith("coordinador"))) {
+    defaultRedirect = "/personeros";
+  } else if (roleKeys.includes("superadmin") || roleKeys.includes("admin")) {
+    defaultRedirect = "/inicio";
   }
 
   if (isMobile && session) {
